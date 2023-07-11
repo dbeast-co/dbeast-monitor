@@ -1,0 +1,1 @@
+npx @grafana/sign-plugin
