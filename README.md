@@ -31,11 +31,11 @@ The toolkit installation contains several parts:
     - In all configuration files, update the Elasticsearch outputs. Add the requisites of your MONITORING Elasticsearch cluster (If you have a dedicated monitoring cluster, otherwise use your main cluster).
     - In all configuration files, set up your Elasticsearch cluster ID in the input in the "[elasticsearch][cluster][id]" field. You can obtain it from your cluster via the API: GET /, look for the cluster_uuid field.
     - In the mon-logstash-logs.conf file, update the path to the Logstash logs in the "path" field (default path on Linux: /var/log/logstash).
-    - In the mon-es-index-stats.conf, mon-es-thread_pools.conf, and mon-es-index-summary.conf, mon-es-shard-stats.conf files, update the requisites of your SOURCE Elasticsearch cluster (the cluster you want to monitor).
+    - In the mon-es-index-stats.conf, mon-es-thread_pools.conf, and mon-es-index-summary.conf, mon-es-shards-stats.conf files, update the requisites of your SOURCE Elasticsearch cluster (the cluster you want to monitor).
 4. Copy mon-logstash-logs.conf and mon-logstash-metrics.conf files to EACH monitored Logstash config folders
 5. Add the pipeline definitions to the pipelines.yml file in the Logstash configuration folder. You can copy it from the provided example file pipeline_each_logstash.yml.
 6. Restart Logstash if the config.reload.automatic: true not defined
-7. Copy mon-es-index-stats.conf, mon-es-thread_pools.conf, and mon-es-index-summary.conf, mon-es-shard-stats.conf configuration files to your MONITORING Logstash config folder.
+7. Copy mon-es-index-stats.conf and mon-es-index-summary.conf configuration files to your MONITORING Logstash config folder.
 8. Add the pipeline definitions to the pipelines.yml file in the Logstash configuration folder. You can copy it from the provided example file pipeline_monitoring.yml.
 9. Run Logstash
 
