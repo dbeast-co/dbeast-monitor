@@ -1,7 +1,5 @@
 {
-  "__inputs": [
-
-  ],
+  "__inputs": [],
   "__elements": {},
   "__requires": [
     {
@@ -789,6 +787,7 @@
         "uid": "-- Mixed --",
         "type": "datasource"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1074,12 +1073,12 @@
               "type": "max"
             },
             {
-              "field": "logstash.node.stats.pipeline.plugins.filters.failures",
+              "field": "logstash.node.stats.pipeline.filters_failures",
               "id": "7",
               "type": "max"
             },
             {
-              "field": "logstash.node.stats.pipeline.plugins.filters.failures_rate",
+              "field": "logstash.node.stats.pipeline.filters_failures_rate",
               "id": "8",
               "type": "max"
             }
@@ -1155,16 +1154,16 @@
               "Max logstash.node.stats.pipeline.events.out": "out",
               "Max logstash.node.stats.pipeline.events.out_rate": "out_rate",
               "Max logstash.node.stats.pipeline.filters_failures": "filter_failures",
+              "Max logstash.node.stats.pipeline.plugins.filters.failures": "filter_failures",
+              "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": "failures_rate",
               "host.hostname": "Host",
               "logstash.node.stats.pipeline.id": "pipeline_id",
-              "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": "failures_rate",
-              "Max logstash.node.stats.pipeline.plugins.filters.failures": "filter_failures"
+              "Max logstash.node.stats.pipeline.filters_failures_rate": "failures_rate"
             }
           }
         }
       ],
-      "type": "table",
-      "description": ""
+      "type": "table"
     },
     {
       "datasource": {
@@ -1347,7 +1346,7 @@
               "type": "count"
             }
           ],
-          "query": "event.dataset: logstash_logs AND logstash.log.type: exception AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: $cluster_uid",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1410,9 +1409,8 @@
         "sort": 0,
         "type": "query"
       },
-	  {
-        "current": {
-          },
+      {
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics",
@@ -1425,9 +1423,8 @@
         "skipUrlSync": false,
         "type": "datasource"
       },
-	  {
-        "current": {
-          },
+      {
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics_status",
@@ -1440,9 +1437,8 @@
         "skipUrlSync": false,
         "type": "datasource"
       },
-	  {
-        "current": {
-          },
+      {
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_logs",
@@ -1455,9 +1451,8 @@
         "skipUrlSync": false,
         "type": "datasource"
       },
-	  {
-        "current": {
-          },
+      {
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_logs_ports",
