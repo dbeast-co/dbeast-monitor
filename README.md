@@ -74,8 +74,8 @@ Note: Replace "<GRAFANA_DIR>" with the actual directory where Grafana is install
 4. If you don't have the "Dynamic Text" (marcusolsson-dynamictext-panel) installed in Grafana, you can install it from the Plugins section or copy and unzip the marcusolsson-dynamictext-panel.zip file into the plugin's folder.
 6. Copy and unzip the dbeast-monitoring-for-elastic-stack-app.zip file into the plugin's folder.
 7. Copy and unzip the dbeast-add_new_es_cluster-panel.zip file into the plugin's folder.
-8. Enable the dbeast-monitoring_for_elastic_stack-app plugin in the plugin's setup page.
-IMPORTANT!!! For the following steps the backend supposed to be started.
+8. Enable the dbeast-monitoring_for_elastic_stack-app plugin on the plugin's setup page.
+IMPORTANT!!! For the following steps, the backend is supposed to be started.
 9. In the plugin Configuration page, fill the following settings:
     - Grafana host: Your current Grafana requisites.
     - Application host: Backend host requisites that you defined in the backend setup.
@@ -85,14 +85,15 @@ IMPORTANT!!! For the following steps the backend supposed to be started.
 
 
 #### Add new cluster
-In time of the new cluster setup, the backend supposed to be started
-1. Enter to the "Add new cluster" in the application menu
-2. Fill the all required fields 
+At the time of the new cluster setup, the backend was supposed to be started
+1. Click on the "Add new cluster" in the application menu
+2. Fill the all required fields
+   
 ![new_cluster.png](new_cluster.png)
-   - Elasticsearch host - The address of the one of your PROD cluster nodes
+   - Elasticsearch host - The address of one of your PROD cluster nodes
    - Kibana host - The address of your Kibana (include port)
-   - Use authentication, user and password for you PROD cluster 
-   - Monitoring host - The address of the one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
-   - Use authentication, user and password for you MONITORING cluster
-3. Press "Test" for the cluster health check
-4. Press "Save" for adding cluster to the application.
+   - Use authentication, user, and password for your PROD cluster 
+   - Monitoring host - The address of one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
+   - Use authentication, user, and password for your MONITORING cluster
+4. Press "Test" for the cluster health check
+5. Press "Save" for adding a cluster to the application.
