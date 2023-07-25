@@ -95,7 +95,7 @@
       "name": "Shards overview dashboard",
       "path": "dashboards/Shards-overview-dashboard.json",
       "role": "Viewer",
-      "addToNav": true,
+      "addToNav": false,
       "uid": "shards-overview-dashboard",
       "defaultNav": false
     }
