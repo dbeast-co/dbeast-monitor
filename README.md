@@ -92,11 +92,12 @@ dbeast-monitoringforelasticstack-app = root
 At the time of the new cluster setup, the backend was supposed to be started
 1. Click on the "Add new cluster" in the application menu
 2. Fill the all required fields
+   
  ![new_cluster.png](new_cluster.png)
    - Elasticsearch host - The address of one of your PROD cluster nodes
    - Kibana host - The address of your Kibana (include port)
    - Use authentication, user, and password for your PROD cluster 
    - Monitoring host - The address of one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
    - Use authentication, user, and password for your MONITORING cluster
-3. Press "Test" for the cluster health check
-4. Press "Save" for adding a cluster to the application.
+4. Press "Test" for the cluster health check
+5. Press "Save" for adding a cluster to the application.
