@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClusterConnectionSourcePOJO extends ClusterConnectionSettingsPOJO implements Cloneable{
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("source_id")
     private String sourceUid = GeneralUtils.generateNewUID();
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,6 +18,15 @@ public class ClusterConnectionSourcePOJO extends ClusterConnectionSettingsPOJO i
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("monitoring_host")
     private String monitoringHost;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("monitoring_authentication_enabled")
+    private boolean monitoringIsUseAuthentication;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("monitoring_username")
+    private String monitoringUsername;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("monitoring_password")
+    private String monitoringPassword;
 
     public ClusterConnectionSourcePOJO(final ClusterConnectionSettingsPOJO clusterConnectionSettings,
                                        final String kibanaHost,
@@ -84,5 +94,29 @@ public class ClusterConnectionSourcePOJO extends ClusterConnectionSettingsPOJO i
 
     public void setMonitoringHost(String monitoringHost) {
         this.monitoringHost = monitoringHost;
+    }
+
+    public boolean isMonitoringIsUseAuthentication() {
+        return monitoringIsUseAuthentication;
+    }
+
+    public void setMonitoringIsUseAuthentication(boolean monitoringIsUseAuthentication) {
+        this.monitoringIsUseAuthentication = monitoringIsUseAuthentication;
+    }
+
+    public String getMonitoringUsername() {
+        return monitoringUsername;
+    }
+
+    public void setMonitoringUsername(String monitoringUsername) {
+        this.monitoringUsername = monitoringUsername;
+    }
+
+    public String getMonitoringPassword() {
+        return monitoringPassword;
+    }
+
+    public void setMonitoringPassword(String monitoringPassword) {
+        this.monitoringPassword = monitoringPassword;
     }
 }

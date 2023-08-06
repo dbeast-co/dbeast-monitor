@@ -24,25 +24,31 @@ public class ClusterConnectionSettingsPOJO implements Cloneable {
 
     public ClusterConnectionSettingsPOJO() {
     }
-
     public ClusterConnectionSettingsPOJO(final ClusterConnectionSourcePOJO clusterConnectionSettings,
                                          final String type) {
         switch (type) {
             case "kibana": {
                 setEs_host(clusterConnectionSettings.getKibana_host());
+                setAuthentication_enabled(clusterConnectionSettings.isAuthentication_enabled());
+                setUsername(clusterConnectionSettings.getUsername());
+                setPassword(clusterConnectionSettings.getPassword());
                 break;
             }
             case "monitor":{
                 setEs_host(clusterConnectionSettings.getMonitoringHost());
+                setAuthentication_enabled(clusterConnectionSettings.isMonitoringIsUseAuthentication());
+                setUsername(clusterConnectionSettings.getMonitoringUsername());
+                setPassword(clusterConnectionSettings.getMonitoringPassword());
                 break;
             }
             default:{
                 setEs_host(clusterConnectionSettings.getEs_host());
+                setAuthentication_enabled(clusterConnectionSettings.isAuthentication_enabled());
+                setUsername(clusterConnectionSettings.getUsername());
+                setPassword(clusterConnectionSettings.getPassword());
             }
         }
-        setAuthentication_enabled(clusterConnectionSettings.isAuthentication_enabled());
-        setUsername(clusterConnectionSettings.getUsername());
-        setPassword(clusterConnectionSettings.getPassword());
+
     }
 
     @Override

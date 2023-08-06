@@ -1,5 +1,6 @@
 package co.dbeast.grafana_backend.rest;
 
+import co.dbeast.elk_clients.elasticsearch.es_settings.ClusterConnectionSourcePOJO;
 import co.dbeast.general_utils.JSONUtils;
 import co.dbeast.grafana_backend.data_warehouse.GrafanaBackendController;
 import co.dbeast.grafana_backend.pojo.GrafanaClusterConnectionInputPOJO;
@@ -35,7 +36,7 @@ public class RESTElasticsearchDataSource extends ARest {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Request body: " + request.body());
                 }
-                GrafanaClusterConnectionInputPOJO grafanaClusterConnectionSettings = JSONUtils.jsonStringToObject(request.body(), GrafanaClusterConnectionInputPOJO.class);
+                ClusterConnectionSourcePOJO grafanaClusterConnectionSettings = JSONUtils.jsonStringToObject(request.body(), ClusterConnectionSourcePOJO.class);
                 return grafanaBackendController.saveDataSource(grafanaClusterConnectionSettings);
             });
         });

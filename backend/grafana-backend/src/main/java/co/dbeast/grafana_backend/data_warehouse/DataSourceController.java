@@ -33,6 +33,9 @@ public class DataSourceController {
 
     public boolean inject(final String payload,
                           final String dataSourceName) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(payload);
+        }
         grafanaDataSourcesDAO.upsert(grafanaClient, dataSourceName, payload);
         return true;
     }

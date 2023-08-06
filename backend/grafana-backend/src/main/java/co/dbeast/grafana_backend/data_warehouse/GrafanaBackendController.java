@@ -69,15 +69,12 @@ public class GrafanaBackendController {
     }
 
 
-    public boolean saveDataSource(final GrafanaClusterConnectionInputPOJO grafanaClusterConnectionSettings) {
+    public boolean saveDataSource(final ClusterConnectionSourcePOJO clusterConnectionSource) {
         try {
-            ClusterConnectionSourcePOJO clusterConnectionSource = new ClusterConnectionSourcePOJO(
-                    grafanaClusterConnectionSettings.getClusterConnectionSettings(),
-                    grafanaClusterConnectionSettings.getKibanaHost(),
-                    grafanaClusterConnectionSettings.getMonitoringHost());
+
             RestClient client;
             try {
-                client = elasticsearchController.getLowLevelClient(grafanaClusterConnectionSettings);
+                client = elasticsearchController.getLowLevelClient(clusterConnectionSource);
                 JsonNode clusterInfo = elasticsearchController.getClusterStats(client);
                 clusterConnectionSource.setSourceName(clusterInfo.get("cluster_name").asText() +
                         EGrafanaBackendSettings.CLUSTER_ID_DELIMITER.getSetting() + clusterInfo.get("cluster_uuid").asText());
@@ -87,20 +84,20 @@ public class GrafanaBackendController {
                 dataSourceObjectTemplates.values().forEach(objectTemplate ->
                         ingestDataSource(clusterConnectionSource, objectTemplate.clone()));
 
-                if (clusterConnectionSource.isAuthentication_enabled()) {
-                    try {
-                        KeystoreController.createNewKeystoreEntry(clusterConnectionSource.getSourceUid(),
-                                clusterConnectionSource.getPassword(),
-                                EGrafanaBackendSettings.KEYSTORE_PATH.getSetting(),
-                                keystorePassword);
-                    } catch (Exception e) {
-                        logger.error("There is an error in project save. Can't write password to the keystore");
-                        logger.error("Project name: " + clusterConnectionSource.getSourceName() +
-                                ". Project id: " + clusterConnectionSource.getSourceUid());
-                        logger.error(e);
-                        return false;
-                    }
-                }
+//                if (clusterConnectionSource.isAuthentication_enabled()) {
+//                    try {
+//                        KeystoreController.createNewKeystoreEntry(clusterConnectionSource.getSourceUid(),
+//                                clusterConnectionSource.getPassword(),
+//                                EGrafanaBackendSettings.KEYSTORE_PATH.getSetting(),
+//                                keystorePassword);
+//                    } catch (Exception e) {
+//                        logger.error("There is an error in project save. Can't write password to the keystore");
+//                        logger.error("Project name: " + clusterConnectionSource.getSourceName() +
+//                                ". Project id: " + clusterConnectionSource.getSourceUid());
+//                        logger.error(e);
+//                        return false;
+//                    }
+//                }
 
                 //TODO check that if the cluster not response there is no error
                 return true;
