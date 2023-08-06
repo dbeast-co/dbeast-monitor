@@ -18,9 +18,9 @@ public class ElasticsearchMonitoringDataSourceObject extends DataSourceObjectPOJ
         setUrl(clusterConnectionSource.getMonitoringHost());
         setName(prefix + database.replace("*", "") + "-" + clusterConnectionSource.getSourceName());
         setUid(prefix + database.replace("*", "") + "-" + clusterConnectionSource.getSourceUid());
-        setBasicAuth(clusterConnectionSource.getClusterConnectionSettings().isAuthentication_enabled());
-        setBasicAuthUser(clusterConnectionSource.getClusterConnectionSettings().getUsername());
-        updatePassword(clusterConnectionSource.getClusterConnectionSettings().getPassword());
+        setBasicAuth(clusterConnectionSource.isMonitoringIsUseAuthentication());
+        setBasicAuthUser(clusterConnectionSource.getMonitoringUsername());
+        updatePassword(clusterConnectionSource.getMonitoringPassword());
     }
 
     @Override

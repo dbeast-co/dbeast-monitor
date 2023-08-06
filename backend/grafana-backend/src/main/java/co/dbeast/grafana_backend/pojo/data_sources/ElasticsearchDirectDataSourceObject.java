@@ -20,9 +20,9 @@ public class ElasticsearchDirectDataSourceObject extends DataSourceObjectPOJO im
             updatePassword(clusterConnectionSource.getClusterConnectionSettings().getPassword());
         } else {
             setUrl(clusterConnectionSource.getMonitoringHost());
-            setBasicAuth(clusterConnectionSource.getClusterConnectionSettings().isAuthentication_enabled());
-            setBasicAuthUser(clusterConnectionSource.getClusterConnectionSettings().getUsername());
-            updatePassword(clusterConnectionSource.getClusterConnectionSettings().getPassword());
+            setBasicAuth(clusterConnectionSource.isMonitoringIsUseAuthentication());
+            setBasicAuthUser(clusterConnectionSource.getMonitoringUsername());
+            updatePassword(clusterConnectionSource.getMonitoringPassword());
         }
         setName(this.prefix + clusterConnectionSource.getSourceName());
         setUid(this.prefix + clusterConnectionSource.getSourceUid());
