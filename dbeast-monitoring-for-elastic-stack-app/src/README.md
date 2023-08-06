@@ -4,9 +4,9 @@ The application supports monitoring one or more clusters.
 Most of the data used for analytics is shipped by Beats and Logstash and stored in Elasticsearch. You can use your production Elasticsearch cluster as the data store, but we strongly recommend using a dedicated monitoring cluster.
 
 ## Requirements
-- Grafana 9+
+- Grafana 9x
 - Java 8+
-- Logstash 8+
+- Logstash 8.1+
 - Elasticsearch 8+
 
 ## Installation guide
@@ -80,3 +80,23 @@ The toolkit installation contains several parts:
     - If you already have the backend installed and want to update your Grafana or backend settings, check the "Is replace keystore" checkbox.
 10. Press "Test" to check if the Grafana is defined correctly.
 11. Press "Save" to save the settings.
+12. For the Grafana version 9.5. If you want to see the application icon in the home page, add the following configurations in the config ini file:
+```
+[feature_toggles]
+topnav = false
+[navigation.app_sections]
+dbeast-monitoringforelasticstack-app = root
+```
+
+#### Add new cluster
+At the time of the new cluster setup, the backend was supposed to be started
+1. Click on the "Add new cluster" in the application menu
+2. Fill the all required fields
+   ![img/new_cluster.png](img/new_cluster.png)
+    - Elasticsearch host - The address of one of your PROD cluster nodes
+    - Kibana host - The address of your Kibana (include port)
+    - Use authentication, user, and password for your PROD cluster
+    - Monitoring host - The address of one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
+    - Use authentication, user, and password for your MONITORING cluster
+3. Press "Test" for the cluster health check
+4. Press "Save" for adding a cluster to the application.

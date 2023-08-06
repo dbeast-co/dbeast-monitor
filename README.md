@@ -4,9 +4,9 @@ The application supports monitoring one or more clusters.
 Most of the data used for analytics is shipped by Beats and Logstash and stored in Elasticsearch. You can use your production Elasticsearch cluster as the data store, but we strongly recommend using a dedicated monitoring cluster.
 
 ## Requirements
-- Grafana 9+
+- Grafana 9x
 - Java 8+
-- Logstash 8+
+- Logstash 8.1+
 - Elasticsearch 8+
 
 ## Installation guide
@@ -66,34 +66,37 @@ Note: Replace "<GRAFANA_DIR>" with the actual directory where Grafana is install
 
 #### Grafana setup
 1. Install Grafana or use an existing one. The application has been tested with Grafana versions 9.x.
-2. The plugin doesn't have a signature (in the beta version), so you have to change Grafana to the development mode or define it to allow plugins in the plugins list. 
+2. The plugin doesn't have a signature (in the beta version), so you have to change Grafana to the development mode or define it to allow plugins in the plugins list.
    Both options are located in the default.ini file, which can be found in the Grafana configuration folder.
-   For the development mode: app_mode = development
-   To allow plugins in the list: allow_loading_unsigned_plugins = dbeast-monitoringforelasticstack-app,dbeast-addnewescluster-panel
 3. If you don't have the "JSON datasource" (marcusolsson-json-datasource) installed in Grafana, you can install it from the Plugins section or copy and unzip the marcusolsson-json-datasource.zip file into the plugin's folder.
 4. If you don't have the "Dynamic Text" (marcusolsson-dynamictext-panel) installed in Grafana, you can install it from the Plugins section or copy and unzip the marcusolsson-dynamictext-panel.zip file into the plugin's folder.
+5. If you don't have the "Button Panel" (cloudspout-button-panel) installed in Grafana, you can install it from the Plugins section or copy and unzip the cloudspout-button-panel.zip file into the plugin's folder.
 6. Copy and unzip the dbeast-monitoring-for-elastic-stack-app.zip file into the plugin's folder.
 7. Copy and unzip the dbeast-add_new_es_cluster-panel.zip file into the plugin's folder.
-8. Enable the dbeast-monitoring_for_elastic_stack-app plugin on the plugin's setup page.
-IMPORTANT!!! For the following steps, the backend is supposed to be started.
+8. Enable the dbeast-monitoring_for_elastic_stack-app plugin in the plugin's setup page.
 9. In the plugin Configuration page, fill the following settings:
     - Grafana host: Your current Grafana requisites.
     - Application host: Backend host requisites that you defined in the backend setup.
     - If you already have the backend installed and want to update your Grafana or backend settings, check the "Is replace keystore" checkbox.
 10. Press "Test" to check if the Grafana is defined correctly.
 11. Press "Save" to save the settings.
-
+12. For the Grafana version 9.5. If you want to see the application icon in the home page, add the following configurations in the config ini file:
+```
+[feature_toggles]
+topnav = false
+[navigation.app_sections]
+dbeast-monitoringforelasticstack-app = root
+```
 
 #### Add new cluster
 At the time of the new cluster setup, the backend was supposed to be started
 1. Click on the "Add new cluster" in the application menu
 2. Fill the all required fields
-   
-![new_cluster.png](new_cluster.png)
+ ![new_cluster.png](new_cluster.png)
    - Elasticsearch host - The address of one of your PROD cluster nodes
    - Kibana host - The address of your Kibana (include port)
    - Use authentication, user, and password for your PROD cluster 
    - Monitoring host - The address of one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
    - Use authentication, user, and password for your MONITORING cluster
-4. Press "Test" for the cluster health check
-5. Press "Save" for adding a cluster to the application.
+3. Press "Test" for the cluster health check
+4. Press "Save" for adding a cluster to the application.
