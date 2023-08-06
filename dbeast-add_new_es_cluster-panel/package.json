@@ -1,6 +1,6 @@
 {
   "name": "dbeast-add_new_es_cluster-panel",
-  "version": "1.0.0",
+  "version": "1.0-RC1",
   "description": "DBeast New cluster panel",
   "scripts": {
     "build": "grafana-toolkit plugin:build ",
