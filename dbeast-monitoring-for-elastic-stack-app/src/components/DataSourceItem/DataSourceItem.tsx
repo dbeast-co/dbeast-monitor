@@ -8,7 +8,6 @@ import {
     DialogTitle,
     Divider,
     FormControl,
-    Link,
     List,
     ListItem,
     ListItemText,
@@ -331,7 +330,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
-                        <Link href="#">Test</Link>
+                        {/*<Link href="#">Test</Link>*/}
                         <FormControl fullWidth id="select">
 
                              {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
