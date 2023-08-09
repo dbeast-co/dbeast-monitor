@@ -326,11 +326,11 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 <Divider light/>
                 <footer>
                     <Stack spacing={2} direction="row">
-                        <Button variant="secondary">Edit</Button>
+                        {/*<Button variant="secondary">Edit</Button>*/}
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
-                        {/*<Link href="#">Test</Link>*/}
+                        {/*<Link href="#">Test Not work</Link>*/}
                         <FormControl fullWidth id="select">
 
                              {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
