@@ -160,7 +160,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     }
 
     async componentDidMount() {
-        console.log(this.props.theme)
+        // console.log('Props: ', this.props.theme)
         await getBackendSrv()
             .get(`/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats`)
             .then((dataSources: any) => {
@@ -191,6 +191,18 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     cluster_name: matches ? matches[1] : '',
                     cluster_uuid: matches ? matches[2] : '',
                     status: 'ERROR',
+                    versions: ['-'],
+                    numberOfIndices: 0,
+                    numberOfShards: 0,
+                    numberOfUnassignedShards: 0,
+                    docsCount: '0',
+                    usedStorage: '0',
+                    totalStorage: '0',
+                    totalNodes: 0,
+                    dataNodes: 0,
+                    dataHotNodes: 0,
+                    dataWarmNodes: 0,
+                    dataColdNodes: 0,
                 });
             });
         if (this.state.status !== 'ERROR') {
@@ -222,6 +234,10 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
     onDelete = () => {
         this.setState({isOpenDialog: true});
+    };
+    onTest = () => {
+        console.log('Enter to onTest function')
+        this.componentDidMount().then(()=>{});
     };
 
     handleDelete(isOnYes: boolean): void {
@@ -330,7 +346,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
-                        {/*<Link href="#">Test Not work</Link>*/}
+                        <Button  variant="secondary" onClick={()=> this.onTest()}>Test</Button>
                         <FormControl fullWidth id="select">
 
                              {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
