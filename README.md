@@ -1,5 +1,6 @@
-# DBeast monitoring toolkit for Elastic Stack
-Welcome to the DBeast Monitoring Toolkit for Elastic Stack! This application provides a powerful UI for monitoring, analyzing, and optimizing your Elastic Stack components (Elasticsearch, Logstash, and Kibana).
+# DBeast Monitor
+Welcome to the DBeast Monit for Elastic Stack!
+This application provides a powerful UI for monitoring, analyzing, and optimizing your Elastic Stack components (Elasticsearch, Logstash, and Kibana).
 The application supports monitoring one or more clusters.
 Most of the data used for analytics is shipped by Beats and Logstash and stored in Elasticsearch. You can use your production Elasticsearch cluster as the data store, but we strongly recommend using a dedicated monitoring cluster.
 
@@ -92,12 +93,11 @@ dbeast-monitoringforelasticstack-app = root
 At the time of the new cluster setup, the backend was supposed to be started
 1. Click on the "Add new cluster" in the application menu
 2. Fill the all required fields
-   
- ![new_cluster.png](new_cluster.png)
-   - Elasticsearch host - The address of one of your PROD cluster nodes
-   - Kibana host - The address of your Kibana (include port)
-   - Use authentication, user, and password for your PROD cluster 
-   - Monitoring host - The address of one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
-   - Use authentication, user, and password for your MONITORING cluster
-4. Press "Test" for the cluster health check
-5. Press "Save" for adding a cluster to the application.
+   ![new_cluster.png](new_cluster.png)
+    - Elasticsearch host - The address of one of your PROD cluster nodes
+    - Kibana host - The address of your Kibana (include port)
+    - Use authentication, user, and password for your PROD cluster
+    - Monitoring host - The address of one of your MONITORING cluster nodes (if you're using the PROD cluster as monitoring, you supposed to fill the PROD requisites)
+    - Use authentication, user, and password for your MONITORING cluster
+3. Press "Test" for the cluster health check
+4. Press "Save" for adding a cluster to the application.
