@@ -70,17 +70,16 @@ Note: Replace "<GRAFANA_DIR>" with the actual directory where Grafana is install
    Both options are located in the default.ini file, which can be found in the Grafana configuration folder.
 3. If you don't have the "JSON datasource" (marcusolsson-json-datasource) installed in Grafana, you can install it from the Plugins section or copy and unzip the marcusolsson-json-datasource.zip file into the plugin's folder.
 4. If you don't have the "Dynamic Text" (marcusolsson-dynamictext-panel) installed in Grafana, you can install it from the Plugins section or copy and unzip the marcusolsson-dynamictext-panel.zip file into the plugin's folder.
-5. If you don't have the "Button Panel" (cloudspout-button-panel) installed in Grafana, you can install it from the Plugins section or copy and unzip the cloudspout-button-panel.zip file into the plugin's folder.
-6. Copy and unzip the dbeast-monitoring-for-elastic-stack-app.zip file into the plugin's folder.
-7. Copy and unzip the dbeast-add_new_es_cluster-panel.zip file into the plugin's folder.
-8. Enable the dbeast-monitoring_for_elastic_stack-app plugin in the plugin's setup page.
-9. In the plugin Configuration page, fill the following settings:
+5. Copy and unzip the dbeast-monitoring-for-elastic-stack-app.zip file into the plugin's folder.
+6. Copy and unzip the dbeast-add_new_es_cluster-panel.zip file into the plugin's folder.
+7. Enable the dbeast-monitoring_for_elastic_stack-app plugin in the plugin's setup page.
+8. In the plugin Configuration page, fill the following settings:
     - Grafana host: Your current Grafana requisites.
     - Application host: Backend host requisites that you defined in the backend setup.
     - If you already have the backend installed and want to update your Grafana or backend settings, check the "Is replace keystore" checkbox.
-10. Press "Test" to check if the Grafana is defined correctly.
-11. Press "Save" to save the settings.
-12. For the Grafana version 9.5. If you want to see the application icon in the home page, add the following configurations in the config ini file:
+9. Press "Test" to check if the Grafana is defined correctly.
+10. Press "Save" to save the settings.
+11. For the Grafana version 9.5. If you want to see the application icon in the home page, add the following configurations in the config ini file:
 ```
 [feature_toggles]
 topnav = false
