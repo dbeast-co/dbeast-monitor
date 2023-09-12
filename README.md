@@ -85,7 +85,7 @@ Note: Replace "<GRAFANA_DIR>" with the actual directory where Grafana is install
 [feature_toggles]
 topnav = false
 [navigation.app_sections]
-dbeast-monitoringforelasticstack-app = root
+dbeast-dbeastmonitor-app = root
 ```
 
 #### Add new cluster
