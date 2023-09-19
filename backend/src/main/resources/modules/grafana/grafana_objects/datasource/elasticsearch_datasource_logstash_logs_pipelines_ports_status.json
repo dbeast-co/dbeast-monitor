@@ -6,7 +6,7 @@
   "typeName": "Elasticsearch",
   "access": "proxy",
   "url": "",
-  "database": "mon-logstash-logs-pipelines-ports-status",
+  "database": "dbeast-mon-logstash-logs-pipelines-ports-status",
   "basicAuth": true,
   "isDefault": false,
   "withCredentials": false,

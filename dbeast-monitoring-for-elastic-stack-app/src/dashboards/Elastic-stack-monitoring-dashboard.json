@@ -2794,7 +2794,7 @@
               "bucketAggs": [],
               "datasource": {
                 "type": "elasticsearch",
-                "uid": "Elasticsearch-mon-mon-logstash-metrics-status-monitoring-cluster--h_h2DLzwS9iBcztenKOQ-Q"
+                "uid": "Elasticsearch-mon-dbeast-mon-logstash-metrics-status-monitoring-cluster--h_h2DLzwS9iBcztenKOQ-Q"
               },
               "metrics": [
                 {
@@ -3587,7 +3587,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-es-index-stats-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-20-.*-${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -3602,7 +3602,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

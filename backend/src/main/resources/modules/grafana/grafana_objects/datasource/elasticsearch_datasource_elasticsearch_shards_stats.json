@@ -6,7 +6,7 @@
   "typeName": "Elasticsearch",
   "access": "proxy",
   "url": "",
-  "database": "mon-es-shards-stats-20*",
+  "database": "dbeast-mon-es-shards-stats-20*",
   "basicAuth": true,
   "isDefault": false,
   "withCredentials": false,

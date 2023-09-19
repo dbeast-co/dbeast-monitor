@@ -124,7 +124,7 @@
           ],
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/mon-logstash-metrics-status/_search"
+          "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
         }
       ],
       "title": "Node information",
@@ -1290,7 +1290,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-metrics-20-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-20-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1305,7 +1305,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1320,7 +1320,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-logs-20-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs-20-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1371,7 +1371,7 @@
             ]
           ],
           "queryParams": "",
-          "urlPath": "/mon-logstash-metrics-status/_search?q=elasticsearch.cluster.id: $cluster_uid"
+          "urlPath": "/dbeast-mon-logstash-metrics-status/_search?q=elasticsearch.cluster.id: $cluster_uid"
         },
         "refresh": 1,
         "regex": "",
@@ -1390,7 +1390,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-logs-pipelines-ports-status-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs-pipelines-ports-status-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

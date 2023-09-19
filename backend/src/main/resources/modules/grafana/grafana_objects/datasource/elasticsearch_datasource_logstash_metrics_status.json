@@ -6,7 +6,7 @@
   "typeName": "Elasticsearch",
   "access": "proxy",
   "url": "",
-  "database": "mon-logstash-metrics-status",
+  "database": "dbeast-mon-logstash-metrics-status",
   "basicAuth": true,
   "isDefault": false,
   "withCredentials": false,

@@ -123,7 +123,7 @@
           ],
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/mon-logstash-metrics-status/_search"
+          "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
         }
       ],
       "title": "Pipeline information",
@@ -537,7 +537,7 @@
           ],
           "queryParams": "",
           "refId": "B",
-          "urlPath": "/mon-logstash-metrics-status/_search"
+          "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
         }
       ],
       "title": "Pipeline flow",
@@ -751,7 +751,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-metrics-20-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-20-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -766,7 +766,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-mon-logstash-logs-20-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs-20-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -798,7 +798,7 @@
             ]
           ],
           "queryParams": "",
-          "urlPath": "/mon-logstash-metrics-status/_search"
+          "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
         },
         "refresh": 1,
         "regex": "",
@@ -837,7 +837,7 @@
             ]
           ],
           "queryParams": "",
-          "urlPath": "/mon-logstash-metrics-status/_search"
+          "urlPath": "/dbeast-mon-dbeast-logstash-metrics-status/_search"
         },
         "refresh": 1,
         "regex": "",
