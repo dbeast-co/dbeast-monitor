@@ -1,55 +1,55 @@
-PUT _index_template/mon-elastic-index-stats-template
+PUT _index_template/dbeast-mon-elastic-index-stats-template
 {
   "index_patterns": [
-    "mon-es-index-stats*"
+    "dbeast-mon-es-index-stats*"
   ],
   "composed_of": [
-    "mon-default-settings-component",
-    "mon-elastic-index-stats-custom-mapping-component"
+    "dbeast-mon-default-settings-component",
+    "dbeast-mon-elastic-index-stats-custom-mapping-component"
   ],
   "_meta": {
     "description": "This template used for the index monitoring"
   }
 }
 
-PUT _index_template/mon-elastic-shards-stats-template
+PUT _index_template/dbeast-mon-elastic-shards-stats-template
 {
   "index_patterns": [
-    "mon-es-shards-stats-*"
+    "dbeast-mon-es-shards-stats-*"
   ],
   "composed_of": [
-    "mon-default-settings-component",
-    "mon-elastic-shards-stats-custom-mapping-component"
+    "dbeast-mon-default-settings-component",
+    "dbeast-mon-elastic-shards-stats-custom-mapping-component"
   ],
   "_meta": {
     "description": "This template used for the shards monitoring"
   }
 }
 
-PUT _index_template/mon-logstash-logs-template
+PUT _index_template/dbeast-mon-logstash-logs-template
 {
   "index_patterns": [
-    "mon-logstash-logs-20*",
-    "mon-logstash-logs-pipelines-ports-status"
+    "dbeast-mon-logstash-logs-20*",
+    "dbeast-mon-logstash-logs-pipelines-ports-status"
   ],
   "composed_of": [
-    "mon-logstash-logs-custom-mapping-component",
-    "mon-default-settings-component"
+    "dbeast-mon-logstash-logs-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
   ],
   "_meta": {
     "description": "This template used for the Logstash logs"
   }
 }
 
-PUT _index_template/mon-logstash-metrics-template
+PUT _index_template/dbeast-mon-logstash-metrics-template
 {
   "index_patterns": [
-    "mon-logstash-metrics-20*",
-    "mon-logstash-metrics-status"
+    "dbeast-mon-logstash-metrics-20*",
+    "dbeast-mon-logstash-metrics-status"
   ],
   "composed_of": [
-    "mon-logstash-metrics-custom-mapping-component",
-    "mon-default-settings-component"
+    "dbeast-mon-logstash-metrics-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
   ],
   "_meta": {
     "description": "This template used for the Logstash metrics"

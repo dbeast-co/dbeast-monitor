@@ -1,4 +1,4 @@
-PUT _component_template/mon-default-settings-component
+PUT _component_template/dbeast-mon-default-settings-component
 {
   "template": {
     "settings": {
@@ -10,7 +10,7 @@ PUT _component_template/mon-default-settings-component
   }
 }
 
-PUT _component_template/mon-elastic-index-stats-custom-mapping-component
+PUT _component_template/dbeast-mon-elastic-index-stats-custom-mapping-component
 {
   "template": {
     "settings": {
@@ -1498,7 +1498,7 @@ PUT _component_template/mon-elastic-index-stats-custom-mapping-component
   }
 }
 
-PUT _component_template/mon-elastic-shards-stats-custom-mapping-component
+PUT _component_template/dbeast-mon-elastic-shards-stats-custom-mapping-component
 {
   "template": {
     "settings": {
@@ -1826,7 +1826,7 @@ PUT _component_template/mon-elastic-shards-stats-custom-mapping-component
   }
 }
 
-PUT _component_template/mon-logstash-logs-custom-mapping-component
+PUT _component_template/dbeast-mon-logstash-logs-custom-mapping-component
 {
   "template": {
     "settings": {
@@ -2024,7 +2024,7 @@ PUT _component_template/mon-logstash-logs-custom-mapping-component
   }
 }
 
-PUT _component_template/mon-logstash-metrics-custom-mapping-component
+PUT _component_template/dbeast-mon-logstash-metrics-custom-mapping-component
 {
   "template": {
     "mappings": {
