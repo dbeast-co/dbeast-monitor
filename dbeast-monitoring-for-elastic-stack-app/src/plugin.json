@@ -14,8 +14,8 @@
       "large": "img/favicon-32x32.png"
     },
     "screenshots": [],
-    "version": "0.4-rc1",
-    "updated": "2023-08-13"
+    "version": "0.5",
+    "updated": "2023-10-01"
   },
   "includes": [
     {
@@ -74,7 +74,7 @@
     },
     {
       "type": "dashboard",
-      "name": "Add new cluster dashboard",
+      "name": "Add new cluster",
       "path": "dashboards/Add-new-cluster-dashboard.json",
       "role": "Viewer",
       "addToNav": true,

@@ -1,5 +1,5 @@
 # DBeast Monitor
-Welcome to the DBeast Monit for Elastic Stack! This application provides a powerful UI for monitoring, analyzing, and optimizing your Elastic Stack components (Elasticsearch, Logstash, and Kibana).
+Welcome to the DBeast Monitor for Elastic Stack! This application provides a powerful UI for monitoring, analyzing, and optimizing your Elastic Stack components (Elasticsearch, Logstash, and Kibana).
 The application supports monitoring one or more clusters.
 Most of the data used for analytics is shipped by Beats and Logstash and stored in Elasticsearch. You can use your production Elasticsearch cluster as the data store, but we strongly recommend using a dedicated monitoring cluster.
 
