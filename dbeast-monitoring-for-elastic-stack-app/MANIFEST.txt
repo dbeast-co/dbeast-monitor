@@ -1,2 +1,1 @@
-export GRAFANA_API_KEY=eyJrIjoiMmEwODc3ZTVlNzBhOWE3ODQyMWI5ZDdhMjE0YTEzZjMxM2VhZDg3YSIsIm4iOiJncmFmYW5hLWFwcCIsImlkIjo3Njk1MTN9
-npx @grafana/sign-plugin@latest --rootUrls http://localhost:3000
+
