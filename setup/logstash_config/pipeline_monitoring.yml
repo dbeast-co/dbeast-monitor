@@ -1,6 +1,6 @@
-- pipeline.id: dbeast-mon-es-index-stats
+- pipeline.id: mon-es-index-stats
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-index-stats.conf"
-- pipeline.id: dbeast-mon-es-shards-stats
+- pipeline.id: mon-es-shards-stats
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-shards-stats.conf"
-- pipeline.id: dbeast-mon-es-index-summary
+- pipeline.id: mon-es-index-summary
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-indices-summary.conf"
