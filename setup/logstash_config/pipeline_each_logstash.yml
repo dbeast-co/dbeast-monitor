@@ -1,4 +1,4 @@
 - pipeline.id: mon-logstash-metrics
-  path.config: "/etc/logstash/conf.d/mon-logstash-metrics.conf"
+  path.config: "/etc/logstash/conf.d/dbeast-mon-logstash-metrics.conf"
 - pipeline.id: mon-logstash-logs
-  path.config: "/etc/logstash/conf.d/mon-logstash-logs.conf"
+  path.config: "/etc/logstash/conf.d/dbeast-mon-logstash-logs.conf"
