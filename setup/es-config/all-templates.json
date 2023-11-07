@@ -4,8 +4,8 @@ PUT _index_template/dbeast-mon-elastic-index-stats-template
     "dbeast-mon-es-index-stats*"
   ],
   "composed_of": [
-    "dbeast-mon-default-settings-component",
-    "dbeast-mon-elastic-index-stats-custom-mapping-component"
+    "dbeast-mon-elastic-index-stats-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
   ],
   "_meta": {
     "description": "This template used for the index monitoring"
@@ -18,8 +18,8 @@ PUT _index_template/dbeast-mon-elastic-shards-stats-template
     "dbeast-mon-es-shards-stats-*"
   ],
   "composed_of": [
-    "dbeast-mon-default-settings-component",
-    "dbeast-mon-elastic-shards-stats-custom-mapping-component"
+    "dbeast-mon-elastic-shards-stats-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
   ],
   "_meta": {
     "description": "This template used for the shards monitoring"
@@ -44,8 +44,7 @@ PUT _index_template/dbeast-mon-logstash-logs-template
 PUT _index_template/dbeast-mon-logstash-metrics-template
 {
   "index_patterns": [
-    "dbeast-mon-logstash-metrics-20*",
-    "dbeast-mon-logstash-metrics-status"
+    "dbeast-mon-logstash-metrics-*"
   ],
   "composed_of": [
     "dbeast-mon-logstash-metrics-custom-mapping-component",
@@ -53,5 +52,19 @@ PUT _index_template/dbeast-mon-logstash-metrics-template
   ],
   "_meta": {
     "description": "This template used for the Logstash metrics"
+  }
+}
+
+PUT _index_template/dbeast-mon-es-ingest_pipelines
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-ingest_pipelines-*"
+  ],
+  "composed_of" : [ 
+    "mon-es-ingest_pipelines-mapping-component", 
+    "mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch pipelines metrics"
   }
 }

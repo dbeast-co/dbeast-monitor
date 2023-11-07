@@ -1,0 +1,657 @@
+{
+  "__inputs": [
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "1.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.3.2"
+    },
+    {
+      "type": "panel",
+      "id": "marcusolsson-dynamictext-panel",
+      "name": "Dynamic text",
+      "version": "1.9.0"
+    },
+    {
+      "type": "datasource",
+      "id": "marcusolsson-json-datasource",
+      "name": "JSON API",
+      "version": "1.3.2"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_mon}"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "content": "Pipeline: {{pipeline_name}} <br />\nElasticsearch node name: {{host}} <br />\nNumber of failures: {{failures}} <br />",
+        "defaultContent": "The query didn't return any results.",
+        "everyRow": true
+      },
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_mon}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.hits.hits[0]._source.elasticsearch.node.name",
+              "name": "host"
+            },
+            {
+              "jsonPath": "$.hits.hits[0]._source.elasticsearch.node.stats.ingest_pipeline.id",
+              "language": "jsonpath",
+              "name": "pipeline_name"
+            },
+            {
+              "jsonPath": "$.hits.hits[0]._source.elasticsearch.node.stats.ingest_pipeline.failed",
+              "language": "jsonpath",
+              "name": "failures"
+            }
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "q",
+              "elasticsearch.cluster.id:$cluster_uid AND elasticsearch.node.stats.ingest_pipeline.id:$pipeline_id AND elasticsearch.node.name: $host_name"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/dbeast-mon-es-ingest_pipelines-status/_search"
+        }
+      ],
+      "title": "Pipeline information",
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_mon}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "in_rate"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 64
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "latency"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "failures"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Processor name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 684
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "failures_rate"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 115
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "in"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "order"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 50
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 17,
+        "x": 7,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "order"
+          }
+        ]
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_mon}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].id",
+              "name": "Processor name"
+            },
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].stats.count",
+              "language": "jsonpath",
+              "name": "in"
+            },
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].stats.($exists(in_rate) ? in_rate: 0)",
+              "language": "jsonata",
+              "name": "in_rate"
+            },
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].stats.($exists(latency) ? latency: 0)",
+              "language": "jsonata",
+              "name": "latency"
+            },
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].stats.($exists(failed) ? failed: 0)",
+              "language": "jsonata",
+              "name": "failures"
+            },
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].stats.($exists(failed_rate) ? failed_rate: 0)",
+              "language": "jsonata",
+              "name": "failures_rate"
+            },
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.processors[*].number_in_pipeline",
+              "language": "jsonata",
+              "name": "order"
+            }
+          ],
+          "hide": false,
+          "method": "GET",
+          "params": [
+            [
+              "q",
+              "elasticsearch.cluster.id:$cluster_uid AND elasticsearch.node.stats.ingest_pipeline.id:$pipeline_id AND elasticsearch.node.name: $host_name"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "B",
+          "urlPath": "/dbeast-mon-es-ingest_pipelines-status/_search"
+        }
+      ],
+      "title": "Pipeline flow ",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Processor name": 1,
+              "description": 7,
+              "failures": 5,
+              "failures_rate": 6,
+              "in": 2,
+              "in_rate": 3,
+              "latency": 4,
+              "order": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_ingest_pipelines}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 0,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Incoming events rate",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_ingest_pipelines}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.node.stats.ingest_pipeline.in_rate",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id:$cluster_uid AND elasticsearch.node.stats.ingest_pipeline.id: $pipeline_id AND elasticsearch.node.name: $host_name",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Pipeline ingest",
+      "transformations": [],
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "Grafana-DS-API"
+        },
+        "definition": "$[*].name",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Cluster UID",
+        "multi": false,
+        "name": "cluster_uid",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$[*].name"
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/"
+        },
+        "refresh": 1,
+        "regex": "/^Elasticsearch-direct-prod-(?<text>.*)--(?<value>.*)/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "es_ingest_pipelines_status",
+        "multi": false,
+        "name": "es_ingest_pipelines_status",
+        "options": [],
+        "query": "elasticsearch",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status-(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "es_ingest_pipelines",
+        "multi": false,
+        "name": "es_ingest_pipelines",
+        "options": [],
+        "query": "elasticsearch",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-20-(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "ES",
+          "value": "ES"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_direct_mon",
+        "options": [],
+        "query": "marcusolsson-json-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-direct-mon-(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "${es_direct_mon}"
+        },
+        "definition": "$.hits.hits[*]._source.elasticsearch.node.name",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "host_name",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.name"
+            }
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "size",
+              "1000"
+            ]
+          ],
+          "queryParams": "",
+          "urlPath": "/dbeast-mon-es-ingest_pipelines-status/_search"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "${es_direct_mon}"
+        },
+        "definition": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.id",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "pipeline_id",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$.hits.hits[*]._source.elasticsearch.node.stats.ingest_pipeline.id"
+            }
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "size",
+              "1000"
+            ]
+          ],
+          "queryParams": "",
+          "urlPath": "/dbeast-mon-es-ingest_pipelines-status/_search"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Elasticsearch pipeline analytics",
+  "uid": "elasticsearch-pipeline-analytics",
+  "version": 24,
+  "weekStart": ""
+}

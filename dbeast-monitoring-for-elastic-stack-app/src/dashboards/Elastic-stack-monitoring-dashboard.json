@@ -630,6 +630,16 @@
                   {
                     "id": "custom.width",
                     "value": 114
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -966,6 +976,16 @@
                   {
                     "id": "custom.width",
                     "value": 124
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -1286,6 +1306,16 @@
                   {
                     "id": "custom.width",
                     "value": 124
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -1606,6 +1636,16 @@
                   {
                     "id": "custom.width",
                     "value": 124
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -1926,6 +1966,16 @@
                   {
                     "id": "custom.width",
                     "value": 117
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -2269,6 +2319,16 @@
                   {
                     "id": "custom.width",
                     "value": 124
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },
@@ -2920,6 +2980,16 @@
                   {
                     "id": "custom.width",
                     "value": 148
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
                   }
                 ]
               },

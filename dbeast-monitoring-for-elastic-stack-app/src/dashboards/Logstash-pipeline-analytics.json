@@ -837,7 +837,7 @@
             ]
           ],
           "queryParams": "",
-          "urlPath": "/dbeast-mon-dbeast-logstash-metrics-status/_search"
+          "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
         },
         "refresh": 1,
         "regex": "",

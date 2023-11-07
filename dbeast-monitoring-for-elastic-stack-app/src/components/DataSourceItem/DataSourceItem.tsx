@@ -8,6 +8,7 @@ import {
     DialogTitle,
     Divider,
     FormControl,
+    Link,
     List,
     ListItem,
     ListItemText,
@@ -129,7 +130,17 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 break;
            case 'shards-overview':
                 window.open(
-                    `/d/shards-overview-dashboard/shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
+                    `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
+                    '_blank'
+                );
+
+                this.setState({
+                    monitorName: '',
+                });
+                break;
+           case 'ingest-pipelines-overview':
+                window.open(
+                    `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
                 );
 
@@ -160,7 +171,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     }
 
     async componentDidMount() {
-        // console.log('Props: ', this.props.theme)
+        console.log(this.props.theme)
         await getBackendSrv()
             .get(`/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats`)
             .then((dataSources: any) => {
@@ -191,18 +202,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     cluster_name: matches ? matches[1] : '',
                     cluster_uuid: matches ? matches[2] : '',
                     status: 'ERROR',
-                    versions: ['-'],
-                    numberOfIndices: 0,
-                    numberOfShards: 0,
-                    numberOfUnassignedShards: 0,
-                    docsCount: '0',
-                    usedStorage: '0',
-                    totalStorage: '0',
-                    totalNodes: 0,
-                    dataNodes: 0,
-                    dataHotNodes: 0,
-                    dataWarmNodes: 0,
-                    dataColdNodes: 0,
                 });
             });
         if (this.state.status !== 'ERROR') {
@@ -234,10 +233,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
     onDelete = () => {
         this.setState({isOpenDialog: true});
-    };
-    onTest = () => {
-        console.log('Enter to onTest function')
-        this.componentDidMount().then(()=>{});
     };
 
     handleDelete(isOnYes: boolean): void {
@@ -342,11 +337,11 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 <Divider light/>
                 <footer>
                     <Stack spacing={2} direction="row">
-                        {/*<Button variant="secondary">Edit</Button>*/}
+                        <Button variant="secondary">Edit</Button>
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
-                        <Button  variant="secondary" onClick={()=> this.onTest()}>Test</Button>
+                        <Link href="#">Test</Link>
                         <FormControl fullWidth id="select">
 
                              {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
@@ -370,6 +365,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                                 <MenuItem value={'index-patterns-overview'}>Index patterns overview</MenuItem>
                                 <MenuItem value={'shards-overview'}>Shards overview</MenuItem>
                                 <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
+                                <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
                                 <MenuItem value={'ml-jobs-analytics'}>ML Jobs Analytics</MenuItem>
                             </Select>
                         </FormControl>

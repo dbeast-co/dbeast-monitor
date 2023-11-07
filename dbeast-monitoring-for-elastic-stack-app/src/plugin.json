@@ -4,17 +4,68 @@
   "name": "DBeast Monitor",
   "id": "dbeast-dbeastmonitor-app",
   "info": {
-    "keywords": ["app"],
-    "description": "DBeast Monitoring toolkit for Elastic Stack",
+    "keywords": [
+      "app",
+      "DBeast monitor"
+    ],
+    "description": "DBeast Monitor for Elastic Stack",
     "author": {
-      "name": "DBeast"
+      "name": "DBeast",
+      "url": "https://dbeast.co"
     },
     "logos": {
       "small": "img/favicon-32x32.png",
       "large": "img/favicon-32x32.png"
     },
-    "screenshots": [],
-    "version": "0.5",
+    "links": [
+      {
+        "name": "Playground site",
+        "url": "https://play.dbeast.co/"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/dbeast-co/dbeast-monitor"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/dbeast-co/dbeast-monitor/blob/main/LICENSE"
+      }
+    ],
+    "screenshots": [
+      {
+        "name": "Add new cluster dashboard",
+        "path": "img/screenshots/AddNewClusterPage.jpg"
+      },
+      {
+        "name": "Cluster's list dashboard",
+        "path": "img/screenshots/ClustersList.jpg"
+      },
+      {
+        "name": "Cluster monitoring dashboard",
+        "path": "img/screenshots/ClusterMonitoring.jpg"
+      },
+      {
+        "name": "Shards overview dashboard",
+        "path": "img/screenshots/ShardsOverview.jpg"
+      },
+      {
+        "name": "Index patterns overview dashboard",
+        "path": "img/screenshots/IndexPatternsOverview.jpg"
+      },
+      {
+        "name": "Logstash overview dashboard",
+        "path": "img/screenshots/LogstashOverview.jpg"
+      },
+      {
+        "name": "Logstash Node overview dashboard",
+        "path": "img/screenshots/LogstashNodeOverview.jpg"
+      },
+      {
+        "name": "Elasticsearch ingest pipelines overview",
+        "path": "img/screenshots/Elasticsearch-ingest-pipelines-overview.json"
+      }
+    ],
+    "version": "0.5.0",
     "updated": "2023-10-01"
   },
   "includes": [
@@ -93,10 +144,37 @@
     {
       "type": "dashboard",
       "name": "Shards overview dashboard",
-      "path": "dashboards/Shards-overview-dashboard.json",
+      "path": "dashboards/Elasticsearch-shards-overview-dashboard.json",
       "role": "Viewer",
       "addToNav": false,
-      "uid": "shards-overview-dashboard",
+      "uid": "elasticsearch-shards-overview-dashboard",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch ingest pipelines overview",
+      "path": "dashboards/Elasticsearch-ingest-pipelines-overview.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-ingest-pipelines-overview",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch pipeline analytics",
+      "path": "dashboards/Elasticsearch-pipeline-analytics.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-pipeline-analytics",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Host overview",
+      "path": "dashboards/Host-overview.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "host-overview",
       "defaultNav": false
     }
   ],

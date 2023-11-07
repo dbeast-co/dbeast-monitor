@@ -1,5 +1,5 @@
-# DBeast Monitor
-Welcome to the DBeast Monitor for Elastic Stack! This application provides a powerful UI for monitoring, analyzing, and optimizing your Elastic Stack components (Elasticsearch, Logstash, and Kibana).
+# DBeast monitoring toolkit for Elastic Stack
+Welcome to the DBeast Monitoring Toolkit for Elastic Stack! This application provides a powerful UI for monitoring, analyzing, and optimizing your Elastic Stack components (Elasticsearch, Logstash, and Kibana).
 The application supports monitoring one or more clusters.
 Most of the data used for analytics is shipped by Beats and Logstash and stored in Elasticsearch. You can use your production Elasticsearch cluster as the data store, but we strongly recommend using a dedicated monitoring cluster.
 
@@ -54,7 +54,7 @@ The toolkit installation contains several parts:
 
 #### Backend setup
 1. The backend requires Java version 8 or higher.
-2. Unzip the backend application from the dbeast-monitor-VERSION.zip file.
+2. Unzip the backend application from the dbeast-monitoring-for-elastic-stack-VERSION.zip file.
 3. Edit the application configuration file: config/server. You can change the host and port if desired, or use the default settings.
 4. To run the backend application:
     - For Linux users:

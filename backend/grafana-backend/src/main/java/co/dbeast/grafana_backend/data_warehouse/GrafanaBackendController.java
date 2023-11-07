@@ -84,21 +84,6 @@ public class GrafanaBackendController {
                 dataSourceObjectTemplates.values().forEach(objectTemplate ->
                         ingestDataSource(clusterConnectionSource, objectTemplate.clone()));
 
-//                if (clusterConnectionSource.isAuthentication_enabled()) {
-//                    try {
-//                        KeystoreController.createNewKeystoreEntry(clusterConnectionSource.getSourceUid(),
-//                                clusterConnectionSource.getPassword(),
-//                                EGrafanaBackendSettings.KEYSTORE_PATH.getSetting(),
-//                                keystorePassword);
-//                    } catch (Exception e) {
-//                        logger.error("There is an error in project save. Can't write password to the keystore");
-//                        logger.error("Project name: " + clusterConnectionSource.getSourceName() +
-//                                ". Project id: " + clusterConnectionSource.getSourceUid());
-//                        logger.error(e);
-//                        return false;
-//                    }
-//                }
-
                 //TODO check that if the cluster not response there is no error
                 return true;
             } catch (ClusterConnectionException e) {
