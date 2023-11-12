@@ -8,7 +8,6 @@ import {
     DialogTitle,
     Divider,
     FormControl,
-    Link,
     List,
     ListItem,
     ListItemText,
@@ -68,7 +67,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         usedStorage: '0',
         totalStorage: '0',
         totalNodes: 0,
-        dataNodes:  0,
+        dataNodes: 0,
         dataHotNodes: 0,
         dataWarmNodes: 0,
         dataColdNodes: 0,
@@ -86,7 +85,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         }
         const k = 1024;
         const dm = decimals < 0 ? 0 : decimals;
-        const sizes = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
         const i = Math.floor(Math.log(bytes) / Math.log(k));
 
@@ -98,7 +97,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             monitorName: event.target.value as string,
         });
         switch (event.target.value as string) {
-            case 'cluster-monitoring':
+            case 'stack-monitoring':
                 window.open(
                     `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
@@ -118,9 +117,9 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     monitorName: '',
                 });
                 break;
-            case 'index-patterns-overview':
+            case 'index-overview':
                 window.open(
-                    `/d/elasticsearch-index-patterns-overview/elasticsearch-index-patterns-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
+                    `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
                 );
 
@@ -128,7 +127,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     monitorName: '',
                 });
                 break;
-           case 'shards-overview':
+            case 'shards-overview':
                 window.open(
                     `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
@@ -138,7 +137,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     monitorName: '',
                 });
                 break;
-           case 'ingest-pipelines-overview':
+            case 'ingest-pipelines-overview':
                 window.open(
                     `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
@@ -166,12 +165,13 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<ClusterStatsItemState>, snapshot?: any) {
 
     }
+
     componentWillUnmount() {
 
     }
 
     async componentDidMount() {
-        console.log(this.props.theme)
+        // console.log('Props: ', this.props.theme)
         await getBackendSrv()
             .get(`/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats`)
             .then((dataSources: any) => {
@@ -202,6 +202,18 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     cluster_name: matches ? matches[1] : '',
                     cluster_uuid: matches ? matches[2] : '',
                     status: 'ERROR',
+                    versions: ['-'],
+                    numberOfIndices: 0,
+                    numberOfShards: 0,
+                    numberOfUnassignedShards: 0,
+                    docsCount: '0',
+                    usedStorage: '0',
+                    totalStorage: '0',
+                    totalNodes: 0,
+                    dataNodes: 0,
+                    dataHotNodes: 0,
+                    dataWarmNodes: 0,
+                    dataColdNodes: 0,
                 });
             });
         if (this.state.status !== 'ERROR') {
@@ -215,10 +227,11 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         }
 
     }
-     nFormatter(num: number): string {
-         if (num >= 1000000000000) {
-             return (num / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';
-         }
+
+    nFormatter(num: number): string {
+        if (num >= 1000000000000) {
+            return (num / 1000000000000).toFixed(1).replace(/\.0$/, '') + 'T';
+        }
         if (num >= 1000000000) {
             return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
         }
@@ -233,6 +246,11 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
     onDelete = () => {
         this.setState({isOpenDialog: true});
+    };
+    onTest = () => {
+        console.log('Enter to onTest function')
+        this.componentDidMount().then(() => {
+        });
     };
 
     handleDelete(isOnYes: boolean): void {
@@ -276,7 +294,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 <div className="grid-container">
                     <div className="col">
                         <List>
-                            <ListItem >
+                            <ListItem>
                                 {this.state.versions ? (
                                     <div>
                                         <span className="label">Version</span>
@@ -286,40 +304,40 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
                                 <div>
                                     <span className="label">Used storage</span>
-                                    <ListItemText primary={this.state.usedStorage?? '0'}/>
+                                    <ListItemText primary={this.state.usedStorage ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label">Total storage</span>
-                                    <ListItemText primary={this.state.totalStorage?? '0'}/>
+                                    <ListItemText primary={this.state.totalStorage ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label">Docs count</span>
-                                    <ListItemText primary={this.state.docsCount?? '0'}/>
+                                    <ListItemText primary={this.state.docsCount ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label">Total nodes</span>
-                                    <ListItemText primary={this.state.totalNodes?? '0'}/>
+                                    <ListItemText primary={this.state.totalNodes ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label">Data nodes</span>
-                                    <ListItemText primary={this.state.dataNodes?? '0'}/>
+                                    <ListItemText primary={this.state.dataNodes ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label"> Hot nodes</span>
-                                    <ListItemText primary={this.state.dataHotNodes?? '0'}/>
+                                    <ListItemText primary={this.state.dataHotNodes ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label"> Warm nodes</span>
-                                    <ListItemText primary={this.state.dataWarmNodes?? '0'}/>
+                                    <ListItemText primary={this.state.dataWarmNodes ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label"> Cold nodes</span>
-                                    <ListItemText primary={this.state.dataColdNodes?? '0'}/>
+                                    <ListItemText primary={this.state.dataColdNodes ?? '0'}/>
                                 </div>
 
                                 <div>
                                     <span className="label">Indices</span>
-                                    <ListItemText primary={this.state.numberOfIndices?? '0'}/>
+                                    <ListItemText primary={this.state.numberOfIndices ?? '0'}/>
                                 </div>
                                 <div>
                                     <span className="label">Total shards</span>
@@ -337,36 +355,34 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 <Divider light/>
                 <footer>
                     <Stack spacing={2} direction="row">
-                        <Button variant="secondary">Edit</Button>
+                        {/*<Button variant="secondary">Edit</Button>*/}
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
-                        <Link href="#">Test</Link>
+                        <Button variant="secondary" onClick={() => this.onTest()}>Test</Button>
                         <FormControl fullWidth id="select">
 
-                             {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
+                            {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                value={this.state.monitorName!? this.state.monitorName : 'Monitor type'}
+                                value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
                                 onChange={this.handleChange}
-                                renderValue={(value) =>
-                                {
-                                        let text = value.split('-').join(' ');
-                                        text = text.charAt(0).toUpperCase() + text.slice(1);
-                                        return text ?? 'Monitor type'
+                                renderValue={(value) => {
+                                    let text = value.split('-').join(' ');
+                                    text = text.charAt(0).toUpperCase() + text.slice(1);
+                                    return text ?? 'Monitor type'
 
                                 }
-                            }
+                                }
                             >
 
-
-                                <MenuItem value={'cluster-monitoring'} >Cluster monitoring</MenuItem>
-                                <MenuItem value={'index-patterns-overview'}>Index patterns overview</MenuItem>
-                                <MenuItem value={'shards-overview'}>Shards overview</MenuItem>
-                                <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
+                                <MenuItem value={'stack-monitoring'}>Elastic Stack monitoring</MenuItem>
+                                <MenuItem value={'index-overview'}>Elasticsearch Index overview</MenuItem>
+                                <MenuItem value={'shards-overview'}>Elasticsearch Shards overview</MenuItem>
                                 <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
-                                <MenuItem value={'ml-jobs-analytics'}>ML Jobs Analytics</MenuItem>
+                                <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
+                                <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
                             </Select>
                         </FormControl>
                     </Stack>

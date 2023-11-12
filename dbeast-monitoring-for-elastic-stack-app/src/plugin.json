@@ -59,10 +59,6 @@
       {
         "name": "Logstash Node overview dashboard",
         "path": "img/screenshots/LogstashNodeOverview.jpg"
-      },
-      {
-        "name": "Elasticsearch ingest pipelines overview",
-        "path": "img/screenshots/Elasticsearch-ingest-pipelines-overview.json"
       }
     ],
     "version": "0.5.0",
@@ -80,11 +76,29 @@
     },
     {
       "type": "dashboard",
+      "name": "Add new cluster",
+      "path": "dashboards/Add-new-cluster-dashboard.json",
+      "role": "Viewer",
+      "addToNav": true,
+      "uid": "add-new-cluster-dashboard",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
       "name": "Elastic stack monitoring dashboard",
       "path": "dashboards/Elastic-stack-monitoring-dashboard.json",
       "role": "Viewer",
       "addToNav": false,
       "uid": "elastic-stack-monitoring-dashboard",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Host overview",
+      "path": "dashboards/Host-overview.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "host-overview",
       "defaultNav": false
     },
     {
@@ -116,42 +130,6 @@
     },
     {
       "type": "dashboard",
-      "name": "Elasticsearch index patterns overview",
-      "uid": "elasticsearch-index-patterns-overview",
-      "path": "dashboards/Elasticsearch-index-patterns-overview.json",
-      "role": "Viewer",
-      "addToNav": false,
-      "defaultNav": false
-    },
-    {
-      "type": "dashboard",
-      "name": "Add new cluster",
-      "path": "dashboards/Add-new-cluster-dashboard.json",
-      "role": "Viewer",
-      "addToNav": true,
-      "uid": "add-new-cluster-dashboard",
-      "defaultNav": false
-    },
-    {
-      "type": "dashboard",
-      "name": "ML jobs analytics dashboard",
-      "path": "dashboards/ML-jobs-analytics-dashboard.json",
-      "role": "Viewer",
-      "addToNav": false,
-      "uid": "ml-jobs-analytics-dashboard",
-      "defaultNav": false
-    },
-    {
-      "type": "dashboard",
-      "name": "Shards overview dashboard",
-      "path": "dashboards/Elasticsearch-shards-overview-dashboard.json",
-      "role": "Viewer",
-      "addToNav": false,
-      "uid": "elasticsearch-shards-overview-dashboard",
-      "defaultNav": false
-    },
-    {
-      "type": "dashboard",
       "name": "Elasticsearch ingest pipelines overview",
       "path": "dashboards/Elasticsearch-ingest-pipelines-overview.json",
       "role": "Viewer",
@@ -170,11 +148,47 @@
     },
     {
       "type": "dashboard",
-      "name": "Host overview",
-      "path": "dashboards/Host-overview.json",
+      "name": "ML jobs analytics dashboard",
+      "path": "dashboards/ML-jobs-analytics-dashboard.json",
       "role": "Viewer",
       "addToNav": false,
-      "uid": "host-overview",
+      "uid": "ml-jobs-analytics-dashboard",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch shards overview dashboard",
+      "path": "dashboards/Elasticsearch-shards-overview-dashboard.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-shards-overview-dashboard",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch index overview",
+      "path": "dashboards/Elasticsearch-index-overview.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-index-overview",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch index monitor",
+      "path": "dashboards/Elasticsearch-index-monitor.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-index-monitor",
+      "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch index pattern monitor",
+      "path": "dashboards/Elasticsearch-index-pattern-monitor.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-index-pattern-monitor",
       "defaultNav": false
     }
   ],

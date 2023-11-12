@@ -1,0 +1,1280 @@
+{
+  "__inputs": [
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "version": "1.0.0"
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.3.2"
+    },
+    {
+      "type": "datasource",
+      "id": "marcusolsson-json-datasource",
+      "name": "JSON API",
+      "version": "1.3.2"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 12,
+      "panels": [],
+      "title": "Cluster rates",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "20"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.index.primaries.indexing.index_rate",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats and elasticsearch.index.primaries.indexing.index_rate>1 ",
+          "queryParams": "",
+          "refId": "Primaries",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Ingest rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.search.query_rate",
+              "id": "1",
+              "settings": {
+                "script": "_value >0 ? _value : 0"
+              },
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats",
+          "queryParams": "",
+          "refId": "Primaries",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Search rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats_status}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 5,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "0",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.primaries.indexing.index_rate",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Ingest rate",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats_status}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 12,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "0",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.search.query_rate",
+              "hide": false,
+              "id": "1",
+              "settings": {
+                "script": "_value >0 ? _value : 0"
+              },
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Search rate",
+      "type": "piechart"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 14,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "displayMode": "auto",
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total size"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 94
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "center"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index pattern"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 279
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index pattern",
+                        "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Primary size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Indices in pattern"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 168
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Ingest rate"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 106
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Query rate"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 116
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg in index (pri)"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 21,
+            "w": 14,
+            "x": 5,
+            "y": 17
+          },
+          "id": 2,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": [
+                "Sum elasticsearch.index.primaries.indexing.index_rate",
+                "Sum elasticsearch.index.total.search.query_rate",
+                "Sum elasticsearch.index.primaries.store.size_in_bytes",
+                "Sum elasticsearch.index.total.store.size_in_bytes",
+                "Avg in index (pri)"
+              ],
+              "reducer": [
+                "sum"
+              ],
+              "show": true
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Primary size"
+              }
+            ]
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.index.index_pattern",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "3",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_index_stats_status}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.index.total.store.size_in_bytes",
+                  "id": "1",
+                  "type": "sum"
+                },
+                {
+                  "field": "elasticsearch.index.primaries.store.size_in_bytes",
+                  "id": "3",
+                  "type": "sum"
+                },
+                {
+                  "field": "elasticsearch.index.primaries.indexing.index_rate",
+                  "id": "4",
+                  "type": "sum"
+                },
+                {
+                  "field": "elasticsearch.index.total.search.query_rate",
+                  "id": "5",
+                  "type": "sum"
+                },
+                {
+                  "id": "6",
+                  "type": "count"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: *$index_name*",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Index patterns",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Count": 1,
+                  "Sum elasticsearch.index.primaries.indexing.index_rate": 2,
+                  "Sum elasticsearch.index.primaries.store.size_in_bytes": 4,
+                  "Sum elasticsearch.index.total.search.query_rate": 3,
+                  "Sum elasticsearch.index.total.store.size_in_bytes": 5,
+                  "elasticsearch.index.index_pattern": 0
+                },
+                "renameByName": {
+                  "Average": "Ingest rate",
+                  "Count": "Indices in pattern",
+                  "Sum": "Pattern size",
+                  "Sum elasticsearch.index.primaries.indexing.index_rate": "Ingest rate",
+                  "Sum elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
+                  "Sum elasticsearch.index.total.search.query_rate": "Query rate",
+                  "Sum elasticsearch.index.total.store.size_in_bytes": "Total size",
+                  "elasticsearch.index.index_pattern": "Index pattern"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Avg in index (pri)",
+                "binary": {
+                  "left": "Primary size",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Indices in pattern"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Index patterns overview",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 16,
+      "panels": [],
+      "title": "Indices overview",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "${es_index_stats_status}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 94
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 316
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Primary size"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 164
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ingest rate"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 119
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query rate"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 114
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Primary shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 133
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Docs count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Health"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 88
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "green": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "GREEN"
+                      },
+                      "red": {
+                        "color": "dark-red",
+                        "index": 2,
+                        "text": "RED"
+                      },
+                      "yellow": {
+                        "color": "yellow",
+                        "index": 1,
+                        "text": "YELLOW"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 17,
+        "x": 4,
+        "y": 18
+      },
+      "id": 10,
+      "options": {
+        "footer": {
+          "enablePagination": true,
+          "fields": [
+            "Sum elasticsearch.index.total.store.size_in_bytes",
+            "Sum elasticsearch.index.primaries.store.size_in_bytes",
+            "Sum elasticsearch.index.primaries.indexing.index_rate",
+            "Sum elasticsearch.index.total.search.query_rate"
+          ],
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Ingest rate"
+          }
+        ]
+      },
+      "pluginVersion": "9.3.2",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.health",
+              "id": "10",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "elasticsearch.index.name",
+              "id": "11",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "9",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.store.size_in_bytes",
+              "id": "1",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.primaries.store.size_in_bytes",
+              "id": "3",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.primaries.indexing.index_rate",
+              "id": "4",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.total.search.query_rate",
+              "id": "5",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.shards.primaries",
+              "id": "8",
+              "type": "max"
+            },
+            {
+              "field": "elasticsearch.index.total.docs.count",
+              "id": "9",
+              "type": "max"
+            },
+            {
+              "field": "elasticsearch.index.shards.total",
+              "id": "12",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: *$index_name*",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Index stats",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "zero": false
+            },
+            "indexByName": {
+              "Max elasticsearch.index.shards.primaries": 2,
+              "Max elasticsearch.index.shards.total": 3,
+              "Max elasticsearch.index.total.docs.count": 4,
+              "Sum elasticsearch.index.primaries.indexing.index_rate": 5,
+              "Sum elasticsearch.index.primaries.store.size_in_bytes": 7,
+              "Sum elasticsearch.index.total.search.query_rate": 6,
+              "Sum elasticsearch.index.total.store.size_in_bytes": 8,
+              "elasticsearch.index.health": 1,
+              "elasticsearch.index.name": 0
+            },
+            "renameByName": {
+              "Average": "Ingest rate",
+              "Count": "Unassigned",
+              "Max": "Primaries shards",
+              "Max elasticsearch.index.shards.primaries": "Primary shards",
+              "Max elasticsearch.index.shards.total": "Total shards",
+              "Max elasticsearch.index.total.docs.count": "Docs count",
+              "Sum": "Pattern size",
+              "Sum elasticsearch.index.primaries.indexing.index_rate": "Ingest rate",
+              "Sum elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
+              "Sum elasticsearch.index.total.search.query_rate": "Query rate",
+              "Sum elasticsearch.index.total.store.size_in_bytes": "Total size",
+              "Unassigned": "Unassigned",
+              "elasticsearch.index.health": "Health",
+              "elasticsearch.index.index_pattern": "Index pattern",
+              "elasticsearch.index.name": "Index name",
+              "elasticsearch.rep": "number of replicas",
+              "zero": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "Grafana-DS-API"
+        },
+        "definition": "$[*].name",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Cluster UID",
+        "multi": false,
+        "name": "cluster_uid",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$[*].name"
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/"
+        },
+        "refresh": 1,
+        "regex": "/^Elasticsearch-direct-prod-(?<text>.*)--(?<value>.*)/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_index_stats",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-20-.*-${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_index_stats_status",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-status-.*-${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "index_name",
+        "name": "index_name",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Elasticsearch index overview",
+  "uid": "elasticsearch-index-overview",
+  "version": 18,
+  "weekStart": ""
+}

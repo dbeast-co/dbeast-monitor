@@ -175,7 +175,7 @@
                   {
                     "targetBlank": true,
                     "title": "Host overvew",
-                    "url": "/d/ZSXiZnoVz/node-stats?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields.Host}"
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields.Host}"
                   }
                 ]
               }
@@ -300,7 +300,7 @@
               "type": "max"
             }
           ],
-          "query": "metricset.name: pipeline_stats AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: pipeline_stats AND elasticsearch.cluster.id: $cluster_uid",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -379,7 +379,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 14,
         "x": 10,
         "y": 0
@@ -442,7 +442,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: pipeline_stats",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: pipeline_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -525,7 +525,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze node",
-                    "url": "/d/ZSXiZnoVz/node-stats?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node name\"]}"
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node name\"]}"
                   }
                 ]
               }
@@ -884,7 +884,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.node.stats.ingest_pipeline.in_rate: [0 TO 10000000]",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.ingest_pipeline.in_rate: [0 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1020,7 +1020,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1156,7 +1156,7 @@
               "type": "max"
             }
           ],
-          "query": "metricset.name: enrich_queue_stats",
+          "query": "event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1246,7 +1246,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: enrich_queue_stats",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1272,7 +1272,7 @@
     {
       "datasource": {
         "type": "elasticsearch",
-        "uid": "${DS_ELASTIC-MON-FILEBEAT}"
+        "uid": "${filebeat_logs}"
       },
       "description": "",
       "fieldConfig": {
@@ -1424,7 +1424,7 @@
           "cacheDurationSeconds": 300,
           "datasource": {
             "type": "elasticsearch",
-            "uid": "${DS_ELASTIC-MON-FILEBEAT}"
+            "uid": "${filebeat_logs}"
           },
           "fields": [
             {
@@ -1548,6 +1548,21 @@
         "query": "elasticsearch",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status-(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "filebeat_logs",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-filebeat--.*-${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

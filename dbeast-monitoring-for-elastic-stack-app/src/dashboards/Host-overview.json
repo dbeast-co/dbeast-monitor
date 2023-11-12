@@ -92,7 +92,9 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": true
           },
           "mappings": [
@@ -212,14 +214,16 @@
         ]
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 0
       },
       "id": 6,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -229,7 +233,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.5",
       "targets": [
         {
           "cacheDurationSeconds": 300,
@@ -285,2242 +289,2243 @@
       "type": "table"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 45,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "purple",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 2,
+            "x": 0,
+            "y": 5
+          },
+          "id": 69,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "value"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.cpu.cores",
+                  "hide": false,
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "host.hostname: $node_host AND event.dataset: system.cpu",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "CPU cores",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "semi-dark-green",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 2,
+            "y": 5
+          },
+          "id": 68,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^Average system\\.memory\\.total$/",
+              "values": false
+            },
+            "textMode": "value"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.memory.total",
+                  "hide": false,
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "host.hostname: $node_host AND event.dataset: system.memory",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "RAM",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "semi-dark-green",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "noValue": "Swap disabled",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 3,
+            "x": 5,
+            "y": 5
+          },
+          "id": 70,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^Average system\\.memory\\.swap\\.used\\.pct$/",
+              "values": false
+            },
+            "textMode": "value"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.memory.swap.total",
+                  "hide": false,
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "host.hostname: $node_host AND event.dataset: system.memory",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "SWAP used",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "blue",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0.4
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.8
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 8,
+            "y": 5
+          },
+          "id": 59,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "textMode": "value_and_name"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.filesystem.mount_point",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.filesystem.total",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Mount points size",
+          "transformations": [],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-green",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0.4
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.8
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 14,
+            "y": 5
+          },
+          "id": 60,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.filesystem.mount_point",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.filesystem.available",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Mount points free in bytes",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "red",
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 1,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0.4
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.8
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 20,
+            "y": 5
+          },
+          "id": 58,
+          "options": {
+            "displayMode": "gradient",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true,
+            "valueMode": "color"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.filesystem.mount_point",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.filesystem.used.pct",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Mount points used",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 30,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 7,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.cpu.user.pct"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "User CPU usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.cpu.system.pct"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "System CPU usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.cpu.iowait.pct"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "IOWAIT CPU usage"
+                  },
+                  {
+                    "id": "custom.axisColorMode",
+                    "value": "series"
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 88
+                  },
+                  {
+                    "id": "custom.axisColorMode",
+                    "value": "series"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 0,
+            "y": 9
+          },
+          "id": 36,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.cpu.user.pct",
+                  "hide": false,
+                  "id": "1",
+                  "type": "avg"
+                },
+                {
+                  "field": "system.cpu.system.pct",
+                  "hide": false,
+                  "id": "3",
+                  "type": "avg"
+                },
+                {
+                  "field": "system.cpu.nice.pct",
+                  "hide": false,
+                  "id": "4",
+                  "type": "avg"
+                },
+                {
+                  "field": "system.cpu.softirq.pct",
+                  "hide": false,
+                  "id": "5",
+                  "type": "avg"
+                },
+                {
+                  "field": "system.cpu.irq.pct",
+                  "hide": false,
+                  "id": "6",
+                  "type": "avg"
+                },
+                {
+                  "field": "system.cpu.iowait.pct",
+                  "hide": false,
+                  "id": "7",
+                  "type": "avg"
+                }
+              ],
+              "query": "event.dataset: system.cpu AND host.hostname: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "CPU usage",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {}
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 30,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 7,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.memory.free"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Free memory"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-green",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.memory.actual.used.bytes"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Used Memory"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.memory.actual.used.bytes != null && Average system.memory.used.bytes != null ? params.used - params.actual : null"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Cache"
+                  },
+                  {
+                    "id": "custom.axisColorMode",
+                    "value": "series"
+                  },
+                  {
+                    "id": "custom.fillOpacity",
+                    "value": 88
+                  },
+                  {
+                    "id": "custom.axisColorMode",
+                    "value": "series"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "super-light-yellow",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 8,
+            "y": 9
+          },
+          "id": 61,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.memory.actual.used.bytes",
+                  "hide": false,
+                  "id": "1",
+                  "type": "avg"
+                },
+                {
+                  "field": "system.memory.used.bytes",
+                  "hide": true,
+                  "id": "4",
+                  "type": "avg"
+                },
+                {
+                  "id": "5",
+                  "pipelineVariables": [
+                    {
+                      "name": "actual",
+                      "pipelineAgg": "1"
+                    },
+                    {
+                      "name": "used",
+                      "pipelineAgg": "4"
+                    }
+                  ],
+                  "settings": {
+                    "script": "params.actual != null && params.used != null ? params.used - params.actual : null"
+                  },
+                  "type": "bucket_script"
+                },
+                {
+                  "field": "system.memory.free",
+                  "id": "6",
+                  "type": "avg"
+                }
+              ],
+              "query": "host.hostname: $node_host AND event.dataset: system.memory",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Memory usage",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 23,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "eth0 Derivative 5 * -1"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "eth0 Out rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "eth0 Derivative Max system.network.in.bytes"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "eth0 In rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "lo Derivative 5 * -1"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "lo Out rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "lo Derivative Max system.network.in.bytes"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "lo In rate"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 9
+          },
+          "id": 63,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.network.name",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.network.in.bytes",
+                  "hide": true,
+                  "id": "1",
+                  "type": "max"
+                },
+                {
+                  "field": "1",
+                  "hide": false,
+                  "id": "3",
+                  "pipelineAgg": "1",
+                  "settings": {
+                    "unit": "1m"
+                  },
+                  "type": "derivative"
+                },
+                {
+                  "field": "system.network.out.bytes",
+                  "hide": true,
+                  "id": "5",
+                  "type": "max"
+                },
+                {
+                  "field": "5",
+                  "hide": true,
+                  "id": "6",
+                  "pipelineAgg": "5",
+                  "settings": {
+                    "unit": "1m"
+                  },
+                  "type": "derivative"
+                },
+                {
+                  "id": "7",
+                  "pipelineVariables": [
+                    {
+                      "name": "out",
+                      "pipelineAgg": "6"
+                    }
+                  ],
+                  "settings": {
+                    "script": "params.out * -1"
+                  },
+                  "type": "bucket_script"
+                }
+              ],
+              "query": "event.dataset: system.network AND host.hostname: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Network traffic",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "scaleDistribution": {
+                  "type": "linear"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 16
+          },
+          "id": 42,
+          "options": {
+            "calculate": false,
+            "calculation": {
+              "xBuckets": {
+                "mode": "size"
+              }
+            },
+            "cellGap": 2,
+            "color": {
+              "exponent": 0.5,
+              "fill": "dark-orange",
+              "min": 1,
+              "mode": "scheme",
+              "reverse": false,
+              "scale": "exponential",
+              "scheme": "RdYlGn",
+              "steps": 53
+            },
+            "exemplars": {
+              "color": "rgba(255,0,255,0.7)"
+            },
+            "filterValues": {
+              "le": 1
+            },
+            "legend": {
+              "show": true
+            },
+            "rowsFrame": {
+              "layout": "unknown"
+            },
+            "tooltip": {
+              "show": true,
+              "yHistogram": true
+            },
+            "yAxis": {
+              "axisPlacement": "left",
+              "reverse": false
+            }
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.diskio.name",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "0",
+                    "offset": "1m",
+                    "timeZone": "utc",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.diskio.write.count",
+                  "hide": true,
+                  "id": "1",
+                  "type": "avg"
+                },
+                {
+                  "field": "1",
+                  "hide": true,
+                  "id": "4",
+                  "pipelineAgg": "1",
+                  "type": "derivative"
+                },
+                {
+                  "id": "5",
+                  "pipelineVariables": [
+                    {
+                      "name": "io",
+                      "pipelineAgg": "4"
+                    }
+                  ],
+                  "settings": {
+                    "script": "params.io / 60"
+                  },
+                  "type": "bucket_script"
+                }
+              ],
+              "query": "host.hostname: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Disk Write IOPS",
+          "type": "heatmap"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-green",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0.4
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.8
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 16
+          },
+          "id": 66,
+          "options": {
+            "displayMode": "gradient",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true,
+            "valueMode": "color"
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "process.name",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "5"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "1",
+                    "timeZone": "utc",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.process.memory.rss.pct",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "process.name:* AND host.name: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Processes By Memory",
+          "transformations": [],
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 23,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "eth0 Derivative 5 * -1"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "eth0 Out dropped rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "eth0 Derivative Max system.network.in.dropped"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "eth0 In dropped rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "lo Derivative 5 * -1"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "lo Out dropped rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "lo Derivative Max system.network.in.dropped"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "lo In dropped rate"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 16
+          },
+          "id": 64,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.network.name",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.network.in.dropped",
+                  "hide": true,
+                  "id": "1",
+                  "type": "max"
+                },
+                {
+                  "field": "1",
+                  "hide": false,
+                  "id": "3",
+                  "pipelineAgg": "1",
+                  "settings": {
+                    "unit": "1m"
+                  },
+                  "type": "derivative"
+                },
+                {
+                  "field": "system.network.out.dropped",
+                  "hide": true,
+                  "id": "5",
+                  "type": "max"
+                },
+                {
+                  "field": "5",
+                  "hide": true,
+                  "id": "6",
+                  "pipelineAgg": "5",
+                  "settings": {
+                    "unit": "1m"
+                  },
+                  "type": "derivative"
+                },
+                {
+                  "id": "7",
+                  "pipelineVariables": [
+                    {
+                      "name": "out",
+                      "pipelineAgg": "6"
+                    }
+                  ],
+                  "settings": {
+                    "script": "params.out * -1"
+                  },
+                  "type": "bucket_script"
+                }
+              ],
+              "query": "event.dataset: system.network AND host.hostname: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Network dropped packets",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "scaleDistribution": {
+                  "type": "linear"
+                }
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 22
+          },
+          "id": 43,
+          "options": {
+            "calculate": false,
+            "calculation": {
+              "xBuckets": {
+                "mode": "size"
+              }
+            },
+            "cellGap": 2,
+            "color": {
+              "exponent": 0.5,
+              "fill": "dark-orange",
+              "min": 1,
+              "mode": "scheme",
+              "reverse": false,
+              "scale": "exponential",
+              "scheme": "RdYlGn",
+              "steps": 53
+            },
+            "exemplars": {
+              "color": "rgba(255,0,255,0.7)"
+            },
+            "filterValues": {
+              "le": 1
+            },
+            "legend": {
+              "show": true
+            },
+            "rowsFrame": {
+              "layout": "unknown"
+            },
+            "tooltip": {
+              "show": true,
+              "yHistogram": true
+            },
+            "yAxis": {
+              "axisPlacement": "left",
+              "reverse": false
+            }
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.diskio.name",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "0",
+                    "offset": "1m",
+                    "timeZone": "utc",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.diskio.read.count",
+                  "hide": true,
+                  "id": "1",
+                  "type": "avg"
+                },
+                {
+                  "field": "1",
+                  "hide": true,
+                  "id": "4",
+                  "pipelineAgg": "1",
+                  "type": "derivative"
+                },
+                {
+                  "id": "5",
+                  "pipelineVariables": [
+                    {
+                      "name": "io",
+                      "pipelineAgg": "4"
+                    }
+                  ],
+                  "settings": {
+                    "script": "params.io / 60"
+                  },
+                  "type": "bucket_script"
+                }
+              ],
+              "query": "host.hostname: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Disk Read  IOPS",
+          "type": "heatmap"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "dark-green",
+                "mode": "fixed"
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0.4
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.8
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 22
+          },
+          "id": 67,
+          "options": {
+            "displayMode": "gradient",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "9.3.2",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "process.name",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "5"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "3",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "1",
+                    "timeZone": "utc",
+                    "trimEdges": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.process.cpu.total.pct",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "process.name:* AND host.name: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Processes By CPU",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "@timestamp": true
+                },
+                "indexByName": {},
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 23,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "eth0 Derivative 5 * -1"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "eth0 Out error rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "eth0 Derivative Max system.network.in.errors"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "eth0 In error rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "lo Derivative 5 * -1"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "lo Out error rate"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "lo Derivative Max system.network.in.errors"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "lo In error rate"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 22
+          },
+          "id": 65,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "system.network.name",
+                  "id": "4",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "1m",
+                    "min_doc_count": "0"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "system.network.in.errors",
+                  "hide": true,
+                  "id": "1",
+                  "type": "max"
+                },
+                {
+                  "field": "1",
+                  "hide": false,
+                  "id": "3",
+                  "pipelineAgg": "1",
+                  "settings": {
+                    "unit": "1m"
+                  },
+                  "type": "derivative"
+                },
+                {
+                  "field": "system.network.out.errors",
+                  "hide": true,
+                  "id": "5",
+                  "type": "max"
+                },
+                {
+                  "field": "5",
+                  "hide": true,
+                  "id": "6",
+                  "pipelineAgg": "5",
+                  "settings": {
+                    "unit": "1m"
+                  },
+                  "type": "derivative"
+                },
+                {
+                  "id": "7",
+                  "pipelineVariables": [
+                    {
+                      "name": "out",
+                      "pipelineAgg": "6"
+                    }
+                  ],
+                  "settings": {
+                    "script": "params.out * -1"
+                  },
+                  "type": "bucket_script"
+                }
+              ],
+              "query": "event.dataset: system.network AND host.hostname: $node_host",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Network error packets",
+          "transformations": [],
+          "type": "timeseries"
+        }
+      ],
       "title": "Sever level Stats",
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "purple",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 2,
-        "x": 0,
-        "y": 4
-      },
-      "id": 69,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.cpu.cores",
-              "hide": false,
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "host.hostname: $node_host AND event.dataset: system.cpu",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "CPU cores",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-green",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 2,
-        "y": 4
-      },
-      "id": 68,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Average system\\.memory\\.total$/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.memory.total",
-              "hide": false,
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "host.hostname: $node_host AND event.dataset: system.memory",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "RAM",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-green",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "noValue": "Swap disabled",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 5,
-        "y": 4
-      },
-      "id": 70,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Average system\\.memory\\.swap\\.used\\.pct$/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.memory.swap.total",
-              "hide": false,
-              "id": "1",
-              "type": "avg"
-            }
-          ],
-          "query": "host.hostname: $node_host AND event.dataset: system.memory",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "SWAP used",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "blue",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.4
-              },
-              {
-                "color": "red",
-                "value": 0.8
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 8,
-        "y": 4
-      },
-      "id": 59,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "textMode": "value_and_name"
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.filesystem.mount_point",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.filesystem.total",
-              "id": "1",
-              "type": "max"
-            }
-          ],
-          "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Mount points size",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "dark-green",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.4
-              },
-              {
-                "color": "red",
-                "value": 0.8
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 14,
-        "y": 4
-      },
-      "id": 60,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.filesystem.mount_point",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.filesystem.available",
-              "id": "1",
-              "type": "max"
-            }
-          ],
-          "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Mount points free in bytes",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "red",
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 1,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.4
-              },
-              {
-                "color": "red",
-                "value": 0.8
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 4
-      },
-      "id": 58,
-      "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.filesystem.mount_point",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "10"
-              },
-              "type": "terms"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.filesystem.used.pct",
-              "id": "1",
-              "type": "max"
-            }
-          ],
-          "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Mount points used",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 30,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 7,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.cpu.user.pct"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "User CPU usage"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.cpu.system.pct"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "System CPU usage"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.cpu.iowait.pct"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "IOWAIT CPU usage"
-              },
-              {
-                "id": "custom.axisColorMode",
-                "value": "series"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 88
-              },
-              {
-                "id": "custom.axisColorMode",
-                "value": "series"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 0,
-        "y": 8
-      },
-      "id": 36,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.cpu.user.pct",
-              "hide": false,
-              "id": "1",
-              "type": "avg"
-            },
-            {
-              "field": "system.cpu.system.pct",
-              "hide": false,
-              "id": "3",
-              "type": "avg"
-            },
-            {
-              "field": "system.cpu.nice.pct",
-              "hide": false,
-              "id": "4",
-              "type": "avg"
-            },
-            {
-              "field": "system.cpu.softirq.pct",
-              "hide": false,
-              "id": "5",
-              "type": "avg"
-            },
-            {
-              "field": "system.cpu.irq.pct",
-              "hide": false,
-              "id": "6",
-              "type": "avg"
-            },
-            {
-              "field": "system.cpu.iowait.pct",
-              "hide": false,
-              "id": "7",
-              "type": "avg"
-            }
-          ],
-          "query": "event.dataset: system.cpu AND host.hostname: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "CPU usage",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {}
-        }
-      ],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 30,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 7,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.memory.free"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Free memory"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.memory.actual.used.bytes"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Used Memory"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.memory.actual.used.bytes != null && Average system.memory.used.bytes != null ? params.used - params.actual : null"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Cache"
-              },
-              {
-                "id": "custom.axisColorMode",
-                "value": "series"
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 88
-              },
-              {
-                "id": "custom.axisColorMode",
-                "value": "series"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 8
-      },
-      "id": 61,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.memory.actual.used.bytes",
-              "hide": false,
-              "id": "1",
-              "type": "avg"
-            },
-            {
-              "field": "system.memory.used.bytes",
-              "hide": true,
-              "id": "4",
-              "type": "avg"
-            },
-            {
-              "id": "5",
-              "pipelineVariables": [
-                {
-                  "name": "actual",
-                  "pipelineAgg": "1"
-                },
-                {
-                  "name": "used",
-                  "pipelineAgg": "4"
-                }
-              ],
-              "settings": {
-                "script": "params.actual != null && params.used != null ? params.used - params.actual : null"
-              },
-              "type": "bucket_script"
-            },
-            {
-              "field": "system.memory.free",
-              "id": "6",
-              "type": "avg"
-            }
-          ],
-          "query": "host.hostname: $node_host AND event.dataset: system.memory",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Memory usage",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 23,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 Out rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative Max system.network.in.bytes"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 In rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo Out rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative Max system.network.in.bytes"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo In rate"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 8
-      },
-      "id": 63,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.network.name",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.network.in.bytes",
-              "hide": true,
-              "id": "1",
-              "type": "max"
-            },
-            {
-              "field": "1",
-              "hide": false,
-              "id": "3",
-              "pipelineAgg": "1",
-              "settings": {
-                "unit": "1m"
-              },
-              "type": "derivative"
-            },
-            {
-              "field": "system.network.out.bytes",
-              "hide": true,
-              "id": "5",
-              "type": "max"
-            },
-            {
-              "field": "5",
-              "hide": true,
-              "id": "6",
-              "pipelineAgg": "5",
-              "settings": {
-                "unit": "1m"
-              },
-              "type": "derivative"
-            },
-            {
-              "id": "7",
-              "pipelineVariables": [
-                {
-                  "name": "out",
-                  "pipelineAgg": "6"
-                }
-              ],
-              "settings": {
-                "script": "params.out * -1"
-              },
-              "type": "bucket_script"
-            }
-          ],
-          "query": "event.dataset: system.network AND host.hostname: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Network traffic",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "scaleDistribution": {
-              "type": "linear"
-            }
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 15
-      },
-      "id": 42,
-      "options": {
-        "calculate": false,
-        "calculation": {
-          "xBuckets": {
-            "mode": "size"
-          }
-        },
-        "cellGap": 2,
-        "color": {
-          "exponent": 0.5,
-          "fill": "dark-orange",
-          "min": 1,
-          "mode": "scheme",
-          "reverse": false,
-          "scale": "exponential",
-          "scheme": "RdYlGn",
-          "steps": 53
-        },
-        "exemplars": {
-          "color": "rgba(255,0,255,0.7)"
-        },
-        "filterValues": {
-          "le": 1
-        },
-        "legend": {
-          "show": true
-        },
-        "rowsFrame": {
-          "layout": "unknown"
-        },
-        "tooltip": {
-          "show": true,
-          "yHistogram": true
-        },
-        "yAxis": {
-          "axisPlacement": "left",
-          "reverse": false
-        }
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.diskio.name",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "3",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "0",
-                "offset": "1m",
-                "timeZone": "utc",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.diskio.write.count",
-              "hide": true,
-              "id": "1",
-              "type": "avg"
-            },
-            {
-              "field": "1",
-              "hide": true,
-              "id": "4",
-              "pipelineAgg": "1",
-              "type": "derivative"
-            },
-            {
-              "id": "5",
-              "pipelineVariables": [
-                {
-                  "name": "io",
-                  "pipelineAgg": "4"
-                }
-              ],
-              "settings": {
-                "script": "params.io / 60"
-              },
-              "type": "bucket_script"
-            }
-          ],
-          "query": "host.hostname: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Disk Write IOPS",
-      "type": "heatmap"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "dark-green",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.4
-              },
-              {
-                "color": "red",
-                "value": 0.8
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 15
-      },
-      "id": 66,
-      "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "process.name",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "5"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "3",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "1",
-                "timeZone": "utc",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.process.memory.rss.pct",
-              "id": "1",
-              "type": "max"
-            }
-          ],
-          "query": "process.name:* AND host.name: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Processes By Memory",
-      "transformations": [],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 23,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 Out dropped rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative Max system.network.in.dropped"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 In dropped rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo Out dropped rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative Max system.network.in.dropped"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo In dropped rate"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 15
-      },
-      "id": 64,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.network.name",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.network.in.dropped",
-              "hide": true,
-              "id": "1",
-              "type": "max"
-            },
-            {
-              "field": "1",
-              "hide": false,
-              "id": "3",
-              "pipelineAgg": "1",
-              "settings": {
-                "unit": "1m"
-              },
-              "type": "derivative"
-            },
-            {
-              "field": "system.network.out.dropped",
-              "hide": true,
-              "id": "5",
-              "type": "max"
-            },
-            {
-              "field": "5",
-              "hide": true,
-              "id": "6",
-              "pipelineAgg": "5",
-              "settings": {
-                "unit": "1m"
-              },
-              "type": "derivative"
-            },
-            {
-              "id": "7",
-              "pipelineVariables": [
-                {
-                  "name": "out",
-                  "pipelineAgg": "6"
-                }
-              ],
-              "settings": {
-                "script": "params.out * -1"
-              },
-              "type": "bucket_script"
-            }
-          ],
-          "query": "event.dataset: system.network AND host.hostname: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Network dropped packets",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "scaleDistribution": {
-              "type": "linear"
-            }
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 21
-      },
-      "id": 43,
-      "options": {
-        "calculate": false,
-        "calculation": {
-          "xBuckets": {
-            "mode": "size"
-          }
-        },
-        "cellGap": 2,
-        "color": {
-          "exponent": 0.5,
-          "fill": "dark-orange",
-          "min": 1,
-          "mode": "scheme",
-          "reverse": false,
-          "scale": "exponential",
-          "scheme": "RdYlGn",
-          "steps": 53
-        },
-        "exemplars": {
-          "color": "rgba(255,0,255,0.7)"
-        },
-        "filterValues": {
-          "le": 1
-        },
-        "legend": {
-          "show": true
-        },
-        "rowsFrame": {
-          "layout": "unknown"
-        },
-        "tooltip": {
-          "show": true,
-          "yHistogram": true
-        },
-        "yAxis": {
-          "axisPlacement": "left",
-          "reverse": false
-        }
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.diskio.name",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "3",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "0",
-                "offset": "1m",
-                "timeZone": "utc",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.diskio.read.count",
-              "hide": true,
-              "id": "1",
-              "type": "avg"
-            },
-            {
-              "field": "1",
-              "hide": true,
-              "id": "4",
-              "pipelineAgg": "1",
-              "type": "derivative"
-            },
-            {
-              "id": "5",
-              "pipelineVariables": [
-                {
-                  "name": "io",
-                  "pipelineAgg": "4"
-                }
-              ],
-              "settings": {
-                "script": "params.io / 60"
-              },
-              "type": "bucket_script"
-            }
-          ],
-          "query": "host.hostname: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Disk Read  IOPS",
-      "type": "heatmap"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "dark-green",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.4
-              },
-              {
-                "color": "red",
-                "value": 0.8
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 21
-      },
-      "id": 67,
-      "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "9.3.2",
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "process.name",
-              "id": "2",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "1",
-                "size": "5"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "3",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "1",
-                "timeZone": "utc",
-                "trimEdges": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.process.cpu.total.pct",
-              "id": "1",
-              "type": "max"
-            }
-          ],
-          "query": "process.name:* AND host.name: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Processes By CPU",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "@timestamp": true
-            },
-            "indexByName": {},
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 23,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 Out error rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative Max system.network.in.errors"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 In error rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo Out error rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative Max system.network.in.errors"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo In error rate"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 21
-      },
-      "id": 65,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "system.network.name",
-              "id": "4",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "1m",
-                "min_doc_count": "0"
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
-          },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
-          "metrics": [
-            {
-              "field": "system.network.in.errors",
-              "hide": true,
-              "id": "1",
-              "type": "max"
-            },
-            {
-              "field": "1",
-              "hide": false,
-              "id": "3",
-              "pipelineAgg": "1",
-              "settings": {
-                "unit": "1m"
-              },
-              "type": "derivative"
-            },
-            {
-              "field": "system.network.out.errors",
-              "hide": true,
-              "id": "5",
-              "type": "max"
-            },
-            {
-              "field": "5",
-              "hide": true,
-              "id": "6",
-              "pipelineAgg": "5",
-              "settings": {
-                "unit": "1m"
-              },
-              "type": "derivative"
-            },
-            {
-              "id": "7",
-              "pipelineVariables": [
-                {
-                  "name": "out",
-                  "pipelineAgg": "6"
-                }
-              ],
-              "settings": {
-                "script": "params.out * -1"
-              },
-              "type": "bucket_script"
-            }
-          ],
-          "query": "event.dataset: system.network AND host.hostname: $node_host",
-          "queryParams": "",
-          "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
-        }
-      ],
-      "title": "Network error packets",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 5
       },
       "id": 49,
       "panels": [],
@@ -2589,7 +2594,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 28
+        "y": 6
       },
       "id": 38,
       "options": {
@@ -2597,7 +2602,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -2729,7 +2734,7 @@
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 28
+        "y": 6
       },
       "id": 53,
       "options": {
@@ -2737,7 +2742,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -2746,7 +2751,7 @@
       },
       "targets": [
         {
-          "alias": "",
+          "alias": "Search rate",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -2823,6 +2828,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMax": 100,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -2882,7 +2888,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 28
+        "y": 6
       },
       "id": 39,
       "options": {
@@ -2890,7 +2896,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -2936,7 +2942,7 @@
           "urlPath": ""
         }
       ],
-      "title": "JVM heap usage",
+      "title": "JVM heap usage (%)",
       "type": "timeseries"
     },
     {
@@ -3001,7 +3007,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 34
+        "y": 12
       },
       "id": 54,
       "options": {
@@ -3009,7 +3015,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -3157,7 +3163,7 @@
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 34
+        "y": 12
       },
       "id": 52,
       "options": {
@@ -3165,7 +3171,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -3310,7 +3316,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Derivative 1 / 60"
+              "options": "((Derivative 1 / 60 / 60) > 0 ) ? (params.young / 60 ) : 0"
             },
             "properties": [
               {
@@ -3322,7 +3328,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Derivative 5 / 60"
+              "options": "((Derivative 5 / 60) > 0 ) ? (params.duration / 60) : 0"
             },
             "properties": [
               {
@@ -3337,7 +3343,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 34
+        "y": 12
       },
       "id": 50,
       "options": {
@@ -3445,18 +3451,44 @@
     },
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "type": "elasticsearch",
+        "uid": "${es_metrics}"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 100,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -3477,108 +3509,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "source_node"
+              "options": "CPU utilization"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 101
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "target_node"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 109
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "bytes_total"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 106
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "bytes_percent"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 111
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "translog_ops_percent"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 169
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "files_percent"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 103
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "index"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 337
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "shard"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 57
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "time"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 113
+                "id": "unit",
+                "value": "percent"
               }
             ]
           }
@@ -3586,96 +3522,182 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 16,
+        "w": 8,
         "x": 0,
-        "y": 40
+        "y": 18
       },
-      "id": 8,
+      "id": 75,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "frameIndex": 0,
-        "showHeader": true,
-        "sortBy": []
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.3.2",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
+          "alias": "CPU utilization",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "10s"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
           "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
           },
           "fields": [
             {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].index",
-              "language": "jsonata"
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].shard",
-              "language": "jsonata",
-              "name": ""
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].time",
-              "language": "jsonata",
-              "name": ""
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].source_node",
-              "language": "jsonata",
-              "name": "source_node"
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].target_node",
-              "language": "jsonata",
-              "name": "target_node"
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].bytes_total",
-              "language": "jsonata",
-              "name": ""
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].bytes_percent",
-              "language": "jsonata",
-              "name": ""
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].files_percent",
-              "language": "jsonata",
-              "name": ""
-            },
-            {
-              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].translog_ops_percent",
-              "language": "jsonata",
-              "name": ""
+              "jsonPath": ""
             }
           ],
           "method": "GET",
-          "params": [
-            [
-              "active_only",
-              "true"
-            ],
-            [
-              "format",
-              "json"
-            ]
+          "metrics": [
+            {
+              "field": "elasticsearch.node.stats.process.cpu.pct",
+              "hide": false,
+              "id": "1",
+              "type": "max"
+            }
           ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/_cat/recovery"
+          "timeField": "@timestamp",
+          "urlPath": ""
         }
       ],
-      "title": "Data relocation",
-      "transformations": [],
-      "type": "table"
+      "title": "CPU Utilization (%)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_metrics}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 18
+      },
+      "id": 76,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "10s"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.node.stats.indices.segments.count",
+              "hide": false,
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Segment count",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -3736,7 +3758,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Derivative 1 / 60"
+              "options": "Derivative 5 > 0 ? Derivative 7/ params.young_count: 0"
             },
             "properties": [
               {
@@ -3748,7 +3770,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Derivative 5 / 60"
+              "options": "Derivative 6> 0 ? Derivative 5 / params.old_ms : 0"
             },
             "properties": [
               {
@@ -3763,7 +3785,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 40
+        "y": 18
       },
       "id": 51,
       "options": {
@@ -3901,12 +3923,251 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_prod}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "source_node"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 101
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "target_node"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bytes_total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bytes_percent"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "translog_ops_percent"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 169
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "files_percent"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "index"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 337
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "shard"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 57
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 17,
+        "x": 3,
+        "y": 24
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.5",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].index",
+              "language": "jsonata",
+              "name": "index"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].shard",
+              "language": "jsonata",
+              "name": "shard"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].time",
+              "language": "jsonata",
+              "name": "time"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].source_node",
+              "language": "jsonata",
+              "name": "source_node"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].target_node",
+              "language": "jsonata",
+              "name": "target_node"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].bytes_total",
+              "language": "jsonata",
+              "name": "bytes_total"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].bytes_percent",
+              "language": "jsonata",
+              "name": "bytes_percent"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].files_percent",
+              "language": "jsonata",
+              "name": "files_percent"
+            },
+            {
+              "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].translog_ops_percent",
+              "language": "jsonata",
+              "name": "translog_ops_percent"
+            }
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "active_only",
+              "true"
+            ],
+            [
+              "format",
+              "json"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/_cat/recovery"
+        }
+      ],
+      "title": "Data relocation",
+      "transformations": [],
+      "type": "table"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 30
       },
       "id": 47,
       "panels": [],
@@ -3937,7 +4198,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 47
+        "y": 31
       },
       "id": 41,
       "options": {
@@ -3979,7 +4240,7 @@
           "reverse": true
         }
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.5",
       "targets": [
         {
           "alias": "",
@@ -4061,7 +4322,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 47
+        "y": 31
       },
       "id": 55,
       "options": {
@@ -4103,7 +4364,7 @@
           "reverse": true
         }
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.5",
       "targets": [
         {
           "alias": "",
@@ -4185,7 +4446,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 47
+        "y": 31
       },
       "id": 56,
       "options": {
@@ -4227,7 +4488,7 @@
           "reverse": true
         }
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.5",
       "targets": [
         {
           "alias": "",
@@ -4291,7 +4552,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 39
       },
       "id": 72,
       "panels": [],
@@ -4301,131 +4562,109 @@
     {
       "datasource": {
         "type": "elasticsearch",
-        "uid": "${DS_ELASTIC-MON-FILEBEAT}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": true
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "@timestamp"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 166
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "log.level"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 108
-              }
-            ]
-          }
-        ]
+        "uid": "${filebeat_logs}"
       },
       "gridPos": {
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 40
       },
       "id": 74,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "@timestamp"
-          }
-        ]
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.5",
       "targets": [
         {
           "alias": "",
           "bucketAggs": [],
-          "cacheDurationSeconds": 300,
           "datasource": {
             "type": "elasticsearch",
-            "uid": "${DS_ELASTIC-MON-FILEBEAT}"
+            "uid": "${filebeat_logs}"
           },
-          "fields": [
-            {
-              "jsonPath": ""
-            }
-          ],
-          "method": "GET",
+          "hide": false,
           "metrics": [
             {
               "id": "1",
               "settings": {
-                "limit": "500"
+                "limit": "100"
               },
               "type": "logs"
             }
           ],
-          "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND host.hostname: $node_host AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService",
-          "queryParams": "",
+          "query": "host.name: $node_name",
           "refId": "A",
-          "timeField": "@timestamp",
-          "urlPath": ""
+          "timeField": "@timestamp"
         }
       ],
       "title": "Logs",
       "transformations": [
         {
-          "id": "filterFieldsByName",
+          "id": "organize",
           "options": {
-            "include": {
-              "names": [
-                "@timestamp",
-                "log.level",
-                "message"
-              ],
-              "pattern": "message"
-            }
+            "excludeByName": {},
+            "indexByName": {
+              "@timestamp": 0,
+              "_id": 2,
+              "_index": 3,
+              "_source": 4,
+              "_type": 5,
+              "agent.ephemeral_id": 6,
+              "agent.id": 7,
+              "agent.name": 8,
+              "agent.type": 9,
+              "agent.version": 10,
+              "ecs.version": 11,
+              "elasticsearch.component": 12,
+              "elasticsearch.gc.tags": 13,
+              "elasticsearch.node.name": 14,
+              "elasticsearch.server": 15,
+              "event.category": 16,
+              "event.created": 17,
+              "event.dataset": 18,
+              "event.ingested": 19,
+              "event.kind": 20,
+              "event.module": 21,
+              "event.timezone": 22,
+              "event.type": 23,
+              "fileset.name": 24,
+              "highlight": 25,
+              "host.architecture": 26,
+              "host.hostname": 27,
+              "host.id": 28,
+              "host.ip": 29,
+              "host.mac": 30,
+              "host.name": 31,
+              "host.os.build": 32,
+              "host.os.family": 33,
+              "host.os.kernel": 34,
+              "host.os.name": 35,
+              "host.os.platform": 36,
+              "host.os.type": 37,
+              "host.os.version": 38,
+              "input.type": 39,
+              "log.file.path": 40,
+              "log.flags": 41,
+              "log.level": 42,
+              "log.offset": 43,
+              "message": 1,
+              "process.pid": 44,
+              "service.type": 45,
+              "sort": 46
+            },
+            "renameByName": {}
           }
         }
       ],
-      "type": "table"
+      "type": "logs"
     }
   ],
   "refresh": "1m",
@@ -4477,7 +4716,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-metricbeat-,.monitoring-es--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -4524,7 +4763,7 @@
           "uid": "${es_metrics}"
         },
         "definition": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.name: $node_name\"}",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Node host",
         "multi": false,
@@ -4549,6 +4788,21 @@
         "queryValue": "",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-20-.*-${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "filebeat_logs",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-filebeat--.*-${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

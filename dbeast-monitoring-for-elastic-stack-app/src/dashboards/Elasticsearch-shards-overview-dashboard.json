@@ -2169,8 +2169,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Shards overview dashboard",
-  "uid": "shards-overview-dashboard",
+  "title": "Elasticsearch shards overview dashboard",
+  "uid": "elasticsearch-shards-overview-dashboard",
   "version": 51,
   "weekStart": ""
 }
