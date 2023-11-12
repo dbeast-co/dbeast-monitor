@@ -252,6 +252,10 @@ PUT _component_template/dbeast-mon-elastic-index-stats-custom-mapping-component
                   "type": "keyword",
                   "ignore_above": 256
                 },
+                "health": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
                 "summary": {
                   "type": "object",
                   "properties": {
