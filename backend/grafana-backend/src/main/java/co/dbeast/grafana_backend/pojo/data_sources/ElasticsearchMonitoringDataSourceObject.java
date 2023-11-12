@@ -16,8 +16,8 @@ public class ElasticsearchMonitoringDataSourceObject extends DataSourceObjectPOJ
     public void update(final ClusterConnectionSourcePOJO clusterConnectionSource) {
         super.update(clusterConnectionSource);
         setUrl(clusterConnectionSource.getMonitoringHost());
-        setName(prefix + database.replace("*", "") + "-" + clusterConnectionSource.getSourceName());
-        setUid(prefix + database.replace("*", "") + "-" + clusterConnectionSource.getSourceUid());
+        setName(prefix + database.replace("*", "").replace(",","").replace(".","") + "-" + clusterConnectionSource.getSourceName());
+        setUid(prefix + database.replace("*", "").replace(",","").replace(".","") + "-" + clusterConnectionSource.getSourceUid());
         setBasicAuth(clusterConnectionSource.isMonitoringIsUseAuthentication());
         setBasicAuthUser(clusterConnectionSource.getMonitoringUsername());
         updatePassword(clusterConnectionSource.getMonitoringPassword());
