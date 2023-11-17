@@ -256,6 +256,16 @@
               {
                 "id": "custom.width",
                 "value": 188
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -390,6 +400,16 @@
               {
                 "id": "custom.width",
                 "value": 188
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -635,6 +655,16 @@
               {
                 "id": "custom.width",
                 "value": 176
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index pattern",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           },
@@ -1193,6 +1223,16 @@
               {
                 "id": "custom.width",
                 "value": 214
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -1345,6 +1385,16 @@
               {
                 "id": "custom.width",
                 "value": 181
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -1497,6 +1547,16 @@
               {
                 "id": "custom.width",
                 "value": 217
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -1649,6 +1709,16 @@
               {
                 "id": "custom.width",
                 "value": 181
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -1801,6 +1871,16 @@
               {
                 "id": "custom.width",
                 "value": 214
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -1953,6 +2033,16 @@
               {
                 "id": "custom.width",
                 "value": 181
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }

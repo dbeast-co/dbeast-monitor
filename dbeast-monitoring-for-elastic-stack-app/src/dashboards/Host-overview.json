@@ -2516,7 +2516,7 @@
           "type": "timeseries"
         }
       ],
-      "title": "Sever level Stats",
+      "title": "Server level Stats",
       "type": "row"
     },
     {
@@ -4762,14 +4762,14 @@
           "type": "elasticsearch",
           "uid": "${es_metrics}"
         },
-        "definition": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.name: $node_name\"}",
+        "definition": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.name: $node_name AND event.dataset: elasticsearch.node.stats\"}",
         "hide": 2,
         "includeAll": false,
         "label": "Node host",
         "multi": false,
         "name": "node_host",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.name: $node_name\"}",
+        "query": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.name: $node_name AND event.dataset: elasticsearch.node.stats\"}",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

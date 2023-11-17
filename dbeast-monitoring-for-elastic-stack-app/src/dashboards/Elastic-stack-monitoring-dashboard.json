@@ -23,20 +23,70 @@
   "liveNow": true,
   "panels": [
     {
-      "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+      "id": 6,
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
       },
+      "type": "table",
+      "title": "Cluster health",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "cluster_name": 0,
+              "status": 1,
+              "number_of_nodes": 2,
+              "number_of_data_nodes": 3,
+              "Total heap": 4,
+              "count": 5,
+              "total": 6,
+              "active_shards": 7,
+              "unassigned_shards": 8,
+              "relocating_shards": 9,
+              "initializing_shards": 10,
+              "docs_count": 11,
+              "size_in_bytes": 12,
+              "free_in_bytes": 13
+            },
+            "renameByName": {
+              "active_shards": "Active shards",
+              "cluster_name": "Cluster name",
+              "count": "Index number",
+              "docs_count": "Docs count",
+              "initializing_shards": "Initializing shards",
+              "number_of_data_nodes": "Data nodes",
+              "number_of_nodes": "Nodes",
+              "relocating_shards": "Relocation shards",
+              "status": "Cluster status",
+              "total": "Total shards",
+              "unassigned_shards": "Unassigned shards",
+              "Total heap": "Heap size",
+              "Total": "",
+              "size_in_bytes": "Data",
+              "free_in_bytes": "Free store"
+            }
+          }
+        }
+      ],
+      "datasource": {
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
+      },
+      "pluginVersion": "9.3.2",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "displayMode": "auto",
             "inspect": false
           },
           "mappings": [
@@ -58,6 +108,9 @@
                 "value": null
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -84,11 +137,8 @@
                 }
               },
               {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
               }
             ]
           },
@@ -128,11 +178,8 @@
                 ]
               },
               {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "color-background"
-                }
+                "id": "custom.displayMode",
+                "value": "color-background"
               }
             ]
           },
@@ -163,24 +210,24 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Number of data nodes"
+              "options": "Data nodes"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 171
+                "value": 96
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Number of nodes"
+              "options": "Nodes"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 139
+                "value": 83
               }
             ]
           },
@@ -192,44 +239,142 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 133
+                "value": 100
               },
               {
                 "id": "unit",
                 "value": "short"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Heap size"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Data"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 111
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Initializing shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 333
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unassigned shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 139
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Free store"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 124
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
           }
         ]
       },
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 6,
       "options": {
-        "cellHeight": "sm",
+        "showHeader": true,
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.5.5",
       "targets": [
         {
-          "cacheDurationSeconds": 10,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.cluster_name"
@@ -276,11 +421,11 @@
           "urlPath": "/_cluster/health"
         },
         {
-          "cacheDurationSeconds": 300,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.cluster_name"
@@ -299,54 +444,30 @@
               "jsonPath": "$.indices.docs.count",
               "language": "jsonpath",
               "name": "docs_count"
+            },
+            {
+              "name": "Total heap",
+              "jsonPath": "$.nodes.jvm.mem.heap_max_in_bytes",
+              "language": "jsonpath"
+            },
+            {
+              "name": "",
+              "jsonPath": "$.indices.store.size_in_bytes",
+              "language": "jsonpath"
+            },
+            {
+              "name": "",
+              "jsonPath": "$.nodes.fs.free_in_bytes",
+              "language": "jsonpath"
             }
           ],
           "hide": false,
           "method": "GET",
           "queryParams": "",
           "refId": "B",
-          "urlPath": "/_cluster/stats"
+          "urlPath": "/_cluster/stats?filter_path=cluster_name,nodes.versions,nodes.jvm.mem.heap_max_in_bytes,fs.total_in_bytes,indices.docs.count,indices.store.size_in_bytes,indices.shards.total,indices.count,nodes.fs.free_in_bytes"
         }
-      ],
-      "title": "Cluster health",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {
-              "active_shards": 7,
-              "cluster_name": 0,
-              "count": 4,
-              "initializing_shards": 9,
-              "number_of_data_nodes": 3,
-              "number_of_nodes": 2,
-              "relocating_shards": 8,
-              "status": 1,
-              "total": 5,
-              "unassigned_shards": 6
-            },
-            "renameByName": {
-              "active_shards": "Active shards",
-              "cluster_name": "Cluster name",
-              "count": "Index number",
-              "docs_count": "Docs count",
-              "initializing_shards": "Initializing shards",
-              "number_of_data_nodes": "Number of data nodes",
-              "number_of_nodes": "Number of nodes",
-              "relocating_shards": "Relocation shards",
-              "status": "Cluster status",
-              "total": "Total shards",
-              "unassigned_shards": "Unassigned shards"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      ]
     },
     {
       "collapsed": true,
@@ -2980,16 +3101,6 @@
                   {
                     "id": "custom.width",
                     "value": 148
-                  },
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
-                      }
-                    ]
                   }
                 ]
               },

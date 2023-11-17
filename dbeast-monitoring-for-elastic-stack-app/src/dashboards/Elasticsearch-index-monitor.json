@@ -343,6 +343,16 @@
               {
                 "id": "custom.width",
                 "value": 160
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze node",
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields.Node}&${cluster_uid:queryparam}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           },
@@ -435,7 +445,7 @@
               "type": "count"
             }
           ],
-          "query": "elasticsearch.index.name: $index_name",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
