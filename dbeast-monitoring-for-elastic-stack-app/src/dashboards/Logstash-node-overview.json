@@ -77,8 +77,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_mon}"
+        "uid": "${logstash_mon_metrics_status}",
+        "type": "elasticsearch"
       },
       "gridPos": {
         "h": 7,
@@ -88,47 +88,68 @@
       },
       "id": 4,
       "options": {
+        "everyRow": true,
+        "editors": [],
+        "editor": {
+          "language": "markdown",
+          "format": "auto",
+          "height": 200
+        },
         "content": "Logstash host: {{host}}  <br />\nLogstash name: {{name}} <br />\nStatus: {{status}} <br />",
         "defaultContent": "The query didn't return any results.",
-        "everyRow": true
+        "helpers": "",
+        "styles": ""
       },
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_mon}"
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
           },
-          "fields": [
+          "refId": "A",
+          "query": "metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: $cluster_uid",
+          "alias": "",
+          "metrics": [
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.logstash.host",
-              "name": "host"
-            },
-            {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.logstash.name",
-              "language": "jsonpath",
-              "name": "name"
-            },
-            {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.logstash.status",
-              "language": "jsonpath",
-              "name": "status"
+              "id": "1",
+              "type": "raw_data",
+              "settings": {
+                "size": "1"
+              }
             }
           ],
-          "method": "GET",
-          "params": [
-            [
-              "q",
-              "metricset.name:node_stats AND host.hostname:$ls_host"
-            ]
-          ],
-          "queryParams": "",
-          "refId": "A",
-          "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
+          "bucketAggs": [],
+          "timeField": "@timestamp"
         }
       ],
       "title": "Node information",
-      "type": "marcusolsson-dynamictext-panel"
+      "type": "marcusolsson-dynamictext-panel",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "host.hostname",
+                "logstash.node.stats.logstash.name",
+                "logstash.node.stats.logstash.status"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "host.hostname": "host",
+              "logstash.node.stats.logstash.name": "name",
+              "logstash.node.stats.logstash.status": "status"
+            }
+          }
+        }
+      ]
     },
     {
       "datasource": {
@@ -3150,7 +3171,6 @@
       },
       "id": 71,
       "panels": [
-
       ],
       "title": "Pipelines",
       "type": "row"
@@ -3772,25 +3792,6 @@
         "query": "elasticsearch",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs-20-(.*)--${cluster_uid}/",
-        "skipUrlSync": false,
-        "type": "datasource"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "ES",
-          "value": "ES"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "label": "Elastic datasource",
-        "multi": false,
-        "name": "es_direct_mon",
-        "options": [],
-        "query": "marcusolsson-json-datasource",
-        "queryValue": "",
-        "refresh": 1,
-        "regex": "/Elasticsearch-direct-mon-(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
