@@ -280,7 +280,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 isLight: this.props.theme.isLight
             })}>
                 <header>
-                    <div className="col">
+                    <div className="col header-cluster">
                         <h3>{this.state.cluster_name}</h3>
                         <p>{this.state.cluster_uuid}</p>
                     </div>

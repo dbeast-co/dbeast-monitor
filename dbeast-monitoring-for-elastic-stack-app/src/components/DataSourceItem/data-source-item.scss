@@ -29,6 +29,13 @@
 
   .col {
     flex: unset;
+
+    &.header-cluster{
+      max-width: 95%;
+      width: 100%;
+      overflow: auto;
+    }
+
   }
 
   .MuiDivider-light {
@@ -36,7 +43,7 @@
   }
 
   h3 {
-    font-size: 0.75rem ;
+    font-size: 1.5rem ;
     font-weight: 700;
     color: #fff;
   }
