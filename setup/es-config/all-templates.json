@@ -61,8 +61,8 @@ PUT _index_template/dbeast-mon-es-ingest_pipelines
     "dbeast-mon-es-ingest_pipelines-*"
   ],
   "composed_of" : [ 
-    "mon-es-ingest_pipelines-mapping-component", 
-    "mon-default-settings-component"
+    "dbeast-mon-es-ingest_pipelines-mapping-component", 
+    "dbeast-mon-default-settings-component"
   ],
   "_meta": {
     "description": "This template used for the Elasticsearch pipelines metrics"
