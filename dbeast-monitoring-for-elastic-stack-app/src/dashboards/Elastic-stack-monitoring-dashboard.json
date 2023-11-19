@@ -23,70 +23,17 @@
   "liveNow": true,
   "panels": [
     {
-      "id": 6,
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "type": "table",
-      "title": "Cluster health",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {
-              "cluster_name": 0,
-              "status": 1,
-              "number_of_nodes": 2,
-              "number_of_data_nodes": 3,
-              "Total heap": 4,
-              "count": 5,
-              "total": 6,
-              "active_shards": 7,
-              "unassigned_shards": 8,
-              "relocating_shards": 9,
-              "initializing_shards": 10,
-              "docs_count": 11,
-              "size_in_bytes": 12,
-              "free_in_bytes": 13
-            },
-            "renameByName": {
-              "active_shards": "Active shards",
-              "cluster_name": "Cluster name",
-              "count": "Index number",
-              "docs_count": "Docs count",
-              "initializing_shards": "Initializing shards",
-              "number_of_data_nodes": "Data nodes",
-              "number_of_nodes": "Nodes",
-              "relocating_shards": "Relocation shards",
-              "status": "Cluster status",
-              "total": "Total shards",
-              "unassigned_shards": "Unassigned shards",
-              "Total heap": "Heap size",
-              "Total": "",
-              "size_in_bytes": "Data",
-              "free_in_bytes": "Free store"
-            }
-          }
-        }
-      ],
       "datasource": {
-        "uid": "${es_direct_prod}",
-        "type": "marcusolsson-json-datasource"
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_prod}"
       },
-      "pluginVersion": "9.3.2",
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [
@@ -137,8 +84,10 @@
                 }
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
               }
             ]
           },
@@ -178,8 +127,10 @@
                 ]
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
               }
             ]
           },
@@ -357,24 +308,34 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
       "options": {
         "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
           "show": false,
           "reducer": [
             "sum"
           ],
+          "countRows": false,
           "fields": ""
         },
         "sortBy": []
       },
+      "pluginVersion": "9.5.5",
       "targets": [
         {
+          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
-          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.cluster_name"
@@ -421,11 +382,11 @@
           "urlPath": "/_cluster/health"
         },
         {
+          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
-          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.cluster_name"
@@ -446,19 +407,19 @@
               "name": "docs_count"
             },
             {
-              "name": "Total heap",
               "jsonPath": "$.nodes.jvm.mem.heap_max_in_bytes",
-              "language": "jsonpath"
+              "language": "jsonpath",
+              "name": "Total heap"
             },
             {
-              "name": "",
               "jsonPath": "$.indices.store.size_in_bytes",
-              "language": "jsonpath"
+              "language": "jsonpath",
+              "name": ""
             },
             {
-              "name": "",
               "jsonPath": "$.nodes.fs.free_in_bytes",
-              "language": "jsonpath"
+              "language": "jsonpath",
+              "name": ""
             }
           ],
           "hide": false,
@@ -467,10 +428,57 @@
           "refId": "B",
           "urlPath": "/_cluster/stats?filter_path=cluster_name,nodes.versions,nodes.jvm.mem.heap_max_in_bytes,fs.total_in_bytes,indices.docs.count,indices.store.size_in_bytes,indices.shards.total,indices.count,nodes.fs.free_in_bytes"
         }
-      ]
+      ],
+      "title": "Cluster health",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Total heap": 4,
+              "active_shards": 7,
+              "cluster_name": 0,
+              "count": 5,
+              "docs_count": 11,
+              "free_in_bytes": 13,
+              "initializing_shards": 10,
+              "number_of_data_nodes": 3,
+              "number_of_nodes": 2,
+              "relocating_shards": 9,
+              "size_in_bytes": 12,
+              "status": 1,
+              "total": 6,
+              "unassigned_shards": 8
+            },
+            "renameByName": {
+              "Total": "",
+              "Total heap": "Heap size",
+              "active_shards": "Active shards",
+              "cluster_name": "Cluster name",
+              "count": "Index number",
+              "docs_count": "Docs count",
+              "free_in_bytes": "Free store",
+              "initializing_shards": "Initializing shards",
+              "number_of_data_nodes": "Data nodes",
+              "number_of_nodes": "Nodes",
+              "relocating_shards": "Relocation shards",
+              "size_in_bytes": "Data",
+              "status": "Cluster status",
+              "total": "Total shards",
+              "unassigned_shards": "Unassigned shards"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -479,224 +487,224 @@
       },
       "id": 39,
       "panels": [
-        {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 0,
-            "y": 5
-          },
-          "id": 36,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "alias": "",
-              "bucketAggs": [
-                {
-                  "field": "@timestamp",
-                  "id": "2",
-                  "settings": {
-                    "interval": "auto"
-                  },
-                  "type": "date_histogram"
-                }
-              ],
-              "datasource": {
-                "type": "elasticsearch",
-                "uid": "${es_index_stats}"
-              },
-              "hide": false,
-              "metrics": [
-                {
-                  "field": "elasticsearch.index.summary.total.indexing.index_rate",
-                  "id": "1",
-                  "type": "max"
-                }
-              ],
-              "query": "event.dataset: indices_stats AND elasticsearch.cluster.id: $cluster_uid",
-              "refId": "A",
-              "timeField": "@timestamp"
-            }
-          ],
-          "title": "Cluster ingest rate",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 5
-          },
-          "id": 37,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "targets": [
-            {
-              "alias": "",
-              "bucketAggs": [
-                {
-                  "field": "@timestamp",
-                  "id": "2",
-                  "settings": {
-                    "interval": "auto"
-                  },
-                  "type": "date_histogram"
-                }
-              ],
-              "datasource": {
-                "type": "elasticsearch",
-                "uid": "${es_index_stats}"
-              },
-              "metrics": [
-                {
-                  "field": "elasticsearch.index.summary.total.search.query_rate",
-                  "id": "1",
-                  "type": "max"
-                }
-              ],
-              "query": "event.dataset: indices_stats AND elasticsearch.cluster.id: $cluster_uid",
-              "refId": "A",
-              "timeField": "@timestamp"
-            }
-          ],
-          "title": "Cluster Search rate",
-          "type": "timeseries"
-        }
       ],
       "title": "Cluster level rates",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 36,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "hide": false,
+          "metrics": [
+            {
+              "field": "elasticsearch.index.summary.total.indexing.index_rate",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "event.dataset: indices_stats AND elasticsearch.cluster.id: $cluster_uid",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Cluster ingest rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 37,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.summary.total.search.query_rate",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "event.dataset: indices_stats AND elasticsearch.cluster.id: $cluster_uid",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Cluster Search rate",
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -704,7 +712,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 15
       },
       "id": 28,
       "panels": [
@@ -3682,6 +3690,223 @@
       ],
       "title": "Shards allocation",
       "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 43,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${filebeat_logs}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "color": {
+                "mode": "thresholds"
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "event.dataset"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 317
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "log.level"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 81
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "host.hostname"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 138
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "logstash.log.module"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 223
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Pipeline"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 86
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "@timestamp"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 184
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Exception"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 244
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "log.logger"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 389
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 23
+          },
+          "id": 20,
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm",
+            "footer": {
+              "show": false,
+              "reducer": [
+                "sum"
+              ],
+              "countRows": false,
+              "fields": ""
+            },
+            "sortBy": []
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${filebeat_logs}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "limit": "10"
+                  },
+                  "type": "logs"
+                }
+              ],
+              "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: $cluster_uid",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Elasticsearch logs",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "@timestamp",
+                    "log.logger",
+                    "message",
+                    "host.hostname",
+                    "log.level"
+                  ]
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Elasticsearch Logs",
+      "type": "row"
     }
   ],
   "refresh": "1m",
@@ -3784,6 +4009,21 @@
         "query": "elasticsearch",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "filebeat_logs",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-filebeat--.*-${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }
