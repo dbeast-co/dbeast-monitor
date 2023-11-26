@@ -2003,6 +2003,10 @@ PUT _component_template/dbeast-mon-logstash-logs-custom-mapping-component
             "hostname": {
               "ignore_above": 256,
               "type": "keyword"
+            },
+			"name": {
+              "ignore_above": 256,
+              "type": "keyword"
             }
           }
         },
