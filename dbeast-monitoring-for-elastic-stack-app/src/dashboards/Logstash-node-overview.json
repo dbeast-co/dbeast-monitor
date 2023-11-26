@@ -1826,56 +1826,7 @@
               },
               "unit": "bytes"
             },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "eth0 Derivative 5 * -1"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "eth0 Out rate"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "eth0 Derivative Max system.network.in.bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "eth0 In rate"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "lo Derivative 5 * -1"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "lo Out rate"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "lo Derivative Max system.network.in.bytes"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "lo In rate"
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 7,
@@ -1987,7 +1938,22 @@
             }
           ],
           "title": "Network traffic",
-          "transformations": [],
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "/(.*) Derivative 5 \\* -1/",
+                "renamePattern": "$1 Out rate"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "/(.*) Derivative Max (.*)/",
+                "renamePattern": "$1 In rate"
+              }
+            }
+          ],
           "type": "timeseries"
         },
         {
@@ -2303,56 +2269,7 @@
               },
               "unit": "none"
             },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "eth0 Derivative 5 * -1"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "eth0 Out dropped rate"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "eth0 Derivative Max system.network.in.dropped"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "eth0 In dropped rate"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "lo Derivative 5 * -1"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "lo Out dropped rate"
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "lo Derivative Max system.network.in.dropped"
-                },
-                "properties": [
-                  {
-                    "id": "displayName",
-                    "value": "lo In dropped rate"
-                  }
-                ]
-              }
-            ]
+            "overrides": []
           },
           "gridPos": {
             "h": 6,
@@ -2464,7 +2381,22 @@
             }
           ],
           "title": "Network dropped packets",
-          "transformations": [],
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "/(.*) Derivative 5 \\* -1/",
+                "renamePattern": "$1 Out Dropped rate"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "/(.*) Derivative Max (.*)/",
+                "renamePattern": "$1 In Dropped rate"
+              }
+            }
+          ],
           "type": "timeseries"
         },
         {
@@ -2949,7 +2881,22 @@
             }
           ],
           "title": "Network error packets",
-          "transformations": [],
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "/(.*) Derivative 5 \\* -1/",
+                "renamePattern": "$1 Out Error rate"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "/(.*) Derivative Max (.*)/",
+                "renamePattern": "$1 In Error rate"
+              }
+            }
+          ],
           "type": "timeseries"
         }
       ],
@@ -3583,7 +3530,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze pipeline",
-                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}"
+                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_uid:queryparam}"
                   }
                 ]
               },
@@ -3689,7 +3636,7 @@
               "type": "count"
             }
           ],
-          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND host.hostname: $ls_host AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host ) AND elasticsearch.cluster.id: $cluster_uid",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",

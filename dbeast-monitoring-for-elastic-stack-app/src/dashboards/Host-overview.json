@@ -1392,56 +1392,7 @@
           },
           "unit": "bytes"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 Out rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative Max system.network.in.bytes"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 In rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo Out rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative Max system.network.in.bytes"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo In rate"
-              }
-            ]
-          }
-        ]
+        "overrides":[]
       },
       "gridPos": {
         "h": 7,
@@ -1553,7 +1504,22 @@
         }
       ],
       "title": "Network traffic",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/(.*) Derivative 5 \\* -1/",
+            "renamePattern": "$1 Out rate"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/(.*) Derivative Max (.*)/",
+            "renamePattern": "$1 In rate"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -1870,54 +1836,6 @@
           "unit": "none"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 Out dropped rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative Max system.network.in.dropped"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 In dropped rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo Out dropped rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative Max system.network.in.dropped"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo In dropped rate"
-              }
-            ]
-          }
         ]
       },
       "gridPos": {
@@ -2030,7 +1948,22 @@
         }
       ],
       "title": "Network dropped packets",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/(.*) Derivative 5 \\* -1/",
+            "renamePattern": "$1 Out Dropped rate"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/(.*) Derivative Max (.*)/",
+            "renamePattern": "$1 In Dropped rate"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -2358,54 +2291,7 @@
           "unit": "none"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 Out error rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "eth0 Derivative Max system.network.in.errors"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "eth0 In error rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative 5 * -1"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo Out error rate"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "lo Derivative Max system.network.in.errors"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "lo In error rate"
-              }
-            ]
-          }
+
         ]
       },
       "gridPos": {
@@ -2518,7 +2404,22 @@
         }
       ],
       "title": "Network error packets",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/(.*) Derivative 5 \\* -1/",
+            "renamePattern": "$1 Out Errors rate"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "/(.*) Derivative Max (.*)/",
+            "renamePattern": "$1 In Errors rate"
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -5054,7 +4955,7 @@
           "uid": "Grafana-DS-API"
         },
         "definition": "$[*].name",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Cluster UID",
         "multi": false,

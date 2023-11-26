@@ -1351,7 +1351,7 @@
           "uid": "Grafana-DS-API"
         },
         "definition": "$[*].name",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Cluster UID",
         "multi": false,

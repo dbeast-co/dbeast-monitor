@@ -145,7 +145,7 @@
               },
               {
                 "id": "custom.align",
-                "value": "center"
+                "value": "left"
               },
               {
                 "id": "links",
@@ -1156,7 +1156,7 @@
               "type": "max"
             }
           ],
-          "query": "event.dataset: enrich_queue_stats",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",

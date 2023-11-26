@@ -592,7 +592,7 @@
       {
         "matcher": {
           "id": "byName",
-          "options": "host.hostname"
+          "options": "host.name"
         },
         "properties": [
           {
@@ -660,7 +660,7 @@
           "type": "raw_data"
         }
       ],
-      "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND host.hostname: $ls_host AND logstash.log.pipeline_name: $pipeline_id AND \nelasticsearch.cluster.id: ${cluster_uid}",
+      "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host) AND logstash.log.pipeline_name: $pipeline_id AND \nelasticsearch.cluster.id: ${cluster_uid}",
       "queryParams": "",
       "refId": "A",
       "timeField": "@timestamp",

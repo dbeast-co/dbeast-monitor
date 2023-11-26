@@ -232,7 +232,8 @@
               "type": "color-background"
             },
             "filterable": false,
-            "inspect": false
+            "inspect": false,
+            "minWidth": 60
           },
           "mappings": [],
           "thresholds": {
@@ -266,7 +267,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -364,7 +365,6 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "elasticsearch.index.index_pattern\\elasticsearch.node.name": "Index pattern\\Node name",
               "elasticsearch.index.name\\elasticsearch.node.name": "Index \\ Node"
             }
           }
@@ -389,7 +389,8 @@
               "type": "color-background"
             },
             "filterable": false,
-            "inspect": false
+            "inspect": false,
+            "minWidth": 60
           },
           "mappings": [],
           "thresholds": {
@@ -410,12 +411,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Index pattern\\Node name"
+              "options": "Index \\ Node"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 188
+                "value": 190
               },
               {
                 "id": "links",
@@ -423,7 +424,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -505,7 +506,7 @@
           "urlPath": ""
         }
       ],
-      "title": "Average index latency per Node per Shard ( For indices with latency greater than 1 ms) ",
+      "title": "Average index latency per Node per Shard ( latency greater than 1 ms) ",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -521,7 +522,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "elasticsearch.index.index_pattern\\elasticsearch.node.name": "Index pattern\\Node name"
+              "elasticsearch.index.name\\elasticsearch.node.name": "Index \\ Node"
             }
           }
         }
@@ -962,7 +963,8 @@
               "type": "color-background"
             },
             "filterable": false,
-            "inspect": false
+            "inspect": false,
+            "minWidth": 80
           },
           "mappings": [],
           "thresholds": {
@@ -1133,7 +1135,8 @@
               "mode": "gradient"
             },
             "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "minWidth": 80
           },
           "mappings": [],
           "thresholds": {
@@ -1170,7 +1173,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -1308,7 +1311,8 @@
               "mode": "gradient"
             },
             "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "minWidth": 80
           },
           "mappings": [],
           "thresholds": {
@@ -1345,7 +1349,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -1483,7 +1487,8 @@
               "mode": "gradient"
             },
             "inspect": false,
-            "filterable": false
+            "filterable": false,
+            "minWidth": 80
           },
           "mappings": [],
           "thresholds": {
@@ -1520,7 +1525,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
