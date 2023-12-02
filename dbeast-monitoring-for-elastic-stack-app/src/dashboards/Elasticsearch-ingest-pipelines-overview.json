@@ -563,7 +563,7 @@
               },
               {
                 "id": "unit",
-                "value": "decbytes"
+                "value": "bytes"
               }
             ]
           },
@@ -579,7 +579,7 @@
               },
               {
                 "id": "unit",
-                "value": "decbytes"
+                "value": "bytes"
               }
             ]
           },

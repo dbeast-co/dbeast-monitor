@@ -1243,7 +1243,12 @@
           "fields": ""
         },
         "frameIndex": 1,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "failures_rate",
+            "desc": true
+          }
+        ]
       },
       "pluginVersion": "9.5.5",
       "targets": [

@@ -3996,47 +3996,47 @@
               },
               "fields": [
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].index",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].index",
                   "language": "jsonata",
                   "name": "index"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].shard",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].shard",
                   "language": "jsonata",
                   "name": "shard"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].time",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].time",
                   "language": "jsonata",
                   "name": "time"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].source_node",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].source_node",
                   "language": "jsonata",
                   "name": "source_node"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].target_node",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].target_node",
                   "language": "jsonata",
                   "name": "target_node"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].bytes_total",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].bytes_total",
                   "language": "jsonata",
                   "name": "bytes_total"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].bytes_percent",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].bytes_percent",
                   "language": "jsonata",
                   "name": "bytes_percent"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].files_percent",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].files_percent",
                   "language": "jsonata",
                   "name": "files_percent"
                 },
                 {
-                  "jsonPath": "$.[(source_node = '${node_name}' or target_node = '${node_name}')].translog_ops_percent",
+                  "jsonPath": "$[(source_node = $node_name[0] or target_node = $node_name[0] )].translog_ops_percent",
                   "language": "jsonata",
                   "name": "translog_ops_percent"
                 }
