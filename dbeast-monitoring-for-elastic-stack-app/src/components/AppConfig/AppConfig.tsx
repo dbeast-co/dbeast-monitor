@@ -5,6 +5,7 @@ import { getBackendSrv } from '@grafana/runtime';
 import { css } from '@emotion/css';
 import { lastValueFrom } from 'rxjs';
 import { SimplePanel } from  '../SourceConnection/SimplePanel';
+import {PageOne} from '../BackendTest/PageOne'
 
 export type AppPluginSettings = {};
 
@@ -62,6 +63,8 @@ export const AppConfig = ({ plugin }: AppConfigProps) => {
             >
               Disable plugin
             </Button>
+
+            <PageOne/>
 
 
 

@@ -1,0 +1,20 @@
+{
+  "orgId": 1,
+  "name": "Kibana-direct-",
+  "uid": "",
+  "type": "marcusolsson-json-datasource",
+  "typeName": "JSON API",
+  "access": "proxy",
+  "url": "",
+  "basicAuth": false,
+  "basicAuthUser": "",
+  "jsonData": {
+    "tlsSkipVerify": true,
+    "httpHeaderName1": "kbn-xsrf"
+  },
+  "secureJsonData": {
+    "basicAuthPassword": "",
+    "httpHeaderValue1": "true"
+  },
+  "readOnly": false
+}
