@@ -201,38 +201,39 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
             "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "lineWidth": 1,
             "fillOpacity": 0,
             "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
+            "spanNulls": true,
+            "showPoints": "auto",
             "pointSize": 5,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
+            "axisCenteredZero": false,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
             },
             "thresholdsStyle": {
               "mode": "off"
-            }
+            },
+            "axisSoftMin": 0
+          },
+          "color": {
+            "mode": "palette-classic"
           },
           "mappings": [],
           "thresholds": {
@@ -259,19 +260,17 @@
       },
       "id": 15,
       "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "sortBy": "Last *",
-          "sortDesc": true
-        },
         "tooltip": {
           "mode": "single",
           "sort": "none"
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [],
+          "sortBy": "Last *",
+          "sortDesc": true
         }
       },
       "targets": [
@@ -327,6 +326,138 @@
         }
       ],
       "title": "Outcome rates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "uid": "${logstash_mon_logs}",
+        "type": "elasticsearch"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "gradientMode": "opacity",
+            "spanNulls": true,
+            "showPoints": "auto",
+            "pointSize": 5,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "axisCenteredZero": false,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "color": {
+            "mode": "continuous-YlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 13,
+        "y": 8
+      },
+      "id": 44,
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [],
+          "sortBy": "Last *",
+          "sortDesc": true
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs}"
+          },
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "host.hostname",
+              "id": "4",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "3",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": "0",
+                "timeZone": "utc",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "3",
+              "type": "count"
+            }
+          ],
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: $cluster_uid",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Exceptions rate",
       "type": "timeseries"
     },
     {
@@ -678,15 +809,15 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
             "hideFrom": {
-              "legend": false,
               "tooltip": false,
-              "viz": false
+              "viz": false,
+              "legend": false
             }
+          },
+          "color": {
+            "mode": "palette-classic"
           },
           "mappings": []
         },
@@ -694,35 +825,35 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 11,
-        "x": 13,
+        "w": 4,
+        "x": 20,
         "y": 8
       },
       "id": 18,
       "options": {
-        "displayLabels": [
-          "value"
-        ],
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
         "legend": {
+          "showLegend": true,
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true,
           "values": [
             "percent"
           ]
         },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "displayLabels": [
+          "value"
+        ]
       },
       "pluginVersion": "9.3.2",
       "targets": [
@@ -1028,7 +1159,8 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": true
+            "inspect": true,
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -1417,7 +1549,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "inspect": false
+            "inspect": false,
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -1642,7 +1775,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.*)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"

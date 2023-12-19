@@ -1,45 +1,4 @@
 {
-  "__inputs": [
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "elasticsearch",
-      "name": "Elasticsearch",
-      "version": "1.0.0"
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.3.2"
-    },
-    {
-      "type": "panel",
-      "id": "marcusolsson-dynamictext-panel",
-      "name": "Dynamic text",
-      "version": "1.9.0"
-    },
-    {
-      "type": "datasource",
-      "id": "marcusolsson-json-datasource",
-      "name": "JSON API",
-      "version": "1.3.2"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -65,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 45,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -74,8 +33,26 @@
         "type": "marcusolsson-json-datasource",
         "uid": "${es_direct_mon}"
       },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 5,
+        "h": 10,
         "w": 4,
         "x": 0,
         "y": 0
@@ -84,7 +61,17 @@
       "options": {
         "content": "Pipeline: {{pipeline_name}} <br />\nLogstash host: {{host}} <br />\nLogstash name: {{name}} <br />\nNumber of filters failures: {{filters_failures}} <br />",
         "defaultContent": "The query didn't return any results.",
-        "everyRow": true
+        "editor": {
+          "format": "auto",
+          "height": 200,
+          "language": "markdown"
+        },
+        "editors": [],
+        "everyRow": true,
+        "externalScripts": [],
+        "externalStyles": [],
+        "helpers": "",
+        "styles": ""
       },
       "targets": [
         {
@@ -293,7 +280,9 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": true
           },
           "mappings": [],
@@ -423,8 +412,11 @@
                 "value": 115
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "color-background"
+                }
               }
             ]
           },
@@ -462,7 +454,9 @@
       },
       "id": 2,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -473,7 +467,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "cacheDurationSeconds": 0,
@@ -544,155 +538,451 @@
       "transformations": [],
       "type": "table"
     },
-{
-  "datasource": {
-    "uid": "${logstash_mon_logs}",
-    "type": "elasticsearch"
-  },
-  "fieldConfig": {
-    "defaults": {
-      "custom": {
-        "align": "auto",
-        "cellOptions": {
-          "type": "auto"
-        },
-        "inspect": true
-      },
-      "mappings": [],
-      "thresholds": {
-        "mode": "absolute",
-        "steps": [
-          {
-            "color": "green",
-            "value": null
-          },
-          {
-            "color": "red",
-            "value": 80
-          }
-        ]
-      },
-      "color": {
-        "mode": "thresholds"
-      }
-    },
-    "overrides": [
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "logstash.exception.type"
-        },
-        "properties": [
-          {
-            "id": "custom.width",
-            "value": 199
-          }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "host.name"
-        },
-        "properties": [
-          {
-            "id": "custom.width",
-            "value": 127
-          }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "@timestamp"
-        },
-        "properties": [
-          {
-            "id": "custom.width",
-            "value": 151
-          }
-        ]
-      }
-    ]
-  },
-  "gridPos": {
-    "h": 18,
-    "w": 10,
-    "x": 0,
-    "y": 5
-  },
-  "id": 6,
-  "options": {
-    "showHeader": true,
-    "cellHeight": "sm",
-    "footer": {
-      "show": false,
-      "reducer": [
-        "sum"
-      ],
-      "countRows": false,
-      "fields": ""
-    },
-    "sortBy": []
-  },
-  "pluginVersion": "9.5.5",
-  "targets": [
     {
       "datasource": {
         "type": "elasticsearch",
         "uid": "${logstash_mon_logs}"
       },
-      "alias": "",
-      "bucketAggs": [],
-      "cacheDurationSeconds": 300,
-      "fields": [
-        {
-          "jsonPath": ""
-        }
-      ],
-      "method": "GET",
-      "metrics": [
-        {
-          "id": "1",
-          "settings": {
-            "size": "25"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
           },
-          "type": "raw_data"
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max logstash.node.stats.pipeline.events.in_rate"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Logstash input rate"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max logstash.node.stats.pipeline.events.out_rate"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Logstash output rate"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 4,
+        "y": 5
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND logstash.node.stats.pipeline.id: $pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_uid}",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
         }
       ],
-      "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host) AND logstash.log.pipeline_name: $pipeline_id AND \nelasticsearch.cluster.id: ${cluster_uid}",
-      "queryParams": "",
-      "refId": "A",
-      "timeField": "@timestamp",
-      "urlPath": ""
-    }
-  ],
-  "title": "Logstash exceptions",
-  "transformations": [
+      "title": "Exceptions",
+      "transformations": [],
+      "type": "timeseries"
+    },
     {
-      "id": "filterFieldsByName",
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${logstash_mon_logs}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Exception"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 615
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pipeline"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 295
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 10,
+        "x": 0,
+        "y": 10
+      },
+      "id": 6,
       "options": {
-        "include": {
-          "names": [
-            "@timestamp",
-            "logstash.exception.type",
-            "logstash.message"
-          ]
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "logstash.exception.type",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host) AND logstash.log.pipeline_name: $pipeline_id AND \nelasticsearch.cluster.id: $cluster_uid",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
         }
-      }
+      ],
+      "title": "Exceptions list ",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Count": "",
+              "logstash.exception.type": "Exception",
+              "logstash.log.pipeline_name": "Pipeline"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${logstash_mon_logs}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Exception type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 199
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "@timestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 151
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 15
+      },
+      "id": 10,
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        },
+        "sortBy": []
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "25"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host) AND logstash.log.pipeline_name: $pipeline_id AND \nelasticsearch.cluster.id: ${cluster_uid}",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Logstash exceptions",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "@timestamp",
+                "logstash.exception.type",
+                "logstash.message"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "@timestamp": "",
+              "logstash.exception.type": "Exception type",
+              "logstash.message": "Message"
+            }
+          }
+        }
+      ],
+      "type": "table"
     }
-  ],
-  "type": "table"
-}
   ],
   "refresh": "1m",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
-	  {
-        "current": {},
+      {
+        "current": {
+        },
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "Grafana-DS-API"
@@ -716,16 +1006,13 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.*)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
-          "text": "ES",
-          "value": "ES"
         },
         "hide": 2,
         "includeAll": false,
@@ -740,9 +1027,9 @@
         "skipUrlSync": false,
         "type": "datasource"
       },
-	  {
+      {
         "current": {
-          },
+        },
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics",
@@ -755,9 +1042,9 @@
         "skipUrlSync": false,
         "type": "datasource"
       },
-	  {
+      {
         "current": {
-          },
+        },
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_logs",
@@ -771,7 +1058,8 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+        },
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "${es_direct_mon}"
@@ -807,7 +1095,8 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+        },
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "${es_direct_mon}"
@@ -855,6 +1144,6 @@
   "timezone": "",
   "title": "Logstash pipeline analytics",
   "uid": "logstash-pipeline-analytics",
-  "version": 46,
+  "version": 1,
   "weekStart": ""
 }
