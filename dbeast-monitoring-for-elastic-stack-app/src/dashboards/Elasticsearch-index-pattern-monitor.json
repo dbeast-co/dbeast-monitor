@@ -252,12 +252,11 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -273,6 +272,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -354,7 +356,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 98
+                "value": 91
               }
             ]
           },
@@ -378,7 +380,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 79
+                "value": 72
               },
               {
                 "id": "mappings",
@@ -403,8 +405,11 @@
                 ]
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "gradient"
+                }
               }
             ]
           },
@@ -416,7 +421,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 73
+                "value": 68
               }
             ]
           }
@@ -426,26 +431,28 @@
         "h": 18,
         "w": 10,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 2,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Index name"
+            "displayName": "Index name",
+            "desc": true
           }
         ]
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -524,7 +531,7 @@
           "urlPath": ""
         }
       ],
-      "title": "Top biggest index patterns",
+      "title": "Index list",
       "transformations": [
         {
           "id": "organize",
@@ -1353,7 +1360,7 @@
         "definition": "$[*].name",
         "hide": 2,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],

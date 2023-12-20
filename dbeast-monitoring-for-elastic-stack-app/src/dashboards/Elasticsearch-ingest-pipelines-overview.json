@@ -1483,7 +1483,7 @@
         "definition": "$[*].name",
         "hide": 0,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],

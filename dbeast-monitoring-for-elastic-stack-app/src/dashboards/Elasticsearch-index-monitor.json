@@ -65,17 +65,16 @@
   "panels": [
     {
       "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_index_stats_status}"
+        "uid": "${es_index_stats_status}",
+        "type": "elasticsearch"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -91,6 +90,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -163,8 +165,33 @@
                 ]
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index pattern"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 265
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Analyze index pattern",
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -178,19 +205,25 @@
       },
       "id": 26,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -225,13 +258,20 @@
                 "size": "10"
               },
               "type": "terms"
+            },
+            {
+              "id": "9",
+              "type": "terms",
+              "settings": {
+                "min_doc_count": "1",
+                "size": "10",
+                "order": "desc",
+                "orderBy": "_term"
+              },
+              "field": "elasticsearch.index.index_pattern"
             }
           ],
           "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -279,14 +319,15 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "Max elasticsearch.index.primaries.store.size_in_bytes": 3,
-              "Max elasticsearch.index.shards.primaries": 5,
-              "Max elasticsearch.index.shards.total": 6,
-              "Max elasticsearch.index.total.docs.count": 7,
-              "Max elasticsearch.index.total.store.size_in_bytes": 4,
-              "elasticsearch.index.health": 1,
               "elasticsearch.index.name": 0,
-              "elasticsearch.index.status": 2
+              "elasticsearch.index.index_pattern": 1,
+              "elasticsearch.index.health": 2,
+              "elasticsearch.index.status": 3,
+              "Max elasticsearch.index.primaries.store.size_in_bytes": 4,
+              "Max elasticsearch.index.total.store.size_in_bytes": 5,
+              "Max elasticsearch.index.shards.primaries": 6,
+              "Max elasticsearch.index.shards.total": 7,
+              "Max elasticsearch.index.total.docs.count": 8
             },
             "renameByName": {
               "Max elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
@@ -296,7 +337,8 @@
               "Max elasticsearch.index.total.store.size_in_bytes": "Total size",
               "elasticsearch.index.health": "Health",
               "elasticsearch.index.name": "Index",
-              "elasticsearch.index.status": "Status"
+              "elasticsearch.index.status": "Status",
+              "elasticsearch.index.index_pattern": "Index pattern"
             }
           }
         }
@@ -1368,7 +1410,7 @@
         "definition": "$[*].name",
         "hide": 2,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],

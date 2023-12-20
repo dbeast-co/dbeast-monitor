@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 45,
+  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -990,7 +990,7 @@
         "definition": "$[*].name",
         "hide": 2,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],

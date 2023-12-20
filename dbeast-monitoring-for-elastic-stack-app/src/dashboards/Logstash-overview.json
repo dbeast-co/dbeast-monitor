@@ -468,17 +468,15 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
-            "filterable": false,
-            "inspect": false
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "filterable": false
           },
           "mappings": [],
-          "max": 100,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -491,13 +489,17 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "max": 100
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "status"
+              "options": "Status"
             },
             "properties": [
               {
@@ -520,15 +522,18 @@
                 ]
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "gradient"
+                }
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "version"
+              "options": "Version"
             },
             "properties": [
               {
@@ -548,8 +553,11 @@
                 "value": 158
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "lcd"
+                }
               },
               {
                 "id": "unit",
@@ -568,8 +576,11 @@
                 "value": 128
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "lcd"
+                }
               },
               {
                 "id": "unit",
@@ -659,21 +670,23 @@
         "h": 12,
         "w": 13,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 10,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": [
-            "Max logstash.node.stats.events.in_rate",
-            "Max logstash.node.stats.events.out_rate"
-          ],
+          "show": true,
           "reducer": [
             "sum"
           ],
-          "show": true
+          "countRows": false,
+          "fields": [
+            "Max logstash.node.stats.events.in_rate",
+            "Max logstash.node.stats.events.out_rate"
+          ]
         },
-        "showHeader": true,
         "sortBy": [
           {
             "desc": false,
@@ -681,7 +694,7 @@
           }
         ]
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -794,8 +807,8 @@
               "Max logstash.node.stats.process.cpu.percent": "CPU usage",
               "host.hostname": "Host",
               "logstash.node.stats.logstash.name": "Node Name",
-              "logstash.node.stats.logstash.status": "status",
-              "logstash.node.stats.logstash.version": "version"
+              "logstash.node.stats.logstash.status": "Status",
+              "logstash.node.stats.logstash.version": "Version"
             }
           }
         }
@@ -1148,10 +1161,9 @@
     },
     {
       "datasource": {
-        "uid": "-- Mixed --",
-        "type": "datasource"
+        "type": "datasource",
+        "uid": "-- Mixed --"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1160,7 +1172,7 @@
               "type": "auto"
             },
             "inspect": true,
-            "filterable": true
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1185,7 +1197,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "in_rate"
+              "options": "In rate"
             },
             "properties": [
               {
@@ -1197,7 +1209,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "out_rate"
+              "options": "Out rate"
             },
             "properties": [
               {
@@ -1209,7 +1221,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "failures_rate"
+              "options": "Failures rate"
             },
             "properties": [
               {
@@ -1244,31 +1256,39 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "in"
+              "options": "In"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 90
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "out"
+              "options": "Out"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 82
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "pipeline_id"
+              "options": "Pipeline name"
             },
             "properties": [
               {
@@ -1285,9 +1305,13 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze pipeline",
-                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&var-pipeline_id=${__data.fields.pipeline_id}&${cluster_uid:queryparam}"
+                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}&${cluster_uid:queryparam}"
                   }
                 ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -1310,6 +1334,10 @@
                     "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                   }
                 ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -1328,28 +1356,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "filter_failures"
+              "options": "Filter failures"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 106
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "red",
-                      "value": 1
-                    }
-                  ]
-                }
               }
             ]
           }
@@ -1377,18 +1389,14 @@
         "frameIndex": 1,
         "sortBy": [
           {
-            "displayName": "failures_rate",
-            "desc": true
+            "desc": true,
+            "displayName": "failures_rate"
           }
         ]
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${logstash_mon_metrics_status}"
-          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1414,6 +1422,10 @@
               "type": "terms"
             }
           ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
+          },
           "fields": [
             {
               "jsonPath": ""
@@ -1460,10 +1472,6 @@
           "urlPath": ""
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${logstash_mon_logs_ports}"
-          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1478,6 +1486,10 @@
               "type": "terms"
             }
           ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs_ports}"
+          },
           "hide": false,
           "metrics": [
             {
@@ -1519,21 +1531,22 @@
             "renameByName": {
               "Max": "Port",
               "Max logstash.node.stats.pipeline.events.failures_rate": "failures_rate",
-              "Max logstash.node.stats.pipeline.events.in": "in",
-              "Max logstash.node.stats.pipeline.events.in_rate": "in_rate",
-              "Max logstash.node.stats.pipeline.events.out": "out",
-              "Max logstash.node.stats.pipeline.events.out_rate": "out_rate",
-              "Max logstash.node.stats.pipeline.filters_failures": "filter_failures",
+              "Max logstash.node.stats.pipeline.events.in": "In",
+              "Max logstash.node.stats.pipeline.events.in_rate": "In rate",
+              "Max logstash.node.stats.pipeline.events.out": "Out",
+              "Max logstash.node.stats.pipeline.events.out_rate": "Out rate",
+              "Max logstash.node.stats.pipeline.filters_failures": "Filter failures",
+              "Max logstash.node.stats.pipeline.filters_failures_rate": "Failures rate",
               "Max logstash.node.stats.pipeline.plugins.filters.failures": "filter_failures",
               "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": "failures_rate",
               "host.hostname": "Host",
-              "logstash.node.stats.pipeline.id": "pipeline_id",
-              "Max logstash.node.stats.pipeline.filters_failures_rate": "failures_rate"
+              "logstash.node.stats.pipeline.id": "Pipeline name"
             }
           }
         }
       ],
-      "type": "table"
+      "type": "table",
+      "description": ""
     },
     {
       "datasource": {
@@ -1543,14 +1556,13 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false,
-            "filterable": true
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -1565,6 +1577,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -1587,6 +1602,10 @@
               {
                 "id": "custom.width",
                 "value": 312
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -1609,6 +1628,10 @@
                     "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                   }
                 ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -1646,14 +1669,16 @@
       },
       "id": 8,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": [
           {
             "desc": true,
@@ -1661,7 +1686,7 @@
           }
         ]
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -1759,7 +1784,7 @@
         "definition": "$[*].name",
         "hide": 0,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],
