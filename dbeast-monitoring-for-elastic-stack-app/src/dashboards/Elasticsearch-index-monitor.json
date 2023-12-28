@@ -1,39 +1,4 @@
 {
-  "__inputs": [
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "elasticsearch",
-      "name": "Elasticsearch",
-      "version": "1.0.0"
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.3.2"
-    },
-    {
-      "type": "datasource",
-      "id": "marcusolsson-json-datasource",
-      "name": "JSON API",
-      "version": "1.3.2"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -65,17 +30,20 @@
   "panels": [
     {
       "datasource": {
-        "uid": "${es_index_stats_status}",
-        "type": "elasticsearch"
+        "type": "elasticsearch",
+        "uid": "${es_index_stats_status}"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "center",
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": false
+            "inspect": true
           },
           "mappings": [],
           "thresholds": {
@@ -90,9 +58,6 @@
                 "value": 80
               }
             ]
-          },
-          "color": {
-            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -105,6 +70,10 @@
               {
                 "id": "unit",
                 "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 145
               }
             ]
           },
@@ -117,6 +86,10 @@
               {
                 "id": "unit",
                 "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 148
               }
             ]
           },
@@ -129,6 +102,10 @@
               {
                 "id": "unit",
                 "value": "short"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
               }
             ]
           },
@@ -140,7 +117,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 189
+                "value": 146
               },
               {
                 "id": "mappings",
@@ -167,8 +144,8 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "color-background",
-                  "mode": "basic"
+                  "mode": "basic",
+                  "type": "color-background"
                 }
               }
             ]
@@ -181,17 +158,92 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 265
+                "value": 309
               },
               {
                 "id": "links",
                 "value": [
                   {
+                    "targetBlank": true,
                     "title": "Analyze index pattern",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}",
-                    "targetBlank": true
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Primary shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 351
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg shard size"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
               }
             ]
           }
@@ -205,25 +257,21 @@
       },
       "id": 26,
       "options": {
-        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "show": false,
+          "countRows": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "countRows": false,
-          "fields": ""
+          "show": false
         },
+        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats_status}"
-          },
           "alias": "",
           "bucketAggs": [
             {
@@ -260,18 +308,22 @@
               "type": "terms"
             },
             {
+              "field": "elasticsearch.index.index_pattern",
               "id": "9",
-              "type": "terms",
               "settings": {
                 "min_doc_count": "1",
-                "size": "10",
                 "order": "desc",
-                "orderBy": "_term"
+                "orderBy": "_term",
+                "size": "10"
               },
-              "field": "elasticsearch.index.index_pattern"
+              "type": "terms"
             }
           ],
           "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
           "fields": [
             {
               "jsonPath": ""
@@ -319,15 +371,15 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "elasticsearch.index.name": 0,
-              "elasticsearch.index.index_pattern": 1,
-              "elasticsearch.index.health": 2,
-              "elasticsearch.index.status": 3,
               "Max elasticsearch.index.primaries.store.size_in_bytes": 4,
-              "Max elasticsearch.index.total.store.size_in_bytes": 5,
               "Max elasticsearch.index.shards.primaries": 6,
               "Max elasticsearch.index.shards.total": 7,
-              "Max elasticsearch.index.total.docs.count": 8
+              "Max elasticsearch.index.total.docs.count": 8,
+              "Max elasticsearch.index.total.store.size_in_bytes": 5,
+              "elasticsearch.index.health": 2,
+              "elasticsearch.index.index_pattern": 1,
+              "elasticsearch.index.name": 0,
+              "elasticsearch.index.status": 3
             },
             "renameByName": {
               "Max elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
@@ -336,9 +388,25 @@
               "Max elasticsearch.index.total.docs.count": "Documents",
               "Max elasticsearch.index.total.store.size_in_bytes": "Total size",
               "elasticsearch.index.health": "Health",
+              "elasticsearch.index.index_pattern": "Index pattern",
               "elasticsearch.index.name": "Index",
-              "elasticsearch.index.status": "Status",
-              "elasticsearch.index.index_pattern": "Index pattern"
+              "elasticsearch.index.status": "Status"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Avg shard size",
+            "binary": {
+              "left": "Primary size",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Primary shards"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
             }
           }
         }
@@ -357,7 +425,9 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -384,15 +454,15 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 160
+                "value": 274
               },
               {
                 "id": "links",
                 "value": [
                   {
+                    "targetBlank": true,
                     "title": "Analyze node",
-                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields.Node}&${cluster_uid:queryparam}",
-                    "targetBlank": true
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields.Node}&${cluster_uid:queryparam}"
                   }
                 ]
               }
@@ -421,18 +491,31 @@
                 "value": 131
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 19,
-        "w": 6,
+        "h": 17,
+        "w": 8,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 35,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -442,7 +525,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -624,10 +707,10 @@
         ]
       },
       "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 6,
-        "y": 3
+        "h": 5,
+        "w": 8,
+        "x": 8,
+        "y": 4
       },
       "id": 30,
       "options": {
@@ -756,12 +839,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 15,
-        "y": 3
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 4
       },
-      "id": 31,
+      "id": 33,
       "options": {
         "legend": {
           "calcs": [],
@@ -776,7 +859,7 @@
       },
       "targets": [
         {
-          "alias": "Search query rate",
+          "alias": "",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -802,7 +885,7 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "elasticsearch.index.total.search.query_rate",
+              "field": "elasticsearch.index.total.search.query_latency",
               "id": "1",
               "type": "avg"
             }
@@ -814,8 +897,21 @@
           "urlPath": ""
         }
       ],
-      "title": "Query rate",
-      "transformations": [],
+      "title": "Query latency",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Average elasticsearch.index.total.search.query_latency": "Avg query latency",
+              "Max elasticsearch.index.total.docs.count": "Docs count",
+              "Time": ""
+            }
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -884,8 +980,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 9,
-        "x": 6,
+        "w": 8,
+        "x": 8,
         "y": 9
       },
       "id": 32,
@@ -1023,11 +1119,11 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 9,
-        "x": 15,
+        "w": 8,
+        "x": 16,
         "y": 9
       },
-      "id": 33,
+      "id": 31,
       "options": {
         "legend": {
           "calcs": [],
@@ -1042,7 +1138,7 @@
       },
       "targets": [
         {
-          "alias": "",
+          "alias": "Search query rate",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -1068,7 +1164,7 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "elasticsearch.index.total.search.query_latency",
+              "field": "elasticsearch.index.total.search.query_rate",
               "id": "1",
               "type": "avg"
             }
@@ -1080,21 +1176,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Query latency",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Average elasticsearch.index.total.search.query_latency": "Avg query latency",
-              "Max elasticsearch.index.total.docs.count": "Docs count",
-              "Time": ""
-            }
-          }
-        }
-      ],
+      "title": "Query rate",
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1188,9 +1271,9 @@
         ]
       },
       "gridPos": {
-        "h": 7,
-        "w": 9,
-        "x": 6,
+        "h": 6,
+        "w": 8,
+        "x": 8,
         "y": 15
       },
       "id": 29,
@@ -1332,9 +1415,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 9,
-        "x": 15,
+        "h": 6,
+        "w": 8,
+        "x": 16,
         "y": 15
       },
       "id": 28,
@@ -1393,16 +1476,752 @@
       "title": "Docs count",
       "transformations": [],
       "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 36,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 0,
+            "y": 22
+          },
+          "id": 37,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Shard {{term elasticsearch.shard.number}}",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.shard.number",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.shard.indexing.index_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Indexing rate per shard",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "bars",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 4,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 8,
+            "y": 22
+          },
+          "id": 39,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Shard {{term elasticsearch.shard.number}}",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.shard.number",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.shard.search.query_last_period",
+                  "id": "1",
+                  "type": "sum"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Search queries count",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "bars",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 4,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 22
+          },
+          "id": 41,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Shard {{term elasticsearch.shard.number}}",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.shard.number",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.shard.search.fetch_last_period",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Search fetch count for the period",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 0,
+            "y": 29
+          },
+          "id": 38,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Shard {{term elasticsearch.shard.number}}",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.shard.number",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.shard.indexing.index_latency",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Indexing latency per shard",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 8,
+            "y": 29
+          },
+          "id": 40,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Shard {{term elasticsearch.shard.number}}",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.shard.number",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.shard.search.query_latency",
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Avg search query latency",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "ms"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 29
+          },
+          "id": 42,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Shard {{term elasticsearch.shard.number}}",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.shard.number",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.shard.search.fetch_latency",
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.index.name: $index_name",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Search fetch latency",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Shards analytics",
+      "type": "row"
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+        },
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "Grafana-DS-API"
@@ -1432,7 +2251,8 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+        },
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -1447,7 +2267,8 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+        },
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -1462,7 +2283,8 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+        },
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -1477,7 +2299,8 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+        },
         "datasource": {
           "type": "elasticsearch",
           "uid": "${es_index_stats_status}"
@@ -1495,6 +2318,22 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_shards_stats",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-20-.*-${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
       }
     ]
   },
@@ -1506,6 +2345,6 @@
   "timezone": "",
   "title": "Elasticsearch index monitor",
   "uid": "elasticsearch-index-monitor",
-  "version": 17,
+  "version": 4,
   "weekStart": ""
 }
