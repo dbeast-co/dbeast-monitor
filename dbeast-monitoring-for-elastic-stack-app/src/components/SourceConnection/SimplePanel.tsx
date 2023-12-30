@@ -27,6 +27,7 @@ interface Project {
     status: string;
 }
 
+
 // interface Props extends PanelProps<SimpleOptions> {}
 
 export const SimplePanel = (props: any) => {
