@@ -270,14 +270,11 @@
     },
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_mon}"
+        "uid": "${es_direct_mon}",
+        "type": "marcusolsson-json-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -298,37 +295,28 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "host.hostname"
+              "options": "Plugin Id"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 144
+                "value": 374
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "plugin_id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 376
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "in_rate"
+              "options": "In rate"
             },
             "properties": [
               {
@@ -340,7 +328,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "out_rate"
+              "options": "Out rate"
             },
             "properties": [
               {
@@ -352,7 +340,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "latency"
+              "options": "Latency"
             },
             "properties": [
               {
@@ -364,19 +352,23 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "failures"
+              "options": "Failures"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 66
+                "value": 71
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "plugin_name"
+              "options": "Plugin"
             },
             "properties": [
               {
@@ -388,7 +380,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "failures_rate"
+              "options": "Failures rate"
             },
             "properties": [
               {
@@ -423,24 +415,32 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "in"
+              "options": "In"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 93
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "out"
+              "options": "Out"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 82
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           }
@@ -454,71 +454,71 @@
       },
       "id": 2,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
         "frameIndex": 1,
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_mon}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].name",
-              "name": "plugin_name"
+              "name": "Plugin"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].id",
               "language": "jsonpath",
-              "name": "plugin_id"
+              "name": "Plugin Id"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.in",
               "language": "jsonpath",
-              "name": "in"
+              "name": "In"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.in_rate",
               "language": "jsonpath",
-              "name": "in_rate"
+              "name": "In rate"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.out",
               "language": "jsonpath",
-              "name": "out"
+              "name": "Out"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.out_rate",
               "language": "jsonpath",
-              "name": "out_rate"
+              "name": "Out rate"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.($exists(latency) ? latency: 0)",
               "language": "jsonata",
-              "name": "latency"
+              "name": "Latency"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].($exists(failures) ? failures: 0)",
               "language": "jsonata",
-              "name": "failures"
+              "name": "Failures"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].($exists(failures_rate) ? failures_rate: 0)",
               "language": "jsonata",
-              "name": "failures_rate"
+              "name": "Failures rate"
             }
           ],
           "hide": false,
@@ -1103,6 +1103,7 @@
         },
         "definition": "$.hits.hits[*]._source.logstash.node.stats.pipeline.id",
         "hide": 0,
+        "label": "Pipeline Name",
         "includeAll": false,
         "multi": false,
         "name": "pipeline_id",

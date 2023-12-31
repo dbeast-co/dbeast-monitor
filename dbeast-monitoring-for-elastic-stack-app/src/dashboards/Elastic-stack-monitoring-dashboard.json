@@ -4689,14 +4689,11 @@
         },
         {
           "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
+            "uid": "${es_direct_prod}",
+            "type": "marcusolsson-json-datasource"
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
               "custom": {
                 "align": "auto",
                 "cellOptions": {
@@ -4717,6 +4714,9 @@
                     "value": 80
                   }
                 ]
+              },
+              "color": {
+                "mode": "thresholds"
               }
             },
             "overrides": [
@@ -4728,7 +4728,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 393
+                    "value": 330
                   }
                 ]
               },
@@ -4788,32 +4788,32 @@
           },
           "gridPos": {
             "h": 19,
-            "w": 7,
+            "w": 6,
             "x": 13,
-            "y": 10
+            "y": 41
           },
           "id": 50,
           "options": {
+            "showHeader": true,
             "cellHeight": "sm",
             "footer": {
-              "countRows": false,
-              "fields": "",
+              "show": false,
               "reducer": [
                 "sum"
               ],
-              "show": false
+              "countRows": false,
+              "fields": ""
             },
-            "showHeader": true,
             "sortBy": []
           },
           "pluginVersion": "9.5.10",
           "targets": [
             {
-              "cacheDurationSeconds": 300,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
                 "uid": "${es_direct_prod}"
               },
+              "cacheDurationSeconds": 0,
               "fields": [
                 {
                   "jsonPath": "$[$.health != 'green'].index",
@@ -4837,54 +4837,46 @@
         },
         {
           "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
+            "uid": "${es_direct_prod}",
+            "type": "marcusolsson-json-datasource"
           },
           "gridPos": {
-            "h": 5,
-            "w": 4,
-            "x": 20,
-            "y": 10
+            "h": 19,
+            "w": 5,
+            "x": 19,
+            "y": 41
           },
           "id": 14,
           "options": {
-            "content": "Allocation enabled: {{EnableAllocation}} <br />\nAllow rebalansing: {{AllowRebalance}}  <br />\nConcurrent recoveries: {{ConcurrentRecoveries}} <br />\n\n!Pay attention! This is CUSTOM settings",
-            "defaultContent": "The query didn't return any results.",
-            "editor": {
-              "format": "auto",
-              "height": 243,
-              "language": "markdown"
-            },
-            "editors": [],
             "everyRow": true,
-            "externalScripts": [],
+            "editors": [],
             "externalStyles": [],
+            "externalScripts": [],
+            "editor": {
+              "language": "markdown",
+              "format": "auto",
+              "height": 243
+            },
+            "wrap": true,
+            "content": "```json \n{{{json data }}}\n```",
+            "defaultContent": "The query didn't return any results.",
             "helpers": "",
+            "afterRender": "",
             "styles": ""
           },
           "pluginVersion": "9.5.10",
           "targets": [
             {
-              "cacheDurationSeconds": 300,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
                 "uid": "${es_direct_prod}"
               },
+              "cacheDurationSeconds": 0,
               "fields": [
                 {
-                  "jsonPath": "$.persistent.cluster.routing.allocation.node_concurrent_incoming_recoveries",
+                  "jsonPath": "$",
                   "language": "jsonata",
-                  "name": "ConcurrentRecoveries"
-                },
-                {
-                  "jsonPath": "$.persistent.cluster.routing.allocation.enable",
-                  "language": "jsonata",
-                  "name": "EnableAllocation"
-                },
-                {
-                  "jsonPath": "$.persistent.cluster.routing.allocation.allow_rebalance",
-                  "language": "jsonata",
-                  "name": "AllowRebalance"
+                  "name": "data"
                 }
               ],
               "method": "GET",
@@ -4895,7 +4887,25 @@
           ],
           "title": "Cluster custom settings",
           "transformations": [],
-          "type": "marcusolsson-dynamictext-panel"
+          "type": "marcusolsson-dynamictext-panel",
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "green"
+                  },
+                  {
+                    "value": 80,
+                    "color": "red"
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          }
         },
         {
           "datasource": {
