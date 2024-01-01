@@ -32,7 +32,7 @@
     margin-block-end: 1.5rem;
     position: relative;
 
-    span {
+    .error {
       position: absolute;
       color: #D33F49;
       top: 100%;
@@ -128,30 +128,7 @@
       cursor: not-allowed;
     }
 
-    span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      border: 1px solid #ffffff;
 
-      &.UNTESTED {
-        background: #555555;
-      }
-
-      &.YELLOW {
-        background: #E59500;;
-      }
-
-      &.RED {
-        background: #D33F49;
-      }
-
-      &.GREEN {
-        background: #79B473;
-      }
-
-    }
   }
 
 }
@@ -205,4 +182,61 @@
   border-width: 2px 3px thin !important;
   border-style: solid !important;
   border-color: white !important;
+}
+.status {
+  color: #ffffff;
+  position: absolute;
+  top: 30%;
+  left: 73%;
+
+  display: inline-flex;
+
+  .UNTESTED {
+    background: #555555;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+
+
+  }
+
+  .YELLOW {
+    background: #E59500;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .RED {
+    background: #D33F49;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .GREEN {
+    background: #79B473;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+}
+.source_panel.isLight{
+  background-color: #fff;
+  border: 1px solid #222e46;
+  label {
+
+    color: #222e46;
+  }
+  .css-vubbuv {
+    fill: #222e46;
+  }
+  .status{
+    top: 25%;
+  }
+  .css-mqt2s5.Mui-disabled {
+    color: #222e46;
+    opacity: 0.3;
+  }
 }
