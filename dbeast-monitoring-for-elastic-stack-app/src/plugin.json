@@ -61,8 +61,8 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "0.5.1",
-    "updated": "2023-12-07"
+    "version": "0.6.0",
+    "updated": "%TODAY%"
   },
   "includes": [
     {
@@ -193,7 +193,7 @@
     }
   ],
   "dependencies": {
-    "grafanaDependency": ">=9.0.0",
+    "grafanaDependency": ">=9.4.0",
     "plugins": []
   }
 }
