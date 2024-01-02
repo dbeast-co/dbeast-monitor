@@ -4,6 +4,8 @@
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-shards-stats.conf"
 - pipeline.id: dbeast-mon-es-index-summary
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-indices-summary.conf"
+- pipeline.id: dbeast-mon-es-thread_pools
+  path.config: "/etc/logstash/conf.d/dbeast-mon-es-thread_pools.conf"
 - pipeline.id: dbeast-mon-es-enrich_queue-metrics
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-enrich_queue-metrics.conf"
 - pipeline.id: dbeast-mon-es-ingest_pipelines-metrics

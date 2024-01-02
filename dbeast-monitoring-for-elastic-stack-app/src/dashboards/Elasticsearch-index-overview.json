@@ -533,33 +533,35 @@
       "panels": [
         {
           "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats_status}"
+            "uid": "${es_index_stats_status}",
+            "type": "elasticsearch"
           },
-          "description": "",
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
               "custom": {
                 "align": "center",
-                "displayMode": "auto",
-                "filterable": true,
-                "inspect": false
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false,
+                "filterable": false
               },
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
                     "value": 80
                   }
                 ]
+              },
+              "color": {
+                "mode": "thresholds"
               }
             },
             "overrides": [
@@ -591,7 +593,7 @@
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 279
+                    "value": 334
                   },
                   {
                     "id": "links",
@@ -602,6 +604,14 @@
                         "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                       }
                     ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  },
+                  {
+                    "id": "custom.inspect",
+                    "value": true
                   }
                 ]
               },
@@ -660,12 +670,40 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Avg in index (pri)"
+                  "options": "Avg Pri Index size"
                 },
                 "properties": [
                   {
                     "id": "unit",
                     "value": "bytes"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Min Pri Shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max Pri Shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
                   }
                 ]
               }
@@ -673,14 +711,20 @@
           },
           "gridPos": {
             "h": 21,
-            "w": 14,
-            "x": 5,
+            "w": 19,
+            "x": 2,
             "y": 17
           },
           "id": 2,
           "options": {
+            "showHeader": true,
+            "cellHeight": "sm",
             "footer": {
-              "enablePagination": true,
+              "show": true,
+              "reducer": [
+                "sum"
+              ],
+              "countRows": false,
               "fields": [
                 "Sum elasticsearch.index.primaries.indexing.index_rate",
                 "Sum elasticsearch.index.total.search.query_rate",
@@ -688,22 +732,22 @@
                 "Sum elasticsearch.index.total.store.size_in_bytes",
                 "Avg in index (pri)"
               ],
-              "reducer": [
-                "sum"
-              ],
-              "show": true
+              "enablePagination": true
             },
-            "showHeader": true,
             "sortBy": [
               {
-                "desc": true,
-                "displayName": "Primary size"
+                "displayName": "Primary size",
+                "desc": true
               }
             ]
           },
-          "pluginVersion": "9.3.2",
+          "pluginVersion": "9.5.10",
           "targets": [
             {
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_index_stats_status}"
+              },
               "alias": "",
               "bucketAggs": [
                 {
@@ -719,10 +763,6 @@
                 }
               ],
               "cacheDurationSeconds": 300,
-              "datasource": {
-                "type": "elasticsearch",
-                "uid": "${es_index_stats_status}"
-              },
               "fields": [
                 {
                   "jsonPath": ""
@@ -752,7 +792,17 @@
                 },
                 {
                   "id": "6",
-                  "type": "count"
+                  "type": "min",
+                  "field": "elasticsearch.index.shards.primaries"
+                },
+                {
+                  "id": "7",
+                  "type": "max",
+                  "field": "elasticsearch.index.shards.primaries"
+                },
+                {
+                  "type": "count",
+                  "id": "8"
                 }
               ],
               "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: *$index_name*",
@@ -784,28 +834,31 @@
                   "Sum elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
                   "Sum elasticsearch.index.total.search.query_rate": "Query rate",
                   "Sum elasticsearch.index.total.store.size_in_bytes": "Total size",
-                  "elasticsearch.index.index_pattern": "Index pattern"
+                  "elasticsearch.index.index_pattern": "Index pattern",
+                  "Min": "Min Pri Shards",
+                  "Max": "Max Pri Shards"
                 }
               }
             },
             {
               "id": "calculateField",
               "options": {
-                "alias": "Avg in index (pri)",
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "alias": "Avg Pri Index size",
                 "binary": {
                   "left": "Primary size",
                   "operator": "/",
                   "reducer": "sum",
                   "right": "Indices in pattern"
-                },
-                "mode": "binary",
-                "reduce": {
-                  "reducer": "sum"
                 }
               }
             }
           ],
-          "type": "table"
+          "type": "table",
+          "description": ""
         }
       ],
       "title": "Index patterns overview",
@@ -826,23 +879,20 @@
     },
     {
       "datasource": {
-        "type": "datasource",
-        "uid": "${es_index_stats_status}"
+        "uid": "${es_index_stats_status}",
+        "type": "elasticsearch"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
-            "filterable": true,
-            "inspect": true
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "filterable": false
           },
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -855,9 +905,24 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "noValue": "0"
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -879,6 +944,7 @@
             ]
           },
           {
+
             "matcher": {
               "id": "byName",
               "options": "Index name"
@@ -897,6 +963,18 @@
                     "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                   }
                 ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
+                "id": "filterable",
+                "value": true
               }
             ]
           },
@@ -1016,8 +1094,27 @@
                 ]
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "gradient"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg shard size"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
               }
             ]
           }
@@ -1025,26 +1122,28 @@
       },
       "gridPos": {
         "h": 21,
-        "w": 17,
-        "x": 4,
+        "w": 19,
+        "x": 2,
         "y": 18
       },
       "id": 10,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "enablePagination": true,
+          "show": true,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
           "fields": [
             "Sum elasticsearch.index.total.store.size_in_bytes",
             "Sum elasticsearch.index.primaries.store.size_in_bytes",
             "Sum elasticsearch.index.primaries.indexing.index_rate",
             "Sum elasticsearch.index.total.search.query_rate"
           ],
-          "reducer": [
-            "sum"
-          ],
-          "show": true
+          "enablePagination": true
         },
-        "showHeader": true,
         "sortBy": [
           {
             "desc": true,
@@ -1052,9 +1151,13 @@
           }
         ]
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1081,10 +1184,6 @@
             }
           ],
           "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -1126,6 +1225,23 @@
               "field": "elasticsearch.index.shards.total",
               "id": "12",
               "type": "max"
+            },
+            {
+              "id": "13",
+              "type": "bucket_script",
+              "pipelineVariables": [
+                {
+                  "name": "pri_store",
+                  "pipelineAgg": "3"
+                },
+                {
+                  "name": "pri_shards",
+                  "pipelineAgg": "8"
+                }
+              ],
+              "settings": {
+                "script": "params.pri_store / params.pri_shards"
+              }
             }
           ],
           "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: *$index_name*",
@@ -1171,12 +1287,14 @@
               "elasticsearch.index.index_pattern": "Index pattern",
               "elasticsearch.index.name": "Index name",
               "elasticsearch.rep": "number of replicas",
-              "zero": ""
+              "zero": "",
+              "Bucket Script": "Avg shard size"
             }
           }
         }
       ],
-      "type": "table"
+      "type": "table",
+      "description": ""
     }
   ],
   "refresh": "1m",
@@ -1194,7 +1312,7 @@
         "definition": "$[*].name",
         "hide": 0,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],
@@ -1210,7 +1328,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.*)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
