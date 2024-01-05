@@ -7,6 +7,9 @@ Elasticsearch, Logstash, and Kibana. This application supports the monitoring of
 used for the analytics is delivered by Beats and Logstash and stored in Elasticsearch. You can use your production
 Elasticsearch cluster as the data storage, but we strongly recommend using a dedicated monitoring cluster.
 
+## Playground
+
+You can try DBeast Monitor today in our [playground](https://play.dbeast.co/a/dbeast-dbeastmonitor-app)
 ## Documentation
 
 The project documentation is available on our [wiki](https://github.com/dbeast-co/dbeast-monitor/wiki).
