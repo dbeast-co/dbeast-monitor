@@ -1,9 +1,11 @@
 package co.dbeast.grafana_backend.pojo.new_backend;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.beans.property.StringProperty;
 
 public class ClusterInput {
     private String host;
+    @JsonProperty("authentication_enabled")
     private boolean authenticationEnabled;
     private String username;
     private String password;
