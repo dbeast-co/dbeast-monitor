@@ -16,8 +16,23 @@ const settings = require('./config.ts');
 
 
 interface Response {
-    cluster_status: string;
-    error: string;
+    prod: {
+        elasticsearch: {
+            status: string;
+            error: string;
+        };
+        kibana: {
+            status: string;
+            error: string;
+        };
+    };
+    mon: {
+        elasticsearch: {
+            status: string;
+            error: string;
+        };
+
+    };
 }
 
 // interface Project {
@@ -63,36 +78,17 @@ interface Props extends PanelProps<SimpleOptions> {
 }
 
 export const SimplePanel: React.FC<Props> = ({options, data, width, height, replaceVariables}) => {
-    console.log('INIT SimplePanel in panel')
     const theme = useTheme2();
-
-    console.log('theme', theme)
-
     const baseUrl = settings.SERVER_URL;
-
     const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
-    // const [disableControl, setDisableControl] = useState(true);
-    // const [authChecked, setAuthChecked] = useState(false);
-    // const [host, setHost] = useState('');
-    // const [kibanaHost, setKibanaHost] = useState('');
-    // const [sslChecked, setSSLChecked] = useState(false);
-    // const [authUsername, setAuthUsername] = useState('');
-    // const [authPassword, setAuthPassword] = useState('');
+
     const [validHost, setValidHost] = useState(false);
     const [validKibanaHost, setValidKibanaHost] = useState(false);
-    // const [form, setForm] = useState({});
-    // const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
     const [testDisable, setTestDisable] = useState(true);
 
-    // const [monitoring_host, setMonitoringHost] = useState('');
     const [validMonitoringHost, setValidMonitoringValidHost] = useState(false);
-    // const [monitoring_is_use_authentication, setMonitoringAuthChecked] = useState(false);
-    // const [monitoringAuthUsername, setMonitoringAuthUsername] = useState('');
-    // const [monitoringAuthPassword, setMonitoringAuthPassword] = useState('');
-    // const [disabledMonitoringControl, setDisableMonitoringControl] = useState(true);
-
     const [newProject, setNewProject] = useState({
         prod: {
             elasticsearch: {
@@ -121,51 +117,49 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         }
     } as NewProject);
 
-    let form: NewProject = {} as NewProject;
     const onSave = () => {
         setIsLoading(true);
         try {
-            // const form: Project = {
-            //     es_host: host ?? '',
-            //     kibana_host: kibanaHost ?? '',
-            //     authentication_enabled: authChecked ?? false,
-            //     // ssl_enabled: sslChecked ?? false,
-            //     username: authUsername ?? '',
-            //     password: authPassword ?? '',
-            //     status: status ?? 'UNTESTED',
-            //     monitoring_host: monitoring_host ?? '',
-            //     monitoring_authentication_enabled: monitoring_is_use_authentication ?? false,
-            //     monitoring_username: monitoringAuthUsername ?? '',
-            //     monitoring_password: monitoringAuthPassword ?? '',
-            // };
-            fetch(`${baseUrl}/save`, {
-                method: 'POST',
-                // body: JSON.stringify(form),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            })
-                .then((response) => {
-                    setIsLoading(false);
-                    toast.success('Source connection was successfully saved!', {
-                        position: toast.POSITION.BOTTOM_RIGHT,
-                        autoClose: false,
-                        closeButton: true,
-                        hideProgressBar: true,
-                        draggable: false,
-                    });
+            const formToSave: NewProject = getNewProject();
+            if((formToSave.prod.elasticsearch.status === 'GREEN'  || formToSave.prod.elasticsearch.status === 'YELLOW')  && formToSave.mon.elasticsearch.status === 'GREEN' || (formToSave.mon.elasticsearch.status === 'YELLOW')){
+                fetch(`${baseUrl}/save`, {
+                    method: 'POST',
+                    body: JSON.stringify(formToSave),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
                 })
-                .catch((error) => {
-                    setIsLoading(false);
-                    toast.error(`${error.message}`, {
-                        position: toast.POSITION.BOTTOM_RIGHT,
-                        autoClose: false,
-                        closeButton: true,
-                        hideProgressBar: true,
-                        draggable: false,
+                    .then((response) => {
+                        setIsLoading(false);
+                        toast.success('Source connection was successfully saved!', {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: false,
+                            closeButton: true,
+                            hideProgressBar: true,
+                            draggable: false,
+                        });
+                    })
+                    .catch((error) => {
+                        setIsLoading(false);
+                        toast.error(`${error.message}`, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: false,
+                            closeButton: true,
+                            hideProgressBar: true,
+                            draggable: false,
+                        });
                     });
+            }else{
+                toast.error(`Connection is not valid`, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: false,
+                    closeButton: true,
+                    hideProgressBar: true,
+                    draggable: false,
                 });
+            }
+
         } catch (err: any) {
             setIsLoading(false);
         } finally {
@@ -175,55 +169,10 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
     const onTest = () => {
         setIsLoading(true);
         try {
-            // const form: Project = {
-            //     es_host: host ?? '',
-            //     kibana_host: kibanaHost ?? '',
-            //     authentication_enabled: authChecked ?? false,
-            //     // ssl_enabled: sslChecked ?? false,
-            //     username: authUsername ?? '',
-            //     password: authPassword ?? '',
-            //
-            //     monitoring_host: monitoring_host ?? '',
-            //     monitoring_authentication_enabled: monitoring_is_use_authentication ?? false,
-            //     monitoring_username: monitoringAuthUsername ?? '',
-            //     monitoring_password: monitoringAuthPassword ?? '',
-            //     // ssl_file: content,
-            //     status: status ?? 'UNTESTED',
-            // };
-
-            form = {
-                prod: {
-                    elasticsearch: {
-                        host: newProject.prod.elasticsearch.host,
-                        authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
-                        username: newProject.prod.elasticsearch.username,
-                        password: newProject.prod.elasticsearch.password,
-                        status: newProject.prod.elasticsearch.status
-                    },
-                    kibana: {
-                        host: newProject.prod.kibana.host,
-                        authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
-                        username: newProject.prod.elasticsearch.username,
-                        password: newProject.prod.elasticsearch.password,
-                        status: newProject.prod.kibana.status
-                    }
-                },
-                mon: {
-                    elasticsearch: {
-                        host: newProject.mon.elasticsearch.host,
-                        authentication_enabled: newProject.mon.elasticsearch.authentication_enabled,
-                        username: newProject.mon.elasticsearch.username,
-                        password: newProject.mon.elasticsearch.password,
-                        status: newProject.mon.elasticsearch.status
-                    }
-                }
-            };
-            console.log('aaa', form);
-
-
+            const formToTest: NewProject = getNewProject()
             fetch(`${baseUrl}/test_cluster`, {
                 method: 'POST',
-                body: JSON.stringify(form),
+                body: JSON.stringify(formToTest),
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
@@ -231,9 +180,27 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
             })
                 .then((response) => response.json())
                 .then((result: Response) => {
-                    console.log(form)
-                    if (result.error) {
-                        toast.error(`${result.error}`, {
+                    setNewProject({
+                        prod: {
+                            elasticsearch: {
+                                ...newProject.prod.elasticsearch,
+                                status: result.prod.elasticsearch.status.toUpperCase()
+                            },
+                            kibana: {
+                                ...newProject.prod.kibana,
+                                status: result.prod.kibana.status.toUpperCase()
+                            }
+                        },
+                        mon: {
+                            elasticsearch: {
+                                ...newProject.mon.elasticsearch,
+                                status: result.mon.elasticsearch.status.toUpperCase()
+                            }
+                        }
+                    });
+
+                    if (result.prod.elasticsearch.error) {
+                        toast.error(`${result.prod.elasticsearch.error}`, {
                             position: toast.POSITION.BOTTOM_RIGHT,
                             autoClose: false,
                             closeButton: true,
@@ -418,7 +385,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
     };
 
     const onInputKibanaHost = (event: any) => {
-        // setKibanaHost(event?.target?.value);
         setNewProject({
             ...newProject,
             prod: {
@@ -444,12 +410,40 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         }
     };
 
+ const getNewProject = () => {
+    return  {
+        prod: {
+            elasticsearch: {
+                host: newProject.prod.elasticsearch.host,
+                authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
+                username: newProject.prod.elasticsearch.username,
+                password: newProject.prod.elasticsearch.password,
+                status: newProject.prod.elasticsearch.status
+            },
+            kibana: {
+                host: newProject.prod.kibana.host,
+                authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
+                username: newProject.prod.elasticsearch.username,
+                password: newProject.prod.elasticsearch.password,
+                status: newProject.prod.kibana.status
+            }
+        },
+        mon: {
+            elasticsearch: {
+                host: newProject.mon.elasticsearch.host,
+                authentication_enabled: newProject.mon.elasticsearch.authentication_enabled,
+                username: newProject.mon.elasticsearch.username,
+                password: newProject.mon.elasticsearch.password,
+                status: newProject.mon.elasticsearch.status
+            }
+        }
+    };
+}
+
 
     useEffect(() => {
-        // setHost('');
-        // setKibanaHost('');
-        // setIsDisabled(true);
-        // setValidHost(false);
+        setIsDisabled(true);
+        setValidHost(false);
         // setStatus('UNTESTED');
     }, []);
 
@@ -473,7 +467,8 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         value={newProject.prod.elasticsearch.host ?? ''}
                         onChange={onInputHost}
                     />
-                    {!validHost && newProject.prod.elasticsearch.host && <span className='error'>Host format is invalid</span>}
+                    {!validHost && newProject.prod.elasticsearch.host && <span className='invalid'>Host format is invalid</span>}
+
 
                     <div className='status'>
                             <span
@@ -491,7 +486,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         value={newProject.prod.kibana.host ?? ''}
                         onChange={onInputKibanaHost}
                     />
-                    {!validKibanaHost && newProject.prod.kibana.host && <span>Host format is invalid</span>}
+                    {!validKibanaHost && newProject.prod.kibana.host && <span className="invalid">Host format is invalid</span>}
 
                     <div className='status'>
                             <span

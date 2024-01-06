@@ -32,7 +32,7 @@
     margin-block-end: 1.5rem;
     position: relative;
 
-    .error {
+    .invalid {
       position: absolute;
       color: #D33F49;
       top: 100%;
@@ -186,7 +186,7 @@
 .status {
   color: #ffffff;
   position: absolute;
-  top: 30%;
+  top: 18%;
   left: 73%;
 
   display: inline-flex;
@@ -207,11 +207,12 @@
     border-radius: 7px;
   }
 
-  .RED {
+  .ERROR {
     background: #D33F49;
     padding: 5px 10px;
     font-size: 12px;
     border-radius: 7px;
+    color: #fff;
   }
 
   .GREEN {
@@ -238,5 +239,8 @@
   .css-mqt2s5.Mui-disabled {
     color: #222e46;
     opacity: 0.3;
+  }
+  input {
+    color: #222e46;
   }
 }
