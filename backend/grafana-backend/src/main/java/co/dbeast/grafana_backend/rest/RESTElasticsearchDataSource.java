@@ -4,6 +4,7 @@ import co.dbeast.elk_clients.elasticsearch.es_settings.ClusterConnectionSourcePO
 import co.dbeast.general_utils.JSONUtils;
 import co.dbeast.grafana_backend.data_warehouse.GrafanaBackendController;
 import co.dbeast.grafana_backend.pojo.GrafanaClusterConnectionInputPOJO;
+import co.dbeast.grafana_backend.pojo.new_backend.ClusterConnectionSettings;
 import co.dbeast.rest_server.ARest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,7 @@ public class RESTElasticsearchDataSource extends ARest {
                 logger.info(responseBody);
                 return responseBody;
             });
+
             get("/delete/:id", (request, response) -> {
                 logger.info("Got request for delete project with Id: " + request.params(":id"));
                 return grafanaBackendController.deleteDataSourceById(request.params(":id"));
