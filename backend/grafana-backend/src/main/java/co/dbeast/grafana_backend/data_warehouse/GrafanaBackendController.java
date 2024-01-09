@@ -13,6 +13,7 @@ import co.dbeast.grafana_backend.constants.EGrafanaBackendSettings;
 import co.dbeast.grafana_backend.pojo.GrafanaApplicationSetupInputPOJO;
 import co.dbeast.grafana_backend.pojo.GrafanaClusterConnectionInputPOJO;
 import co.dbeast.grafana_backend.pojo.data_sources.*;
+import co.dbeast.grafana_backend.pojo.new_backend.ClusterConnectionSettings;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -183,7 +184,20 @@ public class GrafanaBackendController {
         return processingResult;
     }
 
-
+//
+//    public String getClusterStatusNew(final ClusterConnectionSettings connectionSettings,
+//                                   final String projectId) {
+//        final ElasticsearchController elasticsearchController = new ElasticsearchController();
+//        try {
+//            return "{\"cluster_status\" : \"" + elasticsearchController.getClusterStatus(connectionSettings, projectId) + "\"}";
+//        } catch (Exception e) {
+//            return "{\"status\":{\"cluster_status\" : \"" +
+//                    EClusterStatus.ERROR +
+//                    "\"},\"error\":\"There is an error while command execution: " +
+//                    e.getMessage() +
+//                    "\"}";
+//        }
+//    }
     public String getClusterStatus(final ClusterConnectionSettingsPOJO connectionSettings,
                                    final String projectId) {
         final ElasticsearchController elasticsearchController = new ElasticsearchController();

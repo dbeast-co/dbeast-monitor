@@ -1,398 +1,602 @@
-import React, { useEffect, useState } from 'react';
-import { PanelProps } from '@grafana/data';
-import { SimpleOptions } from './types';
+import React, {useEffect, useState} from 'react';
+import {PanelProps} from '@grafana/data';
+import {SimpleOptions} from './types';
 import './SimplePanel.scss';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { toast, ToastContainer } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CircularProgress } from '@mui/material';
+import {CircularProgress} from '@mui/material';
+import {useTheme2} from '@grafana/ui';
+import classNames from 'classnames';
 
 const settings = require('./config.ts');
-// const settings = require('./settings/config');
-// const settings = require('./settings/settings.env');
-// const config = require('./config/config.js');
+
 
 interface Response {
-  cluster_status: string;
-  error: string;
+    prod: {
+        elasticsearch: {
+            status: string;
+            error: string;
+        };
+        kibana: {
+            status: string;
+            error: string;
+        };
+    };
+    mon: {
+        elasticsearch: {
+            status: string;
+            error: string;
+        };
+
+    };
+}
+
+// interface Project {
+//     es_host: string;
+//     kibana_host: string;
+//     authentication_enabled: boolean;
+//     username: string | null;
+//     password: string | null;
+//
+//     monitoring_host: string;
+//     monitoring_authentication_enabled: boolean;
+//     monitoring_username: string;
+//     monitoring_password: string;
+//     ssl_enabled?: boolean;
+//     ssl_file?: string | null;
+//     status: string;
+// }
+
+interface NewProject {
+    prod: Prod;
+    mon: Mon
+}
+
+interface Prod {
+    elasticsearch: Project,
+    kibana: Project
+}
+
+interface Mon {
+    elasticsearch: Project,
 }
 
 interface Project {
-  es_host: string;
-  kibana_host: string;
-  authentication_enabled: boolean;
-  username: string | null;
-  password: string | null;
-
-  monitoring_host: string;
-  monitoring_authentication_enabled: boolean;
-  monitoring_username: string;
-  monitoring_password: string;
-  ssl_enabled?: boolean;
-  ssl_file?: string | null;
-  status: string;
+    host: string;
+    authentication_enabled: boolean;
+    username: string | null;
+    password: string | null;
+    status: string;
 }
 
-interface Props extends PanelProps<SimpleOptions> {}
 
-export const SimplePanel: React.FC<Props> = ({ options, data, width, height, replaceVariables }) => {
-  console.log('INIT SimplePanel in panel')
+interface Props extends PanelProps<SimpleOptions> {
+}
 
-  const baseUrl = settings.SERVER_URL;
+export const SimplePanel: React.FC<Props> = ({options, data, width, height, replaceVariables}) => {
+    const theme = useTheme2();
+    const baseUrl = settings.SERVER_URL;
+    const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
 
-  const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
-  const [disableControl, setDisableControl] = useState(true);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [host, setHost] = useState('');
-  const [kibanaHost, setKibanaHost] = useState('');
-  // const [sslChecked, setSSLChecked] = useState(false);
-  const [authUsername, setAuthUsername] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
-  const [validHost, setValidHost] = useState(false);
-  const [validKibanaHost, setValidKibanaHost] = useState(false);
-  // const [form, setForm] = useState({});
-  const [status, setStatus] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [testDisable, setTestDisable] = useState(true);
-  // const [content, setContent] = useState('');
+    const [validHost, setValidHost] = useState(false);
+    const [validKibanaHost, setValidKibanaHost] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [testDisable, setTestDisable] = useState(true);
 
-  const [monitoring_host, setMonitoringHost] = useState('');
-  const [validMonitoringHost, setValidMonitoringValidHost] = useState(false);
-  const [monitoring_is_use_authentication, setMonitoringAuthChecked] = useState(false);
-  const [monitoringAuthUsername, setMonitoringAuthUsername] = useState('');
-  const [monitoringAuthPassword, setMonitoringAuthPassword] = useState('');
-  const [disabledMonitoringControl, setDisableMonitoringControl] = useState(true);
-  const onSave = () => {
-    setIsLoading(true);
-    try {
-      const form: Project = {
-        es_host: host ?? '',
-        kibana_host: kibanaHost ?? '',
-        authentication_enabled: authChecked ?? false,
-        // ssl_enabled: sslChecked ?? false,
-        username: authUsername ?? '',
-        password: authPassword ?? '',
-        status: status ?? 'UNTESTED',
-        monitoring_host: monitoring_host ?? '',
-        monitoring_authentication_enabled: monitoring_is_use_authentication ?? false,
-        monitoring_username: monitoringAuthUsername ?? '',
-        monitoring_password: monitoringAuthPassword ?? '',
-      };
-      fetch(`${baseUrl}/save`, {
-        method: 'POST',
-        body: JSON.stringify(form),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+    const [validMonitoringHost, setValidMonitoringValidHost] = useState(false);
+    const [newProject, setNewProject] = useState({
+        prod: {
+            elasticsearch: {
+                host: '',
+                authentication_enabled: false,
+                username: '',
+                password: '',
+                status: ''
+            },
+            kibana: {
+                host: '',
+                authentication_enabled: false,
+                username: '',
+                password: '',
+                status: ''
+            }
         },
-      })
-        .then((response) => {
-          setIsLoading(false);
-          toast.success('Source connection was successfully saved!', {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-            closeButton: true,
-            hideProgressBar: true,
-            draggable: false,
-          });
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          toast.error(`${error.message}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-            closeButton: true,
-            hideProgressBar: true,
-            draggable: false,
-          });
-        });
-    } catch (err: any) {
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const onTest = () => {
-    setIsLoading(true);
-    try {
-      const form: Project = {
-        es_host: host ?? '',
-        kibana_host: kibanaHost ?? '',
-        authentication_enabled: authChecked ?? false,
-        // ssl_enabled: sslChecked ?? false,
-        username: authUsername ?? '',
-        password: authPassword ?? '',
+        mon: {
+            elasticsearch: {
+                host: '',
+                authentication_enabled: false,
+                username: '',
+                password: '',
+                status: ''
+            }
+        }
+    } as NewProject);
 
-        monitoring_host: monitoring_host ?? '',
-        monitoring_authentication_enabled: monitoring_is_use_authentication ?? false,
-        monitoring_username: monitoringAuthUsername ?? '',
-        monitoring_password: monitoringAuthPassword ?? '',
-        // ssl_file: content,
-        status: status ?? 'UNTESTED',
-      };
-      fetch(`${baseUrl}/test_cluster`, {
-        method: 'POST',
-        body: JSON.stringify(form),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+    const onSave = () => {
+        setIsLoading(true);
+        try {
+            const formToSave: NewProject = getNewProject();
+            if((formToSave.prod.elasticsearch.status === 'GREEN'  || formToSave.prod.elasticsearch.status === 'YELLOW')  && formToSave.mon.elasticsearch.status === 'GREEN' || (formToSave.mon.elasticsearch.status === 'YELLOW')){
+                fetch(`${baseUrl}/save`, {
+                    method: 'POST',
+                    body: JSON.stringify(formToSave),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                })
+                    .then((response) => {
+                        setIsLoading(false);
+                        toast.success('Source connection was successfully saved!', {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: false,
+                            closeButton: true,
+                            hideProgressBar: true,
+                            draggable: false,
+                        });
+                    })
+                    .catch((error) => {
+                        setIsLoading(false);
+                        toast.error(`${error.message}`, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: false,
+                            closeButton: true,
+                            hideProgressBar: true,
+                            draggable: false,
+                        });
+                    });
+            }else{
+                toast.error(`Connection is not valid`, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: false,
+                    closeButton: true,
+                    hideProgressBar: true,
+                    draggable: false,
+                });
+            }
+
+        } catch (err: any) {
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const onTest = () => {
+        setIsLoading(true);
+        try {
+            const formToTest: NewProject = getNewProject()
+            fetch(`${baseUrl}/test_cluster`, {
+                method: 'POST',
+                body: JSON.stringify(formToTest),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((result: Response) => {
+                    setNewProject({
+                        prod: {
+                            elasticsearch: {
+                                ...newProject.prod.elasticsearch,
+                                status: result.prod.elasticsearch.status.toUpperCase()
+                            },
+                            kibana: {
+                                ...newProject.prod.kibana,
+                                status: result.prod.kibana.status.toUpperCase()
+                            }
+                        },
+                        mon: {
+                            elasticsearch: {
+                                ...newProject.mon.elasticsearch,
+                                status: result.mon.elasticsearch.status.toUpperCase()
+                            }
+                        }
+                    });
+
+                    if (result.prod.elasticsearch.error) {
+                        toast.error(`${result.prod.elasticsearch.error}`, {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: false,
+                            closeButton: true,
+                            hideProgressBar: true,
+                            draggable: false,
+                        });
+                    }
+                    // setStatus(result.cluster_status);
+                    setIsDisabled(false);
+                    setIsLoading(false);
+                })
+                .catch((error: Error) => {
+                    setIsLoading(false);
+                    toast.error(`${error.message}`, {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: false,
+                        closeButton: true,
+                        hideProgressBar: true,
+                        draggable: false,
+                    });
+                });
+        } catch (error: any) {
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const onCheckAuth = (event: any) => {
+        setNewProject({
+            ...newProject,
+            prod: {
+                ...newProject.prod,
+                elasticsearch: {
+                    ...newProject.prod.elasticsearch,
+                    authentication_enabled: event.target.checked
+                }
+            }
+        })
+        // disableControl ? setAuthChecked(true) : setAuthChecked(false);
+        // disableControl ? setDisableControl(false) : setDisableControl(true);
+    };
+
+    const onUserNameInput = (event: any) => {
+        // setAuthUsername(event?.target?.value);
+        setNewProject({
+            ...newProject,
+            prod: {
+                ...newProject.prod,
+                elasticsearch: {
+                    ...newProject.prod.elasticsearch,
+                    username: event.target.value
+                }
+            }
+        })
+        if (event.target.value === '') {
+            setIsDisabled(true);
+        } else {
+            setIsDisabled(false);
+        }
+    }
+    const onUserPasswordInput = (event: any) => {
+        setNewProject({
+            ...newProject,
+            prod: {
+                ...newProject.prod,
+                elasticsearch: {
+                    ...newProject.prod.elasticsearch,
+                    password: event.target.value
+                }
+            }
+        })
+        if (event.target.value === '') {
+            setIsDisabled(true);
+        } else {
+            setIsDisabled(false);
+        }
+    }
+
+    const onCheckMonitoringAuth = (event: any) => {
+        setNewProject({
+            ...newProject,
+            mon: {
+                ...newProject.mon,
+                elasticsearch: {
+                    ...newProject.mon.elasticsearch,
+                    authentication_enabled: event.target.checked
+                }
+            }
+        })
+
+
+        //     // disabledMonitoringControl ? setMonitoringAuthChecked(true) : setMonitoringAuthChecked(false);
+        //     // disabledMonitoringControl ? setDisableMonitoringControl(false) : setDisableMonitoringControl(true);
+    };
+    const onInputMonitoringUsername = (event: any) => {
+        setNewProject({
+            ...newProject,
+            mon: {
+                ...newProject.mon,
+                elasticsearch: {
+                    ...newProject.mon.elasticsearch,
+                    username: event.target.value
+                }
+            }
+        })
+        if (event.target.value === '') {
+            setIsDisabled(true);
+        } else {
+            setIsDisabled(false);
+        }
+    }
+
+    const onInputMonitoringPassword = (event: any) => {
+        setNewProject({
+            ...newProject,
+            mon: {
+                ...newProject.mon,
+                elasticsearch: {
+                    ...newProject.mon.elasticsearch,
+                    password: event.target.value
+                }
+            }
+        })
+        if (event.target.value === '') {
+            setIsDisabled(true);
+        } else {
+            setIsDisabled(false);
+        }
+    }
+    const onInputHost = (event: any) => {
+        // setHost(event?.target?.value);
+        setNewProject({
+            ...newProject,
+            prod: {
+                ...newProject.prod,
+                elasticsearch: {
+                    ...newProject.prod.elasticsearch,
+                    host: event.target.value
+                }
+            }
+        })
+        //
+        //
+        if (event.target.value === '') {
+            setValidHost(false);
+            setTestDisable(true);
+        } else {
+            setTestDisable(false);
+        }
+        if (hostRegex.test(event.target.value)) {
+            setValidHost(true);
+        } else {
+            setValidHost(false);
+            setTestDisable(true);
+        }
+
+    };
+    const onInputMonitoringHost = (event: any) => {
+        // setMonitoringHost(event?.target?.value);
+        setNewProject({
+            ...newProject,
+            mon: {
+                ...newProject.mon,
+                elasticsearch: {
+                    ...newProject.mon.elasticsearch,
+                    host: event.target.value,
+
+                }
+            }
+        })
+        //
+        if (event.target.value === '') {
+            setValidMonitoringValidHost(false);
+        }
+        if (hostRegex.test(event.target.value)) {
+            setValidMonitoringValidHost(true);
+        } else {
+            setValidMonitoringValidHost(false);
+        }
+
+
+    };
+
+    const onInputKibanaHost = (event: any) => {
+        setNewProject({
+            ...newProject,
+            prod: {
+                ...newProject.prod,
+                kibana: {
+                    ...newProject.prod.kibana,
+                    host: event.target.value
+                }
+            }
+        })
+        //
+        if (event.target.value === '') {
+            setValidKibanaHost(false);
+            setTestDisable(true);
+        } else {
+            setTestDisable(false);
+        }
+        if (hostRegex.test(event.target.value)) {
+            setValidKibanaHost(true);
+        } else {
+            setValidKibanaHost(false);
+            setTestDisable(true);
+        }
+    };
+
+ const getNewProject = () => {
+    return  {
+        prod: {
+            elasticsearch: {
+                host: newProject.prod.elasticsearch.host,
+                authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
+                username: newProject.prod.elasticsearch.username,
+                password: newProject.prod.elasticsearch.password,
+                status: newProject.prod.elasticsearch.status
+            },
+            kibana: {
+                host: newProject.prod.kibana.host,
+                authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
+                username: newProject.prod.elasticsearch.username,
+                password: newProject.prod.elasticsearch.password,
+                status: newProject.prod.kibana.status
+            }
         },
-      })
-        .then((response) => response.json())
-        .then((result: Response) => {
-          if (result.error) {
-            toast.error(`${result.error}`, {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-              closeButton: true,
-              hideProgressBar: true,
-              draggable: false,
-            });
-          }
-          setStatus(result.cluster_status);
-          setIsDisabled(false);
-          setIsLoading(false);
-        })
-        .catch((error: Error) => {
-          setIsLoading(false);
-          toast.error(`${error.message}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-            closeButton: true,
-            hideProgressBar: true,
-            draggable: false,
-          });
-        });
-    } catch (error: any) {
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const onCheckAuth = () => {
-    disableControl ? setAuthChecked(true) : setAuthChecked(false);
-    disableControl ? setDisableControl(false) : setDisableControl(true);
-  };
+        mon: {
+            elasticsearch: {
+                host: newProject.mon.elasticsearch.host,
+                authentication_enabled: newProject.mon.elasticsearch.authentication_enabled,
+                username: newProject.mon.elasticsearch.username,
+                password: newProject.mon.elasticsearch.password,
+                status: newProject.mon.elasticsearch.status
+            }
+        }
+    };
+}
 
-  const onCheckMonitoringAuth = (event: any) => {
-    disabledMonitoringControl ? setMonitoringAuthChecked(true) : setMonitoringAuthChecked(false);
-    disabledMonitoringControl ? setDisableMonitoringControl(false) : setDisableMonitoringControl(true);
-  };
-  const onInputHost = (event: any) => {
-    setHost(event?.target?.value);
 
-    if (event.target.value === '') {
-      setValidHost(false);
-      setTestDisable(true);
-    } else {
-      setTestDisable(false);
-    }
-    if (hostRegex.test(event.target.value)) {
-      setValidHost(true);
-    } else {
-      setValidHost(false);
-      setTestDisable(true);
-    }
-  };
-  const onInputMonitoringHost = (event: any) => {
-    setMonitoringHost(event?.target?.value);
+    useEffect(() => {
+        setIsDisabled(true);
+        setValidHost(false);
+        // setStatus('UNTESTED');
+    }, []);
 
-    if (event.target.value === '') {
-      setValidMonitoringValidHost(false);
-    }
-    if (hostRegex.test(event.target.value)) {
-      setValidMonitoringValidHost(true);
-    } else {
-      setValidMonitoringValidHost(false);
-    }
-  };
+    // @ts-ignore
+    return (
 
-  const onInputKibanaHost = (event: any) => {
-    setKibanaHost(event?.target?.value);
+        <div  className={classNames({
+            source_panel: true,
+            isLight: theme.isLight,
 
-    if (event.target.value === '') {
-      setValidKibanaHost(false);
-      setTestDisable(true);
-    } else {
-      setTestDisable(false);
-    }
-    if (hostRegex.test(event.target.value)) {
-      setValidKibanaHost(true);
-    } else {
-      setValidKibanaHost(false);
-      setTestDisable(true);
-    }
-  };
+        })}>
 
-  // const onCheckSSL = () => {
-  //     sslChecked ? setSSLChecked(false) : setSSLChecked(true)
-  // };
+            <div>
+                <div className="host_wrapper">
 
-  // const onSetFile = (file: File) => {
-  //     const reader = new FileReader();
-  //     reader.readAsText(file);
-  //     reader.onload = function (e) {
-  //         const content = reader.result;
-  //         //Here the content has been read successfuly
-  //         setContent(JSON.stringify(content));
-  //     }
-  //
-  //
-  // }
-  useEffect(() => {
-    setHost('');
-    setKibanaHost('');
-    setIsDisabled(true);
-    setValidHost(false);
-    setStatus('UNTESTED');
-  }, []);
 
-  return (
-    <div className="source_panel">
-      <div>
-        <div className="host_wrapper">
-          <TextField
-            id="standard-basic"
-            label="Elasticsearch Host"
-            variant="standard"
-            value={host}
-            onChange={onInputHost}
-          />
-          {!validHost && host && <span>Host format is invalid</span>}
+                    <TextField
+                        id="standard-basic"
+                        label="Elasticsearch Host"
+                        variant="standard"
+                        value={newProject.prod.elasticsearch.host ?? ''}
+                        onChange={onInputHost}
+                    />
+                    {!validHost && newProject.prod.elasticsearch.host && <span className='invalid'>Host format is invalid</span>}
+
+
+                    <div className='status'>
+                            <span
+                                className={newProject.prod.elasticsearch.status ? newProject.prod.elasticsearch.status : 'UNTESTED'}>{newProject.prod.elasticsearch.status ? newProject.prod.elasticsearch.status : 'UNTESTED'}</span>
+                    </div>
+
+                </div>
+
+
+                <div className="host_wrapper">
+                    <TextField
+                        id="standard-basic"
+                        label="Kibana host"
+                        variant="standard"
+                        value={newProject.prod.kibana.host ?? ''}
+                        onChange={onInputKibanaHost}
+                    />
+                    {!validKibanaHost && newProject.prod.kibana.host && <span className="invalid">Host format is invalid</span>}
+
+                    <div className='status'>
+                            <span
+                                className={newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}>{newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}</span>
+                    </div>
+
+                </div>
+
+                <FormControlLabel
+                    value="top"
+                    control={<Checkbox onChange={onCheckAuth}
+                                       checked={newProject.prod.elasticsearch.authentication_enabled}/>}
+                    label="Use authentication"
+                />
+                <div className="auth_wrapper">
+                    <TextField
+                        id="standard-basic text_1"
+                        key="text_1"
+                        label="Username"
+                        variant="standard"
+                        value={newProject.prod.elasticsearch.username}
+                        onChange={onUserNameInput}
+                        disabled={!newProject.prod.elasticsearch.authentication_enabled}
+
+                    />
+                    <TextField
+                        id="standard-basic text_2"
+                        type="password"
+                        key="text_2"
+                        label="Password"
+                        variant="standard"
+                        value={newProject.prod.elasticsearch.password}
+                        onChange={onUserPasswordInput}
+                        disabled={!newProject.prod.elasticsearch.authentication_enabled}
+                    />
+                </div>
+
+
+            </div>
+
+            <div>
+                <div className="host_wrapper">
+                    <TextField
+                        id="standard-basic"
+                        label="Monitoring Host"
+                        variant="standard"
+                        value={newProject.mon.elasticsearch.host}
+                        onChange={onInputMonitoringHost}
+                    />
+                    {!validMonitoringHost && newProject.mon.elasticsearch.host &&
+                        <span>Monitoring host format is invalid</span>}
+
+                    <div className='status'>
+                            <span
+                                className={newProject.mon.elasticsearch.status ? newProject.mon.elasticsearch.status : 'UNTESTED'}>{newProject.mon.elasticsearch.status ? newProject.mon.elasticsearch.status : 'UNTESTED'}</span>
+                    </div>
+                </div>
+
+                <FormControlLabel
+                    value="top"
+                    control={<Checkbox
+                        checked={newProject.mon.elasticsearch.authentication_enabled}
+                        onChange={onCheckMonitoringAuth}/>}
+                    label="Use authentication"
+
+                />
+                <div className="auth_wrapper">
+                    <TextField
+                        id="standard-basic text_1"
+                        key="text_1"
+                        label="Username"
+                        variant="standard"
+                        value={newProject.mon.elasticsearch.username}
+                        onChange={onInputMonitoringUsername}
+                        disabled={!newProject.mon.elasticsearch.authentication_enabled}
+
+                    />
+                    <TextField
+                        id="standard-basic text_2"
+                        type="password"
+                        key="text_2"
+                        label="Password"
+                        variant="standard"
+                        value={newProject.mon.elasticsearch.password}
+                        onChange={onInputMonitoringPassword}
+                        disabled={!newProject.mon.elasticsearch.authentication_enabled}
+                    />
+                </div>
+
+
+            </div>
+
+            <div className="actions">
+                <button onClick={() => onTest()} className="btn_test" disabled={testDisable}>
+                    {' '}
+                    Test
+                </button>
+                <button onClick={() => onSave()} className="btn_save" disabled={testDisable || isDisabled}>
+                    Save
+                </button>
+                {/*<span className={status ? status : 'UNTESTED'}>{status ? status : 'UNTESTED'}</span>*/}
+
+            </div>
+            {isLoading && (
+                <div className="spinner_overlay">
+                    <CircularProgress color="primary"/>
+                </div>
+            )}
+
+            <ToastContainer autoClose={3000} position="bottom-right"/>
         </div>
-
-        <div className="host_wrapper">
-          <TextField
-            id="standard-basic"
-            label="Kibana host"
-            variant="standard"
-            value={kibanaHost}
-            onChange={onInputKibanaHost}
-          />
-          {!validKibanaHost && kibanaHost && <span>Host format is invalid</span>}
-        </div>
-
-        <FormControlLabel
-          value="top"
-          control={<Checkbox checked={authChecked} onChange={() => onCheckAuth()} />}
-          label="Use authentication"
-        />
-        <div className="auth_wrapper">
-          <TextField
-            id="standard-basic text_1"
-            key="text_1"
-            label="Username"
-            variant="standard"
-            disabled={disableControl}
-            value={authUsername}
-            onChange={(event) => setAuthUsername(event.target.value)}
-          />
-          <TextField
-            id="standard-basic text_2"
-            type="password"
-            key="text_2"
-            label="Password"
-            variant="standard"
-            disabled={disableControl}
-            value={authPassword}
-            onChange={(event) => setAuthPassword(event.target.value)}
-          />
-        </div>
-
-        {/*<div className="ssl_wrapper">*/}
-        {/*    <FormControlLabel*/}
-        {/*        value="top"*/}
-        {/*        control={<Checkbox checked={sslChecked} onChange={() => onCheckSSL()}/>}*/}
-        {/*        label="SSL"*/}
-        {/*    />*/}
-        {/*    <div className="upload_file_container"><span>SSL Certificate</span>*/}
-        {/*        <label htmlFor="file" className="upload_file" >*/}
-        {/*            <input type="file" id="file" accept="text" disabled={!sslChecked}*/}
-        {/*                   onChange={(event) => onSetFile(event?.target?.files![0])}/>*/}
-        {/*            <span>Browse</span>*/}
-        {/*        </label></div>*/}
-        {/*</div>*/}
-      </div>
-      {/*<Divider></Divider>*/}
-
-      <div>
-        <div className="host_wrapper">
-          <TextField
-            id="standard-basic"
-            label="Monitoring Host"
-            variant="standard"
-            value={monitoring_host}
-            onChange={onInputMonitoringHost}
-          />
-          {!validMonitoringHost && monitoring_host && <span>Monitoring host format is invalid</span>}
-        </div>
-
-        <FormControlLabel
-          value="top"
-          control={<Checkbox checked={monitoring_is_use_authentication} onChange={(e) => onCheckMonitoringAuth(e)} />}
-          label="Use authentication"
-        />
-        <div className="auth_wrapper">
-          <TextField
-            id="standard-basic text_1"
-            key="text_1"
-            label="Username"
-            variant="standard"
-            disabled={disabledMonitoringControl}
-            value={monitoringAuthUsername}
-            onChange={(event) => setMonitoringAuthUsername(event.target.value)}
-          />
-          <TextField
-            id="standard-basic text_2"
-            type="password"
-            key="text_2"
-            label="Password"
-            variant="standard"
-            disabled={disabledMonitoringControl}
-            value={monitoringAuthPassword}
-            onChange={(event) => setMonitoringAuthPassword(event.target.value)}
-          />
-        </div>
-
-        {/*<div className="ssl_wrapper">*/}
-        {/*    <FormControlLabel*/}
-        {/*        value="top"*/}
-        {/*        control={<Checkbox checked={sslChecked} onChange={() => onCheckSSL()}/>}*/}
-        {/*        label="SSL"*/}
-        {/*    />*/}
-        {/*    <div className="upload_file_container"><span>SSL Certificate</span>*/}
-        {/*        <label htmlFor="file" className="upload_file" >*/}
-        {/*            <input type="file" id="file" accept="text" disabled={!sslChecked}*/}
-        {/*                   onChange={(event) => onSetFile(event?.target?.files![0])}/>*/}
-        {/*            <span>Browse</span>*/}
-        {/*        </label></div>*/}
-        {/*</div>*/}
-      </div>
-
-      <div className="actions">
-        <button onClick={() => onTest()} className="btn_test" disabled={testDisable}>
-          {' '}
-          Test
-        </button>
-        <button onClick={() => onSave()} className="btn_save" disabled={testDisable || isDisabled}>
-          Save
-        </button>
-        <span className={status ? status : 'UNTESTED'}>{status ? status : 'UNTESTED'}</span>
-
-        {/*<button onClick={() => onGetList()}>Get indices</button>*/}
-        {/*<button onClick={() => onNewProject()}>New project</button>*/}
-      </div>
-      {isLoading && (
-        <div className="spinner_overlay">
-          <CircularProgress color="primary" />
-        </div>
-      )}
-
-      <ToastContainer autoClose={3000} position="bottom-right" />
-    </div>
-  );
+    );
 };
