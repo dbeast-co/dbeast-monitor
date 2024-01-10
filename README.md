@@ -39,5 +39,5 @@ options:
 
 - Grafana 9x
 - Java 8+
-- Logstash 8.1+
+- Logstash 8.8+
 - Elasticsearch 8+
