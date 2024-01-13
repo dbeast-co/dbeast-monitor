@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {CircularProgress} from '@mui/material';
 import {useTheme2} from '@grafana/ui';
 import classNames from 'classnames';
+import {getBackendSrv} from "@grafana/runtime";
 
 const settings = require('./config.ts');
 
@@ -78,6 +79,7 @@ interface Props extends PanelProps<SimpleOptions> {
 }
 
 export const SimplePanel: React.FC<Props> = ({options, data, width, height, replaceVariables}) => {
+    const backendSrv = getBackendSrv();
     const theme = useTheme2();
     const baseUrl = settings.SERVER_URL;
     const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
@@ -118,18 +120,28 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
     } as NewProject);
 
     const onSave = () => {
+
         setIsLoading(true);
         try {
             const formToSave: NewProject = getNewProject();
-            if((formToSave.prod.elasticsearch.status === 'GREEN'  || formToSave.prod.elasticsearch.status === 'YELLOW')  && formToSave.mon.elasticsearch.status === 'GREEN' || (formToSave.mon.elasticsearch.status === 'YELLOW')){
-                fetch(`${baseUrl}/save`, {
-                    method: 'POST',
-                    body: JSON.stringify(formToSave),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    },
-                })
+            if ((formToSave.prod.elasticsearch.status === 'GREEN' || formToSave.prod.elasticsearch.status === 'YELLOW') && formToSave.mon.elasticsearch.status === 'GREEN' || (formToSave.mon.elasticsearch.status === 'YELLOW')) {
+                backendSrv.post(`${baseUrl}/save`,
+                    JSON.stringify(formToSave),
+                    {
+                        headers: {
+                            "Content-Type": 'application/json',
+                            "Accept": 'application/json'
+                        }
+                    }
+                )
+                    // fetch(`${baseUrl}/save`, {
+                    //     method: 'POST',
+                    //     body: JSON.stringify(formToSave),
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         Accept: 'application/json',
+                    //     },
+                    // })
                     .then((response) => {
                         setIsLoading(false);
                         toast.success('Source connection was successfully saved!', {
@@ -150,7 +162,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                             draggable: false,
                         });
                     });
-            }else{
+            } else {
                 toast.error(`Connection is not valid`, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
@@ -170,15 +182,25 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         setIsLoading(true);
         try {
             const formToTest: NewProject = getNewProject()
-            fetch(`${baseUrl}/test_cluster`, {
-                method: 'POST',
-                body: JSON.stringify(formToTest),
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            })
-                .then((response) => response.json())
+            backendSrv.post(`${baseUrl}/test_cluster`,
+                JSON.stringify(formToTest),
+                {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        "Accept": 'application/json',
+                    }
+                }
+            )
+            //     backendSrv.post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest)){
+            //     fetch(`${baseUrl}/test_cluster`, {
+            //         method: 'POST',
+            //         body: JSON.stringify(formToTest),
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             Accept: 'application/json',
+            //         },
+            //     })
+            //     .then((response) => response.json())
                 .then((result: Response) => {
                     setNewProject({
                         prod: {
@@ -410,35 +432,35 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         }
     };
 
- const getNewProject = () => {
-    return  {
-        prod: {
-            elasticsearch: {
-                host: newProject.prod.elasticsearch.host,
-                authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
-                username: newProject.prod.elasticsearch.username,
-                password: newProject.prod.elasticsearch.password,
-                status: newProject.prod.elasticsearch.status
+    const getNewProject = () => {
+        return {
+            prod: {
+                elasticsearch: {
+                    host: newProject.prod.elasticsearch.host,
+                    authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
+                    username: newProject.prod.elasticsearch.username,
+                    password: newProject.prod.elasticsearch.password,
+                    status: newProject.prod.elasticsearch.status
+                },
+                kibana: {
+                    host: newProject.prod.kibana.host,
+                    authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
+                    username: newProject.prod.elasticsearch.username,
+                    password: newProject.prod.elasticsearch.password,
+                    status: newProject.prod.kibana.status
+                }
             },
-            kibana: {
-                host: newProject.prod.kibana.host,
-                authentication_enabled: newProject.prod.elasticsearch.authentication_enabled,
-                username: newProject.prod.elasticsearch.username,
-                password: newProject.prod.elasticsearch.password,
-                status: newProject.prod.kibana.status
+            mon: {
+                elasticsearch: {
+                    host: newProject.mon.elasticsearch.host,
+                    authentication_enabled: newProject.mon.elasticsearch.authentication_enabled,
+                    username: newProject.mon.elasticsearch.username,
+                    password: newProject.mon.elasticsearch.password,
+                    status: newProject.mon.elasticsearch.status
+                }
             }
-        },
-        mon: {
-            elasticsearch: {
-                host: newProject.mon.elasticsearch.host,
-                authentication_enabled: newProject.mon.elasticsearch.authentication_enabled,
-                username: newProject.mon.elasticsearch.username,
-                password: newProject.mon.elasticsearch.password,
-                status: newProject.mon.elasticsearch.status
-            }
-        }
-    };
-}
+        };
+    }
 
 
     useEffect(() => {
@@ -450,7 +472,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
     // @ts-ignore
     return (
 
-        <div  className={classNames({
+        <div className={classNames({
             source_panel: true,
             isLight: theme.isLight,
 
@@ -467,7 +489,8 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         value={newProject.prod.elasticsearch.host ?? ''}
                         onChange={onInputHost}
                     />
-                    {!validHost && newProject.prod.elasticsearch.host && <span className='invalid'>Host format is invalid</span>}
+                    {!validHost && newProject.prod.elasticsearch.host &&
+                        <span className='invalid'>Host format is invalid</span>}
 
 
                     <div className='status'>
@@ -486,7 +509,8 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         value={newProject.prod.kibana.host ?? ''}
                         onChange={onInputKibanaHost}
                     />
-                    {!validKibanaHost && newProject.prod.kibana.host && <span className="invalid">Host format is invalid</span>}
+                    {!validKibanaHost && newProject.prod.kibana.host &&
+                        <span className="invalid">Host format is invalid</span>}
 
                     <div className='status'>
                             <span

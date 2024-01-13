@@ -13,14 +13,14 @@ import (
 
 // CreateHTTPClient creates an HTTP client based on the provided credentials.
 // It takes a Credentials struct as input and returns an HTTP client.
-func CreateHTTPClient(сredentials Credentials) (*http.Client, error) {
-	if сredentials.Host == "" {
+func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
+	if credentials.Host == "" {
 		log.DefaultLogger.Warn("Host is empty")
 		return nil, fmt.Errorf("host is empty")
 	}
 
 	var tr *http.Transport
-	if strings.HasPrefix(сredentials.Host, "https://") {
+	if strings.HasPrefix(credentials.Host, "https://") {
 		tr = &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}

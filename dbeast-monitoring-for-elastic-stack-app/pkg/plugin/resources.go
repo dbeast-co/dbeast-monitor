@@ -131,7 +131,7 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(updatedTemplatesJSON)
-	//ctxLogger.Info("Updated templates sent", string(updatedTemplatesJSON))
+	ctxLogger.Info("Updated templates sent", string(updatedTemplatesJSON))
 }
 
 // registerRoutes takes a *http.ServeMux and registers some HTTP handlers.
