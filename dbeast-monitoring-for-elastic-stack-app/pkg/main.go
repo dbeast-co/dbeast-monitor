@@ -18,9 +18,12 @@ func main() {
 	// from Grafana to create different instances of `App` (per plugin
 	// ID).
 	FOLDER_PATH := "templates"
-	lastIndex := strings.LastIndex(os.Args[0], string(os.PathSeparator))
-	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] + string(os.PathSeparator) +
-		"dbeast-dbeastmonitor-app" + string(os.PathSeparator) + FOLDER_PATH)
+	ctxLogger := log.DefaultLogger
+	ctxLogger.Info("The app path: " + os.Args[0])
+	lastIndex1 := strings.LastIndex(os.Args[0], "dbeast-dbeastmonitor-app")
+	lastIndex := strings.LastIndex(os.Args[0][:lastIndex1], string(os.PathSeparator))
+	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] +
+		string(os.PathSeparator) + FOLDER_PATH)
 	if err != nil {
 		return
 	}
