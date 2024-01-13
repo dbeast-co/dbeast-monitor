@@ -29,7 +29,7 @@ func LoadTemplatesFromFolder(folderPath string) error {
 	for _, file := range files {
 		if !file.IsDir() {
 			filePath := filepath.Join(path + string(os.PathSeparator) + file.Name())
-			log.DefaultLogger.Debug("Read file: " + filePath)
+			log.DefaultLogger.Info("Read file: " + filePath)
 			data, err := os.ReadFile(filePath)
 			if err != nil {
 				log.DefaultLogger.Error("The error in the file: " + filePath + " " + err.Error())

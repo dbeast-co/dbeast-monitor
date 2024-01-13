@@ -10,46 +10,46 @@ import (
 // /api/plugins/app-with-backend/resources/ping
 
 // handlePing is an example HTTP GET resource that returns a {"message": "ok"} JSON response.
-func (a *App) handlePing(w http.ResponseWriter, req *http.Request) {
-	ctxLogger := log.DefaultLogger.FromContext(req.Context())
-	w.Header().Add("Content-Type", "application/json")
-	if _, err := w.Write([]byte(`{"message": "Мяу"}`)); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	ctxLogger.Info("ping received")
-	w.WriteHeader(http.StatusOK)
-}
+//func (a *App) handlePing(w http.ResponseWriter, req *http.Request) {
+//	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+//	w.Header().Add("Content-Type", "application/json")
+//	if _, err := w.Write([]byte(`{"message": "Мяу"}`)); err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//	ctxLogger.Info("ping received")
+//	w.WriteHeader(http.StatusOK)
+//}
 
 // handleEcho is an example HTTP POST resource that accepts a JSON with a "message" key and
 // returns to the client whatever it is sent.
-func (a *App) handleEcho(w http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	var body struct {
-		Message string `json:"message"`
-	}
-	if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	w.Header().Add("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(body); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-}
+//func (a *App) handleEcho(w http.ResponseWriter, req *http.Request) {
+//	if req.Method != http.MethodPost {
+//		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+//		return
+//	}
+//	var body struct {
+//		Message string `json:"message"`
+//	}
+//	if err := json.NewDecoder(req.Body).Decode(&body); err != nil {
+//		http.Error(w, err.Error(), http.StatusBadRequest)
+//		return
+//	}
+//	w.Header().Add("Content-Type", "application/json")
+//	if err := json.NewEncoder(w).Encode(body); err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		return
+//	}
+//	w.WriteHeader(http.StatusOK)
+//}
 
 /*
-	handleStatus handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
+	TestStatusHandler handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
 
 It takes a http.ResponseWriter and http.Request as input, decodes the request body to extract environment configuration,
 updates the status and sends the updated status data in JSON format as an HTTP response.
 */
-func (a *App) handleStatus(w http.ResponseWriter, req *http.Request) {
+func (a *App) TestStatusHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	w.Header().Add("Content-Type", "application/json")
 
@@ -78,15 +78,10 @@ func (a *App) handleStatus(w http.ResponseWriter, req *http.Request) {
 	ctxLogger.Info("Status data received")
 }
 
-/*
-UpdateTemplatesHandler handles HTTP requests to update templates based on the provided environment configuration.
-It takes a http.ResponseWriter and http.Request as input, decodes the request body to extract environment configuration,
-updates template values accordingly, and sends the updated templates. The function returns an HTTP response with the
-updated templates in JSON format.
-*/
-func (a *App) UpdateTemplatesHandler(w http.ResponseWriter, req *http.Request) {
+func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+	ctxLogger.Info("Got request for the new cluster save")
 	w.Header().Add("Content-Type", "application/json")
 
 	var environmentConfig EnvironmentConfig
@@ -126,7 +121,7 @@ func (a *App) UpdateTemplatesHandler(w http.ResponseWriter, req *http.Request) {
 
 	}
 
-	SendTemplateToServer(UpdatedTemplates)
+	//SendTemplateToServer(UpdatedTemplates)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
@@ -136,13 +131,13 @@ func (a *App) UpdateTemplatesHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(updatedTemplatesJSON)
-	ctxLogger.Info("Updated templates sent", string(updatedTemplatesJSON))
+	//ctxLogger.Info("Updated templates sent", string(updatedTemplatesJSON))
 }
 
 // registerRoutes takes a *http.ServeMux and registers some HTTP handlers.
 func (a *App) registerRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/ping", a.handlePing)
-	mux.HandleFunc("/echo", a.handleEcho)
-	mux.HandleFunc("/status", a.handleStatus)
-	mux.HandleFunc("/templates", a.UpdateTemplatesHandler)
+	//mux.HandleFunc("/ping", a.handlePing)
+	//mux.HandleFunc("/echo", a.handleEcho)
+	mux.HandleFunc("/test_cluster", a.TestStatusHandler)
+	mux.HandleFunc("/save", a.SaveHandler)
 }

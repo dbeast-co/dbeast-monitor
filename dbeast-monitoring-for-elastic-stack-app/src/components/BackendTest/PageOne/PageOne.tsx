@@ -1,7 +1,7 @@
 import * as React from "react";
 import { getBackendSrv } from "@grafana/runtime";
 import { useAsync } from "react-use";
-import { Badge, HorizontalGroup } from "@grafana/ui";
+import {  HorizontalGroup } from "@grafana/ui";
 import  {testIds} from "./testIds"
 
 export const PageOne = () => {
@@ -40,10 +40,10 @@ export const PageOne = () => {
 
 
     return Promise.all([
-      backendSrv.get(`api/plugins/myorg-withbackend-app/resources/ping`),
-      backendSrv.get(`api/plugins/myorg-withbackend-app/health`),
-      backendSrv.post(`api/plugins/myorg-withbackend-app/resources/status`, credentials),
-        backendSrv.post(`api/plugins/myorg-withbackend-app/resources/templates`, credentials)
+      // backendSrv.get(`api/plugins/dbeast-dbeastmonitor-app/resources/ping`),
+      // backendSrv.get(`api/plugins/dbeast-dbeastmonitor-app/health`),
+      backendSrv.post(`api/plugins/dbeast-dbeastmonitor-app/resources/test_cluster`, credentials),
+        backendSrv.post(`api/plugins/dbeast-dbeastmonitor-app/resources/save`, credentials)
     ]);
   });
 
@@ -63,20 +63,20 @@ export const PageOne = () => {
     );
   }
 
-  const [ping, health, statusData, templates] = value;
+  const [statusData, templates] = value;
 
   return (
     <div data-testid={testIds.pageOne.container}>
-      <HorizontalGroup>
-        <h3>Plugin Health Check</h3>{" "}
-        <span data-testid={testIds.pageOne.health}>
-          {renderHealth(health?.message)}
-        </span>
-      </HorizontalGroup>
-      <HorizontalGroup>
-        <h3>Ping Backend</h3>{" "}
-        <span data-testid={testIds.pageOne.ping }>{ping?.message}</span>
-      </HorizontalGroup>
+      {/*<HorizontalGroup>*/}
+      {/*  <h3>Plugin Health Check</h3>{" "}*/}
+      {/*  <span data-testid={testIds.pageOne.health}>*/}
+      {/*    {renderHealth(health?.message)}*/}
+      {/*  </span>*/}
+      {/*</HorizontalGroup>*/}
+      {/*<HorizontalGroup>*/}
+      {/*  <h3>Ping Backend</h3>{" "}*/}
+      {/*  <span data-testid={testIds.pageOne.ping }>{ping?.message}</span>*/}
+      {/*</HorizontalGroup>*/}
       <HorizontalGroup>
         <h3>Status Data</h3>{" "}
         <div data-testid={testIds.pageOne.status}>
@@ -93,12 +93,12 @@ export const PageOne = () => {
   );
 };
 
-function renderHealth(message: string | undefined) {
-  switch (message) {
-    case "ok":
-      return <Badge color="green" text="OK" icon="heart" />;
-
-    default:
-      return <Badge color="red" text="BAD" icon="bug" />;
-  }
-}
+// function renderHealth(message: string | undefined) {
+//   switch (message) {
+//     case "ok":
+//       return <Badge color="green" text="OK" icon="heart" />;
+//
+//     default:
+//       return <Badge color="red" text="BAD" icon="bug" />;
+//   }
+// }

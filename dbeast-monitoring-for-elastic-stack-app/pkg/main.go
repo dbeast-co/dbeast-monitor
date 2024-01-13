@@ -17,14 +17,15 @@ func main() {
 	// argument. This factory will be automatically called on incoming request
 	// from Grafana to create different instances of `App` (per plugin
 	// ID).
-	FOLDER_PATH := "/templates"
+	FOLDER_PATH := "templates"
 	lastIndex := strings.LastIndex(os.Args[0], string(os.PathSeparator))
-	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] + FOLDER_PATH)
+	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] + string(os.PathSeparator) +
+		"dbeast-dbeastmonitor-app" + string(os.PathSeparator) + FOLDER_PATH)
 	if err != nil {
 		return
 	}
 
-	if err := app.Manage("myorg-withbackend-app", plugin.NewApp, app.ManageOpts{}); err != nil {
+	if err := app.Manage("dbeast-dbeastmonitor-app", plugin.NewApp, app.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
 		os.Exit(1)
 	}
