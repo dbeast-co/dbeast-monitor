@@ -23,14 +23,11 @@
   "panels": [
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -57,6 +54,9 @@
                 "value": null
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -153,7 +153,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 114
+                "value": 109
               }
             ]
           },
@@ -165,7 +165,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 96
+                "value": 97
               }
             ]
           },
@@ -177,7 +177,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 83
+                "value": 77
               }
             ]
           },
@@ -189,7 +189,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 100
+                "value": 96
               },
               {
                 "id": "unit",
@@ -225,7 +225,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 111
+                "value": 95
               }
             ]
           },
@@ -237,7 +237,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 121
+                "value": 113
               }
             ]
           },
@@ -261,7 +261,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 333
+                "value": 260
               }
             ]
           },
@@ -285,7 +285,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 121
+                "value": 118
               }
             ]
           },
@@ -297,11 +297,23 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 124
+                "value": 110
               },
               {
                 "id": "unit",
                 "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Docs deleted"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 116
               }
             ]
           }
@@ -315,26 +327,26 @@
       },
       "id": 6,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.cluster_name"
@@ -381,11 +393,11 @@
           "urlPath": "/_cluster/health"
         },
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.cluster_name"
@@ -419,13 +431,18 @@
               "jsonPath": "$.nodes.fs.free_in_bytes",
               "language": "jsonpath",
               "name": ""
+            },
+            {
+              "name": "",
+              "jsonPath": "$.indices.docs.deleted",
+              "language": "jsonpath"
             }
           ],
           "hide": false,
           "method": "GET",
           "queryParams": "",
           "refId": "B",
-          "urlPath": "/_cluster/stats?filter_path=cluster_name,nodes.versions,nodes.jvm.mem.heap_max_in_bytes,fs.total_in_bytes,indices.docs.count,indices.store.size_in_bytes,indices.shards.total,indices.count,nodes.fs.free_in_bytes"
+          "urlPath": "/_cluster/stats?filter_path=cluster_name,nodes.versions,nodes.jvm.mem.heap_max_in_bytes,fs.total_in_bytes,indices.docs.deleted,indices.docs.count,indices.store.size_in_bytes,indices.shards.total,indices.count,nodes.fs.free_in_bytes"
         }
       ],
       "title": "Cluster health",
@@ -439,20 +456,21 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "Total heap": 4,
-              "active_shards": 7,
               "cluster_name": 0,
-              "count": 5,
-              "docs_count": 11,
-              "free_in_bytes": 13,
-              "initializing_shards": 10,
-              "number_of_data_nodes": 3,
-              "number_of_nodes": 2,
-              "relocating_shards": 9,
-              "size_in_bytes": 12,
               "status": 1,
+              "number_of_nodes": 2,
+              "number_of_data_nodes": 3,
+              "Total heap": 4,
+              "count": 5,
               "total": 6,
-              "unassigned_shards": 8
+              "active_shards": 7,
+              "unassigned_shards": 8,
+              "relocating_shards": 9,
+              "initializing_shards": 10,
+              "docs_count": 11,
+              "deleted": 12,
+              "size_in_bytes": 13,
+              "free_in_bytes": 14
             },
             "renameByName": {
               "Total": "",
@@ -469,7 +487,8 @@
               "size_in_bytes": "Data",
               "status": "Cluster status",
               "total": "Total shards",
-              "unassigned_shards": "Unassigned shards"
+              "unassigned_shards": "Unassigned shards",
+              "deleted": "Docs deleted"
             }
           }
         }
@@ -825,7 +844,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -976,7 +995,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -999,7 +1023,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -1087,7 +1111,7 @@
               "Shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -1161,7 +1185,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -1242,7 +1266,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -1260,7 +1289,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -1322,7 +1351,7 @@
               "Number of shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -1396,7 +1425,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -1477,7 +1506,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -1495,7 +1529,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -1557,7 +1591,7 @@
               "Number of shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -1631,7 +1665,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -1782,7 +1816,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -1805,7 +1844,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -1893,7 +1932,7 @@
               "Shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -1967,7 +2006,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -2048,7 +2087,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -2066,7 +2110,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -2128,7 +2172,7 @@
               "Number of shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -2202,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -2353,7 +2397,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -2376,7 +2425,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -2464,7 +2513,7 @@
               "Shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -2538,7 +2587,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cpu"
+              "options": "CPU"
             },
             "properties": [
               {
@@ -2619,7 +2668,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "displayName": "Node name",
+            "desc": false
+          }
+        ]
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -2637,7 +2691,7 @@
             {
               "jsonPath": "$.nodes.*.os.cpu.percent",
               "language": "jsonpath",
-              "name": "cpu",
+              "name": "CPU",
               "type": "number"
             },
             {
@@ -2699,7 +2753,7 @@
               "Number of shards": 1,
               "Total Storage": 4,
               "Version": 6,
-              "cpu": 2
+              "CPU": 2
             },
             "renameByName": {
               "Total Storage": ""
@@ -3440,7 +3494,7 @@
                   "type": "terms"
                 }
               ],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${es_metrics}"
@@ -3677,7 +3731,8 @@
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
               },
               "mappings": [],
               "thresholds": {
@@ -3739,7 +3794,7 @@
                   "type": "date_histogram"
                 }
               ],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${es_thread_pools}"
@@ -3977,7 +4032,8 @@
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
               },
               "mappings": [],
               "thresholds": {
@@ -4039,7 +4095,7 @@
                   "type": "date_histogram"
                 }
               ],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${es_thread_pools}"
@@ -4106,7 +4162,8 @@
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
               },
               "mappings": [],
               "thresholds": {
@@ -4168,7 +4225,7 @@
                   "type": "date_histogram"
                 }
               ],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${es_thread_pools}"
@@ -4235,7 +4292,8 @@
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
               },
               "mappings": [],
               "thresholds": {
@@ -4297,7 +4355,7 @@
                   "type": "date_histogram"
                 }
               ],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${es_thread_pools}"
@@ -4364,7 +4422,8 @@
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
               },
               "mappings": [],
               "thresholds": {
@@ -4426,7 +4485,7 @@
                   "type": "date_histogram"
                 }
               ],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${es_thread_pools}"
@@ -4623,7 +4682,7 @@
           "pluginVersion": "9.5.10",
           "targets": [
             {
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
                 "uid": "${es_direct_prod}"
@@ -4937,7 +4996,7 @@
           "pluginVersion": "8.4.4",
           "targets": [
             {
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "marcusolsson-json-datasource",
                 "uid": "${es_direct_prod}"
@@ -5149,7 +5208,7 @@
             {
               "alias": "",
               "bucketAggs": [],
-              "cacheDurationSeconds": 300,
+              "cacheDurationSeconds": 0,
               "datasource": {
                 "type": "elasticsearch",
                 "uid": "${filebeat_logs}"
