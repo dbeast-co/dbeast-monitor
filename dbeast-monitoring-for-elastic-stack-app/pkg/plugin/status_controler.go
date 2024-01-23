@@ -12,11 +12,11 @@ UpdateStatusForType retrieves the status information for a given type.
 It uses the provided credentials to make a request to the corresponding status endpoint and extracts the status information from the response.
 If successful, it returns a Status struct containing the status information; otherwise, it returns an error message in the Status struct.
 */
-func UpdateStatusForType(сredentials *Credentials) Status {
+func UpdateStatusForType(credentials *Credentials) Status {
 	var statusData = Status{}
 
-	if сredentials.Host != "" {
-		response, err := GetStatus(*сredentials)
+	if credentials.Host != "" {
+		response, err := GetStatus(*credentials)
 
 		if err != nil {
 			statusData.Error = err.Error()
