@@ -74,6 +74,52 @@ interface Project {
     status: string;
 }
 
+interface Datasource {
+    access: string
+    basicAuth: boolean
+    database: string
+    id: number
+    isDefault: boolean
+    jsonData: {}
+    name: string
+    orgId: number
+    readOnly: boolean
+    type: string
+    typeLogoUrl: string
+    typeName: string
+    uid: string
+    url: string
+    user: string
+}
+
+interface GrafanaDatasource {
+    basicAuth: boolean
+    access: string
+    basicAuthUser: string
+    database: string
+    isDefault: boolean
+    jsonData: {
+        esVersion: string
+        includeFrozen: boolean
+        logLevelField: string
+        logMessageField: string
+        maxConcurrentShardRequests: number
+        timeField: string
+        tlsSkipVerify: boolean
+    },
+    name: string
+    orgId: number
+    readOnly: boolean
+    secureJsonData: {
+        basicAuthPassword: string
+    },
+    type: string
+    typeName: string
+    uid: string
+    url: string
+    withCredentials: boolean
+}
+
 
 interface Props extends PanelProps<SimpleOptions> {
 }
@@ -119,13 +165,17 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         }
     } as NewProject);
 
+    const [_, __] = useState([] as Datasource[]);
+    const [___, ____] = useState([] as GrafanaDatasource[]);
+
+
     const onSave = () => {
 
         setIsLoading(true);
         try {
             const formToSave: NewProject = getNewProject();
             if ((formToSave.prod.elasticsearch.status === 'GREEN' || formToSave.prod.elasticsearch.status === 'YELLOW') && formToSave.mon.elasticsearch.status === 'GREEN' || (formToSave.mon.elasticsearch.status === 'YELLOW')) {
-                backendSrv.post(`${baseUrl}/save`,
+                const promise2 = backendSrv.post(`${baseUrl}/save`,
                     JSON.stringify(formToSave),
                     {
                         headers: {
@@ -133,45 +183,55 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                             "Accept": 'application/json'
                         }
                     }
-                )
-                    // fetch(`${baseUrl}/save`, {
-                    //     method: 'POST',
-                    //     body: JSON.stringify(formToSave),
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //         Accept: 'application/json',
-                    //     },
-                    // })
-                    .then((response) => {
-                        setIsLoading(false);
-                        toast.success('Source connection was successfully saved!', {
-                            position: toast.POSITION.BOTTOM_RIGHT,
-                            autoClose: false,
-                            closeButton: true,
-                            hideProgressBar: true,
-                            draggable: false,
-                        });
-                    })
-                    .catch((error) => {
-                        setIsLoading(false);
-                        toast.error(`${error.message}`, {
-                            position: toast.POSITION.BOTTOM_RIGHT,
-                            autoClose: false,
-                            closeButton: true,
-                            hideProgressBar: true,
-                            draggable: false,
-                        });
-                    });
-            } else {
-                toast.error(`Connection is not valid`, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: false,
-                    closeButton: true,
-                    hideProgressBar: true,
-                    draggable: false,
-                });
-            }
+                );
+                const promise1 = backendSrv.get(`/api/datasources`, {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        "Accept": 'application/json',
+                    },
+                })
+                Promise.all([promise1, promise2]).then(async(values) => {
+                    setIsLoading(false);
+                    const [value1, value2] = values;
+                    const dataSourcesFromResponse: Datasource[] = Object.values(value2);
+                    let isErrorOccurred = false; // Flag to track if an error has occurred
+                    for (const item of dataSourcesFromResponse) {
+                        if (!isErrorOccurred) {
+                            try {
+                                const isEqualDataSource = value1.find((item1: Datasource) => item1.uid === item.uid);
+                                if (isEqualDataSource) {
+                                    await backendSrv.put(`/api/datasources/uid/${item.uid}`, JSON.stringify(item));
+                                } else {
+                                    await backendSrv.post('/api/datasources', JSON.stringify(item));
+                                }
+                            } catch (error: any) {
+                                isErrorOccurred = true; // Set the flag to true upon encountering an error
+                                toast.error(`${error.message}`, {
+                                    position: toast.POSITION.BOTTOM_RIGHT,
+                                    autoClose: false,
+                                    closeButton: true,
+                                    hideProgressBar: true,
+                                    draggable: false,
+                                });
+                                break; // Exit from the loop on the first error
+                            }
+                        } else {
+                            break; // Exit from the loop if an error has already occurred
+                        }
 
+                    }
+                    if(!isErrorOccurred){
+                        toast.success('Source connections was successfully saved!', {
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                            autoClose: false,
+                            closeButton: true,
+                            hideProgressBar: true,
+                            draggable: false,
+                        });
+                    }
+
+                })
+            }
         } catch (err: any) {
             setIsLoading(false);
         } finally {
@@ -191,16 +251,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                     }
                 }
             )
-            //     backendSrv.post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest)){
-            //     fetch(`${baseUrl}/test_cluster`, {
-            //         method: 'POST',
-            //         body: JSON.stringify(formToTest),
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             Accept: 'application/json',
-            //         },
-            //     })
-            //     .then((response) => response.json())
+
                 .then((result: Response) => {
                     setNewProject({
                         prod: {
@@ -314,8 +365,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         })
 
 
-        //     // disabledMonitoringControl ? setMonitoringAuthChecked(true) : setMonitoringAuthChecked(false);
-        //     // disabledMonitoringControl ? setDisableMonitoringControl(false) : setDisableMonitoringControl(true);
     };
     const onInputMonitoringUsername = (event: any) => {
         setNewProject({
@@ -521,7 +570,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
 
                 <FormControlLabel
                     value="top"
-                    control={<Checkbox onChange={onCheckAuth}
+                    control={<Checkbox id="checkbox1" onChange={onCheckAuth}
                                        checked={newProject.prod.elasticsearch.authentication_enabled}/>}
                     label="Use authentication"
                 />
@@ -571,9 +620,9 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
 
                 <FormControlLabel
                     value="top"
-                    control={<Checkbox
-                        checked={newProject.mon.elasticsearch.authentication_enabled}
-                        onChange={onCheckMonitoringAuth}/>}
+                    control={<Checkbox id="checkbox2"
+                                       checked={newProject.mon.elasticsearch.authentication_enabled}
+                                       onChange={onCheckMonitoringAuth}/>}
                     label="Use authentication"
 
                 />
