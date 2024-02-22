@@ -1,7 +1,10 @@
 PUT /_security/role/dbeast-mon-role
 {
   "cluster": [
-    "monitor"
+    "monitor",
+    "manage_index_templates",
+    "manage_ilm",
+    "manage_ingest_pipelines"
   ],
   "indices": [
     {
