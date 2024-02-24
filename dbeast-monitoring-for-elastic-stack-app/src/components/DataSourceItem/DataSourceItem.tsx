@@ -55,6 +55,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         monitorName: '',
     };
 
+
     state: ClusterStatsItemState = {
         cluster_name: '',
         cluster_uuid: '',
@@ -246,20 +247,43 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     };
 
     handleDelete(isOnYes: boolean): void {
+        const backendSrv = getBackendSrv();
+
         this.setState({isOpenDialog: false});
         if (isOnYes) {
             // TODO: logic here
             console.log('isClose', isOnYes);
-            fetch(
-                `/api/datasources/proxy/uid/DBeast-toolkit/grafana_backend/data_sources/delete/${this.state.cluster_name}--${this.state.cluster_uuid}`,
-                {
-                    method: 'GET',
-                }
-            ).then((res) => {
-                if (res.ok) {
-                    window.location.reload();
-                }
-            });
+            // fetch(
+            //     `/api/datasources/proxy/uid/DBeast-toolkit/grafana_backend/data_sources/delete/${this.state.cluster_name}--${this.state.cluster_uuid}`,
+            //     {
+            //         method: 'GET',
+            //     }
+            // ).then((res) => {
+            //     if (res.ok) {
+            //         window.location.reload();
+            //     }
+            // });
+
+            backendSrv.get(`/api/datasources`, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "Accept": 'application/json',
+                },
+            }).then((dataSources: any) => {
+                console.log('dataSources', dataSources);
+                dataSources.forEach((dataSource: any) => {
+                    if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
+                        backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`).then((res: any) => {
+                            console.log('res', res);
+                            // window.location.reload();
+                        }).catch((error: any) => {
+                            console.log('error', error);
+                        });
+                    }
+                });
+            })
+
+
         }
     }
 

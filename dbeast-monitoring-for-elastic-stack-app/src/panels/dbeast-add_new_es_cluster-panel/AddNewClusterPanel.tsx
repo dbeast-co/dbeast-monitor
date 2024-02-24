@@ -174,7 +174,6 @@ export const AddNewClusterPanel = () => {
                             draggable: false,
                         });
                     }
-                    // setStatus(result.cluster_status);
                     setIsDisabled(false);
                     setIsLoading(false);
                 })
