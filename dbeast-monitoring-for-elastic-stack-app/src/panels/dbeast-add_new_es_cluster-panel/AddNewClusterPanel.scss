@@ -40,9 +40,6 @@
     }
   }
 
-  .MuiInputBase-formControl {
-
-  }
 
   input {
     color: #ffffff;
@@ -104,7 +101,6 @@
     }
   }
 
-
   .actions {
     display: flex;
     column-gap: 10px;
@@ -127,10 +123,7 @@
       background: #c2c2c2;
       cursor: not-allowed;
     }
-
-
   }
-
 }
 
 .spinner_overlay {
@@ -159,8 +152,6 @@
   svg {
     width: 30px;
     height: 30px;
-
-
   }
 }
 
@@ -183,6 +174,7 @@
   border-style: solid !important;
   border-color: white !important;
 }
+
 .status {
   color: #ffffff;
   position: absolute;
@@ -196,8 +188,6 @@
     padding: 5px 10px;
     font-size: 12px;
     border-radius: 7px;
-
-
   }
 
   .YELLOW {
@@ -223,23 +213,29 @@
   }
 
 }
-.source_panel.isLight{
+
+.source_panel.isLight {
   background-color: #fff;
   border: 1px solid #222e46;
+
   label {
 
     color: #222e46;
   }
+
   .css-vubbuv {
     fill: #222e46;
   }
-  .status{
+
+  .status {
     top: 25%;
   }
+
   .css-mqt2s5.Mui-disabled {
     color: #222e46;
     opacity: 0.3;
   }
+
   input {
     color: #222e46;
   }

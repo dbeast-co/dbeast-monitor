@@ -25,7 +25,7 @@ interface Props {
 }
 
 
-const MyComponent = (props: any) => {
+const MyComponent = (_: any) => {
     // Get the current theme and its properties using the useTheme hook
     const theme = useTheme();
     const styles = getStyles(theme);
@@ -162,14 +162,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
     };
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<ClusterStatsItemState>, snapshot?: any) {
-
-    }
-
-    componentWillUnmount() {
-
-    }
-
     async componentDidMount() {
         // console.log('Props: ', this.props.theme)
         await getBackendSrv()
@@ -272,8 +264,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     }
 
     render() {
-
-        // @ts-ignore
         return (
             <div className={classNames({
                 form_group: true,
@@ -355,14 +345,13 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 <Divider light/>
                 <footer>
                     <Stack spacing={2} direction="row">
-                        {/*<Button variant="secondary">Edit</Button>*/}
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
                         <Button variant="secondary" onClick={() => this.onTest()}>Test</Button>
                         <FormControl fullWidth id="select">
 
-                            {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
+
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -380,7 +369,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                                 <MenuItem value={'stack-monitoring'}>Elastic Stack monitoring</MenuItem>
                                 <MenuItem value={'index-overview'}>Elasticsearch Index overview</MenuItem>
                                 <MenuItem value={'shards-overview'}>Elasticsearch Shards overview</MenuItem>
-                                <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
+                                <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines
+                                    overview</MenuItem>
                                 <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
                                 <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
                             </Select>
@@ -395,9 +385,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
-                    {/*<DialogContent>*/}
-                    {/*  <DialogContent id="alert-dialog-description">Are you sure you want to delete this cluster?</DialogContent>*/}
-                    {/*</DialogContent>*/}
+
                     <DialogActions>
                         <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
                             No

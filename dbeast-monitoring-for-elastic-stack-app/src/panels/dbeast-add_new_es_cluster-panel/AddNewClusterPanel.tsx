@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {PanelProps} from '@grafana/data';
-import {SimpleOptions} from './types';
-import './SimplePanel.scss';
+import './AddNewClusterPanel.scss';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,119 +10,15 @@ import {CircularProgress} from '@mui/material';
 import {useTheme2} from '@grafana/ui';
 import classNames from 'classnames';
 import {getBackendSrv} from "@grafana/runtime";
+import {NewProject} from './models/new-project';
+import {Datasource} from './models/datasource';
+import {GrafanaDatasource} from './models/grafana-datasource';
+import {BackendResponse} from './models/backend-response';
 
 const settings = require('./config.ts');
 
 
-interface Response {
-    prod: {
-        elasticsearch: {
-            status: string;
-            error: string;
-        };
-        kibana: {
-            status: string;
-            error: string;
-        };
-    };
-    mon: {
-        elasticsearch: {
-            status: string;
-            error: string;
-        };
-
-    };
-}
-
-// interface Project {
-//     es_host: string;
-//     kibana_host: string;
-//     authentication_enabled: boolean;
-//     username: string | null;
-//     password: string | null;
-//
-//     monitoring_host: string;
-//     monitoring_authentication_enabled: boolean;
-//     monitoring_username: string;
-//     monitoring_password: string;
-//     ssl_enabled?: boolean;
-//     ssl_file?: string | null;
-//     status: string;
-// }
-
-interface NewProject {
-    prod: Prod;
-    mon: Mon
-}
-
-interface Prod {
-    elasticsearch: Project,
-    kibana: Project
-}
-
-interface Mon {
-    elasticsearch: Project,
-}
-
-interface Project {
-    host: string;
-    authentication_enabled: boolean;
-    username: string | null;
-    password: string | null;
-    status: string;
-}
-
-interface Datasource {
-    access: string
-    basicAuth: boolean
-    database: string
-    id: number
-    isDefault: boolean
-    jsonData: {}
-    name: string
-    orgId: number
-    readOnly: boolean
-    type: string
-    typeLogoUrl: string
-    typeName: string
-    uid: string
-    url: string
-    user: string
-}
-
-interface GrafanaDatasource {
-    basicAuth: boolean
-    access: string
-    basicAuthUser: string
-    database: string
-    isDefault: boolean
-    jsonData: {
-        esVersion: string
-        includeFrozen: boolean
-        logLevelField: string
-        logMessageField: string
-        maxConcurrentShardRequests: number
-        timeField: string
-        tlsSkipVerify: boolean
-    },
-    name: string
-    orgId: number
-    readOnly: boolean
-    secureJsonData: {
-        basicAuthPassword: string
-    },
-    type: string
-    typeName: string
-    uid: string
-    url: string
-    withCredentials: boolean
-}
-
-
-interface Props extends PanelProps<SimpleOptions> {
-}
-
-export const SimplePanel: React.FC<Props> = ({options, data, width, height, replaceVariables}) => {
+export const AddNewClusterPanel = () => {
     const backendSrv = getBackendSrv();
     const theme = useTheme2();
     const baseUrl = settings.SERVER_URL;
@@ -170,7 +64,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
 
 
     const onSave = () => {
-
         setIsLoading(true);
         try {
             const formToSave: NewProject = getNewProject();
@@ -190,7 +83,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         "Accept": 'application/json',
                     },
                 })
-                Promise.all([promise1, promise2]).then(async(values) => {
+                Promise.all([promise1, promise2]).then(async (values) => {
                     setIsLoading(false);
                     const [value1, value2] = values;
                     const dataSourcesFromResponse: Datasource[] = Object.values(value2);
@@ -220,7 +113,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         }
 
                     }
-                    if(!isErrorOccurred){
+                    if (!isErrorOccurred) {
                         toast.success('Source connections was successfully saved!', {
                             position: toast.POSITION.BOTTOM_RIGHT,
                             autoClose: false,
@@ -252,7 +145,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             )
 
-                .then((result: Response) => {
+                .then((result: BackendResponse) => {
                     setNewProject({
                         prod: {
                             elasticsearch: {
@@ -312,12 +205,9 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        // disableControl ? setAuthChecked(true) : setAuthChecked(false);
-        // disableControl ? setDisableControl(false) : setDisableControl(true);
     };
 
     const onUserNameInput = (event: any) => {
-        // setAuthUsername(event?.target?.value);
         setNewProject({
             ...newProject,
             prod: {
@@ -328,7 +218,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        if (event.target.value === '') {
+        if (isNotEmpty(event.target.value)) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
@@ -345,7 +235,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        if (event.target.value === '') {
+        if (isNotEmpty(event.target.value)) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
@@ -377,7 +267,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        if (event.target.value === '') {
+        if (isNotEmpty(event.target.value)) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
@@ -395,14 +285,13 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        if (event.target.value === '') {
+        if (isNotEmpty(event.target.value)) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
         }
     }
     const onInputHost = (event: any) => {
-        // setHost(event?.target?.value);
         setNewProject({
             ...newProject,
             prod: {
@@ -413,9 +302,7 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        //
-        //
-        if (event.target.value === '') {
+        if (isNotEmpty(event.target.value)) {
             setValidHost(false);
             setTestDisable(true);
         } else {
@@ -429,8 +316,8 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
         }
 
     };
+
     const onInputMonitoringHost = (event: any) => {
-        // setMonitoringHost(event?.target?.value);
         setNewProject({
             ...newProject,
             mon: {
@@ -442,7 +329,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        //
         if (event.target.value === '') {
             setValidMonitoringValidHost(false);
         }
@@ -466,7 +352,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 }
             }
         })
-        //
         if (event.target.value === '') {
             setValidKibanaHost(false);
             setTestDisable(true);
@@ -510,27 +395,24 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
             }
         };
     }
+    const isNotEmpty = (value: string) => {
+        return value !== '';
+    }
 
 
     useEffect(() => {
         setIsDisabled(true);
         setValidHost(false);
-        // setStatus('UNTESTED');
     }, []);
 
-    // @ts-ignore
-    return (
 
+    return (
         <div className={classNames({
             source_panel: true,
             isLight: theme.isLight,
-
         })}>
-
             <div>
                 <div className="host_wrapper">
-
-
                     <TextField
                         id="standard-basic"
                         label="Elasticsearch Host"
@@ -541,15 +423,11 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                     {!validHost && newProject.prod.elasticsearch.host &&
                         <span className='invalid'>Host format is invalid</span>}
 
-
                     <div className='status'>
                             <span
                                 className={newProject.prod.elasticsearch.status ? newProject.prod.elasticsearch.status : 'UNTESTED'}>{newProject.prod.elasticsearch.status ? newProject.prod.elasticsearch.status : 'UNTESTED'}</span>
                     </div>
-
                 </div>
-
-
                 <div className="host_wrapper">
                     <TextField
                         id="standard-basic"
@@ -565,7 +443,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                             <span
                                 className={newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}>{newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}</span>
                     </div>
-
                 </div>
 
                 <FormControlLabel
@@ -596,7 +473,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                         disabled={!newProject.prod.elasticsearch.authentication_enabled}
                     />
                 </div>
-
 
             </div>
 
@@ -649,7 +525,6 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                     />
                 </div>
 
-
             </div>
 
             <div className="actions">
@@ -660,9 +535,8 @@ export const SimplePanel: React.FC<Props> = ({options, data, width, height, repl
                 <button onClick={() => onSave()} className="btn_save" disabled={testDisable || isDisabled}>
                     Save
                 </button>
-                {/*<span className={status ? status : 'UNTESTED'}>{status ? status : 'UNTESTED'}</span>*/}
-
             </div>
+
             {isLoading && (
                 <div className="spinner_overlay">
                     <CircularProgress color="primary"/>
