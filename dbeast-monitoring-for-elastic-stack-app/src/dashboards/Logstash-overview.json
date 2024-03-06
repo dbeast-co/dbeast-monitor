@@ -1176,8 +1176,8 @@
     },
     {
       "datasource": {
-        "type": "datasource",
-        "uid": "-- Mixed --"
+        "uid": "-- Mixed --",
+        "type": "datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -1412,6 +1412,10 @@
       "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1437,10 +1441,6 @@
               "type": "terms"
             }
           ],
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${logstash_mon_metrics_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -1487,6 +1487,10 @@
           "urlPath": ""
         },
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs_ports}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1499,12 +1503,19 @@
                 "size": "10"
               },
               "type": "terms"
+            },
+            {
+              "id": "3",
+              "type": "terms",
+              "settings": {
+                "min_doc_count": "1",
+                "size": "10",
+                "order": "desc",
+                "orderBy": "_term"
+              },
+              "field": "host.hostname"
             }
           ],
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${logstash_mon_logs_ports}"
-          },
           "hide": false,
           "metrics": [
             {
@@ -1522,11 +1533,8 @@
       "title": "Pipelines overview",
       "transformations": [
         {
-          "id": "joinByField",
-          "options": {
-            "byField": "logstash.node.stats.pipeline.id",
-            "mode": "outer"
-          }
+          "id": "merge",
+          "options": {}
         },
         {
           "id": "organize",
