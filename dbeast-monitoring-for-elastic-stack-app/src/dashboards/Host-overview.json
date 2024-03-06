@@ -97,14 +97,11 @@
   "panels": [
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -131,6 +128,9 @@
                 "value": null
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -153,36 +153,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 129
-              },
-              {
                 "id": "unit",
                 "value": "bytes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Active shards"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 114
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Number of data nodes"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 171
               }
             ]
           },
@@ -193,10 +165,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 133
-              },
-              {
                 "id": "unit",
                 "value": "short"
               }
@@ -205,7 +173,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Deleted"
+              "options": "Docs deleted"
             },
             "properties": [
               {
@@ -217,12 +185,36 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Name"
+              "options": "Node name"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 223
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "JVM Heap"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
               }
             ]
           }
@@ -236,36 +228,36 @@
       },
       "id": 6,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 300,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.nodes.*.name",
               "language": "jsonpath",
-              "name": "Name"
+              "name": "Node name"
             },
             {
               "jsonPath": "$.nodes.*.transport_address",
               "language": "jsonpath",
-              "name": ""
+              "name": "Transport addresss"
             },
             {
               "jsonPath": "$.nodes.*.indices.shard_stats.total_count",
@@ -280,7 +272,7 @@
             {
               "jsonPath": "$.nodes.*.indices.docs.deleted",
               "language": "jsonpath",
-              "name": "Deleted"
+              "name": "Docs deleted"
             },
             {
               "jsonPath": "$.nodes.*.fs.total.total_in_bytes",
@@ -291,16 +283,45 @@
               "jsonPath": "$.nodes.*.fs.total.available_in_bytes",
               "language": "jsonpath",
               "name": "Free space"
+            },
+            {
+              "name": "Uptime",
+              "jsonPath": "$.nodes.*.jvm.uptime_in_millis",
+              "language": "jsonpath"
+            },
+            {
+              "name": "JVM Heap",
+              "jsonPath": "$.nodes.*.jvm.mem.heap_max_in_bytes",
+              "language": "jsonpath"
             }
           ],
           "method": "GET",
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/_nodes/$node_name/stats?filter_path=cluster_name,nodes.*.indices.docs.count,nodes.*.indices.docs.deleted,nodes.*.indices.shard_stats.total_count,nodes.*.roles,nodes.*.name,nodes.*.transport_address,nodes.*.os.cpu.percent,nodes.*.os.cpu.load_average.1m,nodes.*.os.cpu.load_average.5m,nodes.*.os.cpu.load_average.15m,nodes.*.os.mem.total_in_bytes,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+          "urlPath": "/_nodes/$node_name/stats?filter_path=cluster_name,nodes.*.jvm.uptime_in_millis,nodes.*.indices.docs.count,nodes.*.indices.docs.deleted,nodes.*.indices.shard_stats.total_count,nodes.*.name,nodes.*.transport_address,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
         }
       ],
       "title": "Node stats",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Node name": 0,
+              "Transport addresss": 1,
+              "Uptime": 2,
+              "Number of shards": 3,
+              "Docs count": 4,
+              "Docs deleted": 5,
+              "JVM Heap": 6,
+              "Total space": 7,
+              "Free space": 8
+            },
+            "renameByName": {}
+          }
+        }
+      ],
       "type": "table"
     },
     {
@@ -555,7 +576,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^Average system\\.memory\\.swap\\.used\\.pct$/",
+          "fields": "/^Average system\\.memory\\.swap\\.total$/",
           "values": false
         },
         "textMode": "value"
@@ -2584,7 +2605,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Ingest rate",
+          "title": "Ingest rate (EPS)",
           "type": "timeseries"
         },
         {
@@ -2666,7 +2687,7 @@
           },
           "targets": [
             {
-              "alias": "Search rate",
+              "alias": "",
               "bucketAggs": [
                 {
                   "field": "@timestamp",
@@ -2724,7 +2745,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Search rate",
+          "title": "Search rate (QPS)",
           "type": "timeseries"
         },
         {
@@ -4222,7 +4243,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Shards ingest rates",
+          "title": "Shards ingest rates (EPS)",
           "transformations": [],
           "type": "status-history"
         },
@@ -4358,7 +4379,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Shards search query last period",
+          "title": "Search Operations Over Recent Period (Count)",
           "transformations": [],
           "type": "status-history"
         },
@@ -4469,7 +4490,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Average Fetch operations per index per shard in the last period",
+          "title": "Fetch Operations Over Recent Period (Count)",
           "transformations": [],
           "type": "status-history"
         },
@@ -4604,7 +4625,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Shards ingest latency",
+          "title": "Shards ingest latency (ms)",
           "transformations": [],
           "type": "status-history"
         },
@@ -4714,7 +4735,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Shards query latency",
+          "title": "Shards query latency (ms)",
           "transformations": [],
           "type": "status-history"
         },
@@ -4824,7 +4845,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Shards fetch latency",
+          "title": "Shards fetch latency (ms)",
           "transformations": [],
           "type": "status-history"
         }
@@ -4878,7 +4899,7 @@
                 {
                   "id": "1",
                   "settings": {
-                    "limit": "100"
+                    "limit": "500"
                   },
                   "type": "logs"
                 }
