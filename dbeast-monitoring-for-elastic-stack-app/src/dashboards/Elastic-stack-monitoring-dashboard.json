@@ -18,7 +18,22 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OverviewDashboard"
+      ],
+      "targetBlank": true,
+      "title": "Additional monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "liveNow": true,
   "panels": [
     {
@@ -5262,7 +5277,10 @@
   "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "DBeastMonitor",
+    "OverviewDashboard"
+  ],
   "templating": {
     "list": [
       {

@@ -147,6 +147,7 @@ PUT _index_template/dbeast-mon-es-thread_pools-historical-template
     "description": "This template used for the Elasticsearch thread pools metrics"
   }
 }
+
 PUT _index_template/dbeast-mon-es-thread_pools-status-template
 {
   "index_patterns" : [ 
@@ -158,5 +159,20 @@ PUT _index_template/dbeast-mon-es-thread_pools-status-template
   ],
   "_meta": {
     "description": "This template used for the Elasticsearch thread pools metrics"
+  }
+}
+
+
+PUT _index_template/dbeast-mon-es-tasks-template
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-tasks-20*"
+  ],
+  "composed_of" : [ 
+    "dbeast-mon-es-tasks-mapping-component", 
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch tasks"
   }
 }

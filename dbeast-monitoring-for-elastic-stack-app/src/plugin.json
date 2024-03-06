@@ -190,6 +190,15 @@
       "addToNav": false,
       "uid": "elasticsearch-index-pattern-monitor",
       "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch tasks analytics",
+      "path": "dashboards/Elasticsearch-tasks-analytics.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-tasks-analytics",
+      "defaultNav": false
     }
   ],
   "dependencies": {
