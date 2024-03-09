@@ -21,7 +21,7 @@ import classNames from "classnames";
 
 interface Props {
     dataSourceItem: any;
-    theme: any
+    theme: any;
 }
 
 
@@ -241,51 +241,50 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         this.setState({isOpenDialog: true});
     };
     onTest = () => {
-        console.log('Enter to onTest function')
         this.componentDidMount().then(() => {
         });
     };
+    onDeleteCluster = async () => {
+        const backendSrv = getBackendSrv();
+        try {
+            const dataSources: any = await backendSrv.get(`/api/datasources`, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "Accept": 'application/json',
+                },
+            });
+
+
+            for (const dataSource of dataSources) {
+                if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
+                    try {
+                        let res: any = await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
+                        console.log('res', res);
+                        window.location.reload();
+
+
+                    } catch (deleteError) {
+                        console.error('deleteError', deleteError);
+                    }
+                }
+            }
+        } catch (getError) {
+            console.error('getError', getError);
+        }
+    }
+
 
     handleDelete(isOnYes: boolean): void {
-        const backendSrv = getBackendSrv();
 
         this.setState({isOpenDialog: false});
         if (isOnYes) {
             // TODO: logic here
             console.log('isClose', isOnYes);
-            // fetch(
-            //     `/api/datasources/proxy/uid/DBeast-toolkit/grafana_backend/data_sources/delete/${this.state.cluster_name}--${this.state.cluster_uuid}`,
-            //     {
-            //         method: 'GET',
-            //     }
-            // ).then((res) => {
-            //     if (res.ok) {
-            //         window.location.reload();
-            //     }
-            // });
-
-            backendSrv.get(`/api/datasources`, {
-                headers: {
-                    "Content-Type": 'application/json',
-                    "Accept": 'application/json',
-                },
-            }).then((dataSources: any) => {
-                console.log('dataSources', dataSources);
-                dataSources.forEach((dataSource: any) => {
-                    if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
-                        backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`).then((res: any) => {
-                            console.log('res', res);
-                            // window.location.reload();
-                        }).catch((error: any) => {
-                            console.log('error', error);
-                        });
-                    }
-                });
-            })
-
-
+            this.onDeleteCluster().then(() => {
+            });
         }
     }
+
 
     render() {
         return (
