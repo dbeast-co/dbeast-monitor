@@ -1404,8 +1404,8 @@
         "frameIndex": 1,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "failures_rate"
+            "displayName": "Failures rate",
+            "desc": true
           }
         ]
       },
