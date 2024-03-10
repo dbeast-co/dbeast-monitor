@@ -245,6 +245,12 @@ PUT _component_template/dbeast-mon-elastic-index-stats-custom-mapping-component
                   "properties": {
                     "primaries": {
                       "type": "long"
+                    },
+                    "replica": {
+                      "type": "long"
+                    },
+                    "total": {
+                      "type": "long"
                     }
                   }
                 },
@@ -2928,6 +2934,10 @@ PUT _component_template/dbeast-mon-es-ingest_pipelines-mapping-component
         "event" : {
           "properties" : {
             "dataset" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            },
+            "module" : {
               "type" : "keyword",
               "ignore_above" : 256
             }
