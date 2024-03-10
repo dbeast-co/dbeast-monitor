@@ -48,9 +48,8 @@
                                     <directory>${basedir}/src/main/resources/run_scripts</directory>
                                     <filtering>true</filtering>
                                     <includes>
-                                        <include>dbeast-toolkit.bat</include>
-                                        <include>dbeast-toolkit.sh</include>
-                                        <include>dbeast-toolkit.service</include>
+                                        <include>dbeast-monitor.bat</include>
+                                        <include>dbeast-monitor.sh</include>
                                     </includes>
                                 </resource>
                             </resources>
