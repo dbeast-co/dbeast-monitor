@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 0.7.0
+- New data sources:
+    * Elasticsearch Tasks API datasource
+
+- New dashboards:
+    * Elasticsearch Tasks analytics
+  
+- Updated dashboards
+    * Elasticsearch host overview
+    * Elasticsearch index monitor
+    * Elastic stack monitor
+    * Logstash instance monitor
+    * Logstash overview
+  
 ## Version 0.6.0
 - New data sources:
     * Thread pools datasource

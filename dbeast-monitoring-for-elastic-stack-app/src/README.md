@@ -27,14 +27,15 @@ options:
 5. Logstash pipeline analytics
 6. Elasticsearch ingest pipelines overview
 7. Elasticsearch ingest pipeline analytics
-8. Elasticsearch index level monitor
-9. Elasticsearch index patterns monitor
-10. Elasticsearch shard level monitor
-11. Machine Learning Jobs monitoring
+8. Elasticsearch tasks analytics
+9. Elasticsearch index level monitor
+10. Elasticsearch index patterns monitor
+11. Elasticsearch shard level monitor
+12. Machine Learning Jobs monitoring
 
 ## Requirements
 
-- Grafana 9x
+- Grafana 9.4x
 - Java 8+
 - Logstash 8.1+
 - Elasticsearch 8+

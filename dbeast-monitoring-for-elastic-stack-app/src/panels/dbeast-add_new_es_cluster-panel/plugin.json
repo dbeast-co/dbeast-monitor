@@ -25,11 +25,11 @@
       }
     ],
     "screenshots": [],
-    "version": "0.6.0",
+    "version": "0.7.0",
     "updated": "%TODAY%"
   },
   "dependencies": {
-    "grafanaDependency": ">=9.0.0",
+    "grafanaDependency": ">=9.4.0",
     "plugins": []
   }
 }
