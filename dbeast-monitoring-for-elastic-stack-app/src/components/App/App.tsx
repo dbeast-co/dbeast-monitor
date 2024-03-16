@@ -22,6 +22,13 @@ export class App extends PureComponent<Props, State> {
         loading: true,
         dataSources: [],
     };
+    onDeleteDataSource = (id: string) => {
+        const filteredDataSources = this.state.dataSources.filter((item) => !item.uid.endsWith(id));
+
+        this.setState({
+            dataSources: filteredDataSources,
+        });
+    }
 
     async componentDidMount() {
         const dataSources = await getBackendSrv()
@@ -54,6 +61,6 @@ export class App extends PureComponent<Props, State> {
             </h1>
         </div>
 
-        return <DataSourceList dataSources={dataSources}/>;
+        return <DataSourceList onDelete={(id) => this.onDeleteDataSource(id)} dataSources={dataSources}/>;
     }
 }

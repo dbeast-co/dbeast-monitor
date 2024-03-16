@@ -22,6 +22,7 @@ import classNames from "classnames";
 interface Props {
     dataSourceItem: any;
     theme: any;
+    onDelete: (uid: string) => void;
 }
 
 
@@ -149,7 +150,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 });
                 break;
             case 'ml-jobs-analytics':
-                // console.log('aaa');
                 window.open(
                     `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
@@ -258,9 +258,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             for (const dataSource of dataSources) {
                 if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
                     try {
-                        let res: any = await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
-                        console.log('res', res);
-                        window.location.reload();
+                        await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
+                        this.props.onDelete(dataSource.uid);
 
 
                     } catch (deleteError) {
@@ -278,8 +277,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
         this.setState({isOpenDialog: false});
         if (isOnYes) {
-            // TODO: logic here
-            console.log('isClose', isOnYes);
             this.onDeleteCluster().then(() => {
             });
         }

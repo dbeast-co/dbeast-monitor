@@ -9,10 +9,16 @@ import classNames from "classnames";
  */
 interface Props {
     dataSources: any[];
+    onDelete: (id: string) => void;
 }
 
-export const DataSourceList: FC<Props> = ({dataSources}) => {
+export const DataSourceList: FC<Props> = ({dataSources, onDelete}) => {
     const theme = useTheme2();
+
+    const onDeleteItem = (id: string) => {
+        onDelete(id);
+    }
+
     return (
 
         <div className={classNames({
@@ -27,7 +33,8 @@ export const DataSourceList: FC<Props> = ({dataSources}) => {
                     {dataSources.map((item, index) => {
                         return (
                             <li className="card-item-wrapper" key={index} aria-label="check-card">
-                                <DataSourceItem dataSourceItem={item} theme={theme}/>
+                                <DataSourceItem onDelete={(id) => onDeleteItem(id)} dataSourceItem={item}
+                                                theme={theme}/>
                             </li>
                         );
                     })}
