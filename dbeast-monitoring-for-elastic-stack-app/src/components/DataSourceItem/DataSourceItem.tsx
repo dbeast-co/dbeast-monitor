@@ -149,6 +149,16 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     monitorName: '',
                 });
                 break;
+            case 'tasks-analytics':
+                window.open(
+                    `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_uid=${this.state.cluster_uuid}`,
+                    '_blank'
+                );
+
+                this.setState({
+                    monitorName: '',
+                });
+                break;
             case 'ml-jobs-analytics':
                 window.open(
                     `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_uid=${this.state.cluster_uuid}`,
@@ -392,6 +402,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                                 <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines
                                     overview</MenuItem>
                                 <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
+                                <MenuItem value={'tasks-analytics'}>Tasks analytics</MenuItem>
                                 <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
                             </Select>
                         </FormControl>

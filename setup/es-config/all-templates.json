@@ -1,7 +1,20 @@
-PUT _index_template/dbeast-mon-elastic-index-stats-template
+PUT _index_template/dbeast-mon-elastic-index-stats-historical-template
 {
   "index_patterns": [
-    "dbeast-mon-es-index-stats*"
+    "dbeast-mon-es-index-stats-20*"
+  ],
+  "composed_of": [
+    "dbeast-mon-elastic-index-stats-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the index monitoring"
+  }
+}
+PUT _index_template/dbeast-mon-elastic-index-stats-status-template
+{
+  "index_patterns": [
+    "dbeast-mon-es-index-stats-status"
   ],
   "composed_of": [
     "dbeast-mon-elastic-index-stats-custom-mapping-component",
@@ -12,10 +25,10 @@ PUT _index_template/dbeast-mon-elastic-index-stats-template
   }
 }
 
-PUT _index_template/dbeast-mon-elastic-shards-stats-template
+PUT _index_template/dbeast-mon-elastic-shards-stats-historical-template
 {
   "index_patterns": [
-    "dbeast-mon-es-shards-stats-*"
+    "dbeast-mon-es-shards-stats-20*"
   ],
   "composed_of": [
     "dbeast-mon-elastic-shards-stats-custom-mapping-component",
@@ -26,11 +39,24 @@ PUT _index_template/dbeast-mon-elastic-shards-stats-template
   }
 }
 
-PUT _index_template/dbeast-mon-logstash-logs-template
+PUT _index_template/dbeast-mon-elastic-shards-stats-status-template
 {
   "index_patterns": [
-    "dbeast-mon-logstash-logs-20*",
-    "dbeast-mon-logstash-logs-pipelines-ports-status"
+    "dbeast-mon-es-shards-stats-status"
+  ],
+  "composed_of": [
+    "dbeast-mon-elastic-shards-stats-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the shards monitoring"
+  }
+}
+
+PUT _index_template/dbeast-mon-logstash-logs-historical-template
+{
+  "index_patterns": [
+    "dbeast-mon-logstash-logs-20*"
   ],
   "composed_of": [
     "dbeast-mon-logstash-logs-custom-mapping-component",
@@ -40,11 +66,37 @@ PUT _index_template/dbeast-mon-logstash-logs-template
     "description": "This template used for the Logstash logs"
   }
 }
-
-PUT _index_template/dbeast-mon-logstash-metrics-template
+PUT _index_template/dbeast-mon-logstash-logs-pipelines-ports-status-template
 {
   "index_patterns": [
-    "dbeast-mon-logstash-metrics-*"
+    "dbeast-mon-logstash-logs-pipelines-ports-status"
+  ],
+  "composed_of": [
+    "dbeast-mon-logstash-logs-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Logstash port usage status"
+  }
+}
+
+PUT _index_template/dbeast-mon-logstash-metrics-historical-template
+{
+  "index_patterns": [
+    "dbeast-mon-logstash-metrics-20*"
+  ],
+  "composed_of": [
+    "dbeast-mon-logstash-metrics-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Logstash metrics"
+  }
+}
+PUT _index_template/dbeast-mon-logstash-metrics-status-template
+{
+  "index_patterns": [
+    "dbeast-mon-logstash-metrics-status"
   ],
   "composed_of": [
     "dbeast-mon-logstash-metrics-custom-mapping-component",
@@ -55,10 +107,10 @@ PUT _index_template/dbeast-mon-logstash-metrics-template
   }
 }
 
-PUT _index_template/dbeast-mon-es-ingest_pipelines
+PUT _index_template/dbeast-mon-es-ingest_pipelines-historical-template
 {
   "index_patterns" : [ 
-    "dbeast-mon-es-ingest_pipelines-*"
+    "dbeast-mon-es-ingest_pipelines-20*"
   ],
   "composed_of" : [ 
     "dbeast-mon-es-ingest_pipelines-mapping-component", 
@@ -66,5 +118,61 @@ PUT _index_template/dbeast-mon-es-ingest_pipelines
   ],
   "_meta": {
     "description": "This template used for the Elasticsearch pipelines metrics"
+  }
+}
+PUT _index_template/dbeast-mon-es-ingest_pipelines-status-template
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-ingest_pipelines-status"
+  ],
+  "composed_of" : [ 
+    "dbeast-mon-es-ingest_pipelines-mapping-component", 
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch pipelines metrics"
+  }
+}
+
+PUT _index_template/dbeast-mon-es-thread_pools-historical-template
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-thread_pools-20*"
+  ],
+  "composed_of" : [ 
+    "dbeast-mon-es-thread_pools-mapping-component", 
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch thread pools metrics"
+  }
+}
+
+PUT _index_template/dbeast-mon-es-thread_pools-status-template
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-thread_pools-status"
+  ],
+  "composed_of" : [ 
+    "dbeast-mon-es-thread_pools-mapping-component", 
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch thread pools metrics"
+  }
+}
+
+
+PUT _index_template/dbeast-mon-es-tasks-template
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-tasks-20*"
+  ],
+  "composed_of" : [ 
+    "dbeast-mon-es-tasks-mapping-component", 
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch tasks"
   }
 }

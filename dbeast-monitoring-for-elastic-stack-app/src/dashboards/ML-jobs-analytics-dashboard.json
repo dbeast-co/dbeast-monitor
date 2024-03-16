@@ -61,7 +61,22 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OverviewDashboard"
+      ],
+      "targetBlank": true,
+      "title": "Additional monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -1589,7 +1604,10 @@
   "refresh": "",
   "schemaVersion": 37,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "DBeastMonitor",
+    "OverviewDashboard"
+  ],
   "templating": {
     "list": [
       {
@@ -1601,7 +1619,7 @@
         "definition": "$[*].name",
         "hide": 0,
         "includeAll": false,
-        "label": "Cluster UID",
+        "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],
@@ -1617,7 +1635,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.*)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"

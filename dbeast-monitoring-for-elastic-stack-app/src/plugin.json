@@ -64,8 +64,8 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "0.5.1",
-    "updated": "2023-12-07"
+    "version": "0.6.0",
+    "updated": "%TODAY%"
   },
   "includes": [
     {
@@ -209,10 +209,19 @@
       "addToNav": false,
       "uid": "elasticsearch-index-pattern-monitor",
       "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch tasks analytics",
+      "path": "dashboards/Elasticsearch-tasks-analytics.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "uid": "elasticsearch-tasks-analytics",
+      "defaultNav": false
     }
   ],
   "dependencies": {
-    "grafanaDependency": ">=9.0.0",
+    "grafanaDependency": ">=9.4.0",
     "plugins": []
   }
 }

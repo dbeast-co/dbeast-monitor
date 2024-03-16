@@ -21,11 +21,11 @@ public class MainRest {
         logger.info("Initialize Grafana backend APIs");
         RESTElasticsearchDataSource restElasticsearchDataSource = new RESTElasticsearchDataSource();
         RESTGrafanaAppConfig restGrafanaAppConfig = new RESTGrafanaAppConfig();
-        RESTTest restTest = new RESTTest();
+//        RESTTest restTest = new RESTTest();
         path("/grafana_backend", () -> {
             restElasticsearchDataSource.rest();
             restGrafanaAppConfig.rest();
-            restTest.rest();
+//            restTest.rest();
             get("/test", (request, response) -> {
                 logger.info("Got test request for Grafana backend");
                 return "{\"grafana_backend_test\": true}";
