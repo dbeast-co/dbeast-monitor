@@ -121,7 +121,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index pattern",
-                    "url": "d/hgIusXx4k/index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                    "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                   }
                 ]
               },
@@ -395,7 +395,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze node",
-                    "url": "/d/ZSXiZnoVz/node-stats?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node\"]}"
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node\"]}"
                   }
                 ]
               },
@@ -1174,7 +1174,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index pattern",
-                        "url": "d/hgIusXx4k/index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                       }
                     ]
                   },
@@ -1459,7 +1459,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze node",
-                        "url": "/d/ZSXiZnoVz/node-stats?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node\"]}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node\"]}"
                       }
                     ]
                   },
@@ -2342,7 +2342,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index pattern",
-                        "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                       }
                     ]
                   },
@@ -3631,9 +3631,9 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "elasticsearch",
-          "value": "r5H9_VvqRVyxbAy4U8TILg"
+          "value": "urUcY3GYRS6pjJuKhBSwKA"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
@@ -3647,6 +3647,14 @@
         "name": "cluster_uid",
         "options": [],
         "query": {
+          "annotationDashboard": "",
+          "annotationLimit": 100,
+          "annotationNewState": "",
+          "annotationPattern": "",
+          "annotationPrevState": "",
+          "annotationRange": "",
+          "annotationRules": true,
+          "annotationType": "",
           "cacheDurationSeconds": 0,
           "fields": [
             {
@@ -3655,6 +3663,7 @@
           ],
           "method": "GET",
           "queryParams": "",
+          "requestType": "datasources",
           "urlPath": "/"
         },
         "refresh": 1,

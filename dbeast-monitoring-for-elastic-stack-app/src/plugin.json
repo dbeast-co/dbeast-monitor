@@ -4,7 +4,6 @@
   "name": "DBeast Monitor",
   "id": "dbeast-dbeastmonitor-app",
   "executable": "gpx_app-dbeast-dbeastmonitor-app",
-
   "backend": true,
   "info": {
     "keywords": [
@@ -64,18 +63,10 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "0.6.0",
+    "version": "0.7.0",
     "updated": "%TODAY%"
   },
   "includes": [
-    {
-      "type": "page",
-      "name": "Page One",
-      "path": "/a/%PLUGIN_ID%/one",
-      "role": "Admin",
-      "addToNav": true,
-      "defaultNav": true
-    },
     {
       "type": "page",
       "icon": "cog",
@@ -89,9 +80,18 @@
       "name": "Cluster's list",
       "path": "/a/dbeast-dbeastmonitor-app",
       "role": "Viewer",
+      "uid": "clusters-list-default",
+      "addToNav": false,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "name": "Cluster's list",
+      "path": "/a/dbeast-dbeastmonitor-app",
+      "role": "Viewer",
       "uid": "clusters-list",
       "addToNav": true,
-      "defaultNav": true
+      "defaultNav": false
     },
     {
       "type": "dashboard",

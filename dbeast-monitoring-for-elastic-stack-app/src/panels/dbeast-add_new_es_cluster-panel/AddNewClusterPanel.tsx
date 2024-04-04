@@ -438,10 +438,10 @@ export const AddNewClusterPanel = () => {
                     {!validKibanaHost && newProject.prod.kibana.host &&
                         <span className="invalid">Host format is invalid</span>}
 
-                    <div className='status'>
-                            <span
-                                className={newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}>{newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}</span>
-                    </div>
+                    {/*<div className='status'>*/}
+                    {/*        <span*/}
+                    {/*            className={newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}>{newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}</span>*/}
+                    {/*</div>*/}
                 </div>
 
                 <FormControlLabel

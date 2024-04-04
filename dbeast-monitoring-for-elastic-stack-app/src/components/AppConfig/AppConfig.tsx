@@ -4,7 +4,6 @@ import {AppPluginMeta, GrafanaTheme2, PluginConfigPageProps, PluginMeta} from '@
 import {getBackendSrv} from '@grafana/runtime';
 import {css} from '@emotion/css';
 import {lastValueFrom} from 'rxjs';
-import {SimplePanel} from '../SourceConnection/SimplePanel';
 
 export type AppPluginSettings = {};
 
@@ -18,7 +17,6 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     return (
         <div className="gf-form-group">
             <div>
-                <SimplePanel/>
                 {/* Enable the plugin */}
                 <Legend>Enable / Disable</Legend>
                 {!enabled && (

@@ -17,13 +17,13 @@ func main() {
 	// argument. This factory will be automatically called on incoming request
 	// from Grafana to create different instances of `App` (per plugin
 	// ID).
-	FOLDER_PATH := "templates"
+	DATA_SOURCE_TEMPLATES_FOLDER := "data_source_templates"
 	ctxLogger := log.DefaultLogger
 	ctxLogger.Info("The app path: " + os.Args[0])
-	lastIndex1 := strings.LastIndex(os.Args[0], "dbeast-dbeastmonitor-app")
-	lastIndex := strings.LastIndex(os.Args[0][:lastIndex1], string(os.PathSeparator))
-	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] +
-		string(os.PathSeparator) + FOLDER_PATH)
+	lastIndex := strings.LastIndex(os.Args[0], "gpx_app-dbeast-dbeastmonitor-app")
+	//lastIndex := strings.LastIndex(os.Args[0][:lastIndex1], "/")
+	//string(os.PathSeparator) +
+	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] + DATA_SOURCE_TEMPLATES_FOLDER)
 	if err != nil {
 		return
 	}
