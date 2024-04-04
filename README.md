@@ -32,8 +32,9 @@ options:
 7. Elasticsearch ingest pipeline analytics
 8. Elasticsearch index level monitor
 9. Elasticsearch index patterns monitor
-10. Elasticsearch shard level monitor
-11. Machine Learning Jobs monitoring
+10. Elasticsearch Tasks monitoring
+11. Elasticsearch shard level monitor
+12. Machine Learning Jobs monitoring
 
 ## Requirements
 

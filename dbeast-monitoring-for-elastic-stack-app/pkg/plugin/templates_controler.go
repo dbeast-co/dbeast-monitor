@@ -23,7 +23,7 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
 	var UpdatedTemplates = make(map[string]interface{})
-	clusterNameMon, uidMon := FetchClusterInfo(environmentConfig.Mon.Elasticsearch)
+	//clusterNameMon, uidMon := FetchClusterInfo(environmentConfig.Mon.Elasticsearch)
 	clusterNameProd, uidProd := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
 	//clusterNameKibana, uidKibana := UpdateNameAndUid(environmentConfig.Prod.Kibana)
 
@@ -32,17 +32,17 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 
 		switch {
 		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_mon"):
-			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameMon, uidMon)
+			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
 
 		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_prod"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Elasticsearch, clusterNameProd, uidProd)
 			break
 		case strings.HasPrefix(name, "json_api_datasource_kibana"):
-			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameMon, uidMon)
+			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameProd, uidProd)
 			break
 		case strings.HasPrefix(name, "elasticsearch_datasource"):
-			UpdateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameMon, uidMon)
+			UpdateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
 		default:
 		}
