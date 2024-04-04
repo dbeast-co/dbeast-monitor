@@ -19,6 +19,5 @@
   "secureJsonFields": {
     "token": true
   },
-  "version": 2,
   "readOnly": false
 }
