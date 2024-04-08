@@ -1,19 +1,29 @@
 # Changelog
 
 ## Version 0.7.0
+- Bug fixes
+  * Incorrect Aggregation of Pipeline Data in Logstash Overview Dashboard [#48](https://github.com/dbeast-co/dbeast-monitor/issues/48)
+
 - New data sources:
-    * Elasticsearch Tasks API datasource
+  * Elasticsearch Tasks API datasource
 
 - New dashboards:
-    * Elasticsearch Tasks analytics
-  
+  * Elasticsearch Tasks analytics
+
+- Features
+  * The backend component moved to the Grafana plugin
+
 - Updated dashboards
-    * Elasticsearch host overview
-    * Elasticsearch index monitor
-    * Elastic stack monitor
-    * Logstash instance monitor
-    * Logstash overview
-  
+  * Elasticsearch host overview
+  * Elasticsearch index monitor
+  * Elastic stack monitor
+  * Logstash instance monitor
+  * Logstash overview
+
+## Version 0.6.1
+- Bug fixes
+  * Incorrect host definition in the logstash-logs configuration file [#43](https://github.com/dbeast-co/dbeast-monitor/issues/43)
+
 ## Version 0.6.0
 - New data sources:
     * Thread pools datasource

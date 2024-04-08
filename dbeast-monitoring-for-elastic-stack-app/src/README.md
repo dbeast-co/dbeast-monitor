@@ -12,6 +12,7 @@ Elasticsearch cluster as the data storage, but we strongly recommend using a ded
 The project documentation is available on our [wiki](https://github.com/dbeast-co/dbeast-monitor/wiki).
 
 - [Installation Instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions)
+- [Upgrade Instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Upgrade-Instructions)
 - [Add new cluster](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster)
 - [Dashboards](https://github.com/dbeast-co/dbeast-monitor/wiki/Dashboards)
 
@@ -35,7 +36,7 @@ options:
 
 ## Requirements
 
-- Grafana 9.4x
+- Grafana 9.4+
 - Java 8+
 - Logstash 8.1+
 - Elasticsearch 8+
