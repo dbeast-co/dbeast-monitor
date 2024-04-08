@@ -1,0 +1,185 @@
+PUT _component_template/dbeast-mon-es-tasks-mapping-component
+{
+  "template": {
+    "settings": {},
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "@version": {
+          "type": "integer"
+        },
+        "elasticsearch": {
+          "properties": {
+            "cluster": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "task": {
+              "properties": {
+                "action": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "description": {
+                  "type": "text"
+                },
+                "ip": {
+                  "type": "ip"
+                },
+                "node": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "parent_task_id": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "query": {
+                  "properties": {
+                    "aggregations": {
+                      "type": "text"
+                    },
+                    "aggregations_levels": {
+                      "type": "integer"
+                    },
+                    "query": {
+                      "type": "text"
+                    },
+                    "query_uid": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "sort": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "request": {
+                  "properties": {
+                    "bulk_size": {
+                      "type": "integer"
+                    },
+                    "index_list": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "index_number": {
+                      "type": "integer"
+                    },
+                    "index_pattern": {
+                      "type": "keyword"
+                    },
+                    "query": {
+                      "type": "text"
+                    },
+                    "search_type": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    },
+                    "shard_number": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "running_time": {
+                  "type": "integer"
+                },
+                "start_time": {
+                  "type": "date"
+                },
+                "task_id": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "timestamp": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "type": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "error": {
+          "properties": {
+            "message": {
+              "type": "text"
+            }
+          }
+        },
+        "event": {
+          "properties": {
+            "dataset": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "duration": {
+              "type": "long"
+            },
+            "module": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "host": {
+          "properties": {
+            "hostname": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "http": {
+          "properties": {
+            "request": {
+              "properties": {
+                "method": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "metricset": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "tags": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "url": {
+          "properties": {
+            "full": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "aliases": {}
+  }
+}
+
