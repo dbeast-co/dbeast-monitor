@@ -999,19 +999,30 @@
     "list": [
       {
         "current": {
+          "selected": true,
+          "text": "elasticsearch",
+          "value": "urUcY3GYRS6pjJuKhBSwKA"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "Grafana-DS-API"
         },
         "definition": "$[*].name",
-        "hide": 2,
+        "hide": 0,
         "includeAll": false,
         "label": "Cluster Name",
         "multi": false,
         "name": "cluster_uid",
         "options": [],
         "query": {
+          "annotationDashboard": "",
+          "annotationLimit": 100,
+          "annotationNewState": "",
+          "annotationPattern": "",
+          "annotationPrevState": "",
+          "annotationRange": "",
+          "annotationRules": true,
+          "annotationType": "",
           "cacheDurationSeconds": 0,
           "fields": [
             {
@@ -1020,6 +1031,7 @@
           ],
           "method": "GET",
           "queryParams": "",
+          "requestType": "datasources",
           "urlPath": "/"
         },
         "refresh": 1,

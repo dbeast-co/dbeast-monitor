@@ -11,13 +11,6 @@
   box-shadow: 5px 5px 10px rgb(255 255 255 / 20%);
   background: #1e1d22;
 
-  &.isLight{
-
-
-
-
-  }
-
   header {
     display: grid;
     width: 100%;
@@ -31,7 +24,7 @@
   .col {
     flex: unset;
 
-    &.header-cluster{
+    &.header-cluster {
       max-width: 95%;
       width: 100%;
       overflow: auto;
@@ -44,7 +37,7 @@
   }
 
   h3 {
-    font-size: 1.5rem ;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
   }
@@ -128,6 +121,7 @@
     max-height: 40px;
     min-width: 70px;
   }
+
   .menu-item {
     color: white !important;
     background-color: #d33f49 !important;
@@ -141,7 +135,8 @@
   .MuiInputBase-root {
     max-width: 50%;
   }
-  .MuiSelect-select{
+
+  .MuiSelect-select {
     padding: 10px 14px !important;
   }
 
@@ -150,24 +145,26 @@
   #demo-simple-select {
     color: #00bcd4 !important;
   }
-  .MuiInputBase-formControl{
+
+  .MuiInputBase-formControl {
     margin-block-start: 21px;
   }
-  .css-qiwgdb{
-    //padding: 10px 14px !important;
+
+  .MuiInputLabel-formControl {
+    transform: translate(10px, 30px) !important;
   }
-  .MuiInputLabel-formControl{
-    transform: translate(10px,30px) !important;
-  }
-  .MuiInputLabel-shrink{
+
+  .MuiInputLabel-shrink {
     transform: translate(13px, 13px) scale(0.75) !important;
   }
-  .monitor-type{
+
+  .monitor-type {
     font-size: 14px;
-    color: #00bcd4 ;
+    color: #00bcd4;
 
   }
-  .MuiFormControl-fullWidth{
+
+  .MuiFormControl-fullWidth {
     position: relative;
     top: -21px;
   }
@@ -182,10 +179,11 @@
   border: 1.5px solid rgba(255, 255, 255, 0.3);
   border-radius: 7px;
 
-  .MuiList-root{
-    color: white ;
-    background-color: #222e46 ;
+  .MuiList-root {
+    color: white;
+    background-color: #222e46;
   }
+
   .MuiDialogTitle-root {
     color: #ffffff !important;
   }
@@ -203,36 +201,35 @@
   }
 }
 
-.form_group{
-  &.isLight{
+.form_group {
+  &.isLight {
+    background: #ffffff;
     border: 1px solid #222e46;
     box-shadow: 5px 5px 10px rgb(0 0 0 / 20%);
 
-    h3,p,.label{
+    h3, p, .label {
       color: #222e46 !important;
     }
-    .label{
+
+    .label {
       border-color: #222e46 !important;
     }
-    .MuiDivider-root{
+
+    .MuiDivider-root {
       border-color: #222e46 !important;
     }
-    button{
+
+    button {
       min-height: 40px;
       border-radius: 7px;
       background-color: #00bcd4;
     }
-    .MuiList-root{
+
+    .MuiList-root {
       background: #ffffff !important;
     }
 
   }
-
-
-
-
-
-
 
 
 }

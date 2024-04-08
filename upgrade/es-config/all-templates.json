@@ -1,0 +1,13 @@
+PUT _index_template/dbeast-mon-es-tasks-template
+{
+  "index_patterns" : [ 
+    "dbeast-mon-es-tasks-20*"
+  ],
+  "composed_of" : [ 
+    "dbeast-mon-es-tasks-mapping-component", 
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch tasks"
+  }
+}

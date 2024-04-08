@@ -1,0 +1,242 @@
+.source_panel {
+  border: 1px solid #fff;
+  display: flex;
+  flex-direction: column;
+  max-width: 350px !important;
+  margin: 0 auto;
+  padding: 10px 20px;
+  position: relative;
+  min-height: 300px;
+  justify-content: space-between;
+  border-radius: 4px;
+  background: #1e1d22;
+
+  div {
+    width: 100%;
+
+    .auth_wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      column-gap: 10px;
+      margin-block-end: 7px;
+    }
+  }
+
+  label {
+
+    color: #ffffff;
+  }
+
+  .host_wrapper {
+    margin-block-end: 1.5rem;
+    position: relative;
+
+    .invalid {
+      position: absolute;
+      color: #D33F49;
+      top: 100%;
+      display: flex;
+    }
+  }
+
+
+  input {
+    color: #ffffff;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .css-1vv4lmi::before {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .css-1vv4lmi::after {
+    border-bottom: 2px solid rgba(255, 255, 255, 1) !important;
+  }
+
+  .css-vubbuv {
+    fill: rgba(255, 255, 255, 0.5);
+  }
+
+  .css-mqt2s5.Mui-disabled {
+    color: #ffffff;
+    opacity: 0.3;
+  }
+
+  .css-mnn31.Mui-disabled {
+
+    background: transparent;
+  }
+
+  .upload_file_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .ssl_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .upload_file {
+      input {
+        display: none;
+      }
+
+      span {
+        min-width: 70px;
+        padding: 5px 10px;
+        display: inline-block;
+        background: #00bcd4;
+        color: black;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+
+      input[disabled] + span {
+        background: #c2c2c2;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    column-gap: 10px;
+    row-gap: 10px;
+    flex-wrap: wrap;
+    margin-block-start: 10px;
+
+    button, span {
+      min-width: 75px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      box-shadow: none;
+      color: #000;
+      background: #00bcd4;
+
+    }
+
+    button[disabled] {
+      background: #c2c2c2;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.spinner_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 auto;
+
+  .MuiCircularProgress-root {
+    position: absolute;
+    top: 35%;
+    left: 45%;
+    transform: translate(-35%, -45%);
+
+    .MuiCircularProgress-svg {
+      .css-14891ef {
+        stroke: #00bcd4 !important;
+      }
+    }
+  }
+}
+
+.Toastify__toast-icon {
+  width: 11% !important;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.Toastify__toast {
+  width: 55% !important;
+  margin: 0 auto !important;
+  bottom: -30px !important;
+
+}
+
+.Toastify__toast-container--bottom-right {
+  bottom: 6em !important;
+  right: 1em !important;
+}
+
+.MuiDivider-root {
+  margin: 10px 0 !important;
+  flex-shrink: 0 !important;
+  border-width: 2px 3px thin !important;
+  border-style: solid !important;
+  border-color: white !important;
+}
+
+.status {
+  color: #ffffff;
+  position: absolute;
+  top: 18%;
+  left: 73%;
+
+  display: inline-flex;
+
+  .UNTESTED {
+    background: #555555;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .YELLOW {
+    background: #E59500;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .ERROR {
+    background: #D33F49;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+    color: #fff;
+  }
+
+  .GREEN {
+    background: #79B473;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+}
+
+.source_panel.isLight {
+  background-color: #fff;
+  border: 1px solid #222e46;
+
+  label {
+
+    color: #222e46;
+  }
+
+  .css-vubbuv {
+    fill: #222e46;
+  }
+
+  .status {
+    top: 25%;
+  }
+
+  .css-mqt2s5.Mui-disabled {
+    color: #222e46;
+    opacity: 0.3;
+  }
+
+  input {
+    color: #222e46;
+  }
+}

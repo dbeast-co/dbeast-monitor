@@ -27,11 +27,11 @@ interface Project {
     status: string;
 }
 
+
 // interface Props extends PanelProps<SimpleOptions> {}
 
 export const SimplePanel = (props: any) => {
     // const baseUrl = settings.SERVER_URL;
-    console.log('INIT SimplePanel in dbeast_toolkit',props)
     const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
     const [disableControl, setDisableControl] = useState(true);
     // const [disableControlIsReplaceKeystore, setDisableControlIsReplaceKeystore] = useState(true);
@@ -203,92 +203,92 @@ export const SimplePanel = (props: any) => {
 
     return (
         <>
-        <h3 className="title">Application configuration</h3>
+            <h3 className="title">Application configuration</h3>
 
-        <div className="config">
-            <div>
-                <div className="host_wrapper">
-                    <TextField
-                        id="standard-basic"
-                        label="Grafana Host"
-                        variant="standard"
-                        value={host}
-                        onChange={onInputHost}
+            <div className="config">
+                <div>
+                    <div className="host_wrapper">
+                        <TextField
+                            id="standard-basic"
+                            label="Grafana Host"
+                            variant="standard"
+                            value={host}
+                            onChange={onInputHost}
+                        />
+                        {!validHost && host && <span>Host format is invalid</span>}
+                    </div>
+
+                    <FormControlLabel
+                        value="top"
+                        control={<Checkbox checked={authChecked} onChange={() => onCheckAuth()}/>}
+                        label="Use authentication"
                     />
-                    {!validHost && host && <span>Host format is invalid</span>}
+                    <div className="auth_wrapper">
+                        <TextField
+                            id="standard-basic text_1"
+                            key="text_1"
+                            label="Username"
+                            variant="standard"
+                            disabled={disableControl}
+                            value={authUsername}
+                            onChange={(event) => setAuthUsername(event.target.value)}
+                        />
+                        <TextField
+                            id="standard-basic text_2"
+                            type="password"
+                            key="text_2"
+                            label="Password"
+                            variant="standard"
+                            disabled={disableControl}
+                            value={authPassword}
+                            onChange={(event) => setAuthPassword(event.target.value)}
+                        />
+                    </div>
+
+                </div>
+                {/*<Divider></Divider>*/}
+
+                <div>
+                    <div className="host_wrapper">
+                        <TextField
+                            id="standard-basic"
+                            label="Application Host"
+                            variant="standard"
+                            value={application_host}
+                            onChange={onInputApplicationHost}
+                        />
+                    </div>
+
+                </div>
+                <div>
+                    <FormControlLabel
+                        value="top"
+                        control={<Checkbox checked={is_replace_keystore} onChange={() => onInputIsReplaceKeystore()}/>}
+                        label="Is replace keystore"
+                    />
                 </div>
 
-                <FormControlLabel
-                    value="top"
-                    control={<Checkbox checked={authChecked} onChange={() => onCheckAuth()}/>}
-                    label="Use authentication"
-                />
-                <div className="auth_wrapper">
-                    <TextField
-                        id="standard-basic text_1"
-                        key="text_1"
-                        label="Username"
-                        variant="standard"
-                        disabled={disableControl}
-                        value={authUsername}
-                        onChange={(event) => setAuthUsername(event.target.value)}
-                    />
-                    <TextField
-                        id="standard-basic text_2"
-                        type="password"
-                        key="text_2"
-                        label="Password"
-                        variant="standard"
-                        disabled={disableControl}
-                        value={authPassword}
-                        onChange={(event) => setAuthPassword(event.target.value)}
-                    />
+                <div className="actions">
+                    <button onClick={() => onTest()} className="btn_test" disabled={testDisable}>
+                        {' '}
+                        Test
+                    </button>
+                    <button onClick={() => onSave()} className="btn_save" disabled={testDisable || isDisabled}>
+                        Save
+                    </button>
+                    <span className={status ? status : 'UNTESTED'}>{status ? status : 'UNTESTED'}</span>
+
+                    {/*<button onClick={() => onGetList()}>Get indices</button>*/}
+                    {/*<button onClick={() => onNewProject()}>New project</button>*/}
                 </div>
+                {isLoading && (
+                    <div className="spinner_overlay">
+                        <CircularProgress color="primary"/>
+                    </div>
+                )}
 
+                <ToastContainer autoClose={3000} position="bottom-right"/>
             </div>
-            {/*<Divider></Divider>*/}
-
-            <div>
-                <div className="host_wrapper">
-                    <TextField
-                        id="standard-basic"
-                        label="Application Host"
-                        variant="standard"
-                        value={application_host}
-                        onChange={onInputApplicationHost}
-                    />
-                </div>
-
-            </div>
-            <div>
-                <FormControlLabel
-                    value="top"
-                    control={<Checkbox checked={is_replace_keystore} onChange={() => onInputIsReplaceKeystore()}/>}
-                    label="Is replace keystore"
-                />
-            </div>
-
-            <div className="actions">
-                <button onClick={() => onTest()} className="btn_test" disabled={testDisable}>
-                    {' '}
-                    Test
-                </button>
-                <button onClick={() => onSave()} className="btn_save" disabled={testDisable || isDisabled}>
-                    Save
-                </button>
-                <span className={status ? status : 'UNTESTED'}>{status ? status : 'UNTESTED'}</span>
-
-                {/*<button onClick={() => onGetList()}>Get indices</button>*/}
-                {/*<button onClick={() => onNewProject()}>New project</button>*/}
-            </div>
-            {isLoading && (
-                <div className="spinner_overlay">
-                    <CircularProgress color="primary"/>
-                </div>
-            )}
-
-            <ToastContainer autoClose={3000} position="bottom-right"/>
-        </div>
         </>
     );
 };

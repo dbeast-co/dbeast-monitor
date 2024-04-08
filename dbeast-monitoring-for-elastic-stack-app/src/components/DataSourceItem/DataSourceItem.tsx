@@ -21,11 +21,12 @@ import classNames from "classnames";
 
 interface Props {
     dataSourceItem: any;
-    theme: any
+    theme: any;
+    onDelete: (uid: string) => void;
 }
 
 
-const MyComponent = (props: any) => {
+const MyComponent = (_: any) => {
     // Get the current theme and its properties using the useTheme hook
     const theme = useTheme();
     const styles = getStyles(theme);
@@ -54,6 +55,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     monitorState: MonitorState = {
         monitorName: '',
     };
+
 
     state: ClusterStatsItemState = {
         cluster_name: '',
@@ -158,7 +160,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 });
                 break;
             case 'ml-jobs-analytics':
-                // console.log('aaa');
                 window.open(
                     `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_uid=${this.state.cluster_uuid}`,
                     '_blank'
@@ -171,14 +172,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         }
 
     };
-
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<ClusterStatsItemState>, snapshot?: any) {
-
-    }
-
-    componentWillUnmount() {
-
-    }
 
     async componentDidMount() {
         // console.log('Props: ', this.props.theme)
@@ -258,32 +251,49 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         this.setState({isOpenDialog: true});
     };
     onTest = () => {
-        console.log('Enter to onTest function')
         this.componentDidMount().then(() => {
         });
     };
+    onDeleteCluster = async () => {
+        const backendSrv = getBackendSrv();
+        try {
+            const dataSources: any = await backendSrv.get(`/api/datasources`, {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "Accept": 'application/json',
+                },
+            });
+
+
+            for (const dataSource of dataSources) {
+                if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
+                    try {
+                        await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
+                        this.props.onDelete(dataSource.uid);
+
+
+                    } catch (deleteError) {
+                        console.error('deleteError', deleteError);
+                    }
+                }
+            }
+        } catch (getError) {
+            console.error('getError', getError);
+        }
+    }
+
 
     handleDelete(isOnYes: boolean): void {
+
         this.setState({isOpenDialog: false});
         if (isOnYes) {
-            // TODO: logic here
-            console.log('isClose', isOnYes);
-            fetch(
-                `/api/datasources/proxy/uid/DBeast-toolkit/grafana_backend/data_sources/delete/${this.state.cluster_name}--${this.state.cluster_uuid}`,
-                {
-                    method: 'GET',
-                }
-            ).then((res) => {
-                if (res.ok) {
-                    window.location.reload();
-                }
+            this.onDeleteCluster().then(() => {
             });
         }
     }
 
-    render() {
 
-        // @ts-ignore
+    render() {
         return (
             <div className={classNames({
                 form_group: true,
@@ -365,14 +375,13 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                 <Divider light/>
                 <footer>
                     <Stack spacing={2} direction="row">
-                        {/*<Button variant="secondary">Edit</Button>*/}
                         <Button variant="secondary" onClick={this.onDelete}>
                             Delete
                         </Button>
                         <Button variant="secondary" onClick={() => this.onTest()}>Test</Button>
                         <FormControl fullWidth id="select">
 
-                            {/*<InputLabel id="demo-simple-select-label">{this.label}</InputLabel>*/}
+
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -390,7 +399,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                                 <MenuItem value={'stack-monitoring'}>Elastic Stack monitoring</MenuItem>
                                 <MenuItem value={'index-overview'}>Elasticsearch Index overview</MenuItem>
                                 <MenuItem value={'shards-overview'}>Elasticsearch Shards overview</MenuItem>
-                                <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
+                                <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines
+                                    overview</MenuItem>
                                 <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
                                 <MenuItem value={'tasks-analytics'}>Tasks analytics</MenuItem>
                                 <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
@@ -406,9 +416,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
-                    {/*<DialogContent>*/}
-                    {/*  <DialogContent id="alert-dialog-description">Are you sure you want to delete this cluster?</DialogContent>*/}
-                    {/*</DialogContent>*/}
+
                     <DialogActions>
                         <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
                             No

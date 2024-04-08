@@ -10,3 +10,5 @@
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-enrich_queue-metrics.conf"
 - pipeline.id: dbeast-mon-es-ingest_pipelines-metrics
   path.config: "/etc/logstash/conf.d/dbeast-mon-es-ingest_pipelines-metrics.conf"
+- pipeline.id: dbeast-mon-es-tasks
+  path.config: "/etc/logstash/conf.d/dbeast-mon-es-tasks.conf"

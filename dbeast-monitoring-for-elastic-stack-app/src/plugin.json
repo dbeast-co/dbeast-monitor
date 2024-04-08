@@ -3,6 +3,8 @@
   "type": "app",
   "name": "DBeast Monitor",
   "id": "dbeast-dbeastmonitor-app",
+  "executable": "gpx_app-dbeast-dbeastmonitor-app",
+  "backend": true,
   "info": {
     "keywords": [
       "app",
@@ -67,12 +69,29 @@
   "includes": [
     {
       "type": "page",
+      "icon": "cog",
+      "name": "Configuration",
+      "path": "/plugins/%PLUGIN_ID%",
+      "role": "Admin",
+      "addToNav": false
+    },
+    {
+      "type": "page",
+      "name": "Cluster's list",
+      "path": "/a/dbeast-dbeastmonitor-app",
+      "role": "Viewer",
+      "uid": "clusters-list-default",
+      "addToNav": false,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
       "name": "Cluster's list",
       "path": "/a/dbeast-dbeastmonitor-app",
       "role": "Viewer",
       "uid": "clusters-list",
       "addToNav": true,
-      "defaultNav": true
+      "defaultNav": false
     },
     {
       "type": "dashboard",

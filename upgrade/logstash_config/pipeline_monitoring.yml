@@ -1,0 +1,2 @@
+- pipeline.id: dbeast-mon-es-tasks
+  path.config: "/etc/logstash/conf.d/dbeast-mon-es-tasks.conf"
