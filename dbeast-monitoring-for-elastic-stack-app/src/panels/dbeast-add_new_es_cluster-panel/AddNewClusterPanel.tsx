@@ -10,7 +10,7 @@ import {CircularProgress} from '@mui/material';
 import {useTheme2} from '@grafana/ui';
 import classNames from 'classnames';
 import {getBackendSrv} from "@grafana/runtime";
-import {NewProject} from './models/new-project';
+import {ConnectionSettings} from './models/connection-settings';
 import {Datasource} from './models/datasource';
 import {GrafanaDatasource} from './models/grafana-datasource';
 import {BackendResponse} from './models/backend-response';
@@ -57,7 +57,7 @@ export const AddNewClusterPanel = () => {
                 status: ''
             }
         }
-    } as NewProject);
+    } as ConnectionSettings);
 
     const [_, __] = useState([] as Datasource[]);
     const [___, ____] = useState([] as GrafanaDatasource[]);
@@ -66,7 +66,7 @@ export const AddNewClusterPanel = () => {
     const onSave = () => {
         setIsLoading(true);
         try {
-            const formToSave: NewProject = getNewProject();
+            const formToSave: ConnectionSettings = getNewProject();
             if ((formToSave.prod.elasticsearch.status === 'GREEN' || formToSave.prod.elasticsearch.status === 'YELLOW') && formToSave.mon.elasticsearch.status === 'GREEN' || (formToSave.mon.elasticsearch.status === 'YELLOW')) {
                 const promise2 = backendSrv.post(`${baseUrl}/save`,
                     JSON.stringify(formToSave),
@@ -134,7 +134,7 @@ export const AddNewClusterPanel = () => {
     const onTest = () => {
         setIsLoading(true);
         try {
-            const formToTest: NewProject = getNewProject()
+            const formToTest: ConnectionSettings = getNewProject()
             backendSrv.post(`${baseUrl}/test_cluster`,
                 JSON.stringify(formToTest),
                 {

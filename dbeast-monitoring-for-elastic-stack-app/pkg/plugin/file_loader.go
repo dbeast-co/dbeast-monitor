@@ -6,6 +6,7 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 /*
@@ -59,6 +60,42 @@ func LoadTemplatesFromFolder(folderPath string) error {
 	}
 
 	log.DefaultLogger.Debug("Updated templates sent:" + string(TemplatesJSON))
+	return nil
+
+}
+
+func LoadLogstashConfigFromFolder(folderPath string) error {
+	LSConfigs = make(map[string]string)
+
+	files, err := os.ReadDir(folderPath)
+	if err != nil {
+		return fmt.Errorf("failed to read files from folder: %v", err)
+	}
+
+	for _, file := range files {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".conf") {
+			filePath := folderPath + "/" + file.Name()
+			data, err := os.ReadFile(filePath)
+			if err != nil {
+				log.DefaultLogger.Error("Failed to read file %s: %v", file.Name(), err)
+				continue
+			}
+			log.DefaultLogger.Info("Reading file: %s\n", filePath)
+
+			//var tmp string
+			//err = json.Unmarshal(data, &tmp)
+
+			//strings.Replace(tmp, "<HOST>", "localhost", -1)
+			//LSConfigs = append(LSConfigs, string(data[:]))
+
+			//var templateData map[string]interface{}
+
+			templateName := file.Name()[:len(file.Name())-5]
+
+			LSConfigs[templateName] = string(data[:])
+		}
+	}
+
 	return nil
 
 }

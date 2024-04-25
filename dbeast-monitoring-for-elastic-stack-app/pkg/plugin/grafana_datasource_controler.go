@@ -1,7 +1,10 @@
 package plugin
 
 import (
+	"archive/zip"
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
 	"strings"
@@ -51,7 +54,6 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	//SendTemplateToServer(UpdatedTemplates)
-
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -60,6 +62,81 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(updatedTemplatesJSON)
+}
+func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+	ctxLogger.Info("Got request for the new cluster save")
+
+	w.Header().Add("Content-Disposition", "attachment; filename=\"files.zip\"")
+	w.Header().Add("Content-Type", "application/zip")
+
+	var project Project
+
+	if err := json.NewDecoder(req.Body).Decode(&project); err != nil {
+		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+		return
+	}
+	var environmentConfig = project.ClusterConnectionSettings
+
+	defer req.Body.Close()
+
+	buf := new(bytes.Buffer)
+
+	// Create a new zip archive
+	zipWriter := zip.NewWriter(buf)
+
+	for fileName, configFile := range LSConfigs {
+		updatedConfigFileContent := UpdateLSConfigFile(configFile, environmentConfig)
+		f1, err := zipWriter.Create("file" + string(fileName) + ".conf")
+		if err != nil {
+			log.DefaultLogger.Error(err.Error())
+		}
+		// Create the first file
+		_, err = f1.Write([]byte(updatedConfigFileContent))
+		if err != nil {
+			log.DefaultLogger.Error(err.Error())
+		}
+	}
+
+	// Make sure to close the zip writer to flush the contents to the buffer
+	err := zipWriter.Close()
+	if err != nil {
+		log.DefaultLogger.Error(err.Error())
+	}
+	// Set headers to instruct the browser to download the file as a zip
+
+	// Write the buffer to the HTTP response
+	_, err = w.Write(buf.Bytes())
+	if err != nil {
+		log.DefaultLogger.Error("Error writing response: ", err.Error())
+	}
+
+	//SendTemplateToServer(UpdatedTemplates)
+}
+
+func UpdateLSConfigFile(configFileContent string, environmentConfig EnvironmentConfig) string {
+	//_, uidProd := GetClusterNameAndUid(environmentConfig.Prod.Elasticsearch)
+	_, uidProd := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
+	//if ERROR return error
+	configFileClone := strings.Clone(configFileContent)
+
+	configFileClone = strings.ReplaceAll(configFileClone, "<PROD_HOST>", environmentConfig.Prod.Elasticsearch.Host)
+	configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", uidProd)
+	if environmentConfig.Prod.Elasticsearch.AuthenticationEnabled {
+		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_USER>", environmentConfig.Prod.Elasticsearch.Username)
+		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_PASSWORD>", environmentConfig.Prod.Elasticsearch.Password)
+	}
+
+	configFileClone = strings.ReplaceAll(configFileClone, "<MON_HOST>", environmentConfig.Mon.Elasticsearch.Host)
+	if environmentConfig.Mon.Elasticsearch.AuthenticationEnabled {
+		configFileClone = strings.ReplaceAll(configFileClone, "<MON_USER>", environmentConfig.Mon.Elasticsearch.Username)
+		configFileClone = strings.ReplaceAll(configFileClone, "<MON_PASSWORD>", environmentConfig.Mon.Elasticsearch.Password)
+		//isSSLEnabled := fmt.Sprintf("%t", strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https"))
+		configFileClone = strings.ReplaceAll(configFileClone, "<MON_SSL_ENABLED>", fmt.Sprintf("%t", strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https")))
+	}
+	return configFileClone
 }
 
 /*
