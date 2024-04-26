@@ -6,6 +6,7 @@ import (
 )
 
 var TemplatesMap map[string]interface{}
+var LSConfigs map[string]string
 
 type Credentials struct {
 	Host                  string `json:"host"`
@@ -37,6 +38,27 @@ type StatusData struct {
 	Mon struct {
 		Elasticsearch Status `json:"elasticsearch"`
 	} `json:"mon"`
+}
+
+type ConfigurationCheckbox struct {
+	Label     string `json:"label"`
+	Id        string `json:"id"`
+	IsChecked bool   `json:"is_checked"`
+}
+
+type LogstashHost struct {
+	ServerAddress   string `json:"server_address"`
+	LogstashApiHost string `json:"logstash_api_host"`
+}
+type Project struct {
+	ClusterConnectionSettings EnvironmentConfig `json:"cluster_connection_settings"`
+	LogstashConfigurations    struct {
+		EsMonitoringConfigurationFiles       []ConfigurationCheckbox `json:"es_monitoring_configuration_files,omitempty"`
+		LogstashMonitoringConfigurationFiles struct {
+			Configurations []ConfigurationCheckbox `json:"configurations,omitempty"`
+			Hosts          []LogstashHost          `json:"hosts,omitempty"`
+		} `json:"logstash_monitoring_configuration_files"`
+	} `json:"logstash_configurations"`
 }
 
 /*
