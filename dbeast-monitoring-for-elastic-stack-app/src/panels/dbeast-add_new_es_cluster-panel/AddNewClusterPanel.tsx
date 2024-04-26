@@ -582,7 +582,7 @@ export const AddNewClusterPanel = () => {
         <h3 className="title">Cluster inject configuration</h3>
         <div className="wrapper">
           {newProject && newProject.logstash_configurations && (
-            <LogstashConfigurationsPanel files={newProject.logstash_configurations.es_monitoring_configuration_files} />
+            <LogstashConfigurationsPanel files={newProject.logstash_configurations.esInjectFiles} />
           )}
           <div className="actions">
             <button onClick={() => onDownload()} className="btn_save">
@@ -594,9 +594,9 @@ export const AddNewClusterPanel = () => {
         <h3 className="title">Logstash inject configurations</h3>
         <div className="wrapper">
           {newProject.logstash_configurations &&
-            newProject.logstash_configurations.logstash_monitoring_configuration_files && (
+            newProject.logstash_configurations.logstashInjectFiles.configurations && (
               <LogstashConfigurationsPanel
-                files={newProject.logstash_configurations.logstash_monitoring_configuration_files.configurations}
+                files={newProject.logstash_configurations.logstashInjectFiles.configurations}
               />
             )}
 
