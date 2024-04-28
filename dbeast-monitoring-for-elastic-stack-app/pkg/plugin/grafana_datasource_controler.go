@@ -117,9 +117,7 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 }
 
 func UpdateLSConfigFile(configFileContent string, environmentConfig EnvironmentConfig) string {
-	//_, uidProd := GetClusterNameAndUid(environmentConfig.Prod.Elasticsearch)
 	_, uidProd := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
-	//if ERROR return error
 	configFileClone := strings.Clone(configFileContent)
 
 	configFileClone = strings.ReplaceAll(configFileClone, "<PROD_HOST>", environmentConfig.Prod.Elasticsearch.Host)

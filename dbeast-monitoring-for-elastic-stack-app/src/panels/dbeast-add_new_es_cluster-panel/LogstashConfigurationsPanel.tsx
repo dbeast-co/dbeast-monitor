@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { CheckboxConfig } from './models/new-project';
+import { CheckboxConfig } from './models/cluster';
 import './AddNewClusterPanel.scss';
 import './LogstashConfigurationsPanel.scss';
 // interface LogstashConfigurationsPanelProps {

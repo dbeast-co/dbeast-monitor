@@ -50,13 +50,14 @@ type LogstashHost struct {
 	ServerAddress   string `json:"server_address"`
 	LogstashApiHost string `json:"logstash_api_host"`
 }
+
 type Project struct {
 	ClusterConnectionSettings EnvironmentConfig `json:"cluster_connection_settings"`
 	LogstashConfigurations    struct {
-		EsMonitoringConfigurationFiles       []ConfigurationCheckbox `json:"es_monitoring_configuration_files,omitempty"`
+		EsMonitoringConfigurationFiles       []ConfigurationCheckbox `json:"es_monitoring_configuration_files"`
 		LogstashMonitoringConfigurationFiles struct {
-			Configurations []ConfigurationCheckbox `json:"configurations,omitempty"`
-			Hosts          []LogstashHost          `json:"hosts,omitempty"`
+			Configurations []ConfigurationCheckbox `json:"configurations"`
+			Hosts          []LogstashHost          `json:"hosts"`
 		} `json:"logstash_monitoring_configuration_files"`
 	} `json:"logstash_configurations"`
 }

@@ -14,8 +14,8 @@ import { ConnectionSettings } from './models/connection-settings';
 import { Datasource } from './models/datasource';
 import { GrafanaDatasource } from './models/grafana-datasource';
 import { BackendResponse } from './models/backend-response';
-import { MOCK_URL } from './config';
-import { NewProject } from './models/new-project';
+import {SERVER_URL} from './config';
+import { Cluster } from './models/cluster';
 import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
 
 const settings = require('./config.ts');
@@ -61,7 +61,7 @@ export const AddNewClusterPanel = () => {
     },
   } as ConnectionSettings);
 
-  const [newProject, setNewProject] = useState({} as NewProject);
+  const [cluster, setCluster] = useState({} as Cluster);
 
   const [_, __] = useState([] as Datasource[]);
   const [___, ____] = useState([] as GrafanaDatasource[]);
@@ -69,7 +69,7 @@ export const AddNewClusterPanel = () => {
   const onSave = () => {
     setIsLoading(true);
     try {
-      const formToSave: ConnectionSettings = getNewProject();
+      const formToSave: ConnectionSettings = getCluster();
       if (
         ((formToSave.prod.elasticsearch.status === 'GREEN' || formToSave.prod.elasticsearch.status === 'YELLOW') &&
           formToSave.mon.elasticsearch.status === 'GREEN') ||
@@ -136,7 +136,7 @@ export const AddNewClusterPanel = () => {
   const onTest = () => {
     setIsLoading(true);
     try {
-      const formToTest: ConnectionSettings = getNewProject();
+      const formToTest: ConnectionSettings = getCluster();
       backendSrv
         .post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest), {
           headers: {
@@ -359,7 +359,7 @@ export const AddNewClusterPanel = () => {
     }
   };
 
-  const getNewProject = () => {
+  const getCluster = () => {
     return {
       prod: {
         elasticsearch: {
@@ -398,15 +398,16 @@ export const AddNewClusterPanel = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${MOCK_URL}/project`).then((response) => {
-      response.json().then((data: NewProject) => {
-        setNewProject(data);
+    fetch(`${SERVER_URL}/new_cluster`).then((response) => {
+    // fetch(`${MOCK_URL}/project`).then((response) => {
+      response.json().then((data: Cluster) => {
+        setCluster(data);
       });
     });
   }, []);
 
   const onDownload = () => {
-    console.log('Download', newProject);
+    console.log('Download', cluster);
   };
 
   return (
@@ -581,8 +582,8 @@ export const AddNewClusterPanel = () => {
       <div className="config">
         <h3 className="title">Cluster inject configuration</h3>
         <div className="wrapper">
-          {newProject && newProject.logstash_configurations && (
-            <LogstashConfigurationsPanel files={newProject.logstash_configurations.esInjectFiles} />
+          {cluster && cluster.logstash_configurations && (
+            <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
           )}
           <div className="actions">
             <button onClick={() => onDownload()} className="btn_save">
@@ -593,10 +594,10 @@ export const AddNewClusterPanel = () => {
         <Divider></Divider>
         <h3 className="title">Logstash inject configurations</h3>
         <div className="wrapper">
-          {newProject.logstash_configurations &&
-            newProject.logstash_configurations.logstashInjectFiles.configurations && (
+          {cluster.logstash_configurations &&
+            cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations && (
               <LogstashConfigurationsPanel
-                files={newProject.logstash_configurations.logstashInjectFiles.configurations}
+                files={cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations}
               />
             )}
 

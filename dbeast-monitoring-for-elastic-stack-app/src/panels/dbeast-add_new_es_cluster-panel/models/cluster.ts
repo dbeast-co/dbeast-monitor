@@ -11,11 +11,11 @@ export interface Host {
     logstash_api_host: string
 }
 
-export interface NewProject {
+export interface Cluster {
     cluster_connection_settings: ConnectionSettings;
     logstash_configurations: {
-        esInjectFiles: CheckboxConfig[],
-        logstashInjectFiles: {
+        es_monitoring_configuration_files: CheckboxConfig[],
+        logstash_monitoring_configuration_files: {
             configurations: CheckboxConfig[],
             hosts: Host[]
         }
