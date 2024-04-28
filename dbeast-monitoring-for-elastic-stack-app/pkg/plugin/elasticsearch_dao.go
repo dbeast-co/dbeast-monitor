@@ -47,9 +47,10 @@ type ConfigurationCheckbox struct {
 }
 
 type LogstashHost struct {
-	ServerAddress      string `json:"server_address"`
-	LogstashApiHost    string `json:"logstash_api_host"`
-	LogstashLogsFolder string `json:"logstash_logs_folder"`
+	ServerAddress        string `json:"server_address"`
+	LogstashApiHost      string `json:"logstash_api_host"`
+	LogstashConfigFolder string `json:"logstash_config_folder"`
+	LogstashLogsFolder   string `json:"logstash_logs_folder"`
 }
 
 type Project struct {
