@@ -80,18 +80,9 @@
       "name": "Cluster's list",
       "path": "/a/dbeast-dbeastmonitor-app",
       "role": "Viewer",
-      "uid": "clusters-list-default",
-      "addToNav": false,
-      "defaultNav": true
-    },
-    {
-      "type": "page",
-      "name": "Cluster's list",
-      "path": "/a/dbeast-dbeastmonitor-app",
-      "role": "Viewer",
       "uid": "clusters-list",
       "addToNav": true,
-      "defaultNav": false
+      "defaultNav": true
     },
     {
       "type": "dashboard",

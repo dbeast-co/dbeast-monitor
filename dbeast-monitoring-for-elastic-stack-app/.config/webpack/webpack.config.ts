@@ -5,10 +5,14 @@
  * https://grafana.github.io/plugin-tools/docs/advanced-configuration#extending-the-webpack-config
  */
 
+// @ts-ignore
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+// @ts-ignore
 import ESLintPlugin from 'eslint-webpack-plugin';
+// @ts-ignore
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import LiveReloadPlugin from 'webpack-livereload-plugin';
+// @ts-ignore
 import path from 'path';
 import ReplaceInFileWebpackPlugin from 'replace-in-file-webpack-plugin';
 import { Configuration } from 'webpack';
