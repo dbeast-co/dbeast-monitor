@@ -8,7 +8,7 @@ import (
 func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/test_cluster", a.TestStatusHandler)
 	mux.HandleFunc("/new_cluster", a.NewClusterHandler)
-	mux.HandleFunc("/get_logstash_monitoring_configuration_files", a.GenerateLogstashMonitoringConfigurationFilesHandler)
-	mux.HandleFunc("/get_es_monitoring_configuration_files", a.GenerateLogstashMonitoringConfigurationFilesHandler)
+	mux.HandleFunc("/download_logstash_monitoring_configuration_files", a.GenerateLogstashMonitoringConfigurationFilesHandler)
+	mux.HandleFunc("/download_es_monitoring_configuration_files", a.GenerateLogstashMonitoringConfigurationFilesHandler)
 	mux.HandleFunc("/save", a.SaveHandler)
 }

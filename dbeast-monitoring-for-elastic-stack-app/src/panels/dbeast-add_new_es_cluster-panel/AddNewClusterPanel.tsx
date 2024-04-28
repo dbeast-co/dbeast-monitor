@@ -14,11 +14,17 @@ import { ConnectionSettings } from './models/connection-settings';
 import { Datasource } from './models/datasource';
 import { GrafanaDatasource } from './models/grafana-datasource';
 import { BackendResponse } from './models/backend-response';
-import {SERVER_URL} from './config';
+import { SERVER_URL } from './config';
 import { Cluster } from './models/cluster';
 import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
+import { saveAs } from 'file-saver';
 
 const settings = require('./config.ts');
+
+export enum LogstashFileType {
+  ES_MONITORING_CONFIGURATION_FILES = 'download_es_monitoring_configuration_files',
+  LOGSTASH_MONITORING_CONFIGURATION_FILES = 'download_logstash_monitoring_configuration_files',
+}
 
 export const AddNewClusterPanel = () => {
   const backendSrv = getBackendSrv();
@@ -399,15 +405,29 @@ export const AddNewClusterPanel = () => {
 
   useEffect(() => {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
-    // fetch(`${MOCK_URL}/project`).then((response) => {
+      // fetch(`${MOCK_URL}/project`).then((response) => {
       response.json().then((data: Cluster) => {
         setCluster(data);
       });
     });
   }, []);
 
-  const onDownload = () => {
+  const onDownload = (url: string) => {
     console.log('Download', cluster);
+    fetch(`${SERVER_URL}/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cluster }),
+    }).then((response) => {
+      const filenameHeader = response.headers.get('Content-Disposition') || 'logstash.zip';
+      const filename = filenameHeader.includes('filename=') ? filenameHeader.split('filename=')[1] : 'logstash.zip';
+      const formattedFileName = filename.replace(/['"]+/g, '');
+      response.blob().then((blob) => {
+        saveAs(blob, formattedFileName);
+      });
+    });
   };
 
   return (
@@ -586,7 +606,7 @@ export const AddNewClusterPanel = () => {
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
           )}
           <div className="actions">
-            <button onClick={() => onDownload()} className="btn_save">
+            <button onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)} className="btn_save">
               Download
             </button>
           </div>
@@ -602,11 +622,12 @@ export const AddNewClusterPanel = () => {
             )}
 
           <div className="actions">
-            <button onClick={() => onDownload()} className="btn_save">
-              Add logstash
-            </button>
+            <button className="btn_save">Add logstash</button>
 
-            <button onClick={() => onDownload()} className="btn_save">
+            <button
+              onClick={() => onDownload(LogstashFileType.LOGSTASH_MONITORING_CONFIGURATION_FILES)}
+              className="btn_save"
+            >
               Download
             </button>
           </div>
