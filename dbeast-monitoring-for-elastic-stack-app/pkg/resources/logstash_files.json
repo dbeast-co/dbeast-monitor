@@ -29,37 +29,37 @@
   "logstash_configurations": {
     "es_monitoring_configuration_files": [
       {
-        "label": "dbeast-mon-es-enrich_queue-metrics.conf",
-        "id": "dbeast-mon-es-enrich_queue-metrics.conf",
-        "is_checked": true
-      },
-      {
-        "label": "dbeast-mon-es-index-stats.conf",
+        "label": "Index stats",
         "id": "dbeast-mon-es-index-stats.conf",
         "is_checked": true
       },
       {
-        "label": "dbeast-mon-es-indices-summary.conf",
+        "label": "Indices summary",
         "id": "dbeast-mon-es-indices-summary.conf",
         "is_checked": true
       },
       {
-        "label": "dbeast-mon-es-ingest_pipelines-metrics.conf",
-        "id": "dbeast-mon-es-ingest_pipelines-metrics.conf",
-        "is_checked": true
-      },
-      {
-        "label": "dbeast-mon-es-shards-stats.conf",
+        "label": "Shards stats",
         "id": "dbeast-mon-es-shards-stats.conf",
         "is_checked": true
       },
       {
-        "label": "dbeast-mon-es-tasks.conf",
+        "label": "Tasks",
         "id": "dbeast-mon-es-tasks.conf",
         "is_checked": true
       },
       {
-        "label": "dbeast-mon-es-thread_pools.conf",
+        "label": "ES ingest pipelines",
+        "id": "dbeast-mon-es-ingest_pipelines-metrics.conf",
+        "is_checked": true
+      },
+      {
+        "label": "ES enrich queue",
+        "id": "dbeast-mon-es-enrich_queue-metrics.conf",
+        "is_checked": true
+      },
+      {
+        "label": "Thread pools",
         "id": "dbeast-mon-es-thread_pools.conf",
         "is_checked": true
       }
@@ -67,12 +67,12 @@
     "logstash_monitoring_configuration_files": {
       "configurations": [
         {
-          "label": "dbeast-mon-logstash-logs.conf",
+          "label": "Logstash logs",
           "id": "dbeast-mon-logstash-logs.conf",
           "is_checked": true
         },
         {
-          "label": "dbeast-mon-logstash-metrics.conf",
+          "label": "Logstash metrics",
           "id": "dbeast-mon-logstash-metrics.conf",
           "is_checked": true
         }
