@@ -7,19 +7,6 @@ import (
 	"net/http"
 )
 
-func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
-	var project Project
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	projectForSend, err := json.MarshalIndent(project, "", "")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal project template"})
-		return
-	}
-	w.Write(projectForSend)
-}
-
 /*
 	TestStatusHandler handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
 

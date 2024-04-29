@@ -7,6 +7,7 @@ import (
 
 var TemplatesMap map[string]interface{}
 var LSConfigs map[string]string
+var NewCluster Cluster
 
 type Credentials struct {
 	Host                  string `json:"host"`
@@ -53,15 +54,16 @@ type LogstashHost struct {
 	LogstashLogsFolder   string `json:"logstash_logs_folder"`
 }
 
-type Project struct {
-	ClusterConnectionSettings EnvironmentConfig `json:"cluster_connection_settings"`
-	LogstashConfigurations    struct {
-		EsMonitoringConfigurationFiles       []ConfigurationCheckbox `json:"es_monitoring_configuration_files"`
-		LogstashMonitoringConfigurationFiles struct {
-			Configurations []ConfigurationCheckbox `json:"configurations"`
-			Hosts          []LogstashHost          `json:"hosts"`
-		} `json:"logstash_monitoring_configuration_files"`
-	} `json:"logstash_configurations"`
+type LogstashConfigurations struct {
+	EsMonitoringConfigurationFiles       []ConfigurationCheckbox `json:"es_monitoring_configuration_files"`
+	LogstashMonitoringConfigurationFiles struct {
+		Configurations []ConfigurationCheckbox `json:"configurations"`
+		Hosts          []LogstashHost          `json:"hosts"`
+	} `json:"logstash_monitoring_configuration_files"`
+}
+type Cluster struct {
+	ClusterConnectionSettings EnvironmentConfig      `json:"cluster_connection_settings"`
+	LogstashConfigurations    LogstashConfigurations `json:"logstash_configurations"`
 }
 
 /*
