@@ -18,7 +18,7 @@ func LoadLogstashConfigurationFileList(filePath string) error {
 	}
 	log.DefaultLogger.Info("Reading file: %s\n", file)
 	data, err := os.ReadFile(filePath)
-	log.DefaultLogger.Info("Logstash configs list: " + string(data[:]))
+	log.DefaultLogger.Debug("Logstash configs list: " + string(data[:]))
 
 	err = json.Unmarshal(data, &NewCluster)
 	if err != nil {
@@ -31,7 +31,7 @@ func LoadLogstashConfigurationFileList(filePath string) error {
 		return err
 	}
 
-	log.DefaultLogger.Info("Serialized data: " + string(serializedDataJSON))
+	log.DefaultLogger.Debug("Serialized data: " + string(serializedDataJSON))
 	return err
 }
 
