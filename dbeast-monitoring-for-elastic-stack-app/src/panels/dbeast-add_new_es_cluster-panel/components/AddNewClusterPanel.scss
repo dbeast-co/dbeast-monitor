@@ -380,6 +380,7 @@ svg.MuiSvgIcon-root {
   padding-inline-end: 1.7rem !important;
 }
 
-svg.MuiSvgIcon-root {
-  //fill: #ffffff !important;
+svg.MuiSvgIcon-root[data-testid='CheckBoxOutlineBlankIcon'],
+svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
+  fill: #ffffff !important;
 }

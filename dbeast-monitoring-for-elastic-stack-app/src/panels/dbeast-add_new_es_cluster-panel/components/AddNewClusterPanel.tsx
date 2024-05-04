@@ -21,7 +21,7 @@ import { Cluster } from '../models/cluster';
 import { saveAs } from 'file-saver';
 
 import { DataGrid, GridAddIcon, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import { LogstashConfigurationsPanel } from '../LogstashConfigurationsPanel';
+import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
 
 const settings = require('../config.ts');
 
@@ -687,7 +687,6 @@ export const AddNewClusterPanel = () => {
             <button className="btn_save" onClick={onOpenAddDialog}>
               Add logstash
             </button>
-            yu
             <Dialog
               open={isOpanAddDialog}
               aria-labelledby="alert-dialog-title"
