@@ -279,3 +279,107 @@
     background: #1e1d22;
   }
 }
+
+.MuiDataGrid-overlay {
+  background-color: #1e1d22 !important;
+  color: #ffffff !important;
+}
+
+.MuiDialog-paper {
+  max-width: 900px !important;
+  width: 100% !important;
+  background-color: #1e1d22 !important;
+  min-height: 500px !important;
+}
+
+.MuiDataGrid-columnSeparator {
+  display: none !important;
+}
+
+.MuiDataGrid-columnHeader {
+  border-right: 1px solid rgba(204, 204, 220, 0.5) !important;
+  padding: 0 10px !important;
+
+  &:hover {
+    .MuiDataGrid-columnHeaderTitle {
+      text-overflow: unset !important;
+      white-space: unset !important;
+    }
+
+    .MuiDataGrid-columnHeaderDraggableContainer {
+      width: unset !important;
+    }
+  }
+}
+
+.MuiDataGrid-container--top [role='row'],
+.MuiDataGrid-container--bottom [role='row'] {
+  background-color: #1e1d22 !important;
+  color: rgb(204, 204, 220) !important;
+  font-size: 16px !important;
+}
+
+.MuiDialogTitle-root {
+  color: #ffffff !important;
+  text-align: center !important;
+  font-size: 20px !important;
+}
+
+.MuiIconButton-colorInfo {
+  background: #00bcd4 !important;
+  color: #ffffff !important;
+}
+
+.MuiDataGrid-cell {
+  color: #ffffff !important;
+  border-right: 1px solid rgba(204, 204, 220, 0.5) !important;
+}
+
+.MuiDataGrid-cell:last-child {
+  border-right: none !important;
+}
+
+.MuiDataGrid-cell--editable {
+  color: #ffffff !important;
+}
+
+.MuiDataGrid-editInputCell {
+  background-color: #1e1d22 !important;
+  color: #ffffff !important;
+}
+
+.MuiDataGrid-footerContainer {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+svg.MuiSvgIcon-root {
+  fill: #000000 !important;
+}
+
+.save_btn {
+  min-width: 75px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: none;
+  color: #000 !important;
+  background: #00bcd4 !important;
+  max-width: fit-content !important;
+
+  &:hover {
+    background: #00bcd4 !important;
+  }
+}
+
+.header-actions {
+  padding-inline-start: 1.7rem;
+}
+
+.MuiDialogActions-root {
+  padding-inline-end: 1.7rem !important;
+}
+
+svg.MuiSvgIcon-root {
+  //fill: #ffffff !important;
+}

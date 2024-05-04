@@ -6,20 +6,24 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CircularProgress, Divider } from '@mui/material';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
+
+import Button from '@mui/material/Button';
 import { useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
-import { ConnectionSettings } from './models/connection-settings';
-import { Datasource } from './models/datasource';
-import { GrafanaDatasource } from './models/grafana-datasource';
-import { BackendResponse } from './models/backend-response';
-import { SERVER_URL } from './config';
-import { Cluster } from './models/cluster';
-import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
+import { ConnectionSettings } from '../models/connection-settings';
+import { Datasource } from '../models/datasource';
+import { GrafanaDatasource } from '../models/grafana-datasource';
+import { BackendResponse } from '../models/backend-response';
+import { SERVER_URL } from '../config';
+import { Cluster } from '../models/cluster';
 import { saveAs } from 'file-saver';
 
-const settings = require('./config.ts');
+import { DataGrid, GridAddIcon, GridColDef, GridRowsProp } from '@mui/x-data-grid';
+import { LogstashConfigurationsPanel } from '../LogstashConfigurationsPanel';
+
+const settings = require('../config.ts');
 
 export enum LogstashFileType {
   ES_MONITORING_CONFIGURATION_FILES = 'download_es_monitoring_configuration_files',
@@ -71,6 +75,8 @@ export const AddNewClusterPanel = () => {
 
   const [_, __] = useState([] as Datasource[]);
   const [___, ____] = useState([] as GrafanaDatasource[]);
+
+  const [isOpanAddDialog, setIsOpenAddDialog] = useState(false);
 
   const onSave = () => {
     setIsLoading(true);
@@ -413,7 +419,6 @@ export const AddNewClusterPanel = () => {
   }, []);
 
   const onDownload = (url: string) => {
-    console.log('Download', cluster);
     fetch(`${SERVER_URL}/${url}`, {
       method: 'POST',
       headers: {
@@ -428,6 +433,63 @@ export const AddNewClusterPanel = () => {
         saveAs(blob, formattedFileName);
       });
     });
+  };
+
+  const onOpenAddDialog = () => {
+    setIsOpenAddDialog(true);
+  };
+
+  const onSaveAddedLogstash = () => {
+    setIsOpenAddDialog(false);
+  };
+
+  const onCancel = () => {
+    setIsOpenAddDialog(false);
+  };
+
+  const columns: GridColDef[] = [
+    {
+      field: 'server_address',
+      headerName: 'Server address',
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: 'logstash_api_host',
+      headerName: 'Logstash Api Host',
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: 'logstash_config_folder',
+      headerName: 'Logstash Config Folder',
+      editable: true,
+      flex: 1,
+    },
+    {
+      field: 'logstash_logs_folder',
+      headerName: 'Logstash Logs Folder',
+      editable: true,
+      flex: 1,
+    },
+  ];
+
+  const initialRows: GridRowsProp = [];
+  const [rows, setRows] = React.useState(initialRows);
+
+  // const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+
+  const onAddRecord = () => {
+    setRows((oldRows) => [
+      ...oldRows,
+      {
+        id: oldRows.length + 1,
+        server_address: '',
+        logstash_api_host: 'localhost:9600',
+        logstash_config_folder: '/etc/logstash/conf.d',
+        logstash_logs_folder: 'var/log/logstash',
+      },
+    ]);
   };
 
   return (
@@ -622,8 +684,37 @@ export const AddNewClusterPanel = () => {
             )}
 
           <div className="actions">
-            <button className="btn_save">Add logstash</button>
+            <button className="btn_save" onClick={onOpenAddDialog}>
+              Add logstash
+            </button>
+            yu
+            <Dialog
+              open={isOpanAddDialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{'Logstash configurations'}</DialogTitle>
+              <div className="header-actions">
+                <Button onClick={onAddRecord} className="save_btn" startIcon={<GridAddIcon />}>
+                  Add logstash
+                </Button>
+              </div>
 
+              <DialogContent>
+                <div style={{ height: 365, width: '100%' }}>
+                  <DataGrid rows={rows} columns={columns} />
+                </div>
+              </DialogContent>
+
+              <DialogActions>
+                <button className="save_btn" onClick={() => onCancel()}>
+                  Cancel
+                </button>
+                <button className="save_btn" onClick={() => onSaveAddedLogstash()} autoFocus>
+                  Save
+                </button>
+              </DialogActions>
+            </Dialog>
             <button
               onClick={() => onDownload(LogstashFileType.LOGSTASH_MONITORING_CONFIGURATION_FILES)}
               className="btn_save"
