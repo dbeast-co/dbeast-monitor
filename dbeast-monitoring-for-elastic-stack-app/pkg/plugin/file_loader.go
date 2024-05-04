@@ -9,6 +9,32 @@ import (
 	"strings"
 )
 
+func LoadLogstashConfigurationFileList(filePath string) error {
+	log.DefaultLogger.Debug("The templates folder path: " + filePath)
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.DefaultLogger.Error("Failed to read file %s: %v", file.Name(), err)
+		return err
+	}
+	log.DefaultLogger.Info("Reading file: %s\n", file)
+	data, err := os.ReadFile(filePath)
+	log.DefaultLogger.Debug("Logstash configs list: " + string(data[:]))
+
+	err = json.Unmarshal(data, &NewCluster)
+	if err != nil {
+		log.DefaultLogger.Error("Error parsing file: " + filePath + " " + err.Error())
+		return err
+	}
+	serializedDataJSON, err := json.MarshalIndent(NewCluster, "", "")
+	if err != nil {
+		log.DefaultLogger.Error("Failed to marshal templates: " + err.Error())
+		return err
+	}
+
+	log.DefaultLogger.Debug("Serialized data: " + string(serializedDataJSON))
+	return err
+}
+
 /*
 LoadTemplatesFromFolder loads JSON templates from the specified folder and updates the global TemplatesMap.
 It takes a folderPath string as input, reads the content of the folder, and parses each JSON file into the TemplatesMap.
@@ -81,14 +107,6 @@ func LoadLogstashConfigFromFolder(folderPath string) error {
 				continue
 			}
 			log.DefaultLogger.Info("Reading file: %s\n", filePath)
-
-			//var tmp string
-			//err = json.Unmarshal(data, &tmp)
-
-			//strings.Replace(tmp, "<HOST>", "localhost", -1)
-			//LSConfigs = append(LSConfigs, string(data[:]))
-
-			//var templateData map[string]interface{}
 
 			templateName := file.Name()[:len(file.Name())-5]
 

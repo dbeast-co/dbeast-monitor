@@ -63,6 +63,17 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(updatedTemplatesJSON)
 }
+func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	newClusterForSend, err := json.MarshalIndent(NewCluster, "", "")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal cluster template"})
+		return
+	}
+	w.Write(newClusterForSend)
+}
 func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	ctxLogger.Info("Got request for the new cluster save")
@@ -70,7 +81,7 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 	w.Header().Add("Content-Disposition", "attachment; filename=\"files.zip\"")
 	w.Header().Add("Content-Type", "application/zip")
 
-	var project Project
+	var project Cluster
 
 	if err := json.NewDecoder(req.Body).Decode(&project); err != nil {
 		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())

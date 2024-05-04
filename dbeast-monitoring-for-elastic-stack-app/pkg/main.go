@@ -17,18 +17,24 @@ func main() {
 	// argument. This factory will be automatically called on incoming request
 	// from Grafana to create different instances of `App` (per plugin
 	// ID).
-	DATA_SOURCE_TEMPLATES_FOLDER := "data_source_templates"
-	LOGSTASH_TEMPLATES_FOLDER := "logstash_config"
+	//DATA_FOLDER := "resources" + string(os.PathSeparator)
+	//DATA_SOURCE_TEMPLATES_FOLDER := DATA_FOLDER + "data_source_templates"
+	//LOGSTASH_TEMPLATES_FOLDER := DATA_FOLDER + "logstash_config"
+	//LOGSTASH_FILES_LIST_FILE := DATA_FOLDER + "logstash_files"
 	ctxLogger := log.DefaultLogger
 	ctxLogger.Info("The app path: " + os.Args[0])
 	lastIndex := strings.LastIndex(os.Args[0], "gpx_app-dbeast-dbeastmonitor-app")
 	//lastIndex := strings.LastIndex(os.Args[0][:lastIndex1], "/")
 	//string(os.PathSeparator) +
-	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] + DATA_SOURCE_TEMPLATES_FOLDER)
+	err := plugin.LoadTemplatesFromFolder(os.Args[0][:lastIndex] + DataSourceTemplatesFolder)
 	if err != nil {
 		return
 	}
-	err = plugin.LoadLogstashConfigFromFolder(os.Args[0][:lastIndex] + LOGSTASH_TEMPLATES_FOLDER)
+	err = plugin.LoadLogstashConfigFromFolder(os.Args[0][:lastIndex] + LogstashTemplatesFolder)
+	if err != nil {
+		return
+	}
+	err = plugin.LoadLogstashConfigurationFileList(os.Args[0][:lastIndex] + LogstashConfigurationsFileListFile)
 	if err != nil {
 		return
 	}

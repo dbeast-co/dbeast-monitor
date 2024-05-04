@@ -151,7 +151,6 @@ const config = async (env): Promise<Configuration> => ({
         { from: '../LICENSE', to: '.' },
         { from: '../CHANGELOG.md', to: '.', force: true },
         { from: '**/*.json', to: '.' }, // TODO<Add an error for checking the basic structure of the repo>
-        { from: '**/*.conf', to: '.' },
         { from: '**/*.svg', to: '.', noErrorOnMissing: true }, // Optional
         { from: '**/*.png', to: '.', noErrorOnMissing: true }, // Optional
         { from: '**/*.html', to: '.', noErrorOnMissing: true }, // Optional
