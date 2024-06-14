@@ -271,90 +271,66 @@
       color: #222e46;
     }
   }
+  .config.not-rounded {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 
-  .config {
+  .config,
+  .logstash-list {
     max-width: 350px;
     width: 100%;
     border: 1px solid #fff;
     background: #1e1d22;
+    min-height: 475px;
+    max-height: 475px;
   }
-}
+  .logstash-list {
+    padding: 10px 20px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left: 0;
 
-.MuiDataGrid-overlay {
-  background-color: #1e1d22 !important;
-  color: #ffffff !important;
-}
-
-.MuiDialog-paper {
-  max-width: 900px !important;
-  width: 100% !important;
-  background-color: #1e1d22 !important;
-  min-height: 500px !important;
-}
-
-.MuiDataGrid-columnSeparator {
-  display: none !important;
-}
-
-.MuiDataGrid-columnHeader {
-  border-right: 1px solid rgba(204, 204, 220, 0.5) !important;
-  padding: 0 10px !important;
-
-  &:hover {
-    .MuiDataGrid-columnHeaderTitle {
-      text-overflow: unset !important;
-      white-space: unset !important;
+    .cards-wrapper {
+      overflow: auto;
+      max-height: 400px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 10px;
+    }
+    .title {
+      margin-block: 1rem;
+      font-size: 18px;
+      text-align: center;
     }
 
-    .MuiDataGrid-columnHeaderDraggableContainer {
-      width: unset !important;
+    .logstash-card {
+      border: 1px solid #fbfff1;
+      border-radius: 5px;
+      padding: 7px;
+      cursor: pointer;
+
+      .form-group {
+        margin-block-end: 0.75rem;
+        border-bottom: 1px solid #8c908c;
+        padding-block: 0.15rem;
+
+        .logstash-label {
+          opacity: 0.6;
+        }
+        .value {
+          font-weight: 600;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
     }
   }
 }
-
-.MuiDataGrid-container--top [role='row'],
-.MuiDataGrid-container--bottom [role='row'] {
-  background-color: #1e1d22 !important;
-  color: rgb(204, 204, 220) !important;
-  font-size: 16px !important;
-}
-
-.MuiDialogTitle-root {
-  color: #ffffff !important;
-  text-align: center !important;
-  font-size: 20px !important;
-}
-
-.MuiIconButton-colorInfo {
-  background: #00bcd4 !important;
-  color: #ffffff !important;
-}
-
-.MuiDataGrid-cell {
-  color: #ffffff !important;
-  border-right: 1px solid rgba(204, 204, 220, 0.5) !important;
-}
-
-.MuiDataGrid-cell:last-child {
-  border-right: none !important;
-}
-
-.MuiDataGrid-cell--editable {
-  color: #ffffff !important;
-}
-
-.MuiDataGrid-editInputCell {
-  background-color: #1e1d22 !important;
-  color: #ffffff !important;
-}
-
-.MuiDataGrid-footerContainer {
-  display: none !important;
-  pointer-events: none !important;
-}
-
-svg.MuiSvgIcon-root {
-  fill: #000000 !important;
+#alert-dialog-title {
+  color: #ffffff;
 }
 
 .save_btn {
@@ -383,4 +359,18 @@ svg.MuiSvgIcon-root {
 svg.MuiSvgIcon-root[data-testid='CheckBoxOutlineBlankIcon'],
 svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
   fill: #ffffff !important;
+}
+
+.MuiDialog-paper {
+  border: 1px solid #fff !important;
+  display: flex !important;
+  flex-direction: column !important;
+  max-width: 600px !important;
+  padding: 10px 20px !important;
+  position: relative !important;
+  min-height: 300px !important;
+  justify-content: space-between !important;
+  border-radius: 4px 0 0 4px !important;
+  background: #1e1d22 !important;
+  width: 30% !important;
 }

@@ -8,7 +8,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-import Button from '@mui/material/Button';
 import { useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
@@ -20,8 +19,9 @@ import { SERVER_URL } from '../config';
 import { Cluster } from '../models/cluster';
 import { saveAs } from 'file-saver';
 
-import { DataGrid, GridAddIcon, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
+import LogstashComponent, { Logstash } from './logstash';
+import { v4 as uuidv4 } from 'uuid';
 
 const settings = require('../config.ts');
 
@@ -77,6 +77,19 @@ export const AddNewClusterPanel = () => {
   const [___, ____] = useState([] as GrafanaDatasource[]);
 
   const [isOpanAddDialog, setIsOpenAddDialog] = useState(false);
+
+  const initialLogstash: Logstash = {
+    id: uuidv4(),
+    serverAddress: '',
+    logstashApiHost: '',
+    logstashFolder: '',
+  };
+
+  const [logstash, setLogstash] = useState(initialLogstash);
+
+  const [isShowLogstash, setIsShowLogstash] = useState(false);
+
+  const [logstashList, setLogstashList] = useState([] as Logstash[]);
 
   const onSave = () => {
     setIsLoading(true);
@@ -437,61 +450,70 @@ export const AddNewClusterPanel = () => {
 
   const onOpenAddDialog = () => {
     setIsOpenAddDialog(true);
+    setLogstash(initialLogstash);
   };
 
-  const onSaveAddedLogstash = () => {
+  const onSaveAddedLogstash = (item: Logstash) => {
     setIsOpenAddDialog(false);
+    setIsShowLogstash(true);
+    const existingIndex = logstashList.findIndex((l) => l.id === item.id);
+    if (existingIndex > -1) {
+      // Easy method to replace an item at a specific index. This creates a new array for immutability.
+      const updatedList = [...logstashList.slice(0, existingIndex), item, ...logstashList.slice(existingIndex + 1)];
+      setLogstashList(updatedList);
+    } else {
+      setLogstashList([...logstashList, item]);
+    }
   };
 
   const onCancel = () => {
     setIsOpenAddDialog(false);
   };
 
-  const columns: GridColDef[] = [
-    {
-      field: 'server_address',
-      headerName: 'Server address',
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: 'logstash_api_host',
-      headerName: 'Logstash Api Host',
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: 'logstash_config_folder',
-      headerName: 'Logstash Config Folder',
-      editable: true,
-      flex: 1,
-    },
-    {
-      field: 'logstash_logs_folder',
-      headerName: 'Logstash Logs Folder',
-      editable: true,
-      flex: 1,
-    },
-  ];
+  // const columns: GridColDef[] = [
+  //   {
+  //     field: 'server_address',
+  //     headerName: 'Server address',
+  //     editable: true,
+  //     flex: 1,
+  //   },
+  //   {
+  //     field: 'logstash_api_host',
+  //     headerName: 'Logstash Api Host',
+  //     editable: true,
+  //     flex: 1,
+  //   },
+  //   {
+  //     field: 'logstash_config_folder',
+  //     headerName: 'Logstash Config Folder',
+  //     editable: true,
+  //     flex: 1,
+  //   },
+  //   {
+  //     field: 'logstash_logs_folder',
+  //     headerName: 'Logstash Logs Folder',
+  //     editable: true,
+  //     flex: 1,
+  //   },
+  // ];
 
-  const initialRows: GridRowsProp = [];
-  const [rows, setRows] = React.useState(initialRows);
+  // const onAddRecord = () => {
+  //   setRows((oldRows) => [
+  //     ...oldRows,
+  //     {
+  //       id: oldRows.length + 1,
+  //       server_address: '',
+  //       logstash_api_host: 'localhost:9600',
+  //       logstash_config_folder: '/etc/logstash/conf.d',
+  //       logstash_logs_folder: 'var/log/logstash',
+  //     },
+  //   ]);
+  // };
 
-  // const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-
-  const onAddRecord = () => {
-    setRows((oldRows) => [
-      ...oldRows,
-      {
-        id: oldRows.length + 1,
-        server_address: '',
-        logstash_api_host: 'localhost:9600',
-        logstash_config_folder: '/etc/logstash/conf.d',
-        logstash_logs_folder: 'var/log/logstash',
-      },
-    ]);
+  const handleCardClick = (logstash: Logstash) => {
+    setIsOpenAddDialog(true);
+    setLogstash(logstash);
   };
-
   return (
     <section className="connectionsAndConfig">
       <div
@@ -661,7 +683,7 @@ export const AddNewClusterPanel = () => {
 
         <ToastContainer autoClose={3000} position="bottom-right" />
       </div>
-      <div className="config">
+      <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
         <h3 className="title">Cluster inject configuration</h3>
         <div className="wrapper">
           {cluster && cluster.logstash_configurations && (
@@ -688,30 +710,27 @@ export const AddNewClusterPanel = () => {
               Add logstash
             </button>
             <Dialog
+              className="source_panel"
               open={isOpanAddDialog}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">{'Logstash configurations'}</DialogTitle>
-              <div className="header-actions">
-                <Button onClick={onAddRecord} className="save_btn" startIcon={<GridAddIcon />}>
-                  Add logstash
-                </Button>
-              </div>
-
+              <div className="header-actions"></div>
               <DialogContent>
-                <div style={{ height: 365, width: '100%' }}>
-                  <DataGrid rows={rows} columns={columns} />
-                </div>
+                <LogstashComponent
+                  logstash={logstash}
+                  onCancel={onCancel}
+                  onSave={(logstash) => onSaveAddedLogstash(logstash)}
+                />
               </DialogContent>
-
               <DialogActions>
-                <button className="save_btn" onClick={() => onCancel()}>
-                  Cancel
-                </button>
-                <button className="save_btn" onClick={() => onSaveAddedLogstash()} autoFocus>
-                  Save
-                </button>
+                {/*<button className="save_btn" onClick={() => onCancel()}>*/}
+                {/*  Cancel*/}
+                {/*</button>*/}
+                {/*<button className="save_btn" onClick={() => onSaveAddedLogstash()} autoFocus>*/}
+                {/*  Save*/}
+                {/*</button>*/}
               </DialogActions>
             </Dialog>
             <button
@@ -723,6 +742,37 @@ export const AddNewClusterPanel = () => {
           </div>
         </div>
       </div>
+
+      {isShowLogstash && (
+        <div className="logstash-list">
+          {' '}
+          <h3 className="title">Logstash connections</h3>{' '}
+          <div className="cards-wrapper">
+            {logstashList.map((logstash, index) => (
+              <div className="logstash-card" key={index} onClick={() => handleCardClick(logstash)}>
+                <div className="serverAddress form-group">
+                  <div className="logstash-label">Server address</div>
+                  <span className="value" key={index}>
+                    {logstash.serverAddress}
+                  </span>
+                </div>
+                <div className="logstashApiHost form-group">
+                  <div className="logstash-label">Logstash Api Host</div>
+                  <span className="value" key={index}>
+                    {logstash.logstashApiHost}
+                  </span>
+                </div>
+                <div className="logstashFolder form-group">
+                  <div className="logstash-label">Logstash Folder</div>
+                  <span className="value" key={index}>
+                    {logstash.logstashFolder}
+                  </span>
+                </div>
+              </div>
+            ))}{' '}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
