@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
+	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -63,6 +64,7 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(updatedTemplatesJSON)
 }
+
 func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -74,6 +76,7 @@ func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	w.Write(newClusterForSend)
 }
+
 func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	ctxLogger.Info("Got request for the new cluster save")
@@ -89,6 +92,8 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
 		return
 	}
+	var strOut, _ = json.Marshal(project)
+	ctxLogger.Info("Request: " + string(strOut))
 	var environmentConfig = project.ClusterConnectionSettings
 
 	defer req.Body.Close()
@@ -99,15 +104,19 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 	zipWriter := zip.NewWriter(buf)
 
 	for fileName, configFile := range LSConfigs {
-		updatedConfigFileContent := UpdateLSConfigFile(configFile, environmentConfig)
-		f1, err := zipWriter.Create("file" + string(fileName) + ".conf")
-		if err != nil {
-			log.DefaultLogger.Error(err.Error())
-		}
-		// Create the first file
-		_, err = f1.Write([]byte(updatedConfigFileContent))
-		if err != nil {
-			log.DefaultLogger.Error(err.Error())
+		if strings.HasPrefix(fileName, "dbeast-mon-es") {
+			updatedConfigFileContent := UpdateLSConfigFile(configFile, environmentConfig)
+			f1, err := zipWriter.Create(string(fileName) + ".conf")
+			if err != nil {
+				log.DefaultLogger.Error(err.Error())
+			}
+			// Create the first file
+			_, err = f1.Write([]byte(updatedConfigFileContent))
+			if err != nil {
+				log.DefaultLogger.Error(err.Error())
+			}
+			ctxLogger.Info("Updated file: ", fileName, " Config: ", updatedConfigFileContent)
+			WriteConfigFileToDisk(ctxLogger, "c:\\test2\\grafana-9.5.10.windows-amd64\\grafana-9.5.10\\tmp\\"+fileName+".conf", updatedConfigFileContent)
 		}
 	}
 
@@ -136,16 +145,39 @@ func UpdateLSConfigFile(configFileContent string, environmentConfig EnvironmentC
 	if environmentConfig.Prod.Elasticsearch.AuthenticationEnabled {
 		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_USER>", environmentConfig.Prod.Elasticsearch.Username)
 		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_PASSWORD>", environmentConfig.Prod.Elasticsearch.Password)
+		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_SSL_ENABLED>", fmt.Sprintf("%t", strings.Contains(environmentConfig.Prod.Elasticsearch.Host, "https")))
 	}
 
 	configFileClone = strings.ReplaceAll(configFileClone, "<MON_HOST>", environmentConfig.Mon.Elasticsearch.Host)
 	if environmentConfig.Mon.Elasticsearch.AuthenticationEnabled {
 		configFileClone = strings.ReplaceAll(configFileClone, "<MON_USER>", environmentConfig.Mon.Elasticsearch.Username)
 		configFileClone = strings.ReplaceAll(configFileClone, "<MON_PASSWORD>", environmentConfig.Mon.Elasticsearch.Password)
-		//isSSLEnabled := fmt.Sprintf("%t", strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https"))
-		configFileClone = strings.ReplaceAll(configFileClone, "<MON_SSL_ENABLED>", fmt.Sprintf("%t", strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https")))
+		if strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https") {
+			configFileClone = strings.ReplaceAll(configFileClone, "<MON_SSL_ENABLED>", "true")
+		} else {
+			configFileClone = strings.ReplaceAll(configFileClone, "ssl_certificate_verification => false", "")
+		}
 	}
 	return configFileClone
+}
+
+func WriteConfigFileToDisk(ctxLogger log.Logger, fileName string, content string) {
+	data, err := json.Marshal(content)
+	ctxLogger.Debug("Write file: ", fileName, " Content", data)
+	if err != nil {
+		fmt.Println("Error marshalling to JSON:", err)
+		return
+	}
+
+	// Save the JSON data to a file
+	err = ioutil.WriteFile(fileName, data, 0644)
+	if err != nil {
+		fmt.Println("Error writing to file:", err)
+		return
+	}
+
+	ctxLogger.Info("Object saved to file: ", fileName)
+
 }
 
 /*
