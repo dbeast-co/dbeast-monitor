@@ -14,6 +14,7 @@ type Credentials struct {
 	Password              string `json:"password"`
 	Status                string `json:"status"`
 }
+
 type EnvironmentConfig struct {
 	Prod struct {
 		Elasticsearch Credentials `json:"elasticsearch"`
@@ -44,8 +45,9 @@ GetStatus makes an HTTP GET request to retrieve the cluster health status based 
 and returns the HTTP response.
 */
 func GetStatus(credentials Credentials) (*http.Response, error) {
-
 	requestURL := credentials.Host + "/_cluster/health"
+	log.DefaultLogger.Info("Request path: ", requestURL)
+	log.DefaultLogger.Info("Request host: ", credentials.Host)
 	response, err := ProcessGetRequest(credentials, requestURL)
 
 	if err != nil {
@@ -56,13 +58,12 @@ func GetStatus(credentials Credentials) (*http.Response, error) {
 }
 
 /*
-GetClusterNameAndUID makes an HTTP GET request to retrieve cluster name and UID information based on the provided credentials
+GetClusterNameAndUid makes an HTTP GET request to retrieve cluster name and UID information based on the provided credentials
 and returns the HTTP response.
 */
-func GetClusterNameAndUid(dataToUpdate Credentials) (*http.Response, error) {
-
-	requestURL := dataToUpdate.Host + "/"
-	response, err := ProcessGetRequest(dataToUpdate, requestURL)
+func GetClusterNameAndUid(credentials Credentials) (*http.Response, error) {
+	requestURL := credentials.Host + "/"
+	response, err := ProcessGetRequest(credentials, requestURL)
 
 	if err != nil {
 		log.DefaultLogger.Warn("Error making HTTP request: " + err.Error())
