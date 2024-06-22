@@ -432,12 +432,14 @@ export const AddNewClusterPanel = () => {
   }, []);
 
   const onDownload = (url: string) => {
+    const clusterToSend = getCluster();
+
     fetch(`${SERVER_URL}/${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cluster }),
+      body: JSON.stringify(clusterToSend ? { clusterToSend } : {}),
     }).then((response) => {
       const filenameHeader = response.headers.get('Content-Disposition') || 'logstash.zip';
       const filename = filenameHeader.includes('filename=') ? filenameHeader.split('filename=')[1] : 'logstash.zip';
@@ -470,46 +472,6 @@ export const AddNewClusterPanel = () => {
     setIsOpenAddDialog(false);
   };
 
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: 'server_address',
-  //     headerName: 'Server address',
-  //     editable: true,
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: 'logstash_api_host',
-  //     headerName: 'Logstash Api Host',
-  //     editable: true,
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: 'logstash_config_folder',
-  //     headerName: 'Logstash Config Folder',
-  //     editable: true,
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: 'logstash_logs_folder',
-  //     headerName: 'Logstash Logs Folder',
-  //     editable: true,
-  //     flex: 1,
-  //   },
-  // ];
-
-  // const onAddRecord = () => {
-  //   setRows((oldRows) => [
-  //     ...oldRows,
-  //     {
-  //       id: oldRows.length + 1,
-  //       server_address: '',
-  //       logstash_api_host: 'localhost:9600',
-  //       logstash_config_folder: '/etc/logstash/conf.d',
-  //       logstash_logs_folder: 'var/log/logstash',
-  //     },
-  //   ]);
-  // };
-
   const handleCardClick = (logstash: Logstash) => {
     setIsOpenAddDialog(true);
     setLogstash(logstash);
@@ -522,11 +484,13 @@ export const AddNewClusterPanel = () => {
           isLight: theme.isLight,
         })}
       >
+        <h3 className="title">Source connection</h3>
+
         <section>
           <div>
             <div className="host_wrapper">
               <TextField
-                id="standard-basic"
+                id="standard-basic-1"
                 label="Elasticsearch Host"
                 variant="standard"
                 value={connectionSettings.prod.elasticsearch.host ?? ''}
@@ -552,7 +516,7 @@ export const AddNewClusterPanel = () => {
             </div>
             <div className="host_wrapper">
               <TextField
-                id="standard-basic"
+                id="standard-basic-2"
                 label="Kibana host"
                 variant="standard"
                 value={connectionSettings.prod.kibana.host ?? ''}
@@ -581,7 +545,7 @@ export const AddNewClusterPanel = () => {
             />
             <div className="auth_wrapper">
               <TextField
-                id="standard-basic text_1"
+                id="standard-basic-3 text_1"
                 key="text_1"
                 label="Username"
                 variant="standard"
@@ -590,7 +554,7 @@ export const AddNewClusterPanel = () => {
                 disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
               />
               <TextField
-                id="standard-basic text_2"
+                id="standard-basic-4 text_2"
                 type="password"
                 key="text_2"
                 label="Password"
@@ -605,7 +569,7 @@ export const AddNewClusterPanel = () => {
           <div>
             <div className="host_wrapper">
               <TextField
-                id="standard-basic"
+                id="standard-basic-5"
                 label="Monitoring Host"
                 variant="standard"
                 value={connectionSettings.mon.elasticsearch.host}
@@ -643,7 +607,7 @@ export const AddNewClusterPanel = () => {
             />
             <div className="auth_wrapper">
               <TextField
-                id="standard-basic text_1"
+                id="standard-basic-6 text_1"
                 key="text_1"
                 label="Username"
                 variant="standard"
@@ -652,7 +616,7 @@ export const AddNewClusterPanel = () => {
                 disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
               />
               <TextField
-                id="standard-basic text_2"
+                id="standard-basic-7 text_2"
                 type="password"
                 key="text_2"
                 label="Password"

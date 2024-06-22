@@ -2,6 +2,12 @@
   display: flex;
   justify-content: center;
 
+  .title {
+    font-size: 18px;
+    text-align: center;
+    margin-block: 1rem;
+  }
+
   .source_panel {
     border: 1px solid #fff;
     display: flex;
@@ -13,9 +19,10 @@
     justify-content: space-between;
     border-radius: 4px 0 0 4px;
     background: #1e1d22;
+    border-right: 1px solid #6b6a6a;
 
     section {
-      height: 100%;
+      min-height: calc(100% - 62px);
       display: grid;
     }
 
@@ -274,6 +281,7 @@
   .config.not-rounded {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: 1px solid #6b6a6a;
   }
 
   .config,
@@ -283,7 +291,7 @@
     border: 1px solid #fff;
     background: #1e1d22;
     min-height: 475px;
-    max-height: 475px;
+    //max-height: auto;
   }
   .logstash-list {
     padding: 10px 20px;
@@ -293,7 +301,7 @@
 
     .cards-wrapper {
       overflow: auto;
-      max-height: 400px;
+      max-height: 500px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 10px;
@@ -373,4 +381,8 @@ svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
   border-radius: 4px 0 0 4px !important;
   background: #1e1d22 !important;
   width: 30% !important;
+}
+
+.panel-container {
+  background-color: transparent !important;
 }
