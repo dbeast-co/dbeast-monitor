@@ -16,8 +16,7 @@ export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
   const theme = useTheme2();
 
   const onDeleteItem = (id: string) => {
-    // onDelete(id);
-    dataSources = dataSources.filter((item) => item.id !== id);
+    onDelete(id);
   };
 
   return (

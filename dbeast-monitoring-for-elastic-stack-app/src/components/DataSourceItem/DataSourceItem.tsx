@@ -250,7 +250,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   onDeleteCluster = async () => {
     const backendSrv = getBackendSrv();
     try {
-      const dataSources: any = await backendSrv.get(`/api/datasources`, {
+      let dataSources: any = await backendSrv.get(`/api/datasources`, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
@@ -261,6 +261,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
           try {
             await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
+            dataSources = dataSources.filter((item: any) => item.id !== this.state.cluster_uuid);
             this.props.onDelete(dataSource.uid);
           } catch (deleteError) {
             console.error('deleteError', deleteError);
