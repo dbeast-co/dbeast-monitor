@@ -11,22 +11,43 @@ import (
 	"strings"
 )
 
+type BasicAuthTransport struct {
+	Username  string
+	Password  string
+	Transport http.RoundTripper
+}
+
+func (bat *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.SetBasicAuth(bat.Username, bat.Password)
+	return bat.Transport.RoundTrip(req)
+}
+
 // CreateHTTPClient creates an HTTP client based on the provided credentials.
 // It takes a Credentials struct as input and returns an HTTP client.
 func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
+
 	if credentials.Host == "" {
-		log.DefaultLogger.Warn("Host is empty")
+		log.DefaultLogger.Error("Host is empty")
 		return nil, fmt.Errorf("host is empty")
 	}
 
-	var tr *http.Transport
-	if strings.HasPrefix(credentials.Host, "https://") {
-		tr = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	var tr = &http.Transport{}
+	var client *http.Client
+	if credentials.AuthenticationEnabled == true {
+		if strings.HasPrefix(credentials.Host, "https://") {
+			tr = &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			}
 		}
+		authTransport := &BasicAuthTransport{
+			Username:  credentials.Username,
+			Password:  credentials.Password,
+			Transport: tr,
+		}
+		client = &http.Client{Transport: authTransport}
+	} else {
+		client = &http.Client{Transport: tr}
 	}
-
-	client := &http.Client{Transport: tr}
 	return client, nil
 }
 
@@ -61,48 +82,10 @@ func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Respon
 		if err != nil {
 			return nil, err
 		}
-		return nil, fmt.Errorf("Unauthorized access. Check credentials")
+		return nil, fmt.Errorf("unauthorized access. Check credentials")
 	}
 
 	return response, nil
-}
-
-/*
-SendTemplateToServer takes a map of templates (Templates) as input, constructs an HTTP POST request for each template,
-and sends it to a predefined HTTP endpoint.
-*/
-func SendTemplateToServer(Templates map[string]interface{}) {
-
-	httpposturl := "http://localhost:3000"
-	log.DefaultLogger.Warn("HTTP JSON POST URL:" + httpposturl)
-	client := &http.Client{}
-
-	for name, template := range Templates {
-		requestBody, err := json.Marshal(template)
-
-		if err != nil {
-			log.DefaultLogger.Warn("Failed to marshal template: " + name + err.Error())
-			return
-		}
-
-		request, err := http.NewRequest("POST", httpposturl+"/test", bytes.NewBuffer(requestBody))
-		if err != nil {
-			log.DefaultLogger.Warn("Failed to create request for template: " + name + err.Error())
-			return
-		}
-
-		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
-
-		response, err := client.Do(request)
-		if err != nil {
-			log.DefaultLogger.Warn("HTTP request failed for template " + name + ": " + err.Error())
-			return
-		}
-		if err := response.Body.Close(); err != nil {
-			log.DefaultLogger.Warn("Failed to close response body: " + err.Error())
-			return
-		}
-	}
 }
 
 /*
@@ -151,4 +134,42 @@ func FetchClusterInfo(credentials Credentials) (string, string) {
 		}
 	}
 	return clusterName, uid
+}
+
+/*
+SendTemplateToServer takes a map of templates (Templates) as input, constructs an HTTP POST request for each template,
+and sends it to a predefined HTTP endpoint.
+*/
+func SendTemplateToServer(Templates map[string]interface{}) {
+
+	httpposturl := "http://localhost:3000"
+	log.DefaultLogger.Warn("HTTP JSON POST URL:" + httpposturl)
+	client := &http.Client{}
+
+	for name, template := range Templates {
+		requestBody, err := json.Marshal(template)
+
+		if err != nil {
+			log.DefaultLogger.Warn("Failed to marshal template: " + name + err.Error())
+			return
+		}
+
+		request, err := http.NewRequest("POST", httpposturl+"/test", bytes.NewBuffer(requestBody))
+		if err != nil {
+			log.DefaultLogger.Warn("Failed to create request for template: " + name + err.Error())
+			return
+		}
+
+		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+		response, err := client.Do(request)
+		if err != nil {
+			log.DefaultLogger.Warn("HTTP request failed for template " + name + ": " + err.Error())
+			return
+		}
+		if err := response.Body.Close(); err != nil {
+			log.DefaultLogger.Warn("Failed to close response body: " + err.Error())
+			return
+		}
+	}
 }
