@@ -1343,7 +1343,7 @@
       "type": "table"
     }
   ],
-  "refresh": "5s",
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
