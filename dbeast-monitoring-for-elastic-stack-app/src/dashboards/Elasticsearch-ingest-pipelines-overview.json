@@ -92,23 +92,20 @@
   "panels": [
     {
       "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_ingest_pipelines_status}"
+        "uid": "${es_ingest_pipelines_status}",
+        "type": "elasticsearch"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
-            "filterable": true,
-            "inspect": true
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "filterable": false
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -121,7 +118,11 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "min": 0
         },
         "overrides": [
           {
@@ -133,6 +134,10 @@
               {
                 "id": "custom.width",
                 "value": 74
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           },
@@ -145,6 +150,10 @@
               {
                 "id": "custom.width",
                 "value": 133
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           },
@@ -154,10 +163,6 @@
               "options": "Pipeline name"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 279
-              },
               {
                 "id": "custom.align",
                 "value": "left"
@@ -171,28 +176,14 @@
                     "url": "/d/elasticsearch-pipeline-analytics/elasticsearch-pipeline-analytics?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-host_name=${__data.fields.Host}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}"
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Host"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 126
               },
               {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "Host overvew",
-                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields.Host}"
-                  }
-                ]
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -212,7 +203,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
+                      "color": "transparent",
                       "value": null
                     },
                     {
@@ -223,8 +214,11 @@
                 }
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-background-solid"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
               }
             ]
           }
@@ -239,27 +233,33 @@
       "hideTimeOverride": true,
       "id": 16,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": [
-            "Max elasticsearch.node.stats.ingest_pipeline.in_rate"
-          ],
+          "show": true,
           "reducer": [
             "sum"
           ],
-          "show": true
+          "countRows": false,
+          "fields": [
+            "Max elasticsearch.node.stats.ingest_pipeline.in_rate"
+          ]
         },
         "frameIndex": 1,
-        "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Failures rate"
+            "displayName": "Failures rate",
+            "desc": true
           }
         ]
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_ingest_pipelines_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -272,24 +272,9 @@
                 "size": "0"
               },
               "type": "terms"
-            },
-            {
-              "field": "elasticsearch.node.name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "0"
-              },
-              "type": "terms"
             }
           ],
           "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_ingest_pipelines_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -359,21 +344,21 @@
           }
         }
       ],
-      "type": "table"
+      "type": "table",
+      "description": ""
     },
     {
       "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_ingest_pipelines_status}"
+        "uid": "${es_ingest_pipelines_status}",
+        "type": "elasticsearch"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -389,6 +374,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": []
@@ -401,18 +389,24 @@
       },
       "id": 6,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
-        },
-        "showHeader": true
+          "countRows": false,
+          "fields": ""
+        }
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_ingest_pipelines_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -428,10 +422,6 @@
             }
           ],
           "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_ingest_pipelines_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -440,9 +430,9 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "elasticsearch.node.name",
               "id": "1",
-              "type": "cardinality"
+              "type": "max",
+              "field": "elasticsearch.number_of_ingest_nodes"
             },
             {
               "field": "elasticsearch.node.stats.ingest_pipeline.id",
@@ -484,7 +474,9 @@
               "Unique Count host.hostname": "Number of instances",
               "Unique Count logstash.node.stats.pipeline.id": "Number of pipelines",
               "cluster_uuid": "Cluster id",
-              "elasticsearch.cluster.id": ""
+              "elasticsearch.cluster.id": "",
+              "Max": "Number of ingest nodes",
+              "Unique Count": "Number of pipelines"
             }
           }
         }
@@ -1483,7 +1475,7 @@
       "type": "table"
     }
   ],
-  "refresh": "5s",
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [

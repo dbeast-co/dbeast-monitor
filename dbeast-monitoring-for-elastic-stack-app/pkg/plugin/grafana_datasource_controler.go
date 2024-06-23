@@ -79,7 +79,7 @@ func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
 
 func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
-	ctxLogger.Info("Got request for the new cluster save")
+	ctxLogger.Info("Got request for the Elasticsearch configuration files download")
 
 	w.Header().Add("Content-Disposition", "attachment; filename=\"files.zip\"")
 	w.Header().Add("Content-Type", "application/zip")
@@ -93,11 +93,14 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 		return
 	}
 	var strOut, _ = json.Marshal(project)
+	ctxLogger.Info("The project: ", project)
 	ctxLogger.Info("Request: " + string(strOut))
 	var environmentConfig = project.ClusterConnectionSettings
+	ctxLogger.Info("The Emv: ", environmentConfig)
 
 	defer req.Body.Close()
 
+	ctxLogger.Info("Connection settings: ", environmentConfig)
 	buf := new(bytes.Buffer)
 
 	// Create a new zip archive
@@ -115,7 +118,7 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 			if err != nil {
 				log.DefaultLogger.Error(err.Error())
 			}
-			ctxLogger.Info("Updated file: ", fileName, " Config: ", updatedConfigFileContent)
+			//ctxLogger.Info("Updated file: ", fileName, " Config: ", updatedConfigFileContent)
 			WriteConfigFileToDisk(ctxLogger, "c:\\test2\\grafana-9.5.10.windows-amd64\\grafana-9.5.10\\tmp\\"+fileName+".conf", updatedConfigFileContent)
 		}
 	}
