@@ -8,6 +8,7 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io/ioutil"
 	"net/http"
+	"path/filepath"
 	"strings"
 )
 
@@ -77,11 +78,83 @@ func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
 	w.Write(newClusterForSend)
 }
 
+//func (a *App) GenerateElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
+//	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+//	ctxLogger.Info("Got request for the Logstash configuration files generation")
+//
+//	w.Header().Add("Content-Disposition", "attachment; filename=\"ESConfigurationFiles.zip\"")
+//	w.Header().Add("Content-Type", "application/zip")
+//
+//	var project Cluster
+//
+//	if err := json.NewDecoder(req.Body).Decode(&project); err != nil {
+//		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
+//		w.WriteHeader(http.StatusBadRequest)
+//		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+//		return
+//	}
+//	var strOut, _ = json.Marshal(project)
+//	ctxLogger.Debug("Request: " + string(strOut))
+//	var environmentConfig = project.ClusterConnectionSettings
+//	ctxLogger.Debug("The Env: ", environmentConfig)
+//
+//	defer req.Body.Close()
+//
+//	ctxLogger.Debug("Connection settings: ", environmentConfig)
+//	buf := new(bytes.Buffer)
+//
+//	// Create a new zip archive
+//	zipWriter := zip.NewWriter(buf)
+//
+//	for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
+//		if configFile.IsChecked {
+//			updatedConfigFileContent := UpdateConnectionSettings(LSConfigs[configFile.Id], environmentConfig)
+//			f1, err := zipWriter.Create(configFile.Id)
+//			if err != nil {
+//				log.DefaultLogger.Error(err.Error())
+//			}
+//			// Create the first file
+//			_, err = f1.Write([]byte(updatedConfigFileContent))
+//			if err != nil {
+//				log.DefaultLogger.Error(err.Error())
+//			}
+//		}
+//	}
+//
+//	// Make sure to close the zip writer to flush the contents to the buffer
+//	err := zipWriter.Close()
+//	if err != nil {
+//		log.DefaultLogger.Error(err.Error())
+//	}
+//	// Set headers to instruct the browser to download the file as a zip
+//
+//	// Write the buffer to the HTTP response
+//	_, err = w.Write(buf.Bytes())
+//	if err != nil {
+//		log.DefaultLogger.Error("Error writing response: ", err.Error())
+//	}
+//
+//	//SendTemplateToServer(UpdatedTemplates)
+//}
+
+func (a *App) GenerateElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+	ctxLogger.Info("Got request for the Elasticsearch configuration files generation")
+
+	GenerateLogstashConfigurationFiles(w, req, false, "ESConfigurationFiles.zip")
+}
+
 func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
-	ctxLogger.Info("Got request for the Elasticsearch configuration files download")
+	ctxLogger.Info("Got request for the Logstash configuration files generation")
 
-	w.Header().Add("Content-Disposition", "attachment; filename=\"files.zip\"")
+	GenerateLogstashConfigurationFiles(w, req, true, "LogstashConfigurationFiles.zip")
+}
+
+func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request, isLogstash bool, resultZipFileName string) {
+	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+
+	w.Header().Add("Content-Disposition", "attachment; filename=\""+resultZipFileName+"\"")
 	w.Header().Add("Content-Type", "application/zip")
 
 	var project Cluster
@@ -92,76 +165,75 @@ func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.Respons
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
 		return
 	}
-	var strOut, _ = json.Marshal(project)
-	ctxLogger.Info("The project: ", project)
-	ctxLogger.Info("Request: " + string(strOut))
-	var environmentConfig = project.ClusterConnectionSettings
-	ctxLogger.Info("The Emv: ", environmentConfig)
-
+	ctxLogger.Debug("The project: ", project)
 	defer req.Body.Close()
 
-	ctxLogger.Info("Connection settings: ", environmentConfig)
 	buf := new(bytes.Buffer)
 
 	// Create a new zip archive
 	zipWriter := zip.NewWriter(buf)
 
-	for fileName, configFile := range LSConfigs {
-		if strings.HasPrefix(fileName, "dbeast-mon-es") {
-			updatedConfigFileContent := UpdateLSConfigFile(configFile, environmentConfig)
-			f1, err := zipWriter.Create(string(fileName) + ".conf")
-			if err != nil {
-				log.DefaultLogger.Error(err.Error())
+	clusterName, clusterId := FetchClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if isLogstash {
+		for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
+			if configFile.IsChecked {
+				configFileClone := strings.Clone(LSConfigs[configFile.Id])
+				configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
+				configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
+
+				for _, logstashHost := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Hosts {
+					configFileClone = UpdateLogstashConnectionSettings(configFileClone, logstashHost)
+					folderPath := filepath.Join(logstashHost.LogstashApiHost, configFile.Id)
+					WriteFileToZip(zipWriter, folderPath, configFileClone)
+				}
 			}
-			// Create the first file
-			_, err = f1.Write([]byte(updatedConfigFileContent))
-			if err != nil {
-				log.DefaultLogger.Error(err.Error())
+		}
+	} else {
+		for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
+			if configFile.IsChecked {
+				configFileClone := strings.Clone(LSConfigs[configFile.Id])
+				configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
+				configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
+
+				configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
+				folderPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
+				WriteFileToZip(zipWriter, folderPath, configFileClone)
 			}
-			//ctxLogger.Info("Updated file: ", fileName, " Config: ", updatedConfigFileContent)
-			WriteConfigFileToDisk(ctxLogger, "c:\\test2\\grafana-9.5.10.windows-amd64\\grafana-9.5.10\\tmp\\"+fileName+".conf", updatedConfigFileContent)
 		}
 	}
-
 	// Make sure to close the zip writer to flush the contents to the buffer
 	err := zipWriter.Close()
 	if err != nil {
 		log.DefaultLogger.Error(err.Error())
 	}
-	// Set headers to instruct the browser to download the file as a zip
 
 	// Write the buffer to the HTTP response
 	_, err = w.Write(buf.Bytes())
 	if err != nil {
 		log.DefaultLogger.Error("Error writing response: ", err.Error())
 	}
-
-	//SendTemplateToServer(UpdatedTemplates)
 }
 
-func UpdateLSConfigFile(configFileContent string, environmentConfig EnvironmentConfig) string {
-	_, uidProd := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
-	configFileClone := strings.Clone(configFileContent)
+func UpdateProdConnectionSettings(configFileContent string, environmentConfig EnvironmentConfig) string {
+	configFileContent = strings.ReplaceAll(configFileContent, "<PROD_HOST>", environmentConfig.Prod.Elasticsearch.Host)
+	configFileContent = strings.ReplaceAll(configFileContent, "<PROD_USER>", environmentConfig.Prod.Elasticsearch.Username)
+	configFileContent = strings.ReplaceAll(configFileContent, "<PROD_PASSWORD>", environmentConfig.Prod.Elasticsearch.Password)
+	configFileContent = strings.ReplaceAll(configFileContent, "<PROD_SSL_ENABLED>", fmt.Sprintf("%t", strings.Contains(environmentConfig.Prod.Elasticsearch.Host, "https")))
+	return configFileContent
+}
 
-	configFileClone = strings.ReplaceAll(configFileClone, "<PROD_HOST>", environmentConfig.Prod.Elasticsearch.Host)
-	configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", uidProd)
-	if environmentConfig.Prod.Elasticsearch.AuthenticationEnabled {
-		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_USER>", environmentConfig.Prod.Elasticsearch.Username)
-		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_PASSWORD>", environmentConfig.Prod.Elasticsearch.Password)
-		configFileClone = strings.ReplaceAll(configFileClone, "<PROD_SSL_ENABLED>", fmt.Sprintf("%t", strings.Contains(environmentConfig.Prod.Elasticsearch.Host, "https")))
-	}
+func UpdateMonConnectionSettings(configFileContent string, environmentConfig EnvironmentConfig) string {
+	configFileContent = strings.ReplaceAll(configFileContent, "<MON_HOST>", environmentConfig.Mon.Elasticsearch.Host)
+	configFileContent = strings.ReplaceAll(configFileContent, "<MON_USER>", environmentConfig.Mon.Elasticsearch.Username)
+	configFileContent = strings.ReplaceAll(configFileContent, "<MON_PASSWORD>", environmentConfig.Mon.Elasticsearch.Password)
+	configFileContent = strings.ReplaceAll(configFileContent, "<MON_SSL_ENABLED>", fmt.Sprintf("%t", strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https")))
+	return configFileContent
+}
 
-	configFileClone = strings.ReplaceAll(configFileClone, "<MON_HOST>", environmentConfig.Mon.Elasticsearch.Host)
-	if environmentConfig.Mon.Elasticsearch.AuthenticationEnabled {
-		configFileClone = strings.ReplaceAll(configFileClone, "<MON_USER>", environmentConfig.Mon.Elasticsearch.Username)
-		configFileClone = strings.ReplaceAll(configFileClone, "<MON_PASSWORD>", environmentConfig.Mon.Elasticsearch.Password)
-		if strings.Contains(environmentConfig.Mon.Elasticsearch.Host, "https") {
-			configFileClone = strings.ReplaceAll(configFileClone, "<MON_SSL_ENABLED>", "true")
-		} else {
-			configFileClone = strings.ReplaceAll(configFileClone, "ssl_certificate_verification => false", "")
-		}
-	}
-	return configFileClone
+func UpdateLogstashConnectionSettings(configFileContent string, logstashHost LogstashHost) string {
+	configFileContent = strings.ReplaceAll(configFileContent, "<PATH-TO-LOGS>", logstashHost.LogstashLogsFolder)
+	configFileContent = strings.ReplaceAll(configFileContent, "<LOGSTASH-API>", logstashHost.LogstashApiHost)
+	return configFileContent
 }
 
 func WriteConfigFileToDisk(ctxLogger log.Logger, fileName string, content string) {
@@ -257,4 +329,16 @@ func CloneTemplate(data interface{}) interface{} {
 	}
 
 	return clonedTemplate
+}
+
+func WriteFileToZip(zipWriter *zip.Writer, filePath string, configFile string) {
+	fileWriter, err := zipWriter.Create(filePath)
+	if err != nil {
+		log.DefaultLogger.Error(err.Error())
+	}
+	// Create the first file
+	_, err = fileWriter.Write([]byte(configFile))
+	if err != nil {
+		log.DefaultLogger.Error(err.Error())
+	}
 }

@@ -49,19 +49,22 @@ type ConfigurationCheckbox struct {
 }
 
 type LogstashHost struct {
-	ServerAddress        string `json:"server_address"`
+	//ServerAddress        string `json:"server_address"`
 	LogstashApiHost      string `json:"logstash_api_host"`
 	LogstashConfigFolder string `json:"logstash_config_folder"`
 	LogstashLogsFolder   string `json:"logstash_logs_folder"`
 }
 
 type LogstashConfigurations struct {
-	EsMonitoringConfigurationFiles       []ConfigurationCheckbox `json:"es_monitoring_configuration_files"`
-	LogstashMonitoringConfigurationFiles struct {
-		Configurations []ConfigurationCheckbox `json:"configurations"`
-		Hosts          []LogstashHost          `json:"hosts"`
-	} `json:"logstash_monitoring_configuration_files"`
+	EsMonitoringConfigurationFiles       []ConfigurationCheckbox              `json:"es_monitoring_configuration_files"`
+	LogstashMonitoringConfigurationFiles LogstashMonitoringConfigurationFiles `json:"logstash_monitoring_configuration_files"`
 }
+
+type LogstashMonitoringConfigurationFiles struct {
+	Configurations []ConfigurationCheckbox `json:"configurations"`
+	Hosts          []LogstashHost          `json:"hosts"`
+}
+
 type Cluster struct {
 	ClusterConnectionSettings EnvironmentConfig      `json:"cluster_connection_settings"`
 	LogstashConfigurations    LogstashConfigurations `json:"logstash_configurations"`

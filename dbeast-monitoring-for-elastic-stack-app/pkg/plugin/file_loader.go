@@ -108,9 +108,11 @@ func LoadLogstashConfigFromFolder(folderPath string) error {
 			}
 			log.DefaultLogger.Info("Reading file: %s\n", filePath)
 
-			templateName := file.Name()[:len(file.Name())-5]
+			//templateName := file.Name()[:len(file.Name())-5]
+			//templateName := file.Name()[:len(file.Name())-5]
 
-			LSConfigs[templateName] = string(data[:])
+			LSConfigs[file.Name()] = string(data[:])
+			//LSConfigs[templateName] = string(data[:])
 		}
 	}
 
