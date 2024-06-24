@@ -173,7 +173,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze pipeline",
-                    "url": "/d/elasticsearch-pipeline-analytics/elasticsearch-pipeline-analytics?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-host_name=${__data.fields.Host}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}"
+                    "url": "/d/elasticsearch-pipeline-analytics/elasticsearch-pipeline-analytics?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}"
                   }
                 ]
               },
@@ -485,22 +485,19 @@
     },
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
           "custom": {
-            "align": "center",
-            "displayMode": "auto",
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
-          "max": 100,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -513,7 +510,11 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "max": 100
         },
         "overrides": [
           {
@@ -522,10 +523,6 @@
               "options": "Node name"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 124
-              },
               {
                 "id": "links",
                 "value": [
@@ -553,40 +550,11 @@
                 "value": "percent"
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Storage"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 118
-              },
-              {
-                "id": "unit",
-                "value": "bytes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Available storage (Tb)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 156
-              },
-              {
-                "id": "unit",
-                "value": "bytes"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "lcd"
+                }
               }
             ]
           },
@@ -605,66 +573,17 @@
                 "value": "percent"
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "lcd"
+                }
               },
               {
                 "id": "color",
                 "value": {
                   "mode": "continuous-GrYlRd"
                 }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Available storage(%)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 148
-              },
-              {
-                "id": "unit",
-                "value": "percentunit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Number of shards"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 123
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "version"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 114
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Version"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 91
               }
             ]
           }
@@ -674,28 +593,30 @@
         "h": 6,
         "w": 9,
         "x": 10,
-        "y": 3
+        "y": 4
       },
       "id": 25,
       "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
         "footer": {
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.2",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.nodes.*.name",
@@ -712,71 +633,16 @@
               "language": "jsonpath",
               "name": "Heap used",
               "type": "number"
-            },
-            {
-              "jsonPath": "$.nodes.*.fs.total.total_in_bytes",
-              "language": "jsonpath",
-              "name": "Total Storage",
-              "type": "number"
-            },
-            {
-              "jsonPath": "$.nodes.*.fs.total.available_in_bytes",
-              "language": "jsonpath",
-              "name": "Available storage (Tb)",
-              "type": "number"
             }
           ],
           "method": "GET",
           "queryParams": "",
           "refId": "A",
           "urlPath": "/_nodes/ingest:true/stats/os,jvm,fs,indices?filter_path=cluster_name,nodes.*.name,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.used_in_bytes,nodes.*.os.mem.used_percent,nodes.*.jvm.mem.heap_used_in_bytes,nodes.*.jvm.mem.non_heap_used_in_bytes,nodes.*.jvm.mem.heap_used_percent,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.indices.docs.count,nodes.*.indices.docs.deleted,,nodes.*.indices.shard_stats.total_count"
-        },
-        {
-          "cacheDurationSeconds": 0,
-          "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
-          },
-          "fields": [
-            {
-              "jsonPath": "$.nodes.*.name",
-              "name": "Node name"
-            },
-            {
-              "jsonPath": "$.nodes.*.version",
-              "language": "jsonpath",
-              "name": "Version"
-            }
-          ],
-          "hide": false,
-          "method": "GET",
-          "queryParams": "",
-          "refId": "B",
-          "urlPath": "/_nodes/ingest:true"
         }
       ],
       "title": "Ingest nodes status",
       "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Available storage(%)",
-            "binary": {
-              "left": "A Available storage (Tb)",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "A Total Storage"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "merge",
-          "options": {}
-        },
         {
           "id": "organize",
           "options": {
@@ -797,12 +663,14 @@
               "cpu": 2
             },
             "renameByName": {
-              "Total Storage": ""
+              "Total Storage": "",
+              "Node name": ""
             }
           }
         }
       ],
-      "type": "table"
+      "type": "table",
+      "description": ""
     },
     {
       "datasource": {
@@ -862,7 +730,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "elasticsearch.node.name",
+              "field": "elasticsearch.node.stats.ingest_pipeline.id",
               "id": "4",
               "settings": {
                 "min_doc_count": "1",
@@ -891,7 +759,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.ingest_pipeline.in_rate: [0 TO 10000000]",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -987,7 +855,7 @@
           "alias": "",
           "bucketAggs": [
             {
-              "field": "elasticsearch.node.name",
+              "field": "elasticsearch.node.stats.ingest_pipeline.id",
               "id": "4",
               "settings": {
                 "min_doc_count": "1",

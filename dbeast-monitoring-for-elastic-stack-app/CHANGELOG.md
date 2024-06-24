@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 0.7.1
+- Bug fixes
+  * Logstash Thread pools pipeline - parsing exception [#67](https://github.com/dbeast-co/dbeast-monitor/issues/67)
+  * Application can't connect to the clusters without TLS [#64](https://github.com/dbeast-co/dbeast-monitor/issues/64)
+  * Error in click to the "DBeast Monitor" In the Grafana[#61](https://github.com/dbeast-co/dbeast-monitor/issues/61)
+
+- Features
+  * Move Data source templates to the backend part  [#66](https://github.com/dbeast-co/dbeast-monitor/issues/66)
+  * Logstash "elasticsearch-ingest-pipeline" Optimization  [#49](https://github.com/dbeast-co/dbeast-monitor/issues/49)
+
+- Updated dashboards
+  * Elasticsearch ingest pipeline overview
+  * Elasticsearch ingest pipeline analytics
+  * Elastic stack monitor
+  
 ## Version 0.7.0
 - Bug fixes
   * Incorrect Aggregation of Pipeline Data in Logstash Overview Dashboard [#48](https://github.com/dbeast-co/dbeast-monitor/issues/48)

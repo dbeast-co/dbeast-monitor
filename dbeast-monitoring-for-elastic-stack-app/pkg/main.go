@@ -36,6 +36,7 @@ func main() {
 	}
 	err = plugin.LoadLogstashConfigurationFileList(os.Args[0][:lastIndex] + LogstashConfigurationsFileListFile)
 	if err != nil {
+		log.DefaultLogger.Error(err.Error())
 		return
 	}
 

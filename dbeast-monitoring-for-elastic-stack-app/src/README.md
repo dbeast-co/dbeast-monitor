@@ -15,7 +15,6 @@ The project documentation is available on our [wiki](https://github.com/dbeast-c
 - [Upgrade Instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Upgrade-Instructions)
 - [Add new cluster](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster)
 - [Dashboards](https://github.com/dbeast-co/dbeast-monitor/wiki/Dashboards)
-- [Release Notes](https://github.com/dbeast-co/dbeast-monitor/wiki/Release-Notes)
 
 ## Key features
 
