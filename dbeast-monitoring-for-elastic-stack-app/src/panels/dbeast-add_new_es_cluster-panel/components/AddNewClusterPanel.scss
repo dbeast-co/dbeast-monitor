@@ -218,37 +218,37 @@
   .status {
     color: #ffffff;
     position: absolute;
-    top: 18%;
-    left: 73%;
+    top: -18%;
+    left: 80%;
 
     display: inline-flex;
 
     .UNTESTED {
       background: #555555;
-      padding: 5px 10px;
-      font-size: 12px;
+      padding: 2px 10px;
+      font-size: 10px;
       border-radius: 7px;
     }
 
     .YELLOW {
       background: #e59500;
-      padding: 5px 10px;
-      font-size: 12px;
+      padding: 2px 10px;
+      font-size: 10px;
       border-radius: 7px;
     }
 
     .ERROR {
       background: #d33f49;
-      padding: 5px 10px;
-      font-size: 12px;
+      padding: 2px 10px;
+      font-size: 10px;
       border-radius: 7px;
       color: #fff;
     }
 
     .GREEN {
       background: #79b473;
-      padding: 5px 10px;
-      font-size: 12px;
+      padding: 2px 10px;
+      font-size: 10px;
       border-radius: 7px;
     }
   }
