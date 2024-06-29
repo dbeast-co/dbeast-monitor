@@ -432,30 +432,29 @@ export const AddNewClusterPanel = () => {
   }, []);
 
   const onDownload = (url: string) => {
-    const connection_settings = getCluster();
+    const cluster_connection_settings = getCluster();
 
-    const cluster_connection_settings = {
-      connection_settings,
+    const clusterToSend = {
+      cluster_connection_settings,
       logstash_configurations: cluster.logstash_configurations,
     };
     console.log('cluster_connection_settings', cluster_connection_settings);
-
-    backendSrv
-      .post(`${baseUrl}/${url}`, JSON.stringify(cluster_connection_settings ? { cluster_connection_settings } : {}), {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      })
-
-      .then((response) => {
+    fetch(`${SERVER_URL}/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(clusterToSend),
+    }).then((response) => {
+      if (response) {
         const filenameHeader = response.headers.get('Content-Disposition') || 'logstash.zip';
         const filename = filenameHeader.includes('filename=') ? filenameHeader.split('filename=')[1] : 'logstash.zip';
         const formattedFileName = filename.replace(/['"]+/g, '');
         response.blob().then((blob: Blob) => {
           saveAs(blob, formattedFileName);
         });
-      });
+      }
+    });
   };
 
   const onOpenAddDialog = () => {
