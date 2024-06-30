@@ -7,13 +7,28 @@ import (
 	"net/http"
 )
 
+type Status struct {
+	Status string `json:"status"`
+	Error  string `json:"error"`
+}
+
+type StatusData struct {
+	Prod struct {
+		Elasticsearch Status `json:"elasticsearch"`
+		Kibana        Status `json:"kibana"`
+	} `json:"prod"`
+	Mon struct {
+		Elasticsearch Status `json:"elasticsearch"`
+	} `json:"mon"`
+}
+
 /*
-	TestStatusHandler handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
+	TestClusterHandler handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
 
 It takes a http.ResponseWriter and http.Request as input, decodes the request body to extract environment configuration,
 updates the status and sends the updated status data in JSON format as an HTTP response.
 */
-func (a *App) TestStatusHandler(w http.ResponseWriter, req *http.Request) {
+func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	w.Header().Add("Content-Type", "application/json")
 
@@ -28,8 +43,8 @@ func (a *App) TestStatusHandler(w http.ResponseWriter, req *http.Request) {
 
 	var statusData StatusData
 
-	statusData.Prod.Elasticsearch = UpdateStatusForType(&EnvironmentConfig.Prod.Elasticsearch)
-	statusData.Mon.Elasticsearch = UpdateStatusForType(&EnvironmentConfig.Mon.Elasticsearch)
+	statusData.Prod.Elasticsearch = UpdateStatus(&EnvironmentConfig.Prod.Elasticsearch)
+	statusData.Mon.Elasticsearch = UpdateStatus(&EnvironmentConfig.Mon.Elasticsearch)
 
 	statusDataJSON, err := json.MarshalIndent(statusData, "", "")
 	if err != nil {
@@ -43,11 +58,11 @@ func (a *App) TestStatusHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 /*
-UpdateStatusForType retrieves the status information for a given type.
+UpdateStatus retrieves the status information for a given type.
 It uses the provided credentials to make a request to the corresponding status endpoint and extracts the status information from the response.
 If successful, it returns a Status struct containing the status information; otherwise, it returns an error message in the Status struct.
 */
-func UpdateStatusForType(credentials *Credentials) Status {
+func UpdateStatus(credentials *Credentials) Status {
 	var statusData = Status{}
 
 	if credentials.Host != "" {

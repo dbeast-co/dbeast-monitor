@@ -36,15 +36,15 @@ func LoadLogstashConfigurationFileList(filePath string) error {
 }
 
 /*
-LoadTemplatesFromFolder loads JSON templates from the specified folder and updates the global TemplatesMap.
-It takes a folderPath string as input, reads the content of the folder, and parses each JSON file into the TemplatesMap.
+LoadGrafanaDataSourcesFromFolder loads JSON templates from the specified folder and updates the global GrafanaDataSourcesMap.
+It takes a folderPath string as input, reads the content of the folder, and parses each JSON file into the GrafanaDataSourcesMap.
 If successful, it returns nil; otherwise, it returns an error.
-The TemplatesMap is a global variable that represents a mapping of template names to their corresponding JSON data.
+The GrafanaDataSourcesMap is a global variable that represents a mapping of template names to their corresponding JSON data.
 This map is expected to be used elsewhere in the application after the templates are loaded.
 */
-func LoadTemplatesFromFolder(folderPath string) error {
+func LoadGrafanaDataSourcesFromFolder(folderPath string) error {
 	log.DefaultLogger.Debug("The templates folder path: " + folderPath)
-	TemplatesMap = make(map[string]interface{})
+	GrafanaDataSourcesMap = make(map[string]interface{})
 
 	files, err := os.ReadDir(folderPath)
 	path, _ := filepath.Abs(folderPath)
@@ -75,11 +75,11 @@ func LoadTemplatesFromFolder(folderPath string) error {
 
 			templateName := file.Name()[:len(file.Name())-5]
 
-			TemplatesMap[templateName] = templateData
+			GrafanaDataSourcesMap[templateName] = templateData
 
 		}
 	}
-	TemplatesJSON, err := json.MarshalIndent(TemplatesMap, "", "")
+	TemplatesJSON, err := json.MarshalIndent(GrafanaDataSourcesMap, "", "")
 	if err != nil {
 		log.DefaultLogger.Error("Failed to marshal templates: " + err.Error())
 		return err
