@@ -2,7 +2,7 @@ version: 2
 updates:
   # Configuration for npm dependencies
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/dbeast-monitoring-for-elastic-stack-app"
     schedule:
       interval: "daily"
     target-branch: "logstash_configs"
@@ -10,7 +10,7 @@ updates:
 
   # Configuration for Go dependencies
   - package-ecosystem: "gomod"
-    directory: "/"
+    directory: "/dbeast-monitoring-for-elastic-stack-app"
     schedule:
       interval: "daily"
     target-branch: "logstash_configs"
