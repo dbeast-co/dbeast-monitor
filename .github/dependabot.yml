@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Configuration for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "logstash_configs"
+    open-pull-requests-limit: 10
+
+  # Configuration for Go dependencies
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "logstash_configs"
+    open-pull-requests-limit: 10
