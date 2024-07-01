@@ -90,6 +90,7 @@ func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request
 }
 
 func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clusterName string, zipWriter *zip.Writer) {
+	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
 			configFileClone := strings.Clone(LSConfigs[configFile.Id])
@@ -99,23 +100,29 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			folderPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
 			WriteFileToZip(zipWriter, folderPath, configFileClone)
+			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", strings.ReplaceAll(configFile.Id, ".conf", ""))
+			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", filepath.Join(clusterName+"-"+clusterId, configFile.Id))
 		}
 	}
+	WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
 }
 
 func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zipWriter *zip.Writer) {
-	for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
-		if configFile.IsChecked {
-			configFileClone := strings.Clone(LSConfigs[configFile.Id])
-			configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
-			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
-
-			for _, logstashHost := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Hosts {
+	for _, logstashHost := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Hosts {
+		pipelineFile := "### Configuration files for the Logstash monitoring\n"
+		for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
+			if configFile.IsChecked {
+				configFileClone := strings.Clone(LSConfigs[configFile.Id])
+				configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
+				configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 				configFileClone = UpdateLogstashConnectionSettings(configFileClone, logstashHost)
 				folderPath := filepath.Join(logstashHost.LogstashApiHost, configFile.Id)
 				WriteFileToZip(zipWriter, folderPath, configFileClone)
+				pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", strings.ReplaceAll(configFile.Id, ".conf", ""))
+				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", configFile.Id)
 			}
 		}
+		WriteFileToZip(zipWriter, filepath.Join(logstashHost.LogstashApiHost, "pipelines.yml"), pipelineFile)
 	}
 }
 
