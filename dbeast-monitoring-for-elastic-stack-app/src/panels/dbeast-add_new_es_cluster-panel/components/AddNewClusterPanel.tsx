@@ -16,7 +16,7 @@ import { Datasource } from '../models/datasource';
 import { GrafanaDatasource } from '../models/grafana-datasource';
 import { BackendResponse } from '../models/backend-response';
 import { SERVER_URL } from '../config';
-import { Cluster } from '../models/cluster';
+import { Cluster, Host } from '../models/cluster';
 import { saveAs } from 'file-saver';
 
 import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
@@ -217,6 +217,14 @@ export const AddNewClusterPanel = () => {
     } finally {
       setIsLoading(false);
     }
+    const { status: prodStatus } = connectionSettings.prod.elasticsearch;
+    const { status: monStatus } = connectionSettings.mon.elasticsearch;
+
+    if ((prodStatus === 'UNTESTED' || prodStatus === 'ERROR') && (monStatus === 'UNTESTED' || monStatus === 'ERROR')) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
   };
   const onCheckAuth = (event: any) => {
     setConnectionSettings({
@@ -242,10 +250,13 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isNotEmpty(event.target.value)) {
-      setIsDisabled(true);
+    // TODO: check this isDisabled
+    if (isEmpty(event.target.value)) {
+      // setIsDisabled(true);
+      setTestDisable(true);
     } else {
-      setIsDisabled(false);
+      // setIsDisabled(false);
+      setTestDisable(false);
     }
   };
   const onUserPasswordInput = (event: any) => {
@@ -259,10 +270,12 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isNotEmpty(event.target.value)) {
-      setIsDisabled(true);
+    if (isEmpty(event.target.value)) {
+      // setIsDisabled(true);
+      setTestDisable(true);
     } else {
-      setIsDisabled(false);
+      // setIsDisabled(false);
+      setTestDisable(false);
     }
   };
 
@@ -289,10 +302,12 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isNotEmpty(event.target.value)) {
-      setIsDisabled(true);
+    if (isEmpty(event.target.value)) {
+      // setIsDisabled(true);
+      setTestDisable(true);
     } else {
-      setIsDisabled(false);
+      // setIsDisabled(false);
+      setTestDisable(false);
     }
   };
 
@@ -307,10 +322,12 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isNotEmpty(event.target.value)) {
-      setIsDisabled(true);
+    if (isEmpty(event.target.value)) {
+      // setIsDisabled(true);
+      setTestDisable(true);
     } else {
-      setIsDisabled(false);
+      // setIsDisabled(false);
+      setTestDisable(false);
     }
   };
   const onInputHost = (event: any) => {
@@ -324,17 +341,24 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isNotEmpty(event.target.value)) {
+
+    // TODO: check this isDisabled
+    if (isEmpty(event.target.value)) {
       setValidHost(false);
       setTestDisable(true);
+      // setIsDisabled(true);
     } else {
+      setValidHost(true);
       setTestDisable(false);
+      // setIsDisabled(false);
     }
     if (hostRegex.test(event.target.value)) {
       setValidHost(true);
+      // setTestDisable(false);
     } else {
       setValidHost(false);
       setTestDisable(true);
+      // setIsDisabled(true);
     }
   };
 
@@ -349,13 +373,23 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (event.target.value === '') {
+    if (isEmpty(event.target.value)) {
       setValidMonitoringValidHost(false);
+      // setIsDisabled(true);
+      setTestDisable(true);
+    } else {
+      setValidMonitoringValidHost(true);
+      // setIsDisabled(false);
+      setTestDisable(false);
     }
     if (hostRegex.test(event.target.value)) {
       setValidMonitoringValidHost(true);
+      // setIsDisabled(false);
+      setTestDisable(false);
     } else {
       setValidMonitoringValidHost(false);
+      // setIsDisabled(true);
+      setTestDisable(true);
     }
   };
 
@@ -370,16 +404,22 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (event.target.value === '') {
+    if (isEmpty(event.target.value)) {
       setValidKibanaHost(false);
       setTestDisable(true);
+      // setIsDisabled(true);
     } else {
+      setValidKibanaHost(true);
+      // setIsDisabled(false);
       setTestDisable(false);
     }
     if (hostRegex.test(event.target.value)) {
       setValidKibanaHost(true);
+      // setIsDisabled(false);
+      setTestDisable(false);
     } else {
       setValidKibanaHost(false);
+      // setIsDisabled(true);
       setTestDisable(true);
     }
   };
@@ -413,8 +453,8 @@ export const AddNewClusterPanel = () => {
       },
     };
   };
-  const isNotEmpty = (value: string) => {
-    return value !== '';
+  const isEmpty = (value: string) => {
+    return value === '';
   };
 
   useEffect(() => {
@@ -427,6 +467,15 @@ export const AddNewClusterPanel = () => {
       // fetch(`${MOCK_URL}/project`).then((response) => {
       response.json().then((data: Cluster) => {
         setCluster(data);
+        const { status: prodStatus } = data.cluster_connection_settings.prod.elasticsearch;
+
+        const { status: monStatus } = data.cluster_connection_settings.mon.elasticsearch;
+        if (
+          (prodStatus === 'UNTESTED' || prodStatus === 'ERROR') &&
+          (monStatus === 'UNTESTED' || monStatus === 'ERROR')
+        ) {
+          setIsDisabled(true);
+        }
       });
     });
   }, []);
@@ -434,11 +483,44 @@ export const AddNewClusterPanel = () => {
   const onDownload = (url: string) => {
     const cluster_connection_settings = getCluster();
 
-    const clusterToSend = {
-      cluster_connection_settings,
-      logstash_configurations: cluster.logstash_configurations,
-    };
-    console.log('cluster_connection_settings', cluster_connection_settings);
+    if (url === LogstashFileType.ES_MONITORING_CONFIGURATION_FILES) {
+      const clusterToSend = {
+        cluster_connection_settings,
+        logstash_configurations: cluster.logstash_configurations,
+      };
+
+      console.log('logstash_configurations', clusterToSend.logstash_configurations);
+
+      downloadFiles(url, clusterToSend);
+    } else {
+      if (logstashList.length > 0) {
+        let hosts: Host[] = [
+          {
+            server_address: '',
+            logstash_api_host: '',
+            logstash_folder: '',
+          },
+        ];
+        cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = [];
+        hosts = logstashList.map((logstash, index) => {
+          hosts[index].server_address = logstash?.serverAddress;
+          hosts[index].logstash_api_host! = logstash.logstashApiHost;
+          hosts[index].logstash_folder! = logstash.logstashFolder;
+          return hosts[index];
+        });
+
+        cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = hosts;
+        // const cluster_connection_settings = getCluster();
+        const clusterToSend = {
+          cluster_connection_settings,
+          logstash_configurations: cluster.logstash_configurations,
+        };
+        downloadFiles(url, clusterToSend);
+      }
+    }
+  };
+
+  const downloadFiles = (url: string, clusterToSend: any) => {
     fetch(`${SERVER_URL}/${url}`, {
       method: 'POST',
       headers: {
@@ -637,11 +719,10 @@ export const AddNewClusterPanel = () => {
 
           <div className="actions">
             <button onClick={() => onTest()} className="btn_test" disabled={testDisable}>
-              {' '}
               Test
             </button>
-            <button onClick={() => onSave()} className="btn_save" disabled={testDisable || isDisabled}>
-              Save
+            <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
+              Save aa
             </button>
           </div>
 
@@ -705,6 +786,7 @@ export const AddNewClusterPanel = () => {
               </DialogActions>
             </Dialog>
             <button
+              disabled={logstashList.length === 0}
               onClick={() => onDownload(LogstashFileType.LOGSTASH_MONITORING_CONFIGURATION_FILES)}
               className="btn_save"
             >
