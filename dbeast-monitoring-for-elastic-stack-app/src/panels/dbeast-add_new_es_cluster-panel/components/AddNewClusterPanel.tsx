@@ -199,7 +199,21 @@ export const AddNewClusterPanel = () => {
               draggable: false,
             });
           }
-          setIsDisabled(false);
+          const { status: prodStatus } = connectionSettings.prod.elasticsearch;
+          const { status: monStatus } = connectionSettings.mon.elasticsearch;
+
+          if (prodStatus === '' || prodStatus === 'ERROR') {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+
+          if (monStatus === '' || monStatus === 'ERROR') {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+
           setIsLoading(false);
         })
         .catch((error: Error) => {
@@ -216,14 +230,6 @@ export const AddNewClusterPanel = () => {
       setIsLoading(false);
     } finally {
       setIsLoading(false);
-    }
-    const { status: prodStatus } = connectionSettings.prod.elasticsearch;
-    const { status: monStatus } = connectionSettings.mon.elasticsearch;
-
-    if ((prodStatus === 'UNTESTED' || prodStatus === 'ERROR') && (monStatus === 'UNTESTED' || monStatus === 'ERROR')) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
     }
   };
   const onCheckAuth = (event: any) => {
@@ -742,7 +748,11 @@ export const AddNewClusterPanel = () => {
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
           )}
           <div className="actions">
-            <button onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)} className="btn_save">
+            <button
+              disabled={isDisabled}
+              onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
+              className="btn_save"
+            >
               Download
             </button>
           </div>
