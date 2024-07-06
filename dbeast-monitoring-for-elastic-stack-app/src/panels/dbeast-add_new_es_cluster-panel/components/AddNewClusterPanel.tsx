@@ -728,7 +728,7 @@ export const AddNewClusterPanel = () => {
               Test
             </button>
             <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
-              Save aa
+              Save
             </button>
           </div>
 
