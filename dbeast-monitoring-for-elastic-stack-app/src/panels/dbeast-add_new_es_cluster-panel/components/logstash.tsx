@@ -12,7 +12,7 @@ export interface Logstash {
   id: string;
   serverAddress: string;
   logstashApiHost: string;
-  logstashFolder: string;
+  logstashLogsFolder: string;
 }
 
 const LogstashComponent = (state: Props) => {
@@ -20,7 +20,7 @@ const LogstashComponent = (state: Props) => {
     id: state.logstash.id,
     serverAddress: state.logstash.serverAddress,
     logstashApiHost: state.logstash.logstashApiHost,
-    logstashFolder: state.logstash.logstashFolder,
+    logstashLogsFolder: state.logstash.logstashLogsFolder,
   });
   const onInputServerAddress = (e: any) => {
     setLogstash({
@@ -37,7 +37,7 @@ const LogstashComponent = (state: Props) => {
   const onInputFolder = (e: any) => {
     setLogstash({
       ...logstash,
-      logstashFolder: e.target.value,
+      logstashLogsFolder: e.target.value,
     });
   };
 
@@ -68,9 +68,9 @@ const LogstashComponent = (state: Props) => {
       />
       <TextField
         id="standard-basic"
-        label="Logstash Folder"
+        label="Logstash Logs Folder"
         variant="standard"
-        value={logstash.logstashFolder ?? ''}
+        value={logstash.logstashLogsFolder ?? ''}
         onChange={onInputFolder}
       />
       <div className="actions">
@@ -80,7 +80,7 @@ const LogstashComponent = (state: Props) => {
         <button
           className="save_btn"
           disabled={
-            !logstash.serverAddress.length || !logstash.logstashApiHost.length || !logstash.logstashFolder.length
+            !logstash.serverAddress.length || !logstash.logstashApiHost.length || !logstash.logstashLogsFolder.length
           }
           onClick={() => onSave()}
           autoFocus

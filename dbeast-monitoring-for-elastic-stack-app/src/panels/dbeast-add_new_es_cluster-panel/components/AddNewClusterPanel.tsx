@@ -82,7 +82,7 @@ export const AddNewClusterPanel = () => {
     id: uuidv4(),
     serverAddress: '',
     logstashApiHost: '',
-    logstashFolder: '',
+    logstashLogsFolder: '',
   };
 
   const [logstash, setLogstash] = useState(initialLogstash);
@@ -504,14 +504,14 @@ export const AddNewClusterPanel = () => {
           {
             server_address: '',
             logstash_api_host: '',
-            logstash_folder: '',
+            logstash_logs_folder: '',
           },
         ];
         cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = [];
         hosts = logstashList.map((logstash, index) => {
           hosts[index].server_address = logstash?.serverAddress;
           hosts[index].logstash_api_host! = logstash.logstashApiHost;
-          hosts[index].logstash_folder! = logstash.logstashFolder;
+          hosts[index].logstash_logs_folder! = logstash.logstashLogsFolder;
           return hosts[index];
         });
 
@@ -749,7 +749,7 @@ export const AddNewClusterPanel = () => {
           )}
           <div className="actions">
             <button
-              disabled={isDisabled}
+              // disabled={isDisabled}
               onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
               className="btn_save"
             >
@@ -826,9 +826,9 @@ export const AddNewClusterPanel = () => {
                   </span>
                 </div>
                 <div className="logstashFolder form-group">
-                  <div className="logstash-label">Logstash Folder</div>
+                  <div className="logstash-label">Logstash Logs Folder</div>
                   <span className="value" key={index}>
-                    {logstash.logstashFolder}
+                    {logstash.logstashLogsFolder}
                   </span>
                 </div>
               </div>
