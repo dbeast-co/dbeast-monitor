@@ -9,7 +9,7 @@ export interface CheckboxConfig {
 export interface Host {
   server_address: string;
   logstash_api_host: string;
-  logstash_folder?: string;
+  logstash_logs_folder?: string;
 }
 
 export interface Cluster {

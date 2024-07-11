@@ -19,10 +19,10 @@ type ConfigurationCheckbox struct {
 }
 
 type LogstashHost struct {
-	//ServerAddress        string `json:"server_address"`
-	LogstashApiHost      string `json:"logstash_api_host"`
-	LogstashConfigFolder string `json:"logstash_config_folder"`
-	LogstashLogsFolder   string `json:"logstash_logs_folder"`
+	ServerAddress   string `json:"server_address"`
+	LogstashApiHost string `json:"logstash_api_host"`
+	//LogstashConfigFolder string `json:"logstash_config_folder"`
+	LogstashLogsFolder string `json:"logstash_logs_folder"`
 }
 
 type LogstashConfigurations struct {
@@ -100,7 +100,8 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			folderPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
 			WriteFileToZip(zipWriter, folderPath, configFileClone)
-			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", strings.ReplaceAll(configFile.Id, ".conf", ""))
+			pipelineId := clusterName + "-" + clusterId + "-" + strings.ReplaceAll(configFile.Id, ".conf", "")
+			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
 			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", filepath.Join(clusterName+"-"+clusterId, configFile.Id))
 		}
 	}
@@ -116,13 +117,14 @@ func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zip
 				configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 				configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 				configFileClone = UpdateLogstashConnectionSettings(configFileClone, logstashHost)
-				folderPath := filepath.Join(logstashHost.LogstashApiHost, configFile.Id)
+				folderPath := filepath.Join(logstashHost.ServerAddress, "dbeast-mon", configFile.Id)
 				WriteFileToZip(zipWriter, folderPath, configFileClone)
-				pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", strings.ReplaceAll(configFile.Id, ".conf", ""))
-				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", configFile.Id)
+				pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "")
+				pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
+				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", filepath.Join("dbeast-mon", configFile.Id))
 			}
 		}
-		WriteFileToZip(zipWriter, filepath.Join(logstashHost.LogstashApiHost, "pipelines.yml"), pipelineFile)
+		WriteFileToZip(zipWriter, filepath.Join(logstashHost.ServerAddress, "pipelines.yml"), pipelineFile)
 	}
 }
 
@@ -143,7 +145,7 @@ func UpdateConnectionSettings(configFileContent string, credentials Credentials,
 }
 
 func UpdateLogstashConnectionSettings(configFileContent string, logstashHost LogstashHost) string {
-	configFileContent = strings.ReplaceAll(configFileContent, "<PATH-TO-LOGS>", logstashHost.LogstashLogsFolder)
+	configFileContent = strings.ReplaceAll(configFileContent, "<PATH_TO_LOGS>", logstashHost.LogstashLogsFolder)
 	configFileContent = strings.ReplaceAll(configFileContent, "<LOGSTASH-API>", logstashHost.LogstashApiHost)
 	return configFileContent
 }

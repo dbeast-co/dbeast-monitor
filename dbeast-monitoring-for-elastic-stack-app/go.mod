@@ -9,6 +9,7 @@ require github.com/grafana/grafana-plugin-sdk-go v0.236.0
 require (
 	github.com/apache/arrow/go/v15 v15.0.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/grafana/otel-profiling-go v0.5.1 // indirect
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.7 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus v1.0.1 // indirect
