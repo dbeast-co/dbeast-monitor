@@ -4,12 +4,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { CheckboxConfig } from '../models/cluster';
 import './AddNewClusterPanel.scss';
 import './LogstashConfigurationsPanel.scss';
-// interface LogstashConfigurationsPanelProps {
-//     files: {
-//         es_monitoring_configuration_files: CheckboxConfig[];
-//         logstash_monitoring_configuration_files: { configurations: CheckboxConfig[]; hosts: Host[]; };
-//     };
-// }
 
 export const LogstashConfigurationsPanel = ({ files }: any) => {
   const [_, setIsChecked] = useState(false);

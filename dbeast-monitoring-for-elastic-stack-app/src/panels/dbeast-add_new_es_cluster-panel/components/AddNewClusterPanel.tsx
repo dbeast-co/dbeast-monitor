@@ -40,7 +40,7 @@ export const AddNewClusterPanel = () => {
   const [validKibanaHost, setValidKibanaHost] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [testDisable, setTestDisable] = useState(true);
+  const [isTestDisabled, setTestDisable] = useState(true);
 
   const [validMonitoringHost, setValidMonitoringValidHost] = useState(false);
   const [connectionSettings, setConnectionSettings] = useState({
@@ -171,6 +171,19 @@ export const AddNewClusterPanel = () => {
         })
 
         .then((result: BackendResponse) => {
+          const { status: prodStatus } = result.prod.elasticsearch;
+          const { status: monStatus } = result.mon.elasticsearch;
+
+          if (
+            prodStatus.toLowerCase() === 'green' ||
+            prodStatus.toLowerCase() === 'warn' ||
+            monStatus.toLowerCase() === 'green' ||
+            monStatus.toLowerCase() === 'warn'
+          ) {
+            setIsDisabled(false);
+          } else {
+            setIsDisabled(true);
+          }
           setConnectionSettings({
             prod: {
               elasticsearch: {
@@ -198,20 +211,6 @@ export const AddNewClusterPanel = () => {
               hideProgressBar: true,
               draggable: false,
             });
-          }
-          const { status: prodStatus } = connectionSettings.prod.elasticsearch;
-          const { status: monStatus } = connectionSettings.mon.elasticsearch;
-
-          if (prodStatus === '' || prodStatus === 'ERROR') {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
-          }
-
-          if (monStatus === '' || monStatus === 'ERROR') {
-            setIsDisabled(true);
-          } else {
-            setIsDisabled(false);
           }
 
           setIsLoading(false);
@@ -243,6 +242,11 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
+    if (!event.target.checked) {
+      setTestDisable(true);
+    } else if (connectionSettings.prod.elasticsearch.username && connectionSettings.prod.elasticsearch.password) {
+      setTestDisable(false);
+    }
   };
 
   const onUserNameInput = (event: any) => {
@@ -256,12 +260,10 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    // TODO: check this isDisabled
-    if (isEmpty(event.target.value)) {
-      // setIsDisabled(true);
+
+    if (isEmpty(event.target.value) || isEmpty(connectionSettings.prod.elasticsearch.password!)) {
       setTestDisable(true);
     } else {
-      // setIsDisabled(false);
       setTestDisable(false);
     }
   };
@@ -277,10 +279,8 @@ export const AddNewClusterPanel = () => {
       },
     });
     if (isEmpty(event.target.value)) {
-      // setIsDisabled(true);
       setTestDisable(true);
     } else {
-      // setIsDisabled(false);
       setTestDisable(false);
     }
   };
@@ -296,6 +296,11 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
+    if (!event.target.checked) {
+      setTestDisable(true);
+    } else if (connectionSettings.mon.elasticsearch.username && connectionSettings.mon.elasticsearch.password) {
+      setTestDisable(false);
+    }
   };
   const onInputMonitoringUsername = (event: any) => {
     setConnectionSettings({
@@ -308,11 +313,9 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isEmpty(event.target.value)) {
-      // setIsDisabled(true);
+    if (isEmpty(event.target.value) || isEmpty(connectionSettings.mon.elasticsearch.password!)) {
       setTestDisable(true);
     } else {
-      // setIsDisabled(false);
       setTestDisable(false);
     }
   };
@@ -329,10 +332,8 @@ export const AddNewClusterPanel = () => {
       },
     });
     if (isEmpty(event.target.value)) {
-      // setIsDisabled(true);
       setTestDisable(true);
     } else {
-      // setIsDisabled(false);
       setTestDisable(false);
     }
   };
@@ -348,23 +349,15 @@ export const AddNewClusterPanel = () => {
       },
     });
 
-    // TODO: check this isDisabled
     if (isEmpty(event.target.value)) {
       setValidHost(false);
-      setTestDisable(true);
-      // setIsDisabled(true);
     } else {
       setValidHost(true);
-      setTestDisable(false);
-      // setIsDisabled(false);
     }
-    if (hostRegex.test(event.target.value)) {
+    if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.prod.elasticsearch.host)) {
       setValidHost(true);
-      // setTestDisable(false);
     } else {
       setValidHost(false);
-      setTestDisable(true);
-      // setIsDisabled(true);
     }
   };
 
@@ -381,21 +374,13 @@ export const AddNewClusterPanel = () => {
     });
     if (isEmpty(event.target.value)) {
       setValidMonitoringValidHost(false);
-      // setIsDisabled(true);
-      setTestDisable(true);
     } else {
       setValidMonitoringValidHost(true);
-      // setIsDisabled(false);
-      setTestDisable(false);
     }
-    if (hostRegex.test(event.target.value)) {
+    if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.mon.elasticsearch.host)) {
       setValidMonitoringValidHost(true);
-      // setIsDisabled(false);
-      setTestDisable(false);
     } else {
       setValidMonitoringValidHost(false);
-      // setIsDisabled(true);
-      setTestDisable(true);
     }
   };
 
@@ -410,23 +395,11 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isEmpty(event.target.value)) {
-      setValidKibanaHost(false);
-      setTestDisable(true);
-      // setIsDisabled(true);
-    } else {
-      setValidKibanaHost(true);
-      // setIsDisabled(false);
-      setTestDisable(false);
-    }
+
     if (hostRegex.test(event.target.value)) {
       setValidKibanaHost(true);
-      // setIsDisabled(false);
-      setTestDisable(false);
     } else {
       setValidKibanaHost(false);
-      // setIsDisabled(true);
-      setTestDisable(true);
     }
   };
 
@@ -464,11 +437,6 @@ export const AddNewClusterPanel = () => {
   };
 
   useEffect(() => {
-    setIsDisabled(true);
-    setValidHost(false);
-  }, []);
-
-  useEffect(() => {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
       // fetch(`${MOCK_URL}/project`).then((response) => {
       response.json().then((data: Cluster) => {
@@ -481,6 +449,7 @@ export const AddNewClusterPanel = () => {
           (monStatus === 'UNTESTED' || monStatus === 'ERROR')
         ) {
           setIsDisabled(true);
+          setTestDisable(true);
         }
       });
     });
@@ -494,8 +463,6 @@ export const AddNewClusterPanel = () => {
         cluster_connection_settings,
         logstash_configurations: cluster.logstash_configurations,
       };
-
-      console.log('logstash_configurations', clusterToSend.logstash_configurations);
 
       downloadFiles(url, clusterToSend);
     } else {
@@ -516,7 +483,7 @@ export const AddNewClusterPanel = () => {
         });
 
         cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = hosts;
-        // const cluster_connection_settings = getCluster();
+
         const clusterToSend = {
           cluster_connection_settings,
           logstash_configurations: cluster.logstash_configurations,
@@ -620,11 +587,6 @@ export const AddNewClusterPanel = () => {
               {!validKibanaHost && connectionSettings.prod.kibana.host && (
                 <span className="invalid">Host format is invalid</span>
               )}
-
-              {/*<div className='status'>*/}
-              {/*        <span*/}
-              {/*            className={connectionSettings.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}>{newProject.prod.kibana.status ? newProject.prod.kibana.status : 'UNTESTED'}</span>*/}
-              {/*</div>*/}
             </div>
 
             <FormControlLabel
@@ -724,7 +686,7 @@ export const AddNewClusterPanel = () => {
           </div>
 
           <div className="actions">
-            <button onClick={() => onTest()} className="btn_test" disabled={testDisable}>
+            <button onClick={() => onTest()} className="btn_test" disabled={isTestDisabled}>
               Test
             </button>
             <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
@@ -749,7 +711,7 @@ export const AddNewClusterPanel = () => {
           )}
           <div className="actions">
             <button
-              // disabled={isDisabled}
+              disabled={isDisabled}
               onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
               className="btn_save"
             >
@@ -786,17 +748,11 @@ export const AddNewClusterPanel = () => {
                   onSave={(logstash) => onSaveAddedLogstash(logstash)}
                 />
               </DialogContent>
-              <DialogActions>
-                {/*<button className="save_btn" onClick={() => onCancel()}>*/}
-                {/*  Cancel*/}
-                {/*</button>*/}
-                {/*<button className="save_btn" onClick={() => onSaveAddedLogstash()} autoFocus>*/}
-                {/*  Save*/}
-                {/*</button>*/}
-              </DialogActions>
+              <DialogActions></DialogActions>
             </Dialog>
+            {isDisabled}
             <button
-              disabled={logstashList.length === 0}
+              disabled={isDisabled}
               onClick={() => onDownload(LogstashFileType.LOGSTASH_MONITORING_CONFIGURATION_FILES)}
               className="btn_save"
             >

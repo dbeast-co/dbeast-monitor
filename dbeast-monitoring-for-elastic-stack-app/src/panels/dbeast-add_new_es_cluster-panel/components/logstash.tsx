@@ -42,7 +42,6 @@ const LogstashComponent = (state: Props) => {
   };
 
   function onCancel() {
-    console.log('onCancel');
     state.onCancel();
   }
 
