@@ -752,7 +752,7 @@ export const AddNewClusterPanel = () => {
             </Dialog>
             {isDisabled}
             <button
-              disabled={isDisabled}
+              disabled={isDisabled || logstashList.length === 0}
               onClick={() => onDownload(LogstashFileType.LOGSTASH_MONITORING_CONFIGURATION_FILES)}
               className="btn_save"
             >

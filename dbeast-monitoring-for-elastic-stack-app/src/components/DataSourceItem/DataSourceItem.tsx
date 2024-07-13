@@ -261,8 +261,9 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
           try {
             await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
-            dataSources = dataSources.filter((item: any) => item.id !== this.state.cluster_uuid);
+
             this.props.onDelete(dataSource.uid);
+            dataSources = dataSources.filter((item: any) => item.id !== this.state.cluster_uuid);
           } catch (deleteError) {
             console.error('deleteError', deleteError);
           }
