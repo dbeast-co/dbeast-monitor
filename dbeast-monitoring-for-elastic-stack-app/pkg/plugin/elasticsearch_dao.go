@@ -13,11 +13,11 @@ func GetStatus(credentials Credentials) (*http.Response, error) {
 	requestURL := credentials.Host + "/_cluster/health"
 	log.DefaultLogger.Debug("Request path: ", requestURL)
 	log.DefaultLogger.Debug("Request host: ", credentials.Host)
-	response, err := ProcessGetRequest(credentials, requestURL)
+	response, err := ProcessGETRequest(credentials, requestURL)
 
 	if err != nil {
-		log.DefaultLogger.Warn("Error making HTTP request: " + err.Error())
-		return nil, err
+		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
+		return response, err
 	}
 	return response, err
 }
@@ -28,10 +28,10 @@ and returns the HTTP response.
 */
 func GetClusterNameAndUid(credentials Credentials) (*http.Response, error) {
 	requestURL := credentials.Host + "/"
-	response, err := ProcessGetRequest(credentials, requestURL)
+	response, err := ProcessGETRequest(credentials, requestURL)
 
 	if err != nil {
-		log.DefaultLogger.Warn("Error making HTTP request: " + err.Error())
+		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
 		return nil, err
 	}
 	return response, err

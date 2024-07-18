@@ -51,10 +51,10 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 	return client, nil
 }
 
-// ProcessGetRequest performs an HTTP GET request based on the provided credentials and request URL.
+// ProcessGETRequest performs an HTTP GET request based on the provided credentials and request URL.
 // It uses CreateHTTPClient to create an HTTP client, constructs a GET request, adds basic authentication if enabled,
 // and returns the HTTP response.
-func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Response, error) {
 	client, err := CreateHTTPClient(credentials)
 	if err != nil {
 		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
@@ -62,6 +62,43 @@ func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Respon
 	}
 
 	req, err := http.NewRequest("GET", requestURL, nil)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
+		return nil, err
+	}
+	//if credentials.AuthenticationEnabled == true {
+	//	req.SetBasicAuth(credentials.Username, credentials.Password)
+	//}
+
+	response, err := client.Do(req)
+	if err != nil {
+		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
+		return response, err
+	}
+	//if response.StatusCode == http.StatusUnauthorized {
+	//	log.DefaultLogger.Warn("Unauthorized access. Check credentials")
+	//
+	//	err := response.Body.Close()
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	return nil, fmt.Errorf("unauthorized access. Check credentials")
+	//}
+
+	return response, nil
+}
+
+// ProcessGETRequest performs an HTTP GET request based on the provided credentials and request URL.
+// It uses CreateHTTPClient to create an HTTP client, constructs a GET request, adds basic authentication if enabled,
+// and returns the HTTP response.
+func ProcessPUTRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+	client, err := CreateHTTPClient(credentials)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", requestURL, nil)
 	if err != nil {
 		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
 		return nil, err
