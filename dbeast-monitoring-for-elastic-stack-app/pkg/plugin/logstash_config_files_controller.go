@@ -2,15 +2,12 @@ package plugin
 
 import (
 	"archive/zip"
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
-	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 )
 
@@ -109,7 +106,6 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 			fileInternalPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
 
 			WriteFileToZip(zipWriter, fileInternalPath, configFileClone)
-			WriteFilesToDisk(fileInternalPath, configFileClone, logger)
 
 			pipelineId := clusterName + "-" + clusterId + "-" + strings.ReplaceAll(configFile.Id, ".conf", "")
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
@@ -171,39 +167,4 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 	if err != nil {
 		log.DefaultLogger.Error(err.Error())
 	}
-}
-
-func WriteFilesToDisk(fileInternalPath string, content string, logger log.Logger) {
-	var fileAbsoluteInternalPath string
-	if runtime.GOOS == "windows" {
-		fileAbsoluteInternalPath = filepath.Join(LogstashConfigurationsFolderWindows, fileInternalPath)
-	} else {
-		fileAbsoluteInternalPath = filepath.Join(LogstashConfigurationsFolderLinux, fileInternalPath)
-	}
-
-	logger.Debug("File content: ", content)
-	dir := filepath.Dir(fileAbsoluteInternalPath)
-	err := os.MkdirAll(dir, os.ModePerm)
-	if err != nil {
-		logger.Error("Error creating directory:", err)
-		return
-	}
-
-	// Save the JSON data to a file
-	file, err := os.Create(fileAbsoluteInternalPath)
-	if err != nil {
-		logger.Error("Error creating file:", err)
-		return
-	}
-	defer file.Close()
-
-	writer := bufio.NewWriter(file)
-	_, err = writer.WriteString(content + "\n")
-	if err != nil {
-		logger.Error("Error writing to file:", err)
-		return
-	}
-
-	logger.Info("Object saved to file: ", fileInternalPath)
-
 }
