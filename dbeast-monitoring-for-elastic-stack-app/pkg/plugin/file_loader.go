@@ -44,7 +44,7 @@ This map is expected to be used elsewhere in the application after the templates
 */
 func LoadGrafanaDataSourcesFromFolder(folderPath string) error {
 	log.DefaultLogger.Debug("The templates folder path: " + folderPath)
-	GrafanaDataSourcesMap = make(map[string]interface{})
+	//GrafanaDataSourcesMap = make(map[string]interface{})
 
 	files, err := os.ReadDir(folderPath)
 	path, _ := filepath.Abs(folderPath)
@@ -63,9 +63,6 @@ func LoadGrafanaDataSourcesFromFolder(folderPath string) error {
 				return fmt.Errorf("the error in the file: %v", err)
 			}
 
-			var tmp string
-			err = json.Unmarshal(data, &tmp)
-
 			var templateData map[string]interface{}
 			err = json.Unmarshal(data, &templateData)
 			if err != nil {
@@ -79,27 +76,32 @@ func LoadGrafanaDataSourcesFromFolder(folderPath string) error {
 
 		}
 	}
-	TemplatesJSON, err := json.MarshalIndent(GrafanaDataSourcesMap, "", "")
-	if err != nil {
-		log.DefaultLogger.Error("Failed to marshal templates: " + err.Error())
-		return err
-	}
-
-	log.DefaultLogger.Debug("Updated templates sent:" + string(TemplatesJSON))
+	//TemplatesJSON, err := json.MarshalIndent(GrafanaDataSourcesMap, "", "")
+	//if err != nil {
+	//	log.DefaultLogger.Error("Failed to marshal templates: " + err.Error())
+	//	return err
+	//}
+	//
+	//log.DefaultLogger.Debug("Updated templates sent:" + string(TemplatesJSON))
 	return nil
 
 }
 
 func LoadLogstashConfigFromFolder(folderPath string) error {
-	LSConfigs = make(map[string]string)
+	var err error
+	LSConfigs, err = LoadFilesFromFolder(folderPath, ".conf")
+	return err
+}
 
+func LoadFilesFromFolder(folderPath string, filesExtension string) (map[string]string, error) {
+	tmpFilesContent := make(map[string]string)
 	files, err := os.ReadDir(folderPath)
 	if err != nil {
-		return fmt.Errorf("failed to read files from folder: %v", err)
+		return tmpFilesContent, fmt.Errorf("failed to read files from folder: %v", err)
 	}
 
 	for _, file := range files {
-		if !file.IsDir() && strings.HasSuffix(file.Name(), ".conf") {
+		if !file.IsDir() && (len(filesExtension) == 0 || strings.HasSuffix(file.Name(), filesExtension)) {
 			filePath := folderPath + "/" + file.Name()
 			data, err := os.ReadFile(filePath)
 			if err != nil {
@@ -108,14 +110,8 @@ func LoadLogstashConfigFromFolder(folderPath string) error {
 			}
 			log.DefaultLogger.Info("Reading file: %s\n", filePath)
 
-			//templateName := file.Name()[:len(file.Name())-5]
-			//templateName := file.Name()[:len(file.Name())-5]
-
-			LSConfigs[file.Name()] = string(data[:])
-			//LSConfigs[templateName] = string(data[:])
+			tmpFilesContent[file.Name()] = string(data[:])
 		}
 	}
-
-	return nil
-
+	return tmpFilesContent, nil
 }

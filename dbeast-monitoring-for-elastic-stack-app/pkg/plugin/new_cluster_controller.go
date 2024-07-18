@@ -27,7 +27,7 @@ type EnvironmentConfig struct {
 	} `json:"mon"`
 }
 
-var GrafanaDataSourcesMap map[string]interface{}
+var GrafanaDataSourcesMap = make(map[string]interface{})
 
 func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 

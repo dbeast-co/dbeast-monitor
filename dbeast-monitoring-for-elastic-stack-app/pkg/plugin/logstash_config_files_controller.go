@@ -37,7 +37,7 @@ type LogstashMonitoringConfigurationFiles struct {
 	Hosts          []LogstashHost          `json:"hosts"`
 }
 
-var LSConfigs map[string]string
+var LSConfigs = make(map[string]string)
 
 func (a *App) GenerateElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
