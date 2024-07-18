@@ -82,7 +82,7 @@ func UpdateStatus(credentials *Credentials) Status {
 			if err != nil {
 				statusData.Error = err.Error()
 				statusData.Status = "ERROR"
-				log.DefaultLogger.Warn("Failed to read response body: " + statusData.Error)
+				log.DefaultLogger.Error("Failed to read response body: " + statusData.Error)
 			} else if len(body) > 0 {
 				error := response.Body.Close()
 				if error != nil {
@@ -93,7 +93,7 @@ func UpdateStatus(credentials *Credentials) Status {
 				if err != nil {
 					statusData.Error = err.Error()
 					statusData.Status = "ERROR"
-					log.DefaultLogger.Warn("Failed to unmarshal response body: " + statusData.Error)
+					log.DefaultLogger.Error("Failed to unmarshal response body: " + statusData.Error)
 				}
 				if status, ok := result["status"].(string); ok {
 					statusData.Status = status
@@ -102,7 +102,7 @@ func UpdateStatus(credentials *Credentials) Status {
 		} else {
 			statusData.Error = response.Status
 			statusData.Status = "ERROR"
-			log.DefaultLogger.Warn("HTTP request failed with status:" + statusData.Error)
+			log.DefaultLogger.Error("HTTP request failed with status:" + statusData.Error)
 		}
 	}
 	return statusData

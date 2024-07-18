@@ -1,4 +1,4 @@
-module github.com/grafana/app-with-backend
+module dbeast-monitor
 
 go 1.21
 

@@ -39,15 +39,18 @@ func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
 		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 	defer req.Body.Close()
 
 	var UpdatedTemplates = make(map[string]interface{})
-	//clusterNameMon, uidMon := FetchClusterInfo(environmentConfig.Mon.Elasticsearch)
-	clusterNameProd, uidProd := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
-	//clusterNameKibana, uidKibana := UpdateNameAndUid(environmentConfig.Prod.Kibana)
+	clusterNameProd, uidProd, err := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
 
 	for name, template := range GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
@@ -76,7 +79,7 @@ func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal updated templates"})
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 	w.WriteHeader(http.StatusOK)

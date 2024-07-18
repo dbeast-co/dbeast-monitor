@@ -92,7 +92,7 @@ func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Respon
 FetchClusterInfo retrieves cluster name and UID from Elasticsearch and returns them.
 It uses the provided credentials to make a request to Elasticsearch and extracts cluster name and UID from the response.
 */
-func FetchClusterInfo(credentials Credentials) (string, string) {
+func FetchClusterInfo(credentials Credentials) (string, string, error) {
 
 	var clusterName, uid string
 
@@ -100,26 +100,27 @@ func FetchClusterInfo(credentials Credentials) (string, string) {
 		response, err := GetClusterNameAndUid(credentials)
 
 		if err != nil {
-			log.DefaultLogger.Warn("Failed to get cluster name and UID: " + err.Error())
-			return "ERROR", "ERROR"
+			log.DefaultLogger.Error("Failed to get cluster name and UID: " + err.Error())
+			return "ERROR", "ERROR", err
 		}
 
 		if response.StatusCode == http.StatusOK {
 			body, err := io.ReadAll(response.Body)
 			err2 := response.Body.Close()
 			if err2 != nil {
-				return "ERROR", "ERROR"
+				log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
+				return "ERROR", "ERROR", err2
 			}
 
 			if err != nil {
-				log.DefaultLogger.Warn("Failed to read response body" + string(body) + err.Error())
-				return "ERROR", "ERROR"
+				log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
+				return "ERROR", "ERROR", err
 			} else if len(body) > 0 {
 				result := map[string]interface{}{}
 				err := json.Unmarshal([]byte(body), &result)
 				if err != nil {
-					log.DefaultLogger.Warn("Failed to unmarshal response body: " + string(body) + err.Error())
-					return "ERROR", "ERROR"
+					log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
+					return "ERROR", "ERROR", err
 				}
 				if name, ok := result["cluster_name"].(string); ok {
 					clusterName = name
@@ -129,11 +130,11 @@ func FetchClusterInfo(credentials Credentials) (string, string) {
 				}
 			}
 		} else {
-			log.DefaultLogger.Warn("Failed to get cluster name and UID. HTTP status: " + response.Status)
-			return "ERROR", "ERROR"
+			log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
+			return "ERROR", "ERROR", err
 		}
 	}
-	return clusterName, uid
+	return clusterName, uid, nil
 }
 
 /*
