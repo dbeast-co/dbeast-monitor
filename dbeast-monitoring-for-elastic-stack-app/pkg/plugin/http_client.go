@@ -51,10 +51,10 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 	return client, nil
 }
 
-// ProcessGetRequest performs an HTTP GET request based on the provided credentials and request URL.
+// ProcessGETRequest performs an HTTP GET request based on the provided credentials and request URL.
 // It uses CreateHTTPClient to create an HTTP client, constructs a GET request, adds basic authentication if enabled,
 // and returns the HTTP response.
-func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Response, error) {
 	client, err := CreateHTTPClient(credentials)
 	if err != nil {
 		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
@@ -62,6 +62,43 @@ func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Respon
 	}
 
 	req, err := http.NewRequest("GET", requestURL, nil)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
+		return nil, err
+	}
+	//if credentials.AuthenticationEnabled == true {
+	//	req.SetBasicAuth(credentials.Username, credentials.Password)
+	//}
+
+	response, err := client.Do(req)
+	if err != nil {
+		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
+		return response, err
+	}
+	//if response.StatusCode == http.StatusUnauthorized {
+	//	log.DefaultLogger.Warn("Unauthorized access. Check credentials")
+	//
+	//	err := response.Body.Close()
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	return nil, fmt.Errorf("unauthorized access. Check credentials")
+	//}
+
+	return response, nil
+}
+
+// ProcessGETRequest performs an HTTP GET request based on the provided credentials and request URL.
+// It uses CreateHTTPClient to create an HTTP client, constructs a GET request, adds basic authentication if enabled,
+// and returns the HTTP response.
+func ProcessPUTRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+	client, err := CreateHTTPClient(credentials)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", requestURL, nil)
 	if err != nil {
 		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
 		return nil, err
@@ -92,7 +129,7 @@ func ProcessGetRequest(credentials Credentials, requestURL string) (*http.Respon
 FetchClusterInfo retrieves cluster name and UID from Elasticsearch and returns them.
 It uses the provided credentials to make a request to Elasticsearch and extracts cluster name and UID from the response.
 */
-func FetchClusterInfo(credentials Credentials) (string, string) {
+func FetchClusterInfo(credentials Credentials) (string, string, error) {
 
 	var clusterName, uid string
 
@@ -100,26 +137,27 @@ func FetchClusterInfo(credentials Credentials) (string, string) {
 		response, err := GetClusterNameAndUid(credentials)
 
 		if err != nil {
-			log.DefaultLogger.Warn("Failed to get cluster name and UID: " + err.Error())
-			return "ERROR", "ERROR"
+			log.DefaultLogger.Error("Failed to get cluster name and UID: " + err.Error())
+			return "ERROR", "ERROR", err
 		}
 
 		if response.StatusCode == http.StatusOK {
 			body, err := io.ReadAll(response.Body)
 			err2 := response.Body.Close()
 			if err2 != nil {
-				return "ERROR", "ERROR"
+				log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
+				return "ERROR", "ERROR", err2
 			}
 
 			if err != nil {
-				log.DefaultLogger.Warn("Failed to read response body" + string(body) + err.Error())
-				return "ERROR", "ERROR"
+				log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
+				return "ERROR", "ERROR", err
 			} else if len(body) > 0 {
 				result := map[string]interface{}{}
 				err := json.Unmarshal([]byte(body), &result)
 				if err != nil {
-					log.DefaultLogger.Warn("Failed to unmarshal response body: " + string(body) + err.Error())
-					return "ERROR", "ERROR"
+					log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
+					return "ERROR", "ERROR", err
 				}
 				if name, ok := result["cluster_name"].(string); ok {
 					clusterName = name
@@ -129,11 +167,11 @@ func FetchClusterInfo(credentials Credentials) (string, string) {
 				}
 			}
 		} else {
-			log.DefaultLogger.Warn("Failed to get cluster name and UID. HTTP status: " + response.Status)
-			return "ERROR", "ERROR"
+			log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
+			return "ERROR", "ERROR", err
 		}
 	}
-	return clusterName, uid
+	return clusterName, uid, nil
 }
 
 /*

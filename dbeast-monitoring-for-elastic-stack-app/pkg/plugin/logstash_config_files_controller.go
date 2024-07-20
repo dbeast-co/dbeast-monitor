@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
-	"io/ioutil"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -72,13 +71,19 @@ func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request
 
 	zipWriter := zip.NewWriter(buf)
 
-	clusterName, clusterId := FetchClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
-	if isLogstash {
-		GenerateLSLogstashConfigurationFiles(project, clusterId, zipWriter)
-	} else {
-		GenerateESLogstashConfigurationFiles(project, clusterId, clusterName, zipWriter)
+	clusterName, clusterId, err := FetchClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		return
 	}
-	err := zipWriter.Close()
+
+	if isLogstash {
+		GenerateLSLogstashConfigurationFiles(project, clusterId, zipWriter, ctxLogger)
+	} else {
+		GenerateESLogstashConfigurationFiles(project, clusterId, clusterName, zipWriter, ctxLogger)
+	}
+	err = zipWriter.Close()
 	if err != nil {
 		log.DefaultLogger.Error("Error closing ZIP: ", err.Error())
 	}
@@ -89,26 +94,28 @@ func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request
 	}
 }
 
-func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clusterName string, zipWriter *zip.Writer) {
+func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clusterName string, zipWriter *zip.Writer, logger log.Logger) {
 	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
 			configFileClone := strings.Clone(LSConfigs[configFile.Id])
 			configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
-
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
-			folderPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
-			WriteFileToZip(zipWriter, folderPath, configFileClone)
+
+			fileInternalPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
+
+			WriteFileToZip(zipWriter, fileInternalPath, configFileClone)
+
 			pipelineId := clusterName + "-" + clusterId + "-" + strings.ReplaceAll(configFile.Id, ".conf", "")
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", filepath.Join(clusterName+"-"+clusterId, configFile.Id))
+			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", fileInternalPath)
 		}
 	}
 	WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
 }
 
-func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zipWriter *zip.Writer) {
+func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zipWriter *zip.Writer, logger log.Logger) {
 	for _, logstashHost := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Hosts {
 		pipelineFile := "### Configuration files for the Logstash monitoring\n"
 		for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
@@ -150,33 +157,14 @@ func UpdateLogstashConnectionSettings(configFileContent string, logstashHost Log
 	return configFileContent
 }
 
-func WriteFileToZip(zipWriter *zip.Writer, filePath string, configFile string) {
-	fileWriter, err := zipWriter.Create(filePath)
+func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile string) {
+	fileWriter, err := zipWriter.Create(fileInternalPath)
 	if err != nil {
 		log.DefaultLogger.Error(err.Error())
 	}
-	// Create the first file
+
 	_, err = fileWriter.Write([]byte(configFile))
 	if err != nil {
 		log.DefaultLogger.Error(err.Error())
 	}
-}
-
-func WriteConfigFileToDisk(ctxLogger log.Logger, fileName string, content string) {
-	data, err := json.Marshal(content)
-	ctxLogger.Debug("Write file: ", fileName, " Content", data)
-	if err != nil {
-		fmt.Println("Error marshalling to JSON:", err)
-		return
-	}
-
-	// Save the JSON data to a file
-	err = ioutil.WriteFile(fileName, data, 0644)
-	if err != nil {
-		fmt.Println("Error writing to file:", err)
-		return
-	}
-
-	ctxLogger.Info("Object saved to file: ", fileName)
-
 }

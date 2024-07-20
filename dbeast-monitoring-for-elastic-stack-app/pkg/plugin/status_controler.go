@@ -69,41 +69,49 @@ func UpdateStatus(credentials *Credentials) Status {
 		response, err := GetStatus(*credentials)
 
 		if err != nil {
-			statusData.Error = err.Error()
-			statusData.Status = "ERROR"
-			log.DefaultLogger.Warn("Failed to get status information: " + statusData.Error)
+			GenerateError(&statusData, err.Error(), "Failed to get status information: ")
+			return statusData
+		}
+
+		body, err := io.ReadAll(response.Body)
+		if err != nil {
+			GenerateError(&statusData, err.Error(), "Failed to read response body: ")
 			return statusData
 		}
 
 		if response.StatusCode == http.StatusOK {
-			body, err := io.ReadAll(response.Body)
-			//response.Body.Close()
-
-			if err != nil {
-				statusData.Error = err.Error()
-				statusData.Status = "ERROR"
-				log.DefaultLogger.Warn("Failed to read response body: " + statusData.Error)
-			} else if len(body) > 0 {
-				error := response.Body.Close()
-				if error != nil {
+			if len(body) > 0 {
+				err := response.Body.Close()
+				if err != nil {
 					return Status{}
 				}
 				result := map[string]interface{}{}
-				err := json.Unmarshal([]byte(body), &result)
+				err = json.Unmarshal([]byte(body), &result)
 				if err != nil {
-					statusData.Error = err.Error()
-					statusData.Status = "ERROR"
-					log.DefaultLogger.Warn("Failed to unmarshal response body: " + statusData.Error)
-				}
-				if status, ok := result["status"].(string); ok {
-					statusData.Status = status
+					GenerateError(&statusData, err.Error(), "Failed to unmarshal response body: ")
+				} else {
+					if status, ok := result["status"].(string); ok {
+						statusData.Status = status
+					}
 				}
 			}
 		} else {
-			statusData.Error = response.Status
-			statusData.Status = "ERROR"
-			log.DefaultLogger.Warn("HTTP request failed with status:" + statusData.Error)
+			if len(body) > 0 {
+				err := response.Body.Close()
+				if err != nil {
+					return Status{}
+				}
+				GenerateError(&statusData, string(body), "Status fetch error: ")
+			} else {
+				GenerateError(&statusData, response.Status, "HTTP request failed with status: ")
+			}
 		}
 	}
 	return statusData
+}
+
+func GenerateError(statusData *Status, error string, errorMessage string) {
+	statusData.Error = error
+	statusData.Status = "ERROR"
+	log.DefaultLogger.Error(errorMessage + statusData.Error)
 }
