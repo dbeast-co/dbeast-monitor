@@ -34,13 +34,13 @@ export const AddNewClusterPanel = () => {
   const backendSrv = getBackendSrv();
   const theme = useTheme2();
   const baseUrl = settings.SERVER_URL;
-  const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
+  // const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
 
   const [validHost, setValidHost] = useState(false);
   const [validKibanaHost, setValidKibanaHost] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isTestDisabled, setTestDisable] = useState(true);
+  const [isTestDisabled, setTestDisable] = useState(false);
 
   const [validMonitoringHost, setValidMonitoringValidHost] = useState(false);
   const [connectionSettings, setConnectionSettings] = useState({
@@ -203,7 +203,7 @@ export const AddNewClusterPanel = () => {
             },
           });
 
-          if (result.prod.elasticsearch.error) {
+          if (result.prod.elasticsearch.error || result.mon.elasticsearch.error) {
             toast.error(`${result.prod.elasticsearch.error}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -242,11 +242,14 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (!event.target.checked) {
-      setTestDisable(true);
-    } else if (connectionSettings.prod.elasticsearch.username && connectionSettings.prod.elasticsearch.password) {
-      setTestDisable(false);
-    }
+    // validateTest();
+    // if (!event.target.checked) {
+    //   // setTestDisable(false);
+    // } else if (connectionSettings.prod.elasticsearch.username && connectionSettings.prod.elasticsearch.password) {
+    //   // setTestDisable(false);
+    // } else {
+    //   // setTestDisable(true);
+    // }
   };
 
   const onUserNameInput = (event: any) => {
@@ -260,12 +263,16 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
+    // validateTest();
 
-    if (isEmpty(event.target.value) || isEmpty(connectionSettings.prod.elasticsearch.password!)) {
-      setTestDisable(true);
-    } else {
-      setTestDisable(false);
-    }
+    // if (
+    //   connectionSettings.prod.elasticsearch.authentication_enabled &&
+    //   (isEmpty(event.target.value) || isEmpty(connectionSettings.prod.elasticsearch.password!))
+    // ) {
+    //   // setTestDisable(true);
+    // } else {
+    //   // setTestDisable(false);
+    // }
   };
   const onUserPasswordInput = (event: any) => {
     setConnectionSettings({
@@ -278,11 +285,12 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isEmpty(event.target.value)) {
-      setTestDisable(true);
-    } else {
-      setTestDisable(false);
-    }
+    // validateTest();
+    // if (isEmpty(event.target.value) && connectionSettings.prod.elasticsearch.authentication_enabled) {
+    //   // setTestDisable(true);
+    // } else {
+    //   // setTestDisable(false);
+    // }
   };
 
   const onCheckMonitoringAuth = (event: any) => {
@@ -296,11 +304,14 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (!event.target.checked) {
-      setTestDisable(true);
-    } else if (connectionSettings.mon.elasticsearch.username && connectionSettings.mon.elasticsearch.password) {
-      setTestDisable(false);
-    }
+    // validateTest();
+    // if (!event.target.checked) {
+    //   // setTestDisable(false);
+    // } else if (connectionSettings.mon.elasticsearch.username && connectionSettings.mon.elasticsearch.password) {
+    //   // setTestDisable(false);
+    // } else {
+    //   // setTestDisable(true);
+    // }
   };
   const onInputMonitoringUsername = (event: any) => {
     setConnectionSettings({
@@ -313,11 +324,15 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isEmpty(event.target.value) || isEmpty(connectionSettings.mon.elasticsearch.password!)) {
-      setTestDisable(true);
-    } else {
-      setTestDisable(false);
-    }
+    // validateTest();
+    // if (
+    //   connectionSettings.mon.elasticsearch.authentication_enabled &&
+    //   (isEmpty(event.target.value) || isEmpty(connectionSettings.mon.elasticsearch.password!))
+    // ) {
+    //   // setTestDisable(true);
+    // } else {
+    //   // setTestDisable(false);
+    // }
   };
 
   const onInputMonitoringPassword = (event: any) => {
@@ -331,11 +346,11 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isEmpty(event.target.value)) {
-      setTestDisable(true);
-    } else {
-      setTestDisable(false);
-    }
+    // if (isEmpty(event.target.value) && connectionSettings.mon.elasticsearch.authentication_enabled) {
+    //   // setTestDisable(true);
+    // } else {
+    //   // setTestDisable(false);
+    // }
   };
   const onInputHost = (event: any) => {
     setConnectionSettings({
@@ -348,17 +363,18 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
+    // validateTest();
 
-    if (isEmpty(event.target.value)) {
-      setValidHost(false);
-    } else {
-      setValidHost(true);
-    }
-    if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.prod.elasticsearch.host)) {
-      setValidHost(true);
-    } else {
-      setValidHost(false);
-    }
+    // if (isEmpty(event.target.value)) {
+    //   setValidHost(false);
+    // } else {
+    //   setValidHost(true);
+    // }
+    // if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.prod.elasticsearch.host)) {
+    //   setValidHost(true);
+    // } else {
+    //   setValidHost(false);
+    // }
   };
 
   const onInputMonitoringHost = (event: any) => {
@@ -372,16 +388,21 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
-    if (isEmpty(event.target.value)) {
-      setValidMonitoringValidHost(false);
-    } else {
-      setValidMonitoringValidHost(true);
-    }
-    if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.mon.elasticsearch.host)) {
-      setValidMonitoringValidHost(true);
-    } else {
-      setValidMonitoringValidHost(false);
-    }
+    // validateTest();
+    // if (isEmpty(event.target.value)) {
+    //   setValidMonitoringValidHost(false);
+    //   // setTestDisable(true);
+    // } else if (event.target.value && connectionSettings.prod.elasticsearch.host) {
+    //   setValidMonitoringValidHost(true);
+    //   // setTestDisable(false);
+    // } else {
+    //   // setTestDisable(true);
+    // }
+    // if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.mon.elasticsearch.host)) {
+    //   setValidMonitoringValidHost(true);
+    // } else {
+    //   setValidMonitoringValidHost(false);
+    // }
   };
 
   const onInputKibanaHost = (event: any) => {
@@ -395,12 +416,14 @@ export const AddNewClusterPanel = () => {
         },
       },
     });
+    // validateTest();
+    // TODO: move this code to Validate function to check validation on all state object
 
-    if (hostRegex.test(event.target.value)) {
-      setValidKibanaHost(true);
-    } else {
-      setValidKibanaHost(false);
-    }
+    // if (hostRegex.test(event.target.value)) {
+    //   setValidKibanaHost(true);
+    // } else {
+    //   setValidKibanaHost(false);
+    // }
   };
 
   const getCluster = () => {
@@ -432,9 +455,9 @@ export const AddNewClusterPanel = () => {
       },
     };
   };
-  const isEmpty = (value: string) => {
-    return value === '';
-  };
+  // const isEmpty = (value: string) => {
+  //   return value === '';
+  // };
 
   useEffect(() => {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
@@ -444,12 +467,12 @@ export const AddNewClusterPanel = () => {
         const { status: prodStatus } = data.cluster_connection_settings.prod.elasticsearch;
 
         const { status: monStatus } = data.cluster_connection_settings.mon.elasticsearch;
-        if (
-          (prodStatus === 'UNTESTED' || prodStatus === 'ERROR') &&
-          (monStatus === 'UNTESTED' || monStatus === 'ERROR')
-        ) {
+        if (prodStatus === 'UNTESTED' || prodStatus === 'ERROR' || monStatus === 'UNTESTED' || monStatus === 'ERROR') {
           setIsDisabled(true);
           setTestDisable(true);
+        } else {
+          setIsDisabled(false);
+          setTestDisable(false);
         }
       });
     });
@@ -538,6 +561,94 @@ export const AddNewClusterPanel = () => {
     setIsOpenAddDialog(true);
     setLogstash(logstash);
   };
+
+
+  useEffect(() => {
+    const regex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
+    const updatedState = connectionSettings;
+    console.log('updatedState', updatedState);
+
+    // if (regex.test(updatedState.prod.elasticsearch.host)) {
+    //   setValidHost(true);
+    // } else {
+    //   setValidHost(false);
+    // }
+    //
+    // if (regex.test(updatedState.prod.kibana.host)) {
+    //   setValidKibanaHost(true);
+    // } else {
+    //   setValidKibanaHost(false);
+    // }
+    //
+    // if (regex.test(updatedState.mon.elasticsearch.host)) {
+    //   setValidMonitoringValidHost(true);
+    // } else {
+    //   setValidMonitoringValidHost(false);
+    // }
+    //
+    // if (updatedState.prod.elasticsearch.host && updatedState.mon.elasticsearch.host) {
+    //   setTestDisable(false);
+    // } else {
+    //   setTestDisable(true);
+    // }
+    //TODO: problem with this condition
+
+    // if (
+    //   (updatedState.prod.elasticsearch.authentication_enabled && (!updatedState.prod.elasticsearch.username ||
+    //   !updatedState.prod.elasticsearch.password))
+    // ) {
+    //   setTestDisable(true);
+    // }else{
+    //     setTestDisable(false);
+    // }
+
+    // if (
+    //   (updatedState.mon.elasticsearch.authentication_enabled && updatedState.mon.elasticsearch.username) ||
+    //   updatedState.mon.elasticsearch.password
+    // ) {
+    //   setTestDisable(true);
+    // }
+
+    const isProdElasticHostValid = regex.test(updatedState.prod.elasticsearch.host);
+    const isKibanaHostValid = regex.test(updatedState.prod.kibana.host);
+    const isMonitoringElasticHostValid = regex.test(updatedState.mon.elasticsearch.host);
+
+    setValidHost(isProdElasticHostValid);
+    setValidKibanaHost(isKibanaHostValid);
+    setValidMonitoringValidHost(isMonitoringElasticHostValid);
+
+    // const isAuthenticationEnabled = updatedState.prod.elasticsearch.authentication_enabled;
+    // const isUsernameMissing = !updatedState.prod.elasticsearch.username;
+    // const isPasswordMissing = !updatedState.prod.elasticsearch.password;
+    const isProdElasticHostMissing = !updatedState.prod.elasticsearch.host;
+    const isMonElasticHostMissing = !updatedState.mon.elasticsearch.host;
+
+
+
+
+
+    if (
+        isProdElasticHostMissing || isMonElasticHostMissing
+    ) {
+      setTestDisable(true);
+    }else{
+      setTestDisable(false);
+    }
+
+    // if (
+    //     !isAuthenticationEnabled &&
+    //     ( isProdElasticHostMissing || isMonElasticHostMissing)
+    // ) {
+    //   setTestDisable(true);
+    // }
+    // if (isAuthenticationEnabled && !isUsernameMissing && !isPasswordMissing) {
+    //   setTestDisable(false);
+    // }else{
+    //     setTestDisable(true);
+    // }
+
+  }, [connectionSettings]);
+
   return (
     <section className="connectionsAndConfig">
       <div
