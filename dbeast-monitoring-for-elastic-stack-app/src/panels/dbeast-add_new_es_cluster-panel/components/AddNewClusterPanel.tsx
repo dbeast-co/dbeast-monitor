@@ -39,7 +39,7 @@ export const AddNewClusterPanel = () => {
   const [validHost, setValidHost] = useState(false);
   const [validKibanaHost, setValidKibanaHost] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled, setSaveDisabled] = useState(false);
   const [isTestDisabled, setTestDisable] = useState(false);
 
   const [validMonitoringHost, setValidMonitoringValidHost] = useState(false);
@@ -180,9 +180,9 @@ export const AddNewClusterPanel = () => {
             monStatus.toLowerCase() === 'green' ||
             monStatus.toLowerCase() === 'warn'
           ) {
-            setIsDisabled(false);
+            setSaveDisabled(false);
           } else {
-            setIsDisabled(true);
+            setSaveDisabled(true);
           }
           setConnectionSettings({
             prod: {
@@ -203,14 +203,13 @@ export const AddNewClusterPanel = () => {
             },
           });
 
-          if (result.prod.elasticsearch.error || result.mon.elasticsearch.error) {
-            toast.error(`${result.prod.elasticsearch.error}`, {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-              closeButton: true,
-              hideProgressBar: true,
-              draggable: false,
-            });
+          if (result.prod.elasticsearch.error ) {
+            showError(result.prod.elasticsearch.error);
+
+          }
+          if (result.mon.elasticsearch.error){
+            showError(result.mon.elasticsearch.error);
+            
           }
 
           setIsLoading(false);
@@ -231,6 +230,16 @@ export const AddNewClusterPanel = () => {
       setIsLoading(false);
     }
   };
+
+  const showError = (message: string) => {
+    toast.error(message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: false,
+      closeButton: true,
+      hideProgressBar: true,
+      draggable: false,
+    });
+  }
   const onCheckAuth = (event: any) => {
     setConnectionSettings({
       ...connectionSettings,
@@ -468,10 +477,10 @@ export const AddNewClusterPanel = () => {
 
         const { status: monStatus } = data.cluster_connection_settings.mon.elasticsearch;
         if (prodStatus === 'UNTESTED' || prodStatus === 'ERROR' || monStatus === 'UNTESTED' || monStatus === 'ERROR') {
-          setIsDisabled(true);
+          setSaveDisabled(true);
           setTestDisable(true);
         } else {
-          setIsDisabled(false);
+          setSaveDisabled(false);
           setTestDisable(false);
         }
       });
@@ -617,35 +626,41 @@ export const AddNewClusterPanel = () => {
     setValidKibanaHost(isKibanaHostValid);
     setValidMonitoringValidHost(isMonitoringElasticHostValid);
 
-    // const isAuthenticationEnabled = updatedState.prod.elasticsearch.authentication_enabled;
-    // const isUsernameMissing = !updatedState.prod.elasticsearch.username;
-    // const isPasswordMissing = !updatedState.prod.elasticsearch.password;
-    const isProdElasticHostMissing = !updatedState.prod.elasticsearch.host;
-    const isMonElasticHostMissing = !updatedState.mon.elasticsearch.host;
+    const isProdAuthenticationEnabled = updatedState.prod.elasticsearch.authentication_enabled;
+    const isProdUsernameValid = updatedState.prod.elasticsearch.username;
+    const isProdPasswordValid = updatedState.prod.elasticsearch.password;
 
+    const isMonAuthenticationEnabled = updatedState.mon.elasticsearch.authentication_enabled;
+    const isMonUsernameValid = updatedState.mon.elasticsearch.username;
+    const isMonPasswordValid = updatedState.mon.elasticsearch.password;
+
+
+    const isProdElasticHostExists = updatedState.prod.elasticsearch.host;
+    const isMonElasticHostExists = updatedState.mon.elasticsearch.host;
+
+
+   const isProdAuthValid = !isProdAuthenticationEnabled || (isProdAuthenticationEnabled && isProdUsernameValid && isProdPasswordValid)
+    
+    const isMonAuthValid =!isMonAuthenticationEnabled || (isMonAuthenticationEnabled && isMonUsernameValid && isMonPasswordValid)
 
 
 
 
     if (
-        isProdElasticHostMissing || isMonElasticHostMissing
+        isProdElasticHostExists && isMonElasticHostExists && isProdAuthValid && isMonAuthValid && isProdElasticHostValid  && isMonitoringElasticHostValid
     ) {
-      setTestDisable(true);
-    }else{
       setTestDisable(false);
+    }else{
+      setTestDisable(true);
     }
 
     // if (
-    //     !isAuthenticationEnabled &&
+    //     isAuthenticationEnabled &&
     //     ( isProdElasticHostMissing || isMonElasticHostMissing)
     // ) {
     //   setTestDisable(true);
     // }
-    // if (isAuthenticationEnabled && !isUsernameMissing && !isPasswordMissing) {
-    //   setTestDisable(false);
-    // }else{
-    //     setTestDisable(true);
-    // }
+    
 
   }, [connectionSettings]);
 
