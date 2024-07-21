@@ -71,7 +71,7 @@ func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request
 
 	zipWriter := zip.NewWriter(buf)
 
-	clusterName, clusterId, err := FetchClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	clusterName, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})

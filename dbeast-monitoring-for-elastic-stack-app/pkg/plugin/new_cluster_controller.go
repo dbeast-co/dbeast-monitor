@@ -29,6 +29,21 @@ type EnvironmentConfig struct {
 
 var GrafanaDataSourcesMap = make(map[string]interface{})
 
+var ESComponentTemplatesMap = make(map[string]string)
+var ESILMTemplatesMap = make(map[string]string)
+
+func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	newClusterForSend, err := json.MarshalIndent(NewCluster, "", "")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal cluster template"})
+		return
+	}
+	w.Write(newClusterForSend)
+}
+
 func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
@@ -44,22 +59,38 @@ func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	defer req.Body.Close()
 
-	var UpdatedTemplates = make(map[string]interface{})
-	clusterNameProd, uidProd, err := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
+	clusterNameProd, uidProd, err := GetClusterInfo(environmentConfig.Prod.Elasticsearch)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
+	err = SendComponentTemplatesToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
+	if err != nil {
+		return
+	}
+
+	UpdatedTemplates := UpdateDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
+
+	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(updatedTemplatesJSON)
+}
+
+func UpdateDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
+	var UpdatedTemplates = make(map[string]interface{})
 	for name, template := range GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
-
 		switch {
 		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_mon"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
-
 		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_prod"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Elasticsearch, clusterNameProd, uidProd)
 			break
@@ -72,30 +103,8 @@ func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 		default:
 		}
 		UpdatedTemplates[name] = clonedTemplates
-
 	}
-
-	//SendTemplateToServer(UpdatedTemplates)
-	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Write(updatedTemplatesJSON)
-}
-
-func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	newClusterForSend, err := json.MarshalIndent(NewCluster, "", "")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal cluster template"})
-		return
-	}
-	w.Write(newClusterForSend)
+	return UpdatedTemplates
 }
 
 /*
@@ -152,4 +161,30 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 			}
 		}
 	}
+}
+
+func SendILMToMonitoringCluster(credentials Credentials) error {
+	for templateName, templateContent := range ESILMTemplatesMap {
+		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Debug("Template content: ", templateContent)
+		_, err := SendILMToCluster(credentials, templateName, templateContent)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
+}
+
+func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
+	for templateName, templateContent := range ESComponentTemplatesMap {
+		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Debug("Template content: ", templateContent)
+		_, err := SendComponentTemplateToCluster(credentials, templateName, templateContent)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
 }

@@ -21,21 +21,15 @@ func main() {
 	ctxLogger := log.DefaultLogger
 	ctxLogger.Info("The app path: " + os.Args[0])
 	lastIndex := strings.LastIndex(os.Args[0], "gpx_app-dbeast-dbeastmonitor-app")
-	err := plugin.LoadGrafanaDataSourcesFromFolder(os.Args[0][:lastIndex] + plugin.DataSourceTemplatesFolder)
+	applicationFolder := os.Args[0][:lastIndex]
+
+	err := plugin.LoadInitData(applicationFolder)
 	if err != nil {
-		return
-	}
-	err = plugin.LoadLogstashConfigFromFolder(os.Args[0][:lastIndex] + plugin.LogstashTemplatesFolder)
-	if err != nil {
-		return
-	}
-	err = plugin.LoadLogstashConfigurationFileList(os.Args[0][:lastIndex] + plugin.LogstashConfigurationsFileListFile)
-	if err != nil {
-		log.DefaultLogger.Error(err.Error())
-		return
+		ctxLogger.Info("Error in the init data loading. Please fix the init files ")
+		os.Exit(1)
 	}
 
-	if err := app.Manage("dbeast-dbeastmonitor-app", plugin.NewApp, app.ManageOpts{}); err != nil {
+	if err = app.Manage("dbeast-dbeastmonitor-app", plugin.NewApp, app.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
 		os.Exit(1)
 	}

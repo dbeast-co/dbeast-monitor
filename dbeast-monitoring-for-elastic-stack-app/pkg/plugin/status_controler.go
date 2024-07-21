@@ -66,16 +66,16 @@ func UpdateStatus(credentials *Credentials) Status {
 	var statusData = Status{}
 
 	if credentials.Host != "" {
-		response, err := GetStatus(*credentials)
+		response, err := GetClusterHealth(*credentials)
 
 		if err != nil {
-			GenerateError(&statusData, err.Error(), "Failed to get status information: ")
+			GenerateStatusError(&statusData, err.Error(), "Failed to get status information: ")
 			return statusData
 		}
 
 		body, err := io.ReadAll(response.Body)
 		if err != nil {
-			GenerateError(&statusData, err.Error(), "Failed to read response body: ")
+			GenerateStatusError(&statusData, err.Error(), "Failed to read response body: ")
 			return statusData
 		}
 
@@ -88,7 +88,7 @@ func UpdateStatus(credentials *Credentials) Status {
 				result := map[string]interface{}{}
 				err = json.Unmarshal([]byte(body), &result)
 				if err != nil {
-					GenerateError(&statusData, err.Error(), "Failed to unmarshal response body: ")
+					GenerateStatusError(&statusData, err.Error(), "Failed to unmarshal response body: ")
 				} else {
 					if status, ok := result["status"].(string); ok {
 						statusData.Status = status
@@ -101,16 +101,16 @@ func UpdateStatus(credentials *Credentials) Status {
 				if err != nil {
 					return Status{}
 				}
-				GenerateError(&statusData, string(body), "Status fetch error: ")
+				GenerateStatusError(&statusData, string(body), "Status fetch error: ")
 			} else {
-				GenerateError(&statusData, response.Status, "HTTP request failed with status: ")
+				GenerateStatusError(&statusData, response.Status, "HTTP request failed with status: ")
 			}
 		}
 	}
 	return statusData
 }
 
-func GenerateError(statusData *Status, error string, errorMessage string) {
+func GenerateStatusError(statusData *Status, error string, errorMessage string) {
 	statusData.Error = error
 	statusData.Status = "ERROR"
 	log.DefaultLogger.Error(errorMessage + statusData.Error)
