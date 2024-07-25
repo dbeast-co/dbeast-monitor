@@ -6,32 +6,42 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func LoadInitData(applicationFolder string) error {
+	log.DefaultLogger.Info("Loading the Grafana data sources")
 	err := LoadGrafanaDataSources(filepath.Join(applicationFolder, DataSourceTemplatesFolder))
 	if err != nil {
 		log.DefaultLogger.Error("Error in the Grafana data source loading")
 		return err
 	}
 
+	log.DefaultLogger.Info("Loading the Logstash config files")
 	err = LoadLogstashConfigFiles(filepath.Join(applicationFolder, LogstashTemplatesFolder))
 	if err != nil {
 		log.DefaultLogger.Error("Error in the Grafana data source loading")
 		return err
 	}
-	err = LoadESComponentTemplates(filepath.Join(applicationFolder, EsIndexComponentsTemplatesFolder))
+	log.DefaultLogger.Info("Loading the Elasticsearch component templates")
+	err = LoadESComponentTemplates(filepath.Join(applicationFolder, EsComponentsTemplatesFolder))
 	if err != nil {
 		log.DefaultLogger.Error("Error in the ES Component templates loading")
 		return err
 	}
+	log.DefaultLogger.Info("Loading the Elasticsearch index templates")
+	err = LoadESIndexTemplates(filepath.Join(applicationFolder, EsIndexTemplatesTemplatesFolder))
+	if err != nil {
+		log.DefaultLogger.Error("Error in the ES ILM templates loading")
+		return err
+	}
+	log.DefaultLogger.Info("Loading the ILM policies")
 	err = LoadESILMTemplates(filepath.Join(applicationFolder, EsILMTemplatesFolder))
 	if err != nil {
 		log.DefaultLogger.Error("Error in the ES ILM templates loading")
 		return err
 	}
 
+	log.DefaultLogger.Info("Loading New cluster definition file")
 	err = LoadNewClusterFile(filepath.Join(applicationFolder, NewClusterFile))
 	if err != nil {
 		log.DefaultLogger.Error("Error in the New cluster object loading")
@@ -65,9 +75,13 @@ The GrafanaDataSourcesMap is a global variable that represents a mapping of temp
 This map is expected to be used elsewhere in the application after the templates are loaded.
 */
 func LoadGrafanaDataSources(folderPath string) error {
-	log.DefaultLogger.Debug("The templates folder path: " + folderPath)
+	log.DefaultLogger.Info("The templates folder path: " + folderPath)
 
 	stringSourceMap, err := ReadFilesFromFolderByteArrayType(folderPath, ".json", true)
+	if err != nil {
+		log.DefaultLogger.Error("Error read Grafana templates folder: " + err.Error())
+		return err
+	}
 	for templateName, stringDataSource := range stringSourceMap {
 		var templateData map[string]interface{}
 		err = json.Unmarshal(stringDataSource, &templateData)
@@ -92,6 +106,12 @@ func LoadESComponentTemplates(folderPath string) error {
 	return err
 }
 
+func LoadESIndexTemplates(folderPath string) error {
+	var err error
+	ESIndexTemplatesMap, err = ReadFilesFromFolderStringType(folderPath, ".json", true)
+	return err
+}
+
 func LoadESILMTemplates(folderPath string) error {
 	var err error
 	ESILMTemplatesMap, err = ReadFilesFromFolderStringType(folderPath, ".json", true)
@@ -99,27 +119,13 @@ func LoadESILMTemplates(folderPath string) error {
 }
 
 func ReadFilesFromFolderStringType(folderPath string, filesExtension string, isRemoveExtension bool) (map[string]string, error) {
+	bytesFilesContent, err := ReadFilesFromFolderByteArrayType(folderPath, filesExtension, isRemoveExtension)
 	tmpFilesContent := make(map[string]string)
-	files, err := os.ReadDir(folderPath)
 	if err != nil {
-		return tmpFilesContent, fmt.Errorf("failed to read files from folder: %v", err)
+		return nil, err
 	}
-
-	for _, file := range files {
-		if !file.IsDir() && (len(filesExtension) == 0 || strings.HasSuffix(file.Name(), filesExtension)) {
-			filePath := filepath.Join(folderPath, file.Name())
-			fileContents, err := ReadFileToString(filePath)
-			if err != nil {
-				return tmpFilesContent, err
-			}
-			var templateName string
-			if isRemoveExtension {
-				templateName = file.Name()[:len(file.Name())-5]
-			} else {
-				templateName = file.Name()
-			}
-			tmpFilesContent[templateName] = fileContents
-		}
+	for templateName, templateContent := range bytesFilesContent {
+		tmpFilesContent[templateName] = string(templateContent[:])
 	}
 	return tmpFilesContent, nil
 }
@@ -128,11 +134,13 @@ func ReadFilesFromFolderByteArrayType(folderPath string, filesExtension string, 
 	tmpFilesContent := make(map[string][]byte)
 	files, err := os.ReadDir(folderPath)
 	if err != nil {
+		log.DefaultLogger.Error("failed to read files from folder: "+folderPath, err)
 		return tmpFilesContent, fmt.Errorf("failed to read files from folder: %v", err)
 	}
 
 	for _, file := range files {
-		if !file.IsDir() && (len(filesExtension) == 0 || strings.HasSuffix(file.Name(), filesExtension)) {
+		if !file.IsDir() {
+			//if !file.IsDir() && (len(filesExtension) == 0 || strings.HasSuffix(file.Name(), filesExtension)) {
 			filePath := filepath.Join(folderPath, file.Name())
 			fileContents, err := ReadFileToByteArray(filePath)
 			if err != nil {
@@ -140,7 +148,7 @@ func ReadFilesFromFolderByteArrayType(folderPath string, filesExtension string, 
 			}
 			var templateName string
 			if isRemoveExtension {
-				templateName = file.Name()[:len(file.Name())-5]
+				templateName = file.Name()[:len(file.Name())-len(filesExtension)]
 			} else {
 				templateName = file.Name()
 			}
@@ -151,13 +159,8 @@ func ReadFilesFromFolderByteArrayType(folderPath string, filesExtension string, 
 }
 
 func ReadFileToString(filePath string) (string, error) {
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		log.DefaultLogger.Error("Failed to read file %s: %v", filePath, err)
-		return "", fmt.Errorf("failed to read files from folder: %v", err)
-	}
-	log.DefaultLogger.Info("Reading file: ", filePath)
-	return string(data[:]), nil
+	data, err := ReadFileToByteArray(filePath)
+	return string(data[:]), err
 }
 
 func ReadFileToByteArray(filePath string) ([]byte, error) {

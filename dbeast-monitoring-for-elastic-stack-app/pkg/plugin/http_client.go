@@ -116,7 +116,7 @@ func ProcessPUTRequest(credentials Credentials, requestURL string, body string) 
 				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
 			}
 		}
-		log.DefaultLogger.Debug("Response from the Put operation: ", result)
+		log.DefaultLogger.Info("Response from the Put operation: ", result)
 	}
 
 	return response, nil

@@ -1,0 +1,12 @@
+{
+  "index_patterns": [
+    "dbeast-mon-es-shards-stats-20*"
+  ],
+  "composed_of": [
+    "dbeast-mon-elastic-shards-stats-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the shards monitoring"
+  }
+}

@@ -30,6 +30,9 @@ type EnvironmentConfig struct {
 var GrafanaDataSourcesMap = make(map[string]interface{})
 
 var ESComponentTemplatesMap = make(map[string]string)
+
+var ESIndexTemplatesMap = make(map[string]string)
+
 var ESILMTemplatesMap = make(map[string]string)
 
 func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
@@ -52,7 +55,7 @@ func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 
 	var environmentConfig EnvironmentConfig
 	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
-		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
+		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
@@ -61,13 +64,36 @@ func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 
 	clusterNameProd, uidProd, err := GetClusterInfo(environmentConfig.Prod.Elasticsearch)
 	if err != nil {
+		log.DefaultLogger.Error("Error while receiving cluster info: " + err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
+	//TODO Add validation for the templates already exists
+	err = SendILMToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
+	if err != nil {
+		log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+
+	//TODO Add validation for the templates already exists
 	err = SendComponentTemplatesToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
 	if err != nil {
+		log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+
+	//TODO Add validation for the templates already exists
+	err = SendIndexTemplatesToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
+	if err != nil {
+		log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
@@ -164,6 +190,7 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 }
 
 func SendILMToMonitoringCluster(credentials Credentials) error {
+	log.DefaultLogger.Info("ILM policies ingest")
 	for templateName, templateContent := range ESILMTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
@@ -177,10 +204,25 @@ func SendILMToMonitoringCluster(credentials Credentials) error {
 }
 
 func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
+	log.DefaultLogger.Info("Components templates ingest")
 	for templateName, templateContent := range ESComponentTemplatesMap {
-		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
-		log.DefaultLogger.Debug("Template content: ", templateContent)
+		log.DefaultLogger.Info("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Info("Template content: ", templateContent)
 		_, err := SendComponentTemplateToCluster(credentials, templateName, templateContent)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
+}
+
+func SendIndexTemplatesToMonitoringCluster(credentials Credentials) error {
+	log.DefaultLogger.Info("Index templates ingest")
+	for templateName, templateContent := range ESIndexTemplatesMap {
+		log.DefaultLogger.Info("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Info("Template content: ", templateContent)
+		_, err := SendIndexTemplateToCluster(credentials, templateName, templateContent)
 		if err != nil {
 			return err
 		}

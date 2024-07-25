@@ -116,3 +116,18 @@ func SendComponentTemplateToCluster(credentials Credentials, templateName string
 	return response, err
 
 }
+
+func SendIndexTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
+	requestURL := credentials.Host + "/_index_template/" + templateName
+	log.DefaultLogger.Debug("Request path: ", requestURL)
+	log.DefaultLogger.Debug("Request host: ", credentials.Host)
+	log.DefaultLogger.Debug("Request body: ", templateContent)
+	response, err := ProcessPUTRequest(credentials, requestURL, templateContent)
+
+	if err != nil {
+		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
+		return response, err
+	}
+	return response, err
+
+}

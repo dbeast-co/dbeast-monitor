@@ -1,0 +1,12 @@
+{
+  "index_patterns": [
+    "dbeast-mon-logstash-logs-pipelines-ports-status"
+  ],
+  "composed_of": [
+    "dbeast-mon-logstash-logs-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Logstash port usage status"
+  }
+}

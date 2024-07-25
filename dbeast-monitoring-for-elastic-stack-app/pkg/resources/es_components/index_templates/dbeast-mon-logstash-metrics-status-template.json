@@ -1,0 +1,12 @@
+{
+  "index_patterns": [
+    "dbeast-mon-logstash-metrics-status"
+  ],
+  "composed_of": [
+    "dbeast-mon-logstash-metrics-custom-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Logstash metrics"
+  }
+}

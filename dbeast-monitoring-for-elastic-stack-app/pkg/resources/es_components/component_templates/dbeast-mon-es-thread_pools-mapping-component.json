@@ -1,0 +1,129 @@
+{
+  "template": {
+    "settings": {},
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "host": {
+          "properties": {
+            "hostname": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "elasticsearch": {
+          "properties": {
+            "node": {
+              "properties": {
+                "stats": {
+                  "properties": {
+                    "thread_pool": {
+                      "properties": {
+                        "completed_rate": {
+                          "type": "integer"
+                        },
+                        "largest": {
+                          "type": "integer"
+                        },
+                        "queue_size": {
+                          "type": "integer"
+                        },
+                        "max": {
+                          "type": "integer"
+                        },
+                        "rejected": {
+                          "type": "integer"
+                        },
+                        "rejected_rate": {
+                          "type": "integer"
+                        },
+                        "pool_size": {
+                          "type": "integer"
+                        },
+                        "active": {
+                          "type": "integer"
+                        },
+                        "completed": {
+                          "type": "integer"
+                        },
+                        "type": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        },
+                        "core": {
+                          "type": "integer"
+                        },
+                        "size": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        },
+                        "@version": {
+                          "type": "integer"
+                        },
+                        "keep_alive": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        },
+                        "queue": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                },
+                "port": {
+                  "type": "integer"
+                },
+                "ip": {
+                  "type": "ip"
+                },
+                "name": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "pid": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "ephemeral_node_id": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "cluster": {
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "event": {
+          "properties": {
+            "module": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "dataset": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    },
+    "aliases": {}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "index_patterns" : [
+    "dbeast-mon-es-thread_pools-20*"
+  ],
+  "composed_of" : [
+    "dbeast-mon-es-thread_pools-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch thread pools metrics"
+  }
+}
