@@ -1452,7 +1452,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod--(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
