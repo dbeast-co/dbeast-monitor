@@ -2291,7 +2291,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -2307,7 +2307,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-status-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-status--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -2323,7 +2323,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-status-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-status--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -2360,7 +2360,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

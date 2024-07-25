@@ -4985,9 +4985,6 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "elasticsearch",
-          "value": "urUcY3GYRS6pjJuKhBSwKA"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
@@ -5052,7 +5049,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5107,7 +5104,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5122,7 +5119,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

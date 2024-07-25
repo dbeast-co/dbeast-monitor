@@ -1612,9 +1612,6 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "elasticsearch",
-          "value": "urUcY3GYRS6pjJuKhBSwKA"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
@@ -1655,9 +1652,6 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "ES",
-          "value": "ES"
         },
         "hide": 2,
         "includeAll": false,
@@ -1667,7 +1661,7 @@
         "options": [],
         "query": "marcusolsson-json-datasource",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

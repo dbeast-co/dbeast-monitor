@@ -3631,9 +3631,6 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "elasticsearch",
-          "value": "urUcY3GYRS6pjJuKhBSwKA"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
@@ -3674,9 +3671,6 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "Elasticsearch-mon-dbeast-mon-es-tasks-20-elasticsearch--r5H9_VvqRVyxbAy4U8TILg",
-          "value": "Elasticsearch-mon-dbeast-mon-es-tasks-20-elasticsearch--r5H9_VvqRVyxbAy4U8TILg"
         },
         "hide": 2,
         "includeAll": false,
@@ -3687,15 +3681,12 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-tasks-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-tasks--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "selected": false,
-          "text": "Elasticsearch-mon-dbeast-mon-es-thread_pools-20-elasticsearch--r5H9_VvqRVyxbAy4U8TILg",
-          "value": "Elasticsearch-mon-dbeast-mon-es-thread_pools-20-elasticsearch--r5H9_VvqRVyxbAy4U8TILg"
         },
         "hide": 2,
         "includeAll": false,
@@ -3706,7 +3697,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },

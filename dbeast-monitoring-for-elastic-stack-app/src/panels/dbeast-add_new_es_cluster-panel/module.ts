@@ -1,8 +1,8 @@
 import { PanelPlugin } from '@grafana/data';
 import { SimpleOptions } from './types';
-import { AddNewClusterPanel } from './AddNewClusterPanel';
+import { AddNewClusterPanel } from './components/AddNewClusterPanel';
 
-export const plugin = new PanelPlugin<SimpleOptions>(AddNewClusterPanel).setPanelOptions(builder => {
+export const plugin = new PanelPlugin<SimpleOptions>(AddNewClusterPanel).setPanelOptions((builder) => {
   return builder
     .addTextInput({
       path: 'text',
@@ -35,6 +35,6 @@ export const plugin = new PanelPlugin<SimpleOptions>(AddNewClusterPanel).setPane
           },
         ],
       },
-      showIf: config => config.showSeriesCount,
+      showIf: (config) => config.showSeriesCount,
     });
 });
