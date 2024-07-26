@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { DataSourceItem } from '../DataSourceItem/DataSourceItem';
+import React, {FC,} from 'react';
+import {DataSourceItem} from '../DataSourceItem/DataSourceItem';
 import './data-source-list.scss';
-import { useTheme2 } from '@grafana/ui';
+import {useTheme2} from '@grafana/ui';
 import classNames from 'classnames';
 
 /**
@@ -17,7 +17,9 @@ export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
 
   const onDeleteItem = (id: string) => {
     onDelete(id);
+
   };
+
 
   return (
     <div

@@ -52,7 +52,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   monitorState: MonitorState = {
     monitorName: '',
   };
-
   state: ClusterStatsItemState = {
     cluster_name: '',
     cluster_uuid: '',
@@ -163,7 +162,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         this.setState({
           monitorName: '',
         });
-
         break;
     }
   };
@@ -261,14 +259,17 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
           try {
             await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
-
-            this.props.onDelete(dataSource.uid);
-            dataSources = dataSources.filter((item: any) => item.id !== this.state.cluster_uuid);
           } catch (deleteError) {
             console.error('deleteError', deleteError);
           }
         }
+
       }
+
+      this.props.onDelete(this.state.cluster_uuid)
+      this.componentDidMount().then(() => {});
+
+
     } catch (getError) {
       console.error('getError', getError);
     }
