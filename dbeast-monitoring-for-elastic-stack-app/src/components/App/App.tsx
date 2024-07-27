@@ -59,11 +59,9 @@ export class App extends PureComponent<Props, State> {
     }
     return (
         <>
-          <div>
-            <h1>Welcome to the Monitoring toolkit for the Elastic Stack</h1>
-          </div>
-          <DataSourceList onDelete={(id) => this.onDeleteDataSource(id)} dataSources={this.state.dataSources}/>;
-          )</>
+
+          <DataSourceList onDelete={(id) => this.onDeleteDataSource(id)} dataSources={this.state.dataSources}/>
+          </>
     );
   }
 }
