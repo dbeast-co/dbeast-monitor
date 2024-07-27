@@ -23,10 +23,10 @@ export class App extends PureComponent<Props, State> {
     dataSources: [],
   };
   onDeleteDataSource = (id: string) => {
-
-    const filteredDataSources = this.state.dataSources.filter((item) => !item.uid.endsWith(id));
-
-    this.setState({ dataSources: filteredDataSources });
+    //
+    // const filteredDataSources = this.state.dataSources.filter((item) => !item.uid.endsWith(id));
+    //
+    // this.setState({ dataSources: filteredDataSources });
   };
 
 
