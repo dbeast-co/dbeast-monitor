@@ -133,9 +133,10 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 
 		if database, ok := OneClonedTemplate["database"].(string); ok {
 			database = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(database, "*", ""), "?", ""), ",", ""), ".", "")
+			clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
-			OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + database + "-" + clusterName + "--" + uid
-			OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + database + "-" + clusterName + "--" + uid
+			OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + database + "--" + clusterName + "--" + uid
+			OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + database + "--" + clusterName + "--" + uid
 
 			OneClonedTemplate["url"] = credentials.Host
 			OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled

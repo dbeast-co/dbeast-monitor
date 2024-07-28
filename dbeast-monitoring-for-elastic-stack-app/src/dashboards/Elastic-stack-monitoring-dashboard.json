@@ -5335,7 +5335,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod--(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -5367,7 +5367,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5383,7 +5383,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Kibana-direct-(.*)--${cluster_uid}/",
+        "regex": "/Kibana-direct--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5399,7 +5399,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats--(.*)-${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5414,7 +5414,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5430,7 +5430,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5470,7 +5470,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

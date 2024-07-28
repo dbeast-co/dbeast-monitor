@@ -16,7 +16,7 @@ import {
   SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import { Button, ButtonVariant, Spinner, stylesFactory, useTheme } from '@grafana/ui';
+import { Button, ButtonVariant, stylesFactory, useTheme } from '@grafana/ui';
 import classNames from 'classnames';
 
 interface Props {
@@ -52,7 +52,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   monitorState: MonitorState = {
     monitorName: '',
   };
-  loading = false;
 
   state: ClusterStatsItemState = {
     cluster_name: '',
@@ -164,6 +163,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         this.setState({
           monitorName: '',
         });
+
         break;
     }
   };
@@ -171,9 +171,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   async componentDidMount() {
     // console.log('Props: ', this.props.theme)
     await getBackendSrv()
-      .get(
-        `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
-      )
+      .get(`/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats`)
       .then((dataSources: any) => {
         const {} = dataSources;
         this.setState({
@@ -218,9 +216,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       });
     if (this.state.status !== 'ERROR') {
       await getBackendSrv()
-        .get(
-          `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/health?filter_path=unassigned_shards`
-        )
+        .get(`/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/health`)
         .then((health: any) => {
           this.setState({
             numberOfUnassignedShards: health.unassigned_shards,
@@ -253,7 +249,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   };
   onDeleteCluster = async () => {
     const backendSrv = getBackendSrv();
-    this.loading = true;
     try {
       let dataSources: any = await backendSrv.get(`/api/datasources`, {
         headers: {
@@ -266,17 +261,14 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
           try {
             await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
+
+            this.props.onDelete(dataSource.uid);
+            dataSources = dataSources.filter((item: any) => item.id !== this.state.cluster_uuid);
           } catch (deleteError) {
             console.error('deleteError', deleteError);
           }
         }
       }
-
-      // this.props.onDelete(this.state.cluster_uuid)
-      // this.componentDidMount().then(() => {
-      // });
-      this.loading = false;
-      window.location.reload();
     } catch (getError) {
       console.error('getError', getError);
     }
@@ -291,140 +283,136 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
   render() {
     return (
-      <>
-        {this.loading && <Spinner></Spinner>}
-
-        <div
-          className={classNames({
-            form_group: true,
-            isLight: this.props.theme.isLight,
-          })}
-        >
-          <header>
-            <div className="col header-cluster">
-              <h3>{this.state.cluster_name}</h3>
-              <p>{this.state.cluster_uuid}</p>
-            </div>
-            <div className="actions col">
-              <span className={this.state.status.toUpperCase()}>{this.state.status.toUpperCase()}</span>
-            </div>
-          </header>
-
-          <Divider light />
-
-          <div className="grid-container">
-            <div className="col">
-              <List>
-                <ListItem>
-                  {this.state.versions ? (
-                    <div>
-                      <span className="label">Version</span>
-                      <ListItemText primary={this.state.versions ?? '0'} />
-                    </div>
-                  ) : null}
-
-                  <div>
-                    <span className="label">Used storage</span>
-                    <ListItemText primary={this.state.usedStorage ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Total storage</span>
-                    <ListItemText primary={this.state.totalStorage ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Docs count</span>
-                    <ListItemText primary={this.state.docsCount ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Total nodes</span>
-                    <ListItemText primary={this.state.totalNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Data nodes</span>
-                    <ListItemText primary={this.state.dataNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label"> Hot nodes</span>
-                    <ListItemText primary={this.state.dataHotNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label"> Warm nodes</span>
-                    <ListItemText primary={this.state.dataWarmNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label"> Cold nodes</span>
-                    <ListItemText primary={this.state.dataColdNodes ?? '0'} />
-                  </div>
-
-                  <div>
-                    <span className="label">Indices</span>
-                    <ListItemText primary={this.state.numberOfIndices ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Total shards</span>
-                    <ListItemText primary={this.state.numberOfShards ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Unassigned shards</span>
-                    <ListItemText primary={this.state.numberOfUnassignedShards ?? '0'} />
-                  </div>
-                </ListItem>
-              </List>
-            </div>
-            <div className="col"></div>
+      <div
+        className={classNames({
+          form_group: true,
+          isLight: this.props.theme.isLight,
+        })}
+      >
+        <header>
+          <div className="col header-cluster">
+            <h3>{this.state.cluster_name}</h3>
+            <p>{this.state.cluster_uuid}</p>
           </div>
-          <Divider light />
-          <footer>
-            <Stack spacing={2} direction="row">
-              <Button variant="secondary" onClick={this.onDelete}>
-                Delete
-              </Button>
-              <Button variant="secondary" onClick={() => this.onTest()}>
-                Test
-              </Button>
-              <FormControl fullWidth id="select">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
-                  onChange={this.handleChange}
-                  renderValue={(value) => {
-                    let text = value.split('-').join(' ');
-                    text = text.charAt(0).toUpperCase() + text.slice(1);
-                    return text ?? 'Monitor type';
-                  }}
-                >
-                  <MenuItem value={'stack-monitoring'}>Elastic Stack monitoring</MenuItem>
-                  <MenuItem value={'index-overview'}>Elasticsearch Index overview</MenuItem>
-                  <MenuItem value={'shards-overview'}>Elasticsearch Shards overview</MenuItem>
-                  <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
-                  <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
-                  <MenuItem value={'tasks-analytics'}>Tasks analytics</MenuItem>
-                  <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </footer>
+          <div className="actions col">
+            <span className={this.state.status.toUpperCase()}>{this.state.status.toUpperCase()}</span>
+          </div>
+        </header>
 
-          <Dialog
-            open={this.state?.isOpenDialog!}
-            onClose={() => this.handleDelete(true)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
+        <Divider light />
 
-            <DialogActions>
-              <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
-                No
-              </Button>
-              <Button variant="primary" onClick={() => this.handleDelete(true)} autoFocus>
-                Yes
-              </Button>
-            </DialogActions>
-          </Dialog>
+        <div className="grid-container">
+          <div className="col">
+            <List>
+              <ListItem>
+                {this.state.versions ? (
+                  <div>
+                    <span className="label">Version</span>
+                    <ListItemText primary={this.state.versions ?? '0'} />
+                  </div>
+                ) : null}
+
+                <div>
+                  <span className="label">Used storage</span>
+                  <ListItemText primary={this.state.usedStorage ?? '0'} />
+                </div>
+                <div>
+                  <span className="label">Total storage</span>
+                  <ListItemText primary={this.state.totalStorage ?? '0'} />
+                </div>
+                <div>
+                  <span className="label">Docs count</span>
+                  <ListItemText primary={this.state.docsCount ?? '0'} />
+                </div>
+                <div>
+                  <span className="label">Total nodes</span>
+                  <ListItemText primary={this.state.totalNodes ?? '0'} />
+                </div>
+                <div>
+                  <span className="label">Data nodes</span>
+                  <ListItemText primary={this.state.dataNodes ?? '0'} />
+                </div>
+                <div>
+                  <span className="label"> Hot nodes</span>
+                  <ListItemText primary={this.state.dataHotNodes ?? '0'} />
+                </div>
+                <div>
+                  <span className="label"> Warm nodes</span>
+                  <ListItemText primary={this.state.dataWarmNodes ?? '0'} />
+                </div>
+                <div>
+                  <span className="label"> Cold nodes</span>
+                  <ListItemText primary={this.state.dataColdNodes ?? '0'} />
+                </div>
+
+                <div>
+                  <span className="label">Indices</span>
+                  <ListItemText primary={this.state.numberOfIndices ?? '0'} />
+                </div>
+                <div>
+                  <span className="label">Total shards</span>
+                  <ListItemText primary={this.state.numberOfShards ?? '0'} />
+                </div>
+                <div>
+                  <span className="label">Unassigned shards</span>
+                  <ListItemText primary={this.state.numberOfUnassignedShards ?? '0'} />
+                </div>
+              </ListItem>
+            </List>
+          </div>
+          <div className="col"></div>
         </div>
-      </>
+        <Divider light />
+        <footer>
+          <Stack spacing={2} direction="row">
+            <Button variant="secondary" onClick={this.onDelete}>
+              Delete
+            </Button>
+            <Button variant="secondary" onClick={() => this.onTest()}>
+              Test
+            </Button>
+            <FormControl fullWidth id="select">
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
+                onChange={this.handleChange}
+                renderValue={(value) => {
+                  let text = value.split('-').join(' ');
+                  text = text.charAt(0).toUpperCase() + text.slice(1);
+                  return text ?? 'Monitor type';
+                }}
+              >
+                <MenuItem value={'stack-monitoring'}>Elastic Stack monitoring</MenuItem>
+                <MenuItem value={'index-overview'}>Elasticsearch Index overview</MenuItem>
+                <MenuItem value={'shards-overview'}>Elasticsearch Shards overview</MenuItem>
+                <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
+                <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
+                <MenuItem value={'tasks-analytics'}>Tasks analytics</MenuItem>
+                <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+        </footer>
+
+        <Dialog
+          open={this.state?.isOpenDialog!}
+          onClose={() => this.handleDelete(true)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
+
+          <DialogActions>
+            <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
+              No
+            </Button>
+            <Button variant="primary" onClick={() => this.handleDelete(true)} autoFocus>
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     );
   }
 }

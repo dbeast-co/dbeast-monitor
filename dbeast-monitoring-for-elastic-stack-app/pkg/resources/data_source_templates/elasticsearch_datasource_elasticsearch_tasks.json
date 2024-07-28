@@ -6,7 +6,7 @@
   "typeName": "Elasticsearch",
   "access": "proxy",
   "url": "",
-  "database": "dbeast-mon-es-tasks-20*",
+  "database": "dbeast-mon-es-tasks",
   "basicAuth": true,
   "isDefault": false,
   "withCredentials": false,
