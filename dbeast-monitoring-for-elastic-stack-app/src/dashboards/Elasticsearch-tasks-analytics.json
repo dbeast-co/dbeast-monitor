@@ -98,6 +98,10 @@
               {
                 "id": "custom.width",
                 "value": 115
+              },
+              {
+                "id": "unit",
+                "value": "ms"
               }
             ]
           },
@@ -826,6 +830,10 @@
               {
                 "id": "custom.width",
                 "value": 77
+              },
+              {
+                "id": "unit",
+                "value": "ms"
               }
             ]
           },
@@ -1151,6 +1159,10 @@
                   {
                     "id": "custom.width",
                     "value": 115
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -1769,6 +1781,10 @@
                   {
                     "id": "custom.width",
                     "value": 77
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -2397,6 +2413,10 @@
                   {
                     "id": "custom.width",
                     "value": 112
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -2409,6 +2429,10 @@
                   {
                     "id": "custom.width",
                     "value": 110
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -2749,6 +2773,10 @@
                   {
                     "id": "custom.width",
                     "value": 79
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
@@ -3414,6 +3442,10 @@
                   {
                     "id": "custom.width",
                     "value": 85
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
                   }
                 ]
               },
