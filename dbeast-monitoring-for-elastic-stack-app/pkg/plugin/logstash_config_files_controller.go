@@ -107,7 +107,7 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 
 			WriteFileToZip(zipWriter, fileInternalPath, configFileClone)
 
-			pipelineId := clusterName + "-" + clusterId + "-" + strings.ReplaceAll(configFile.Id, ".conf", "")
+			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
 			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", fileInternalPath)
 		}

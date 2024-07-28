@@ -63,7 +63,7 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "0.7.1",
+    "version": "0.8.0",
     "updated": "%TODAY%"
   },
   "includes": [

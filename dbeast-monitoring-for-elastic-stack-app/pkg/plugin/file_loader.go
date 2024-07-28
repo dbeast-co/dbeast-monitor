@@ -72,11 +72,8 @@ func LoadGrafanaDataSourcesFromFolder(folderPath string) error {
 				log.DefaultLogger.Error("Error parsing file: " + filePath + " " + err.Error())
 				return err
 			}
-
 			templateName := file.Name()[:len(file.Name())-5]
-
 			GrafanaDataSourcesMap[templateName] = templateData
-
 		}
 	}
 	TemplatesJSON, err := json.MarshalIndent(GrafanaDataSourcesMap, "", "")
@@ -95,6 +92,7 @@ func LoadLogstashConfigFromFolder(folderPath string) error {
 
 	files, err := os.ReadDir(folderPath)
 	if err != nil {
+		log.DefaultLogger.Error("Failed to read files from folder " + err.Error())
 		return fmt.Errorf("failed to read files from folder: %v", err)
 	}
 
@@ -103,19 +101,13 @@ func LoadLogstashConfigFromFolder(folderPath string) error {
 			filePath := folderPath + "/" + file.Name()
 			data, err := os.ReadFile(filePath)
 			if err != nil {
-				log.DefaultLogger.Error("Failed to read file %s: %v", file.Name(), err)
+				log.DefaultLogger.Error("Failed to read file: %s: %v", file.Name(), err)
 				continue
 			}
-			log.DefaultLogger.Info("Reading file: %s\n", filePath)
-
-			//templateName := file.Name()[:len(file.Name())-5]
-			//templateName := file.Name()[:len(file.Name())-5]
+			log.DefaultLogger.Info("Reading file: " + filePath)
 
 			LSConfigs[file.Name()] = string(data[:])
-			//LSConfigs[templateName] = string(data[:])
 		}
 	}
-
 	return nil
-
 }
