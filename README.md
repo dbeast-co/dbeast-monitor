@@ -7,14 +7,12 @@ Elasticsearch, Logstash, and Kibana. This application supports the monitoring of
 used for the analytics is delivered by Beats and Logstash and stored in Elasticsearch. You can use your production
 Elasticsearch cluster as the data storage, but we strongly recommend using a dedicated monitoring cluster.
 
-## Playground
-
-You can try DBeast Monitor today in our [playground](https://play.dbeast.co/a/dbeast-dbeastmonitor-app)
 ## Documentation
 
 The project documentation is available on our [wiki](https://github.com/dbeast-co/dbeast-monitor/wiki).
 
 - [Installation Instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions)
+- [Upgrade Instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Upgrade-Instructions)
 - [Add new cluster](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster)
 - [Dashboards](https://github.com/dbeast-co/dbeast-monitor/wiki/Dashboards)
 
@@ -30,15 +28,16 @@ options:
 5. Logstash pipeline analytics
 6. Elasticsearch ingest pipelines overview
 7. Elasticsearch ingest pipeline analytics
-8. Elasticsearch index level monitor
-9. Elasticsearch index patterns monitor
-10. Elasticsearch Tasks monitoring
+8. Elasticsearch tasks analytics
+9. Elasticsearch index level monitor
+10. Elasticsearch index patterns monitor
 11. Elasticsearch shard level monitor
 12. Machine Learning Jobs monitoring
 
 ## Requirements
 
-- Grafana 9x
+- Grafana 9.4+
 - Java 8+
-- Logstash 8.8+
+- Logstash 8.1+
 - Elasticsearch 8+
+- Elasticsearch monitoring cluster 8.7+

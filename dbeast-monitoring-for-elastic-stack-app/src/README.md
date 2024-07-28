@@ -40,3 +40,4 @@ options:
 - Java 8+
 - Logstash 8.1+
 - Elasticsearch 8+
+- Elasticsearch monitoring cluster 8.7+

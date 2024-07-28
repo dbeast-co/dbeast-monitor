@@ -1,5 +1,26 @@
 # Changelog
 
+## Version 0.8.0
+* All data sources have been updated to use aliases, directing them to Data Streams, TSDS, or Indexes.
+* Note: There is no backward compatibility with the previous version.
+* The minimum required version for the monitoring cluster is now 8.7. (Production clusters can still operate on older versions.)
+
+- Features:
+  * Application installer [#37](https://github.com/dbeast-co/dbeast-monitor/issues/37)
+    Developed configurations downloader
+  * [FEAT] Metric indices to the TSDS migration [#84](https://github.com/dbeast-co/dbeast-monitor/issues/84)
+  * [FEAT] Add ILM policies for all Index templates [#32](https://github.com/dbeast-co/dbeast-monitor/issues/32)
+  * [FIX] Fix API requests in the "Cluster list"[#23](https://github.com/dbeast-co/dbeast-monitor/issues/23)
+  * [FEAT] In the "Tasks API" flow fix running time units [#92](https://github.com/dbeast-co/dbeast-monitor/issues/92)
+  * [FEAT] Logstash "Elasticsearch tasks" pipeline - Add ESQL tasks parsing [#73](https://github.com/dbeast-co/dbeast-monitor/issues/73)
+
+- Bug fixes
+  * [BUG] Backend remove special chars from the cluster name [#100](https://github.com/dbeast-co/dbeast-monitor/issues/100)
+  * [BUG] In the Add new cluster panel, the "Kibana host" field is supposed to be not required [#90](https://github.com/dbeast-co/dbeast-monitor/issues/90)
+
+- Updated dashboards
+  All dashboards updates to the aliases usage
+
 ## Version 0.7.1
 - Bug fixes
   * Logstash Thread pools pipeline - parsing exception [#67](https://github.com/dbeast-co/dbeast-monitor/issues/67)
@@ -14,7 +35,7 @@
   * Elasticsearch ingest pipeline overview
   * Elasticsearch ingest pipeline analytics
   * Elastic stack monitor
-  
+
 ## Version 0.7.0
 - Bug fixes
   * Incorrect Aggregation of Pipeline Data in Logstash Overview Dashboard [#48](https://github.com/dbeast-co/dbeast-monitor/issues/48)
