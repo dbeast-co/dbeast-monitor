@@ -160,7 +160,7 @@ func FetchClusterInfo(credentials Credentials) (string, string, error) {
 					return "ERROR", "ERROR", err
 				}
 				if name, ok := result["cluster_name"].(string); ok {
-					clusterName = name
+					clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(name, "*", ""), "?", ""), ",", ""), ".", "")
 				}
 				if uidVal, ok := result["cluster_uuid"].(string); ok {
 					uid = uidVal
