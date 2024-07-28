@@ -234,3 +234,17 @@
     }
   }
 }
+[data-testid='Spinner'] {
+  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+
+  .fa-spinner{
+    font-size: 4rem;
+  }
+}
+

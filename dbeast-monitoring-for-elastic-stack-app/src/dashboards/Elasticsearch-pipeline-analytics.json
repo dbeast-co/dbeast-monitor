@@ -512,9 +512,6 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "monitoring-cluster",
-          "value": "h_h2DLzwS9iBcztenKOQ-Q"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
@@ -548,16 +545,13 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod--(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
-          "text": "Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-20-monitoring-cluster--h_h2DLzwS9iBcztenKOQ-Q",
-          "value": "Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-20-monitoring-cluster--h_h2DLzwS9iBcztenKOQ-Q"
         },
         "hide": 2,
         "includeAll": false,
@@ -567,15 +561,12 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-20-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "selected": false,
-          "text": "Elasticsearch-direct-mon-monitoring-cluster--h_h2DLzwS9iBcztenKOQ-Q",
-          "value": "Elasticsearch-direct-mon-monitoring-cluster--h_h2DLzwS9iBcztenKOQ-Q"
         },
         "hide": 2,
         "includeAll": false,
@@ -586,15 +577,12 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-mon-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-mon--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "selected": false,
-          "text": "filebeat-8.11.1-elasticsearch-gc-pipeline",
-          "value": "filebeat-8.11.1-elasticsearch-gc-pipeline"
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
