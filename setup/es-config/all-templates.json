@@ -24,6 +24,58 @@ PUT _ilm/policy/dbeast-tsds-30d
   }
 }
 
+PUT _ilm/policy/dbeast-ds-30d
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "7d",
+            "max_docs": 200000000,
+            "max_primary_shard_size": "50gb"
+          },
+          "forcemerge": {
+            "max_num_segments": 1
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+
+PUT _ilm/policy/dbeast-index-30d
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "7d",
+            "max_docs": 200000000,
+            "max_primary_shard_size": "50gb"
+          },
+          "forcemerge": {
+            "max_num_segments": 1
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+
 PUT _component_template/dbeast-mon-default-settings-component
 {
   "template": {
@@ -1891,8 +1943,7 @@ PUT _index_template/dbeast-mon-tsds-es-index-stats-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "event.dataset"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -2305,8 +2356,7 @@ PUT _index_template/dbeast-mon-tsds-es-shards-stats-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "event.dataset"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -2505,8 +2555,7 @@ PUT _index_template/dbeast-mon-tsds-es-thread_pools-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "elasticsearch.node.name"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -3370,8 +3419,7 @@ PUT _index_template/dbeast-mon-tsds-logstash-metrics-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "host.hostname"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -3623,7 +3671,7 @@ PUT _index_template/dbeast-mon-ds-logstash-logs-historical-template
     "settings": {
       "index": {
         "lifecycle": {
-          "name": "dbeast-tsds-30d"
+          "name": "dbeast-ds-30d"
         }
       }
     },
@@ -3855,6 +3903,14 @@ PUT _index_template/dbeast-mon-index-es-tasks-historical-template
     "dbeast-mon-index-es-tasks-*"
   ],
   "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-index-30d",
+          "rollover_alias": "dbeast-mon-es-tasks"
+        }
+      }
+    },
     "aliases": {
       "dbeast-mon-es-tasks": {}
     }
@@ -4123,3 +4179,116 @@ PUT _index_template/dbeast-mon-index-es-ingest_pipelines-status-template
   }
 }
 
+PUT _component_template/dbeast-mon-index-corrupted-data-mapping-component
+{
+  "template": {
+    "settings": {},
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "elasticsearch": {
+          "properties": {
+            "error": {
+              "properties": {
+                "message": {
+                  "type": "text"
+                }
+              }
+            },
+            "host": {
+              "properties": {
+                "hostname": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "http": {
+              "properties": {
+                "request": {
+                  "properties": {
+                    "method": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "tags": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "url": {
+              "properties": {
+                "full": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "event": {
+          "properties": {
+            "duration": {
+              "type": "long"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT _index_template/dbeast-mon-index-corrupted-data-historical-template
+{
+  "index_patterns": [
+    "dbeast-mon-index-corrupted-data-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-index-30d",
+          "rollover_alias": "dbeast-mon-corrupted-data"
+        }
+      }
+    },
+    "aliases": {
+      "dbeast-mon-corrupted-data": {}
+    }
+  },
+  "composed_of": [
+    "dbeast-mon-index-corrupted-data-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "priority": 1,
+  "_meta": {
+    "description": "This template used for the corrupted data, that can't be sent to TSDS"
+  }
+}
+
+PUT %3Cdbeast-mon-index-es-tasks-%7Bnow%2Fd%7D-000001%3E
+{
+  "aliases": {
+    "dbeast-mon-es-tasks": {
+      "is_write_index": true
+    }
+  }
+}
+PUT %3Cdbeast-mon-index-corrupted-data-%7Bnow%2Fd%7D-000001%3E
+{
+  "aliases": {
+    "dbeast-mon-corrupted-data": {
+      "is_write_index": true
+    }
+  }
+}
