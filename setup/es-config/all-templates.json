@@ -4217,6 +4217,71 @@ PUT _component_template/dbeast-mon-index-corrupted-data-mapping-component
                 }
               }
             },
+            "node": {
+              "properties": {
+                "stats": {
+                  "properties": {
+                    "thread_pool": {
+                      "properties": {
+                        "@version": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        },
+                        "error": {
+                          "properties": {
+                            "message": {
+                              "type": "text"
+                            }
+                          }
+                        },
+                        "host": {
+                          "properties": {
+                            "hostname": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "http": {
+                          "properties": {
+                            "request": {
+                              "properties": {
+                                "method": {
+                                  "type": "keyword",
+                                  "ignore_above": 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "tags": {
+                          "type": "text",
+                          "fields": {
+                            "keyword": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "url": {
+                          "properties": {
+                            "full": {
+                              "type": "text",
+                              "fields": {
+                                "keyword": {
+                                  "type": "keyword",
+                                  "ignore_above": 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "tags": {
               "type": "keyword",
               "ignore_above": 256
@@ -4278,17 +4343,17 @@ PUT _index_template/dbeast-mon-index-corrupted-data-historical-template
 
 PUT %3Cdbeast-mon-index-es-tasks-%7Bnow%2Fd%7D-000001%3E
 {
-  "aliases": {
-    "dbeast-mon-es-tasks": {
-      "is_write_index": true
-    }
-  }
+"aliases": {
+"dbeast-mon-es-tasks": {
+"is_write_index": true
+}
+}
 }
 PUT %3Cdbeast-mon-index-corrupted-data-%7Bnow%2Fd%7D-000001%3E
 {
-  "aliases": {
-    "dbeast-mon-corrupted-data": {
-      "is_write_index": true
-    }
-  }
+"aliases": {
+"dbeast-mon-corrupted-data": {
+"is_write_index": true
+}
+}
 }
