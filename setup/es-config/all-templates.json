@@ -3755,7 +3755,7 @@ PUT _component_template/dbeast-mon-index-es-tasks-mapping-component
                   }
                 },
                 "running_time": {
-                  "type": "integer"
+                  "type": "long"
                 },
                 "start_time": {
                   "type": "date"
