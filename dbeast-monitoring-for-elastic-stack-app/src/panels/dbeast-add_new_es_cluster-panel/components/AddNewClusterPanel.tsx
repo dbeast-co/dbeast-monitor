@@ -497,19 +497,12 @@ export const AddNewClusterPanel = () => {
             downloadFiles(url, clusterToSend);
         } else {
             if (logstashList.length > 0) {
-                let hosts: Host[] = [
-                    {
-                        server_address: '',
-                        logstash_api_host: '',
-                        logstash_logs_folder: '',
-                    },
-                ];
-                cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = [];
-                hosts = logstashList.map((logstash, index) => {
-                    hosts[index].server_address = logstash?.serverAddress;
-                    hosts[index].logstash_api_host! = logstash.logstashApiHost;
-                    hosts[index].logstash_logs_folder! = logstash.logstashLogsFolder;
-                    return hosts[index];
+                const hosts: Host[] = logstashList.map((logstash) => {
+                    return {
+                        server_address: logstash?.serverAddress || '',
+                        logstash_api_host: logstash?.logstashApiHost || '',
+                        logstash_logs_folder: logstash?.logstashLogsFolder || '',
+                    };
                 });
 
                 cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = hosts;
