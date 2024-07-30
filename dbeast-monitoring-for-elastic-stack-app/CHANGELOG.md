@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.8.1
+- Bug fixes
+  * [BUG] Incorrect elasticsearch.tasks.running_time mapping in the Tasks mapping #109[#109](https://github.com/dbeast-co/dbeast-monitor/issues/109)
+  * [BUG] Incorrect definition of the host.hostname in the Logstash logs pipeline #110[#110](https://github.com/dbeast-co/dbeast-monitor/issues/110)
+  * [BUG] In the "Add new cluster" panel The logstash "Download" button don't work in case of the two or more Logstashes #111[#37](https://github.com/dbeast-co/dbeast-monitor/issues/111)
+
+- Features:
+  * [FEAT] Add corrupted data index for the TSDS Logstash configurations #112[#112](https://github.com/dbeast-co/dbeast-monitor/issues/112)
+
 ## Version 0.8.0
 * All data sources have been updated to use aliases, directing them to Data Streams, TSDS, or Indexes.
 * Note: There is no backward compatibility with the previous version.
