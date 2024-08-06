@@ -110,7 +110,7 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 
 			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", fileInternalPath)
+			pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/%s\"\n\n", fileInternalPath)
 		}
 	}
 	WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
@@ -129,7 +129,7 @@ func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zip
 				WriteFileToZip(zipWriter, folderPath, configFileClone)
 				pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "")
 				pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", "dbeast-mon"+"/"+configFile.Id)
+				pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/dbeast-mon/%s\"\n\n", configFile.Id)
 			}
 		}
 		WriteFileToZip(zipWriter, filepath.Join(logstashHost.ServerAddress, "pipelines.yml"), pipelineFile)
