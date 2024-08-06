@@ -103,11 +103,12 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 
-			fileInternalPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
+			fileInternalPath := clusterName + "-" + clusterId + "/" + configFile.Id
+			//fileInternalPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
 
 			WriteFileToZip(zipWriter, fileInternalPath, configFileClone)
 
-			pipelineId := clusterName + "-" + clusterId + "-" + strings.ReplaceAll(configFile.Id, ".conf", "")
+			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
 			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", fileInternalPath)
 		}
@@ -128,7 +129,7 @@ func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zip
 				WriteFileToZip(zipWriter, folderPath, configFileClone)
 				pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "")
 				pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", filepath.Join("dbeast-mon", configFile.Id))
+				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", "dbeast-mon"+"/"+configFile.Id)
 			}
 		}
 		WriteFileToZip(zipWriter, filepath.Join(logstashHost.ServerAddress, "pipelines.yml"), pipelineFile)

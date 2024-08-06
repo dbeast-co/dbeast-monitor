@@ -24,6 +24,58 @@ PUT _ilm/policy/dbeast-tsds-30d
   }
 }
 
+PUT _ilm/policy/dbeast-ds-30d
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "7d",
+            "max_docs": 200000000,
+            "max_primary_shard_size": "50gb"
+          },
+          "forcemerge": {
+            "max_num_segments": 1
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+
+PUT _ilm/policy/dbeast-index-30d
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "7d",
+            "max_docs": 200000000,
+            "max_primary_shard_size": "50gb"
+          },
+          "forcemerge": {
+            "max_num_segments": 1
+          }
+        }
+      },
+      "delete": {
+        "min_age": "30d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+
 PUT _component_template/dbeast-mon-default-settings-component
 {
   "template": {
@@ -32,7 +84,7 @@ PUT _component_template/dbeast-mon-default-settings-component
         "codec": "best_compression",
         "refresh_interval": "30s",
         "number_of_shards": "1",
-        "number_of_replicas": "1"
+        "auto_expand_replicas": "0-1"
       }
     }
   }
@@ -1891,8 +1943,7 @@ PUT _index_template/dbeast-mon-tsds-es-index-stats-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "event.dataset"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -2305,8 +2356,7 @@ PUT _index_template/dbeast-mon-tsds-es-shards-stats-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "event.dataset"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -2505,8 +2555,7 @@ PUT _index_template/dbeast-mon-tsds-es-thread_pools-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "elasticsearch.node.name"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -3370,8 +3419,7 @@ PUT _index_template/dbeast-mon-tsds-logstash-metrics-historical-template
         },
         "mode": "time_series",
         "routing_path": [
-          "elasticsearch.cluster.id",
-          "host.hostname"
+          "elasticsearch.cluster.id"
         ]
       }
     },
@@ -3623,7 +3671,7 @@ PUT _index_template/dbeast-mon-ds-logstash-logs-historical-template
     "settings": {
       "index": {
         "lifecycle": {
-          "name": "dbeast-tsds-30d"
+          "name": "dbeast-ds-30d"
         }
       }
     },
@@ -3755,7 +3803,7 @@ PUT _component_template/dbeast-mon-index-es-tasks-mapping-component
                   }
                 },
                 "running_time": {
-                  "type": "integer"
+                  "type": "long"
                 },
                 "start_time": {
                   "type": "date"
@@ -3855,6 +3903,14 @@ PUT _index_template/dbeast-mon-index-es-tasks-historical-template
     "dbeast-mon-index-es-tasks-*"
   ],
   "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-index-30d",
+          "rollover_alias": "dbeast-mon-es-tasks"
+        }
+      }
+    },
     "aliases": {
       "dbeast-mon-es-tasks": {}
     }
@@ -4123,206 +4179,181 @@ PUT _index_template/dbeast-mon-index-es-ingest_pipelines-status-template
   }
 }
 
-PUT _component_template/dbeast-mon-ds-logstash-logs-mapping-component
+PUT _component_template/dbeast-mon-index-corrupted-data-mapping-component
 {
   "template": {
-    "settings": {
-      "index": {
-        "analysis": {
-          "normalizer": {
-            "lowercase_normalizer": {
-              "filter": [
-                "lowercase",
-                "asciifolding"
-              ],
-              "type": "custom",
-              "char_filter": []
-            }
-          }
-        }
-      }
-    },
+    "settings": {},
     "mappings": {
-      "dynamic_templates": [],
       "properties": {
-        "logstash": {
-          "type": "object",
-          "properties": {
-            "exception": {
-              "type": "object",
-              "properties": {
-                "mapping_exception_field": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "reason": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "type": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                }
-              }
-            },
-            "node": {
-              "type": "object",
-              "properties": {
-                "stats": {
-                  "type": "object",
-                  "properties": {
-                    "pipeline": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "ignore_above": 256,
-                          "type": "keyword"
-                        }
-                      }
-                    },
-                    "logstash": {
-                      "type": "object",
-                      "properties": {
-                        "host": {
-                          "ignore_above": 256,
-                          "type": "keyword"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "elasticsearch": {
-              "type": "object",
-              "properties": {
-                "cluster": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "ignore_above": 256,
-                      "type": "keyword"
-                    }
-                  }
-                }
-              }
-            },
-            "log": {
-              "type": "object",
-              "properties": {
-                "pipeline_listener_port": {
-                  "type": "integer"
-                },
-                "pipeline_action": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "module": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "pipeline_generated_id": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "pipeline_id": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "type": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "pipeline_name": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                },
-                "pipeline_listener_host": {
-                  "type": "ip"
-                },
-                "timestamp": {
-                  "type": "date"
-                }
-              }
-            },
-            "message": {
-              "type": "text"
-            }
-          }
-        },
         "@timestamp": {
           "type": "date"
         },
         "elasticsearch": {
-          "type": "object",
           "properties": {
-            "cluster": {
-              "type": "object",
+            "error": {
               "properties": {
-                "id": {
-                  "ignore_above": 256,
-                  "type": "keyword"
-                }
-              }
-            }
-          }
-        },
-        "log": {
-          "type": "object",
-          "properties": {
-            "file": {
-              "type": "object",
-              "properties": {
-                "path": {
-                  "ignore_above": 256,
-                  "type": "keyword"
+                "message": {
+                  "type": "text"
                 }
               }
             },
-            "level": {
-              "ignore_above": 256,
-              "type": "keyword"
-            }
-          }
-        },
-        "@version": {
-          "type": "integer"
-        },
-        "host": {
-          "type": "object",
-          "properties": {
-            "hostname": {
-              "ignore_above": 256,
-              "type": "keyword"
+            "host": {
+              "properties": {
+                "hostname": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
             },
-            "name": {
-              "ignore_above": 256,
-              "type": "keyword"
+            "http": {
+              "properties": {
+                "request": {
+                  "properties": {
+                    "method": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "node": {
+              "properties": {
+                "stats": {
+                  "properties": {
+                    "thread_pool": {
+                      "properties": {
+                        "@version": {
+                          "type": "keyword",
+                          "ignore_above": 256
+                        },
+                        "error": {
+                          "properties": {
+                            "message": {
+                              "type": "text"
+                            }
+                          }
+                        },
+                        "host": {
+                          "properties": {
+                            "hostname": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "http": {
+                          "properties": {
+                            "request": {
+                              "properties": {
+                                "method": {
+                                  "type": "keyword",
+                                  "ignore_above": 256
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "tags": {
+                          "type": "text",
+                          "fields": {
+                            "keyword": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "url": {
+                          "properties": {
+                            "full": {
+                              "type": "text",
+                              "fields": {
+                                "keyword": {
+                                  "type": "keyword",
+                                  "ignore_above": 256
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "tags": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "url": {
+              "properties": {
+                "full": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
             }
           }
         },
         "event": {
-          "type": "object",
           "properties": {
-            "original": {
-              "type": "text"
-            },
-            "module": {
-              "ignore_above": 256,
-              "type": "keyword"
-            },
-            "dataset": {
-              "ignore_above": 256,
-              "type": "keyword"
+            "duration": {
+              "type": "long"
             }
           }
         }
       }
     }
-  },
-  "_meta": {
-    "description": "The default mappings for the Logstash logs"
   }
 }
 
+PUT _index_template/dbeast-mon-index-corrupted-data-historical-template
+{
+  "index_patterns": [
+    "dbeast-mon-index-corrupted-data-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-index-30d",
+          "rollover_alias": "dbeast-mon-corrupted-data"
+        }
+      }
+    },
+    "aliases": {
+      "dbeast-mon-corrupted-data": {}
+    }
+  },
+  "composed_of": [
+    "dbeast-mon-index-corrupted-data-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "priority": 1,
+  "_meta": {
+    "description": "This template used for the corrupted data, that can't be sent to TSDS"
+  }
+}
 
+PUT %3Cdbeast-mon-index-es-tasks-%7Bnow%2Fd%7D-000001%3E
+{
+"aliases": {
+"dbeast-mon-es-tasks": {
+"is_write_index": true
+}
+}
+}
+PUT %3Cdbeast-mon-index-corrupted-data-%7Bnow%2Fd%7D-000001%3E
+{
+"aliases": {
+"dbeast-mon-corrupted-data": {
+"is_write_index": true
+}
+}
+}
