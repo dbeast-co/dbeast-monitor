@@ -12,6 +12,7 @@ var (
 	EsILMTemplatesFolder                = filepath.Join(EsComponentsTemplatesFolder, "ilm_policies")
 	EsIndexComponentsTemplatesFolder    = filepath.Join(EsComponentsTemplatesFolder, "component_templates")
 	EsIndexTemplatesTemplatesFolder     = filepath.Join(EsComponentsTemplatesFolder, "index_templates")
+	LogstashConfigurationsFolder        = "/opt/dbeast/logstash/conf.d"
 	LogstashConfigurationsFolderLinux   = "/etc/logstash/conf.d"
 	LogstashConfigurationsFolderWindows = "c:\\test2\\logstash-8.12.2-windows-x86_64\\logstash-8.12.2\\config"
 )

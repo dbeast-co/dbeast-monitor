@@ -23,7 +23,7 @@ func LoadInitData(applicationFolder string) error {
 		return err
 	}
 	log.DefaultLogger.Info("Loading the Elasticsearch component templates")
-	err = LoadESComponentTemplates(filepath.Join(applicationFolder, EsComponentsTemplatesFolder))
+	err = LoadESComponentTemplates(filepath.Join(applicationFolder, EsIndexComponentsTemplatesFolder))
 	if err != nil {
 		log.DefaultLogger.Error("Error in the ES Component templates loading")
 		return err
@@ -169,6 +169,6 @@ func ReadFileToByteArray(filePath string) ([]byte, error) {
 		log.DefaultLogger.Error("Failed to read file %s: %v", filePath, err)
 		return nil, fmt.Errorf("failed to read files from folder: %v", err)
 	}
-	log.DefaultLogger.Debug("Reading file: ", filePath)
+	log.DefaultLogger.Info("Reading file: ", filePath)
 	return data, nil
 }

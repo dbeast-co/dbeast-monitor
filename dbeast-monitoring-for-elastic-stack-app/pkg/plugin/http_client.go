@@ -111,12 +111,12 @@ func ProcessPUTRequest(credentials Credentials, requestURL string, body string) 
 		if err != nil {
 			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
 		} else if len(body) > 0 {
-			err := json.Unmarshal([]byte(body), &result)
+			err := json.Unmarshal(body, &result)
 			if err != nil {
 				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
 			}
 		}
-		log.DefaultLogger.Info("Response from the Put operation: ", result)
+		log.DefaultLogger.Info("Response from the Put operation: " + string(body))
 	}
 
 	return response, nil

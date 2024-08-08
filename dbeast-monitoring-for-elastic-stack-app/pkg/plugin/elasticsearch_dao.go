@@ -89,9 +89,9 @@ func GetClusterInfo(credentials Credentials) (string, string, error) {
 
 func SendILMToCluster(credentials Credentials, policyName string, policyContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_ilm/policy/" + policyName
-	log.DefaultLogger.Debug("Request path: ", requestURL)
-	log.DefaultLogger.Debug("Request host: ", credentials.Host)
-	log.DefaultLogger.Debug("Request body: ", policyContent)
+	log.DefaultLogger.Info("Request path: " + requestURL)
+	log.DefaultLogger.Debug("Request host: " + credentials.Host)
+	log.DefaultLogger.Debug("Request body: " + policyContent)
 	response, err := ProcessPUTRequest(credentials, requestURL, policyContent)
 
 	if err != nil {
@@ -104,9 +104,9 @@ func SendILMToCluster(credentials Credentials, policyName string, policyContent 
 
 func SendComponentTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_component_template/" + templateName
-	log.DefaultLogger.Debug("Request path: ", requestURL)
-	log.DefaultLogger.Debug("Request host: ", credentials.Host)
-	log.DefaultLogger.Debug("Request body: ", templateContent)
+	log.DefaultLogger.Info("Request path: " + requestURL)
+	log.DefaultLogger.Debug("Request host: " + credentials.Host)
+	log.DefaultLogger.Debug("Request body: " + templateContent)
 	response, err := ProcessPUTRequest(credentials, requestURL, templateContent)
 
 	if err != nil {
@@ -119,9 +119,9 @@ func SendComponentTemplateToCluster(credentials Credentials, templateName string
 
 func SendIndexTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_index_template/" + templateName
-	log.DefaultLogger.Debug("Request path: ", requestURL)
-	log.DefaultLogger.Debug("Request host: ", credentials.Host)
-	log.DefaultLogger.Debug("Request body: ", templateContent)
+	log.DefaultLogger.Info("Request path: " + requestURL)
+	log.DefaultLogger.Debug("Request host: " + credentials.Host)
+	log.DefaultLogger.Debug("Request body: " + templateContent)
 	response, err := ProcessPUTRequest(credentials, requestURL, templateContent)
 
 	if err != nil {

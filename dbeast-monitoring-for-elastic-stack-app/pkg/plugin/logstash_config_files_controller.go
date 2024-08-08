@@ -2,11 +2,13 @@ package plugin
 
 import (
 	"archive/zip"
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -36,14 +38,14 @@ type LogstashMonitoringConfigurationFiles struct {
 
 var LSConfigs = make(map[string]string)
 
-func (a *App) GenerateElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
+func (a *App) DownloadElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	ctxLogger.Info("Got request for the Elasticsearch configuration files generation")
 
 	GenerateLogstashConfigurationFiles(w, req, false, "ESConfigurationFiles.zip")
 }
 
-func (a *App) GenerateLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
+func (a *App) DownloadLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	ctxLogger.Info("Got request for the Logstash configuration files generation")
 
@@ -110,7 +112,7 @@ func GenerateESLogstashConfigurationFiles(project Cluster, clusterId string, clu
 
 			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", fileInternalPath)
+			pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/%s\"\n\n", fileInternalPath)
 		}
 	}
 	WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
@@ -129,7 +131,7 @@ func GenerateLSLogstashConfigurationFiles(project Cluster, clusterId string, zip
 				WriteFileToZip(zipWriter, folderPath, configFileClone)
 				pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "")
 				pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-				pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", "dbeast-mon"+"/"+configFile.Id)
+				pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/dbeast-mon/%s\"\n\n", configFile.Id)
 			}
 		}
 		WriteFileToZip(zipWriter, filepath.Join(logstashHost.ServerAddress, "pipelines.yml"), pipelineFile)
@@ -168,4 +170,34 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 	if err != nil {
 		log.DefaultLogger.Error(err.Error())
 	}
+}
+
+func WriteFilesToDisk(fileInternalPath string, content string, logger log.Logger) {
+	var fileAbsoluteInternalPath = filepath.Join(LogstashConfigurationsFolder, fileInternalPath)
+
+	logger.Debug("File content: ", content)
+	dir := filepath.Dir(fileAbsoluteInternalPath)
+	err := os.MkdirAll(dir, os.ModePerm)
+	if err != nil {
+		logger.Error("Error creating directory:", err)
+		return
+	}
+
+	// Save the JSON data to a file
+	file, err := os.Create(fileAbsoluteInternalPath)
+	if err != nil {
+		logger.Error("Error creating file:", err)
+		return
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	_, err = writer.WriteString(content + "\n")
+	if err != nil {
+		logger.Error("Error writing to file:", err)
+		return
+	}
+
+	logger.Info("Object saved to file: ", fileInternalPath)
+
 }

@@ -199,7 +199,6 @@ func SendILMToMonitoringCluster(credentials Credentials) error {
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	return nil
 }
@@ -207,13 +206,12 @@ func SendILMToMonitoringCluster(credentials Credentials) error {
 func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
 	log.DefaultLogger.Info("Components templates ingest")
 	for templateName, templateContent := range ESComponentTemplatesMap {
-		log.DefaultLogger.Info("Inject template: ", templateName, " To the cluster: ", credentials.Host)
-		log.DefaultLogger.Info("Template content: ", templateContent)
+		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Debug("Template content: ", templateContent)
 		_, err := SendComponentTemplateToCluster(credentials, templateName, templateContent)
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	return nil
 }
@@ -221,13 +219,12 @@ func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
 func SendIndexTemplatesToMonitoringCluster(credentials Credentials) error {
 	log.DefaultLogger.Info("Index templates ingest")
 	for templateName, templateContent := range ESIndexTemplatesMap {
-		log.DefaultLogger.Info("Inject template: ", templateName, " To the cluster: ", credentials.Host)
-		log.DefaultLogger.Info("Template content: ", templateContent)
+		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Debug("Template content: ", templateContent)
 		_, err := SendIndexTemplateToCluster(credentials, templateName, templateContent)
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	return nil
 }
