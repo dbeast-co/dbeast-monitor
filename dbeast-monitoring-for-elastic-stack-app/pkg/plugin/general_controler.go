@@ -5,11 +5,6 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
-type Cluster struct {
-	ClusterConnectionSettings EnvironmentConfig      `json:"cluster_connection_settings"`
-	LogstashConfigurations    LogstashConfigurations `json:"logstash_configurations"`
-}
-
 /*
 CloneObject creates a deep copy of the provided JSON template.
 It marshals the template into JSON and then unmarshal it into a new interface{} to create a clone.

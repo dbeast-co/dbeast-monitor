@@ -8,25 +8,7 @@ import (
 	"strings"
 )
 
-var NewCluster Cluster
-
-type Credentials struct {
-	Host                  string `json:"host"`
-	AuthenticationEnabled bool   `json:"authentication_enabled"`
-	Username              string `json:"username"`
-	Password              string `json:"password"`
-	Status                string `json:"status"`
-}
-
-type EnvironmentConfig struct {
-	Prod struct {
-		Elasticsearch Credentials `json:"elasticsearch"`
-		Kibana        Credentials `json:"kibana"`
-	} `json:"prod"`
-	Mon struct {
-		Elasticsearch Credentials `json:"elasticsearch"`
-	} `json:"mon"`
-}
+var NewCluster Project
 
 var GrafanaDataSourcesMap = make(map[string]interface{})
 
@@ -89,7 +71,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 	ctxLogger.Info("Got request for the new cluster save")
 	response.Header().Add("Content-Type", "application/json")
 
-	var cluster Cluster
+	var cluster Project
 	if err := json.NewDecoder(request.Body).Decode(&cluster); err != nil {
 		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
 		response.WriteHeader(http.StatusBadRequest)

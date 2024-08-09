@@ -7,21 +7,6 @@ import (
 	"net/http"
 )
 
-type Status struct {
-	Status string `json:"status"`
-	Error  string `json:"error"`
-}
-
-type StatusData struct {
-	Prod struct {
-		Elasticsearch Status `json:"elasticsearch"`
-		Kibana        Status `json:"kibana"`
-	} `json:"prod"`
-	Mon struct {
-		Elasticsearch Status `json:"elasticsearch"`
-	} `json:"mon"`
-}
-
 /*
 	TestClusterHandler handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
 
