@@ -8,16 +8,6 @@ import (
 	"strings"
 )
 
-var NewCluster Project
-
-var GrafanaDataSourcesMap = make(map[string]interface{})
-
-var ESComponentTemplatesMap = make(map[string]string)
-
-var ESIndexTemplatesMap = make(map[string]string)
-
-var ESILMTemplatesMap = make(map[string]string)
-
 func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Request) {
 	response.Header().Add("Content-Type", "application/json")
 	response.WriteHeader(http.StatusOK)
@@ -88,7 +78,6 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		return
 	}
 
-	//TODO Add validation for the templates already exists
 	if cluster.MonitoringClusterInjection.ILMPoliciesInjection {
 		err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
 		if err != nil {
@@ -99,7 +88,6 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		}
 	}
 
-	//TODO Add validation for the templates already exists
 	if cluster.MonitoringClusterInjection.TemplatesInjection {
 		err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
 		if err != nil {
@@ -108,7 +96,6 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 			return
 		}
-		//TODO Add validation for the templates already exists
 		err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
 		if err != nil {
 			log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
@@ -117,6 +104,17 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 			return
 		}
 	}
+
+	if cluster.MonitoringClusterInjection.TemplatesInjection {
+		err = SendFirstIndicesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+		if err != nil {
+			log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
+			response.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+			return
+		}
+	}
+
 	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
 
 	UpdatedTemplates := UpdateDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
@@ -263,6 +261,18 @@ func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
 		_, err := SendComponentTemplateToCluster(credentials, templateName, templateContent)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func SendFirstIndicesToMonitoringCluster(credentials Credentials) error {
+	log.DefaultLogger.Info("First indices ingest")
+	for templateName, templateContent := range ESFirstIndicesTemplatesMap {
+		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
+		log.DefaultLogger.Debug("Template content: ", templateContent)
+		_, err := SendFirstIndicesToCluster(credentials, templateName, templateContent)
 		if err != nil {
 			return err
 		}
