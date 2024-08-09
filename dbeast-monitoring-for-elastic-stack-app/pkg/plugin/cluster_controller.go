@@ -3,6 +3,7 @@ package plugin
 import (
 	"encoding/json"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -35,78 +36,147 @@ var ESIndexTemplatesMap = make(map[string]string)
 
 var ESILMTemplatesMap = make(map[string]string)
 
-func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Request) {
+	response.Header().Add("Content-Type", "application/json")
+	response.WriteHeader(http.StatusOK)
 	newClusterForSend, err := json.MarshalIndent(NewCluster, "", "")
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal cluster template"})
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": "Failed to marshal cluster template"})
 		return
 	}
-	w.Write(newClusterForSend)
+	response.Write(newClusterForSend)
 }
 
-func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
+func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Request) {
 
-	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
-	w.Header().Add("Content-Type", "application/json")
+	response.Header().Add("Content-Type", "application/json")
 
 	var environmentConfig EnvironmentConfig
-	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
+	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
 		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
-	defer req.Body.Close()
+	defer request.Body.Close()
 
 	clusterNameProd, uidProd, err := GetClusterInfo(environmentConfig.Prod.Elasticsearch)
 	if err != nil {
 		log.DefaultLogger.Error("Error while receiving cluster info: " + err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+
+	updatedTemplates := UpdateDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
+
+	updatedTemplatesJSON, err := json.MarshalIndent(updatedTemplates, "", "")
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+	response.WriteHeader(http.StatusOK)
+	response.Write(updatedTemplatesJSON)
+}
+
+func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Request) {
+
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the new cluster save")
+	response.Header().Add("Content-Type", "application/json")
+
+	var cluster Cluster
+	if err := json.NewDecoder(request.Body).Decode(&cluster); err != nil {
+		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+	defer request.Body.Close()
+
+	clusterNameProd, uidProd, err := GetClusterInfo(cluster.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		log.DefaultLogger.Error("Error while receiving cluster info: " + err.Error())
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
 	//TODO Add validation for the templates already exists
-	err = SendILMToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
+	err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
 	if err != nil {
 		log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
 	//TODO Add validation for the templates already exists
-	err = SendComponentTemplatesToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
+	err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
 	if err != nil {
 		log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
 	//TODO Add validation for the templates already exists
-	err = SendIndexTemplatesToMonitoringCluster(environmentConfig.Mon.Elasticsearch)
+	err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
 	if err != nil {
 		log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 
-	UpdatedTemplates := UpdateDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
+	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
+
+	UpdatedTemplates := UpdateDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	w.Write(updatedTemplatesJSON)
+	response.WriteHeader(http.StatusOK)
+	response.Write(updatedTemplatesJSON)
+}
+
+func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the cluster delete")
+
+	// Read the request body as a string
+	clusterId, err := io.ReadAll(request.Body)
+	if err != nil {
+		ctxLogger.Error("Failed to read request body: " + err.Error())
+		response.WriteHeader(http.StatusBadRequest)
+		response.Write([]byte("Invalid request payload"))
+		return
+	}
+
+	// Ensure request body is closed
+	defer request.Body.Close()
+
+	// Convert clusterId from byte slice to string
+	clusterIdStr := string(clusterId)
+	err = DeleteFolder(LogstashConfigurationsFolder+"/"+clusterIdStr+"*", ctxLogger)
+
+	err = DeleteTextInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster: "+clusterIdStr+", ",
+		"### Configuration files for the cluster",
+		ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		response.Write([]byte(err.Error()))
+	} else {
+		response.WriteHeader(http.StatusOK)
+	}
 }
 
 func UpdateDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {

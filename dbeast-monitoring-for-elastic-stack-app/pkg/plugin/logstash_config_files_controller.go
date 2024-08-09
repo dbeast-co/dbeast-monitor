@@ -52,6 +52,35 @@ func (a *App) DownloadLogstashMonitoringConfigurationFilesHandler(w http.Respons
 	GenerateLogstashConfigurationFiles(w, req, true, "LogstashConfigurationFiles.zip")
 }
 
+func SaveLogstashConfigurationFiles(project Cluster, logger log.Logger) error {
+	clusterName, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		return err
+	}
+	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
+	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
+		if configFile.IsChecked {
+			configFileClone := strings.Clone(LSConfigs[configFile.Id])
+			configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
+			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
+			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
+
+			fileInternalPath := clusterName + "-" + clusterId + "/" + configFile.Id
+			//fileInternalPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
+
+			//WriteFileToZip(zipWriter, fileInternalPath, configFileClone)
+			WriteFilesToDisk(fileInternalPath, configFileClone, false, logger)
+
+			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
+			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
+			pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/%s\"\n\n", fileInternalPath)
+		}
+	}
+	//WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
+	WriteFilesToDisk("pipelines.yml", pipelineFile, true, logger)
+	return nil
+}
+
 func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request, isLogstash bool, resultZipFileName string) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 
@@ -172,10 +201,10 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 	}
 }
 
-func WriteFilesToDisk(fileInternalPath string, content string, logger log.Logger) {
+func WriteFilesToDisk(fileInternalPath string, content string, isAppend bool, logger log.Logger) {
 	var fileAbsoluteInternalPath = filepath.Join(LogstashConfigurationsFolder, fileInternalPath)
 
-	logger.Debug("File content: ", content)
+	logger.Info("File content: ", content)
 	dir := filepath.Dir(fileAbsoluteInternalPath)
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
@@ -184,7 +213,13 @@ func WriteFilesToDisk(fileInternalPath string, content string, logger log.Logger
 	}
 
 	// Save the JSON data to a file
-	file, err := os.Create(fileAbsoluteInternalPath)
+	var file *os.File
+	if isAppend {
+		file, err = os.OpenFile(fileAbsoluteInternalPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	} else {
+		file, err = os.Create(fileAbsoluteInternalPath)
+
+	}
 	if err != nil {
 		logger.Error("Error creating file:", err)
 		return
@@ -198,6 +233,74 @@ func WriteFilesToDisk(fileInternalPath string, content string, logger log.Logger
 		return
 	}
 
+	// Ensure the buffer is flushed to disk
+	err = writer.Flush()
+	if err != nil {
+		logger.Error("Error flushing writer to file:", err)
+		return
+	}
+
 	logger.Info("Object saved to file: ", fileInternalPath)
 
+}
+
+func DeleteTextInFile(filePath string, startMarker string, endMarkerPrefix string, logger log.Logger) error {
+	// Read the entire file content
+	logger.Info("File name: " + filePath)
+	logger.Info("Start prefix: " + startMarker)
+	logger.Info("End prefix: " + endMarkerPrefix)
+	fileContent, err := os.ReadFile(filePath)
+	if err != nil {
+		logger.Error("Error reading file:", err)
+		return err
+	}
+
+	content := string(fileContent)
+
+	// Keep looping until no more start markers are found
+	for {
+		// Locate the start marker
+		startIndex := strings.Index(content, startMarker)
+		if startIndex == -1 {
+			break // No more start markers found, exit loop
+		}
+
+		// Locate the next end marker
+		endIndex := strings.Index(content[startIndex:], endMarkerPrefix)
+		if endIndex == -1 {
+			// No more end markers found, remove till the end of the file
+			content = content[:startIndex]
+			break
+		}
+		endIndex += startIndex // Convert to absolute index
+
+		// Remove the text between the markers
+		content = content[:startIndex] + content[endIndex:]
+	}
+
+	// Write the updated content back to the file
+	err = os.WriteFile(filePath, []byte(content), 0644)
+	if err != nil {
+		logger.Error("Error writing to file:", err)
+		return err
+	}
+
+	logger.Info("Text between markers removed successfully.")
+	return nil
+}
+
+func DeleteFolder(folderPath string, logger log.Logger) error {
+	// Log the action
+	logger.Info("Attempting to delete folder: ", folderPath)
+
+	// Delete the folder and its contents
+	err := os.RemoveAll(folderPath)
+	if err != nil {
+		logger.Error("Error deleting folder: ", err)
+		return err
+	}
+
+	// Log success
+	logger.Info("Folder deleted successfully: ", folderPath)
+	return nil
 }
