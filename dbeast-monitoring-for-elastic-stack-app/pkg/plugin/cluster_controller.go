@@ -89,32 +89,34 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 	}
 
 	//TODO Add validation for the templates already exists
-	err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-	if err != nil {
-		log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
-		response.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-		return
+	if cluster.MonitoringClusterInjection.ILMPoliciesInjection {
+		err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+		if err != nil {
+			log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
+			response.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+			return
+		}
 	}
 
 	//TODO Add validation for the templates already exists
-	err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-	if err != nil {
-		log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
-		response.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-		return
+	if cluster.MonitoringClusterInjection.TemplatesInjection {
+		err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+		if err != nil {
+			log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
+			response.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+			return
+		}
+		//TODO Add validation for the templates already exists
+		err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+		if err != nil {
+			log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
+			response.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+			return
+		}
 	}
-
-	//TODO Add validation for the templates already exists
-	err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-	if err != nil {
-		log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
-		response.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-		return
-	}
-
 	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
 
 	UpdatedTemplates := UpdateDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)

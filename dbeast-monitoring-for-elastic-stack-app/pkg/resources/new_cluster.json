@@ -26,6 +26,11 @@
       }
     }
   },
+  "monitoring_cluster_injection": {
+    "templates_injection": true,
+    "ilm_policies_injection": true,
+    "create_first_indices": true
+  },
   "logstash_configurations": {
     "es_monitoring_configuration_files": [
       {

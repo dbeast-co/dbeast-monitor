@@ -25,9 +25,9 @@ type EnvironmentConfig struct {
 }
 
 type MonitoringClusterInjectionSettings struct {
-	TemplatesInjection   string `json:"templates_injection"`
-	ILMPoliciesInjection string `json:"ilm_policies_injection"`
-	CreateFirsIndices    string `json:"create_first_indices"`
+	TemplatesInjection   bool `json:"templates_injection"`
+	ILMPoliciesInjection bool `json:"ilm_policies_injection"`
+	CreateFirsIndices    bool `json:"create_first_indices"`
 }
 
 type LogstashHost struct {
