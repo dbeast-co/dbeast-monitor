@@ -26,11 +26,23 @@
       }
     }
   },
-  "monitoring_cluster_injection": {
-    "templates_injection": true,
-    "ilm_policies_injection": true,
-    "create_first_indices": true
-  },
+  "monitoring_cluster_injection": [
+    {
+      "label": "Inject index templates",
+      "id": "templates_injection",
+      "is_checked": true
+    },
+    {
+      "label": "Inject ILM policies",
+      "id": "ilm_policies_injection",
+      "is_checked": true
+    },
+    {
+      "label": "Inject the first indices",
+      "id": "create_first_indices",
+      "is_checked": true
+    }
+  ],
   "logstash_configurations": {
     "es_monitoring_configuration_files": [
       {
