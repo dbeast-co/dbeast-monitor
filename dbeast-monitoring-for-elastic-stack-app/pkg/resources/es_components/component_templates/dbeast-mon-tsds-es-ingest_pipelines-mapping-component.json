@@ -12,7 +12,7 @@
               "properties": {
                 "id": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 }
               }
             },
@@ -23,36 +23,45 @@
                     "ingest_pipeline": {
                       "properties": {
                         "current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "count": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "in_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "processors": {
-                          "type": "nested",
+                          "type": "object",
                           "properties": {
                             "number_in_pipeline": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "stats": {
                               "properties": {
                                 "current": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "time_in_millis": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "count": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "failed": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 }
                               }
                             },
@@ -67,11 +76,12 @@
                           }
                         },
                         "failed": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "id": {
                           "type": "keyword",
-                          "ignore_above": 256
+                          "time_series_dimension": true
                         }
                       }
                     },
@@ -82,44 +92,56 @@
                             "cache_stats": {
                               "properties": {
                                 "hits": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "misses": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "hits_rate": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "evictions": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "count": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "hits_last_period": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 }
                               }
                             },
                             "coordinator_stats": {
                               "properties": {
                                 "executed_searches_total": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "executed_searches_rate": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "executed_searches_last_period": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "queue_size": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "remote_requests_current": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "remote_requests_total": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 }
                               }
                             }
@@ -131,11 +153,11 @@
                 },
                 "name": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 },
                 "id": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 }
               }
             }
@@ -151,7 +173,7 @@
           "properties": {
             "name": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             }
           }
         },
@@ -159,20 +181,19 @@
           "properties": {
             "dataset": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             },
             "module": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             }
           }
         },
         "tags": {
           "type": "keyword",
-          "ignore_above": 256
+          "time_series_dimension": true
         }
       }
-    },
-    "aliases": {}
+    }
   }
 }

@@ -43,9 +43,6 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 
 			fileInternalPath := clusterName + "-" + clusterId + "/" + configFile.Id
-			//fileInternalPath := filepath.Join(clusterName+"-"+clusterId, configFile.Id)
-
-			//WriteFileToZip(zipWriter, fileInternalPath, configFileClone)
 			WriteFilesToDisk(fileInternalPath, configFileClone, false, logger)
 
 			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
@@ -53,7 +50,6 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 			pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/%s\"\n\n", fileInternalPath)
 		}
 	}
-	//WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
 	WriteFilesToDisk("pipelines.yml", pipelineFile, true, logger)
 	return nil
 }
@@ -181,7 +177,7 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 func WriteFilesToDisk(fileInternalPath string, content string, isAppend bool, logger log.Logger) {
 	var fileAbsoluteInternalPath = filepath.Join(LogstashConfigurationsFolder, fileInternalPath)
 
-	logger.Info("File content: ", content)
+	logger.Debug("File content: ", content)
 	dir := filepath.Dir(fileAbsoluteInternalPath)
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
@@ -213,11 +209,11 @@ func WriteFilesToDisk(fileInternalPath string, content string, isAppend bool, lo
 	// Ensure the buffer is flushed to disk
 	err = writer.Flush()
 	if err != nil {
-		logger.Error("Error flushing writer to file:", err)
+		logger.Error("Error flushing writer to the file:", err)
 		return
 	}
 
-	logger.Info("Object saved to file: ", fileInternalPath)
+	logger.Info("Object saved to the file: " + fileInternalPath)
 
 }
 

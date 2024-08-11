@@ -1,0 +1,28 @@
+{
+  "index_patterns": [
+    "dbeast-mon-ds-logstash-logs"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-ds-30d"
+        }
+      }
+    },
+    "aliases": {
+      "dbeast-mon-logstash-logs": {}
+    }
+  },
+  "composed_of": [
+    "dbeast-mon-ds-logstash-logs-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "data_stream": {
+    "hidden": false
+  },
+  "priority": 1,
+  "_meta": {
+    "description": "This template used for the Logstash logs"
+  }
+}
