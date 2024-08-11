@@ -34,7 +34,7 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 	if err != nil {
 		return err
 	}
-	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
+	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", cluster Id: " + clusterId + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
 			configFileClone := strings.Clone(LSConfigs[configFile.Id])
@@ -42,15 +42,18 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 
-			fileInternalPath := clusterName + "-" + clusterId + "/" + configFile.Id
-			WriteFilesToDisk(fileInternalPath, configFileClone, false, logger)
+			fileAbsolutePath := filepath.Join(GrafanaLogstashConf_dConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
+			WriteFilesToDisk(fileAbsolutePath, configFileClone, false, logger)
 
 			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
+
+			pipelinesPath := filepath.Join(LogstashOriginalConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
-			pipelineFile += fmt.Sprintf("  path.config: \"/etc/logstash/conf.d/%s\"\n\n", fileInternalPath)
+			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", pipelinesPath)
 		}
 	}
-	WriteFilesToDisk("pipelines.yml", pipelineFile, true, logger)
+	fileAbsolutePath := filepath.Join(GrafanaLogstashConfigurationsFolder, "pipelines.yml")
+	WriteFilesToDisk(fileAbsolutePath, pipelineFile, true, logger)
 	return nil
 }
 
@@ -175,10 +178,10 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 }
 
 func WriteFilesToDisk(fileInternalPath string, content string, isAppend bool, logger log.Logger) {
-	var fileAbsoluteInternalPath = filepath.Join(LogstashConfigurationsFolder, fileInternalPath)
+	//var fileAbsoluteInternalPath = filepath.Join(GrafanaLogstashConfigurationsFolder, fileInternalPath)
 
 	logger.Debug("File content: ", content)
-	dir := filepath.Dir(fileAbsoluteInternalPath)
+	dir := filepath.Dir(fileInternalPath)
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
 		logger.Error("Error creating directory:", err)
@@ -188,9 +191,9 @@ func WriteFilesToDisk(fileInternalPath string, content string, isAppend bool, lo
 	// Save the JSON data to a file
 	var file *os.File
 	if isAppend {
-		file, err = os.OpenFile(fileAbsoluteInternalPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		file, err = os.OpenFile(fileInternalPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	} else {
-		file, err = os.Create(fileAbsoluteInternalPath)
+		file, err = os.Create(fileInternalPath)
 
 	}
 	if err != nil {

@@ -43,7 +43,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 		return
 	}
 
-	updatedTemplates := UpdateDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
+	updatedTemplates := UpdateGrafanaDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(updatedTemplates, "", "")
 	if err != nil {
@@ -119,7 +119,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 
 	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
 
-	UpdatedTemplates := UpdateDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
+	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
@@ -149,9 +149,9 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 
 	// Convert clusterId from byte slice to string
 	clusterIdStr := string(clusterId)
-	err = DeleteFolder(LogstashConfigurationsFolder+"/"+clusterIdStr+"*", ctxLogger)
+	err = DeleteFolder(GrafanaLogstashConfigurationsFolder+"/"+clusterIdStr+"*", ctxLogger)
 
-	err = DeleteTextInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster: "+clusterIdStr+", ",
+	err = DeleteTextInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster: "+clusterIdStr+", ",
 		"### Configuration files for the cluster",
 		ctxLogger)
 
@@ -163,7 +163,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 	}
 }
 
-func UpdateDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
+func UpdateGrafanaDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
 	var UpdatedTemplates = make(map[string]interface{})
 	for name, template := range GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
@@ -193,6 +193,8 @@ It modifies the template name, UID, URL, basic authentication settings, and TLS 
 */
 func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
+
+		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
 		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + clusterName + "--" + uid
 		OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + clusterName + "--" + uid
