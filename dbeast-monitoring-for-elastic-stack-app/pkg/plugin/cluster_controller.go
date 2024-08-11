@@ -3,7 +3,6 @@ package plugin
 import (
 	"encoding/json"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
-	"io"
 	"net/http"
 	"strings"
 )
@@ -133,27 +132,22 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 
 func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
-	ctxLogger.Info("Got request for the cluster delete")
 
-	// Read the request body as a string
-	clusterId, err := io.ReadAll(request.Body)
-	if err != nil {
-		ctxLogger.Error("Failed to read request body: " + err.Error())
-		response.WriteHeader(http.StatusBadRequest)
-		response.Write([]byte("Invalid request payload"))
-		return
-	}
+	clusterId := request.URL.Path[len("/delete_cluster/"):]
+	ctxLogger.Info("Got request for the cluster delete. Cluster ID: " + clusterId)
 
-	// Ensure request body is closed
-	defer request.Body.Close()
-
-	// Convert clusterId from byte slice to string
-	clusterIdStr := string(clusterId)
-	err = DeleteFolder(GrafanaLogstashConfigurationsFolder+"/"+clusterIdStr+"*", ctxLogger)
-
-	err = DeleteTextInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster: "+clusterIdStr+", ",
-		"### Configuration files for the cluster",
+	err := DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+		"### Configuration files for the cluster Id: ",
 		ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		response.Write([]byte(err.Error()))
+		return
+	} else {
+		response.WriteHeader(http.StatusOK)
+	}
+	err = DeleteFolder(GrafanaLogstashConf_dConfigurationsFolder, clusterId, ctxLogger)
 
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
