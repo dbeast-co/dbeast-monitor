@@ -1,28 +1,29 @@
-import React, {PureComponent} from 'react';
-import {getBackendSrv} from '@grafana/runtime';
-import {ClusterStatsItemState, MonitorState} from '../../types/clusterStatsItemState';
+import React, { PureComponent } from 'react';
+import { getBackendSrv } from '@grafana/runtime';
+import { ClusterStatsItemState, MonitorState } from '../../types/clusterStatsItemState';
 import './data-source-item.scss';
 import {
-    Dialog,
-    DialogActions,
-    DialogTitle,
-    Divider,
-    FormControl,
-    List,
-    ListItem,
-    ListItemText,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Stack,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Divider,
+  FormControl,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
 } from '@mui/material';
-import {Button, ButtonVariant, Spinner, stylesFactory, useTheme} from '@grafana/ui';
+import { Button, ButtonVariant, Spinner, stylesFactory, useTheme } from '@grafana/ui';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 
 interface Props {
-    dataSourceItem: any;
-    theme: any;
-    onDelete: (uid: string) => void;
+  dataSourceItem: any;
+  theme: any;
+  onDelete: (uid: string) => void;
 }
 
 const MyComponent = (_: any) => {
@@ -280,8 +281,14 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                         Accept: 'application/json',
                     },
                 });
-            } catch (deleteError) {
-                console.error('deleteError', deleteError);
+            } catch (error: any) {
+                toast.error(`${error.message}`, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: false,
+                    closeButton: true,
+                    hideProgressBar: true,
+                    draggable: false,
+                });
             }
             // this.props.onDelete(this.state.cluster_uuid)
             // this.componentDidMount().then(() => {
