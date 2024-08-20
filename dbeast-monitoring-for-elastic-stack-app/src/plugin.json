@@ -63,7 +63,7 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "0.7.0",
+    "version": "0.8.1",
     "updated": "%TODAY%"
   },
   "includes": [
@@ -80,18 +80,9 @@
       "name": "Cluster's list",
       "path": "/a/dbeast-dbeastmonitor-app",
       "role": "Viewer",
-      "uid": "clusters-list-default",
-      "addToNav": false,
-      "defaultNav": true
-    },
-    {
-      "type": "page",
-      "name": "Cluster's list",
-      "path": "/a/dbeast-dbeastmonitor-app",
-      "role": "Viewer",
       "uid": "clusters-list",
       "addToNav": true,
-      "defaultNav": false
+      "defaultNav": true
     },
     {
       "type": "dashboard",

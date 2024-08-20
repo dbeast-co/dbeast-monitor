@@ -1,7 +1,7 @@
 {
   "orgId": 1,
-  "name": "Elasticsearch-direct-prod-",
-  "uid": "Elasticsearch-direct-prod-",
+  "name": "Kibana-direct--",
+  "uid": "",
   "type": "marcusolsson-json-datasource",
   "typeName": "JSON API",
   "access": "proxy",
@@ -9,10 +9,12 @@
   "basicAuth": false,
   "basicAuthUser": "",
   "jsonData": {
-    "tlsSkipVerify": true
+    "tlsSkipVerify": true,
+    "httpHeaderName1": "kbn-xsrf"
   },
   "secureJsonData": {
-    "basicAuthPassword": ""
+    "basicAuthPassword": "",
+    "httpHeaderValue1": "true"
   },
   "readOnly": false
 }

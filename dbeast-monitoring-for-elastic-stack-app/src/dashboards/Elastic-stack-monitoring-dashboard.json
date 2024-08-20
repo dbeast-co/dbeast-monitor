@@ -329,6 +329,10 @@
               {
                 "id": "custom.width",
                 "value": 116
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           }
@@ -1317,7 +1321,7 @@
           "method": "GET",
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/_nodes/remote_cluster_client:true,master:false/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+          "urlPath": "/_nodes/coordinating_only:true,ml:false/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
         },
         {
           "cacheDurationSeconds": 0,
@@ -1340,7 +1344,7 @@
           "method": "GET",
           "queryParams": "",
           "refId": "B",
-          "urlPath": "/_nodes/remote_cluster_client:true,master:false?filter_path=nodes.*.version,nodes.*.name"
+          "urlPath": "/_nodes/coordinating_only:true,ml:false?filter_path=nodes.*.version,nodes.*.name"
         }
       ],
       "title": "Dedicated coordinator nodes status",
@@ -3659,7 +3663,7 @@
                     "min_doc_count": "1",
                     "order": "desc",
                     "orderBy": "3",
-                    "size": "20"
+                    "size": "0"
                   },
                   "type": "terms"
                 }
@@ -3739,7 +3743,7 @@
                   "type": "linear"
                 },
                 "showPoints": "auto",
-                "spanNulls": false,
+                "spanNulls": true,
                 "stacking": {
                   "group": "A",
                   "mode": "none"
@@ -3795,8 +3799,8 @@
                   "settings": {
                     "min_doc_count": "1",
                     "order": "desc",
-                    "orderBy": "_term",
-                    "size": "10"
+                    "orderBy": "1",
+                    "size": "0"
                   },
                   "type": "terms"
                 },
@@ -3827,7 +3831,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.stats.thread_pool.rejected_rate:>1",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.rejected_rate:>1",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -4040,7 +4044,7 @@
                   "type": "linear"
                 },
                 "showPoints": "auto",
-                "spanNulls": false,
+                "spanNulls": true,
                 "stacking": {
                   "group": "A",
                   "mode": "none"
@@ -4105,7 +4109,7 @@
                   "field": "@timestamp",
                   "id": "2",
                   "settings": {
-                    "interval": "1m"
+                    "interval": "auto"
                   },
                   "type": "date_histogram"
                 }
@@ -4170,7 +4174,7 @@
                   "type": "linear"
                 },
                 "showPoints": "auto",
-                "spanNulls": false,
+                "spanNulls": true,
                 "stacking": {
                   "group": "A",
                   "mode": "none"
@@ -4235,7 +4239,7 @@
                   "field": "@timestamp",
                   "id": "2",
                   "settings": {
-                    "interval": "1m"
+                    "interval": "auto"
                   },
                   "type": "date_histogram"
                 }
@@ -4300,7 +4304,7 @@
                   "type": "linear"
                 },
                 "showPoints": "auto",
-                "spanNulls": false,
+                "spanNulls": true,
                 "stacking": {
                   "group": "A",
                   "mode": "none"
@@ -4365,7 +4369,7 @@
                   "field": "@timestamp",
                   "id": "2",
                   "settings": {
-                    "interval": "1m"
+                    "interval": "auto"
                   },
                   "type": "date_histogram"
                 }
@@ -4430,7 +4434,7 @@
                   "type": "linear"
                 },
                 "showPoints": "auto",
-                "spanNulls": false,
+                "spanNulls": true,
                 "stacking": {
                   "group": "A",
                   "mode": "none"
@@ -4495,7 +4499,7 @@
                   "field": "@timestamp",
                   "id": "2",
                   "settings": {
-                    "interval": "1m"
+                    "interval": "auto"
                   },
                   "type": "date_histogram"
                 }
@@ -4518,14 +4522,14 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
               "urlPath": ""
             }
           ],
-          "title": "Rejected Write requests rate",
+          "title": "Rejected Search requests rate",
           "transformations": [],
           "type": "timeseries"
         }
@@ -4803,6 +4807,16 @@
                   {
                     "id": "custom.width",
                     "value": 330
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "title": "Index Stats",
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[Index]}",
+                        "targetBlank": true
+                      }
+                    ]
                   }
                 ]
               },
@@ -5321,7 +5335,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod-(?<text>.+?)--(?<value>.*)/",
+        "regex": "/^Elasticsearch-direct-prod--(?<text>.+?)--(?<value>.*)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -5353,7 +5367,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5369,7 +5383,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Kibana-direct-(.*)--${cluster_uid}/",
+        "regex": "/Kibana-direct--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5385,7 +5399,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats--(.*)-${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5400,7 +5414,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status-(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5416,7 +5430,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5456,7 +5470,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools-20-.*-${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

@@ -6,7 +6,7 @@
   "typeName": "Elasticsearch",
   "access": "proxy",
   "url": "",
-  "database": "dbeast-mon-es-thread_pools-20*",
+  "database": "dbeast-mon-es-index-stats",
   "basicAuth": true,
   "isDefault": false,
   "withCredentials": false,

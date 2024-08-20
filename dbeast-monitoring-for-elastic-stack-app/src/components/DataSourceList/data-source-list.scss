@@ -16,15 +16,13 @@
 
   .card-list {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(auto-fit,minmax(500px,1fr));
     grid-gap: 7rem;
     width: 100%;
+    
 
     &[data-col="1"] {
       grid-template-columns: repeat(1,1fr);
-    }
-    &[data-col="3"] {
-      grid-template-columns: repeat(3,1fr);
     }
 
   }

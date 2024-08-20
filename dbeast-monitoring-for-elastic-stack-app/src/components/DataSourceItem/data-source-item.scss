@@ -21,15 +21,18 @@
     margin-block-start: 1rem;
   }
 
-  .col {
-    flex: unset;
+  .actions {
+    display: unset !important;
+    margin-top: 0 !important;
+    .col {
+      flex: unset !important;
 
-    &.header-cluster {
-      max-width: 95%;
-      width: 100%;
-      overflow: auto;
+      &.header-cluster {
+        max-width: 95%;
+        width: 100%;
+        overflow: auto;
+      }
     }
-
   }
 
   .MuiDivider-light {
@@ -161,7 +164,6 @@
   .monitor-type {
     font-size: 14px;
     color: #00bcd4;
-
   }
 
   .MuiFormControl-fullWidth {
@@ -207,7 +209,9 @@
     border: 1px solid #222e46;
     box-shadow: 5px 5px 10px rgb(0 0 0 / 20%);
 
-    h3, p, .label {
+    h3,
+    p,
+    .label {
       color: #222e46 !important;
     }
 
@@ -228,8 +232,19 @@
     .MuiList-root {
       background: #ffffff !important;
     }
-
   }
-
-
 }
+[data-testid='Spinner'] {
+  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+
+  .fa-spinner{
+    font-size: 4rem;
+  }
+}
+

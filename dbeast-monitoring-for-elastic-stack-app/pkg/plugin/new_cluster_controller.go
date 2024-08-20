@@ -7,7 +7,29 @@ import (
 	"strings"
 )
 
-func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
+var NewCluster Cluster
+
+type Credentials struct {
+	Host                  string `json:"host"`
+	AuthenticationEnabled bool   `json:"authentication_enabled"`
+	Username              string `json:"username"`
+	Password              string `json:"password"`
+	Status                string `json:"status"`
+}
+
+type EnvironmentConfig struct {
+	Prod struct {
+		Elasticsearch Credentials `json:"elasticsearch"`
+		Kibana        Credentials `json:"kibana"`
+	} `json:"prod"`
+	Mon struct {
+		Elasticsearch Credentials `json:"elasticsearch"`
+	} `json:"mon"`
+}
+
+var GrafanaDataSourcesMap map[string]interface{}
+
+func (a *App) SaveClusterHandler(w http.ResponseWriter, req *http.Request) {
 
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	ctxLogger.Info("Got request for the new cluster save")
@@ -17,18 +39,21 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
 		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 	defer req.Body.Close()
 
 	var UpdatedTemplates = make(map[string]interface{})
-	//clusterNameMon, uidMon := FetchClusterInfo(environmentConfig.Mon.Elasticsearch)
-	clusterNameProd, uidProd := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
-	//clusterNameKibana, uidKibana := UpdateNameAndUid(environmentConfig.Prod.Kibana)
+	clusterNameProd, uidProd, err := FetchClusterInfo(environmentConfig.Prod.Elasticsearch)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
 
-	for name, template := range TemplatesMap {
-		clonedTemplates := CloneTemplate(template)
+	for name, template := range GrafanaDataSourcesMap {
+		clonedTemplates := CloneObject(template)
 
 		switch {
 		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_mon"):
@@ -51,15 +76,26 @@ func (a *App) SaveHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	//SendTemplateToServer(UpdatedTemplates)
-
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal updated templates"})
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(updatedTemplatesJSON)
+}
+
+func (a *App) NewClusterHandler(w http.ResponseWriter, req *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	newClusterForSend, err := json.MarshalIndent(NewCluster, "", "")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal cluster template"})
+		return
+	}
+	w.Write(newClusterForSend)
 }
 
 /*
@@ -97,9 +133,10 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 
 		if database, ok := OneClonedTemplate["database"].(string); ok {
 			database = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(database, "*", ""), "?", ""), ",", ""), ".", "")
+			clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
-			OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + database + "-" + clusterName + "--" + uid
-			OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + database + "-" + clusterName + "--" + uid
+			OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + database + "--" + clusterName + "--" + uid
+			OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + database + "--" + clusterName + "--" + uid
 
 			OneClonedTemplate["url"] = credentials.Host
 			OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled
@@ -116,24 +153,4 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 			}
 		}
 	}
-}
-
-/*
-CloneTemplate creates a deep copy of the provided JSON template.
-It marshals the template into JSON and then unmarshals it into a new interface{} to create a clone.
-*/
-func CloneTemplate(data interface{}) interface{} {
-	dataBytes, err := json.Marshal(data)
-	if err != nil {
-		log.DefaultLogger.Warn("Failed to marshal data: " + err.Error())
-		return data
-	}
-
-	var clonedTemplate interface{}
-	if err := json.Unmarshal(dataBytes, &clonedTemplate); err != nil {
-		log.DefaultLogger.Warn("Failed to unmarshal cloned data: " + err.Error())
-		return data
-	}
-
-	return clonedTemplate
 }
