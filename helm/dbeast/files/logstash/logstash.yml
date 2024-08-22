@@ -1,0 +1,4 @@
+node.name: monitoring
+path.data: /var/lib/logstash
+path.logs: /var/log/logstash
+config.reload.automatic: true
