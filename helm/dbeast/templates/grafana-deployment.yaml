@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      initContainers:
+      - name: grafana-init
+        image: {{ .Values.grafana.image }}
+        command:
+          - sh
+          - -c
+          - |
+            if [ -z "$(ls -A /tmp/grafana)" ]; then
+              echo "Persistent volume is empty. Copying data from image..."
+              cp -R /var/lib/grafana/* /tmp/grafana/
+            else
+              echo "Persistent volume is not empty. Skipping data copy."
+            fi
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /tmp/grafana
+
+      - name: install-dbeast-plugin
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+          - |
+            curl -L -o /tmp/dbeast-monitor-plugin.tar.gz {{ .Values.grafana.pluginUrl }}
+            mkdir -p /var/lib/grafana/plugins/dbeast-dbeastmonitor-app
+            tar -xvzf /tmp/dbeast-monitor-plugin.tar.gz -C /var/lib/grafana/plugins/dbeast-dbeastmonitor-app
+        volumeMounts:
+        - name: grafana-plugins
+          mountPath: /var/lib/grafana/plugins
+
+      containers:
+      - name: grafana
+        image: {{ .Values.grafana.image }}
+        ports:
+        - containerPort: 3000
+        env:
+        {{- range .Values.grafana.env }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end }}
+        volumeMounts:
+        {{- range .Values.grafana.volumes }}
+        - name: {{ .name }}
+          mountPath: {{ .mountPath }}
+          {{- if .subPath }}
+          subPath: {{ .subPath }}
+          {{- end }}
+        {{- end }}
+      volumes:
+      {{- range .Values.grafana.volumes }}
+      - name: {{ .name }}
+        {{- if .source.configMap }}
+        configMap:
+          name: {{ .source.configMap.name }}
+        {{- else if .source.persistentVolumeClaim }}
+        persistentVolumeClaim:
+          claimName: {{ .source.persistentVolumeClaim.claimName }}
+        {{- end }}
+      {{- end }}

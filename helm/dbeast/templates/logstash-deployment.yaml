@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: {{ .Values.logstash.image }}
+        ports:
+        - containerPort: 5044
+        env:
+        {{- range .Values.logstash.env }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end }}
+        volumeMounts:
+        {{- range .Values.logstash.volumes }}
+        - name: {{ .name }}
+          mountPath: {{ .mountPath }}
+          {{- if .subPath }}
+          subPath: {{ .subPath }}
+          {{- end }}
+        {{- end }}
+      volumes:
+      {{- range .Values.logstash.volumes }}
+      - name: {{ .name }}
+        {{- if .source.configMap }}
+        configMap:
+          name: {{ .source.configMap.name }}
+          {{- if .source.configMap.key }}
+          items:
+            - key: {{ .source.configMap.key }}
+              path: {{ .source.configMap.path | default .source.configMap.key }}
+          {{- end }}
+        {{- else if .source.persistentVolumeClaim }}
+        persistentVolumeClaim:
+          claimName: {{ .source.persistentVolumeClaim.claimName }}
+        {{- end }}
+      {{- end }}

@@ -1,0 +1,82 @@
+grafana:
+  image: "grafana/grafana-oss:9.5.10-ubuntu"
+  service:
+    type: ClusterIP
+    port: 3000
+  resources: {}
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+  pluginUrl: "https://github.com/dbeast-co/dbeast-monitor/releases/download/DevContainerVersion/dbeast-monitor-plugin.tar.gz"
+  env:
+    - name: GF_LOG_LEVEL
+      value: "info"
+    - name: GF_LOG_MODE
+      value: "file"
+    - name: GF_INSTALL_PLUGINS
+      value: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
+  volumes:
+    - name: grafana-config
+      mountPath: /etc/grafana
+      source:
+        configMap:
+          name: grafana-config
+    - name: grafana-logs
+      mountPath: /var/log/grafana
+      persistentVolumeClaim:
+          claimName: grafana-logs-pvc
+    - name: grafana-storage
+      mountPath: /var/lib/grafana
+      source:
+        persistentVolumeClaim:
+          claimName: grafana-pvc
+    - name: grafana-plugins
+      mountPath: /var/lib/grafana/plugins
+      source:
+        persistentVolumeClaim:
+          claimName: grafana-plugins-pvc
+    - name: logstash-config
+      mountPath: /opt/dbeast/logstash/config
+      source:
+        persistentVolumeClaim:
+          claimName: logstash-config-pvc
+
+logstash:
+  image: "logstash:8.14.3"
+  service:
+    type: ClusterIP
+    port: 5044
+  resources: {}
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+  env:
+    - name: LS_JAVA_OPTS
+      value: "-Xms1g -Xmx1g"
+  volumes:
+    - name: logstash-pvc
+      mountPath: /usr/share/logstash
+      source:
+        persistentVolumeClaim:
+          claimName: logstash-pvc
+    - name: logstash-yml
+      mountPath: /usr/share/logstash/config/logstash.yml
+      subPath: logstash.yml
+      source:
+        configMap:
+          name: logstash-configmap
+          key: logstash.yml
+    - name: logstash-lib
+      mountPath: /var/lib/logstash
+      persistentVolumeClaim:
+          claimName: logstash-lib-pvc
+    - name: logstash-logs
+      mountPath: /var/log/logstash
+      persistentVolumeClaim:
+          claimName: logstash-logs-pvc
