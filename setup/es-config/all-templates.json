@@ -2426,7 +2426,7 @@ PUT _component_template/dbeast-mon-tsds-es-thread_pools-mapping-component
                           "time_series_metric": "gauge"
                         },
                         "largest": {
-                          "type": "integer",
+                          "type": "long",
                           "time_series_metric": "gauge"
                         },
                         "queue_size": {
@@ -2438,7 +2438,7 @@ PUT _component_template/dbeast-mon-tsds-es-thread_pools-mapping-component
                           "time_series_metric": "gauge"
                         },
                         "rejected": {
-                          "type": "integer",
+                          "type": "long",
                           "time_series_metric": "gauge"
                         },
                         "rejected_rate": {
@@ -2454,7 +2454,7 @@ PUT _component_template/dbeast-mon-tsds-es-thread_pools-mapping-component
                           "time_series_metric": "gauge"
                         },
                         "completed": {
-                          "type": "integer",
+                          "type": "long",
                           "time_series_metric": "gauge"
                         },
                         "type": {
