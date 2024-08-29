@@ -3,7 +3,6 @@ package plugin
 import (
 	"encoding/json"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
-	"io"
 	"net/http"
 	"strings"
 )
@@ -43,7 +42,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 		return
 	}
 
-	updatedTemplates := UpdateDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
+	updatedTemplates := UpdateGrafanaDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(updatedTemplates, "", "")
 	if err != nil {
@@ -78,46 +77,48 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		return
 	}
 
-	if cluster.MonitoringClusterInjection.ILMPoliciesInjection {
-		err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-		if err != nil {
-			log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
-			response.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-			return
+	for _, injectType := range cluster.MonitoringClusterInjection {
+		if injectType.Id == "ilm_policies_injection" && injectType.IsChecked {
+			err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
 		}
-	}
 
-	if cluster.MonitoringClusterInjection.TemplatesInjection {
-		err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-		if err != nil {
-			log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
-			response.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-			return
+		if injectType.Id == "templates_injection" && injectType.IsChecked {
+			err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
+			err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
 		}
-		err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-		if err != nil {
-			log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
-			response.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-			return
-		}
-	}
 
-	if cluster.MonitoringClusterInjection.TemplatesInjection {
-		err = SendFirstIndicesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
-		if err != nil {
-			log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
-			response.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-			return
+		if injectType.Id == "create_first_indices" && injectType.IsChecked {
+			err = SendFirstIndicesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
 		}
 	}
 
 	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
 
-	UpdatedTemplates := UpdateDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
+	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
@@ -131,27 +132,22 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 
 func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
-	ctxLogger.Info("Got request for the cluster delete")
 
-	// Read the request body as a string
-	clusterId, err := io.ReadAll(request.Body)
-	if err != nil {
-		ctxLogger.Error("Failed to read request body: " + err.Error())
-		response.WriteHeader(http.StatusBadRequest)
-		response.Write([]byte("Invalid request payload"))
-		return
-	}
+	clusterId := request.URL.Path[len("/delete_cluster/"):]
+	ctxLogger.Info("Got request for the cluster delete. Cluster ID: " + clusterId)
 
-	// Ensure request body is closed
-	defer request.Body.Close()
-
-	// Convert clusterId from byte slice to string
-	clusterIdStr := string(clusterId)
-	err = DeleteFolder(LogstashConfigurationsFolder+"/"+clusterIdStr+"*", ctxLogger)
-
-	err = DeleteTextInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster: "+clusterIdStr+", ",
-		"### Configuration files for the cluster",
+	err := DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+		"### Configuration files for the cluster Id: ",
 		ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		response.Write([]byte(err.Error()))
+		return
+	} else {
+		response.WriteHeader(http.StatusOK)
+	}
+	err = DeleteFolder(GrafanaLogstashConf_dConfigurationsFolder, clusterId, ctxLogger)
 
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
@@ -161,7 +157,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 	}
 }
 
-func UpdateDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
+func UpdateGrafanaDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
 	var UpdatedTemplates = make(map[string]interface{})
 	for name, template := range GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
@@ -191,6 +187,8 @@ It modifies the template name, UID, URL, basic authentication settings, and TLS 
 */
 func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
+
+		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
 		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + clusterName + "--" + uid
 		OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + clusterName + "--" + uid

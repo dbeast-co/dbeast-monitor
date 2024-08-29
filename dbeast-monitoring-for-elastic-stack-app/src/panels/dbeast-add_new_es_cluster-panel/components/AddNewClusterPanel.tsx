@@ -22,6 +22,7 @@ import {saveAs} from 'file-saver';
 import {LogstashConfigurationsPanel} from './LogstashConfigurationsPanel';
 import LogstashComponent, {Logstash} from './logstash';
 import {v4 as uuidv4} from 'uuid';
+import {MonitoringClusterInjectionPanel} from "./MonitoringClusterInjectionPanel";
 
 const settings = require('../config.ts');
 
@@ -34,7 +35,6 @@ export const AddNewClusterPanel = () => {
     const backendSrv = getBackendSrv();
     const theme = useTheme2();
     const baseUrl = settings.SERVER_URL;
-    // const hostRegex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
 
     const [validHost, setValidHost] = useState(false);
     const [validKibanaHost, setValidKibanaHost] = useState(false);
@@ -94,13 +94,18 @@ export const AddNewClusterPanel = () => {
     const onSave = () => {
         setIsLoading(true);
         try {
-            const formToSave: ConnectionSettings = getCluster();
+
+            const formToSave = {
+                ...cluster,
+                cluster_connection_settings: getConnectionSettings()
+            };
+
             if (
-                ((formToSave.prod.elasticsearch.status === 'GREEN' || formToSave.prod.elasticsearch.status === 'YELLOW') &&
-                    formToSave.mon.elasticsearch.status === 'GREEN') ||
-                formToSave.mon.elasticsearch.status === 'YELLOW'
+                ((formToSave.cluster_connection_settings.prod.elasticsearch.status === 'GREEN' || formToSave.cluster_connection_settings.prod.elasticsearch.status === 'YELLOW') &&
+                    formToSave.cluster_connection_settings.mon.elasticsearch.status === 'GREEN') ||
+                formToSave.cluster_connection_settings.mon.elasticsearch.status === 'YELLOW'
             ) {
-                const promise2 = backendSrv.post(`${baseUrl}/save`, JSON.stringify(formToSave), {
+                const promise2 = backendSrv.post(`${baseUrl}/add_cluster`, JSON.stringify(formToSave), {
                     headers: {
                         'Content-Type': 'application/json',
                         Accept: 'application/json',
@@ -135,10 +140,10 @@ export const AddNewClusterPanel = () => {
                                     hideProgressBar: true,
                                     draggable: false,
                                 });
-                                break; // Exit from the loop on the first error
+                                break;
                             }
                         } else {
-                            break; // Exit from the loop if an error has already occurred
+                            break;
                         }
                     }
                     if (!isErrorOccurred) {
@@ -161,7 +166,7 @@ export const AddNewClusterPanel = () => {
     const onTest = () => {
         setIsLoading(true);
         try {
-            const formToTest: ConnectionSettings = getCluster();
+            const formToTest: ConnectionSettings = getConnectionSettings();
             backendSrv
                 .post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest), {
                     headers: {
@@ -249,14 +254,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
-        // if (!event.target.checked) {
-        //   // setTestDisable(false);
-        // } else if (connectionSettings.prod.elasticsearch.username && connectionSettings.prod.elasticsearch.password) {
-        //   // setTestDisable(false);
-        // } else {
-        //   // setTestDisable(true);
-        // }
+
     };
 
     const onUserNameInput = (event: any) => {
@@ -270,16 +268,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
 
-        // if (
-        //   connectionSettings.prod.elasticsearch.authentication_enabled &&
-        //   (isEmpty(event.target.value) || isEmpty(connectionSettings.prod.elasticsearch.password!))
-        // ) {
-        //   // setTestDisable(true);
-        // } else {
-        //   // setTestDisable(false);
-        // }
     };
     const onUserPasswordInput = (event: any) => {
         setConnectionSettings({
@@ -292,12 +281,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
-        // if (isEmpty(event.target.value) && connectionSettings.prod.elasticsearch.authentication_enabled) {
-        //   // setTestDisable(true);
-        // } else {
-        //   // setTestDisable(false);
-        // }
+
     };
 
     const onCheckMonitoringAuth = (event: any) => {
@@ -311,14 +295,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
-        // if (!event.target.checked) {
-        //   // setTestDisable(false);
-        // } else if (connectionSettings.mon.elasticsearch.username && connectionSettings.mon.elasticsearch.password) {
-        //   // setTestDisable(false);
-        // } else {
-        //   // setTestDisable(true);
-        // }
+
     };
     const onInputMonitoringUsername = (event: any) => {
         setConnectionSettings({
@@ -331,15 +308,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
-        // if (
-        //   connectionSettings.mon.elasticsearch.authentication_enabled &&
-        //   (isEmpty(event.target.value) || isEmpty(connectionSettings.mon.elasticsearch.password!))
-        // ) {
-        //   // setTestDisable(true);
-        // } else {
-        //   // setTestDisable(false);
-        // }
+
     };
 
     const onInputMonitoringPassword = (event: any) => {
@@ -353,11 +322,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // if (isEmpty(event.target.value) && connectionSettings.mon.elasticsearch.authentication_enabled) {
-        //   // setTestDisable(true);
-        // } else {
-        //   // setTestDisable(false);
-        // }
+
     };
     const onInputHost = (event: any) => {
         setConnectionSettings({
@@ -370,18 +335,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
 
-        // if (isEmpty(event.target.value)) {
-        //   setValidHost(false);
-        // } else {
-        //   setValidHost(true);
-        // }
-        // if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.prod.elasticsearch.host)) {
-        //   setValidHost(true);
-        // } else {
-        //   setValidHost(false);
-        // }
     };
 
     const onInputMonitoringHost = (event: any) => {
@@ -395,21 +349,7 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
-        // if (isEmpty(event.target.value)) {
-        //   setValidMonitoringValidHost(false);
-        //   // setTestDisable(true);
-        // } else if (event.target.value && connectionSettings.prod.elasticsearch.host) {
-        //   setValidMonitoringValidHost(true);
-        //   // setTestDisable(false);
-        // } else {
-        //   // setTestDisable(true);
-        // }
-        // if (hostRegex.test(event.target.value) || hostRegex.test(connectionSettings.mon.elasticsearch.host)) {
-        //   setValidMonitoringValidHost(true);
-        // } else {
-        //   setValidMonitoringValidHost(false);
-        // }
+
     };
 
     const onInputKibanaHost = (event: any) => {
@@ -423,17 +363,10 @@ export const AddNewClusterPanel = () => {
                 },
             },
         });
-        // validateTest();
-        // TODO: move this code to Validate function to check validation on all state object
 
-        // if (hostRegex.test(event.target.value)) {
-        //   setValidKibanaHost(true);
-        // } else {
-        //   setValidKibanaHost(false);
-        // }
     };
 
-    const getCluster = () => {
+    const getConnectionSettings = () => {
         return {
             prod: {
                 elasticsearch: {
@@ -462,13 +395,10 @@ export const AddNewClusterPanel = () => {
             },
         };
     };
-    // const isEmpty = (value: string) => {
-    //   return value === '';
-    // };
+
 
     useEffect(() => {
         fetch(`${SERVER_URL}/new_cluster`).then((response) => {
-            // fetch(`${MOCK_URL}/project`).then((response) => {
             response.json().then((data: Cluster) => {
                 setCluster(data);
                 const {status: prodStatus} = data.cluster_connection_settings.prod.elasticsearch;
@@ -486,7 +416,7 @@ export const AddNewClusterPanel = () => {
     }, []);
 
     const onDownload = (url: string) => {
-        const cluster_connection_settings = getCluster();
+        const cluster_connection_settings = getConnectionSettings();
 
         if (url === LogstashFileType.ES_MONITORING_CONFIGURATION_FILES) {
             const clusterToSend = {
@@ -566,48 +496,7 @@ export const AddNewClusterPanel = () => {
     useEffect(() => {
         const regex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
         const updatedState = connectionSettings;
-        console.log('updatedState', updatedState);
 
-        // if (regex.test(updatedState.prod.elasticsearch.host)) {
-        //   setValidHost(true);
-        // } else {
-        //   setValidHost(false);
-        // }
-        //
-        // if (regex.test(updatedState.prod.kibana.host)) {
-        //   setValidKibanaHost(true);
-        // } else {
-        //   setValidKibanaHost(false);
-        // }
-        //
-        // if (regex.test(updatedState.mon.elasticsearch.host)) {
-        //   setValidMonitoringValidHost(true);
-        // } else {
-        //   setValidMonitoringValidHost(false);
-        // }
-        //
-        // if (updatedState.prod.elasticsearch.host && updatedState.mon.elasticsearch.host) {
-        //   setTestDisable(false);
-        // } else {
-        //   setTestDisable(true);
-        // }
-        //TODO: problem with this condition
-
-        // if (
-        //   (updatedState.prod.elasticsearch.authentication_enabled && (!updatedState.prod.elasticsearch.username ||
-        //   !updatedState.prod.elasticsearch.password))
-        // ) {
-        //   setTestDisable(true);
-        // }else{
-        //     setTestDisable(false);
-        // }
-
-        // if (
-        //   (updatedState.mon.elasticsearch.authentication_enabled && updatedState.mon.elasticsearch.username) ||
-        //   updatedState.mon.elasticsearch.password
-        // ) {
-        //   setTestDisable(true);
-        // }
 
         const isProdElasticHostValid = regex.test(updatedState.prod.elasticsearch.host);
         const isKibanaHostValid = regex.test(updatedState.prod.kibana.host);
@@ -642,13 +531,6 @@ export const AddNewClusterPanel = () => {
         } else {
             setTestDisable(true);
         }
-
-        // if (
-        //     isAuthenticationEnabled &&
-        //     ( isProdElasticHostMissing || isMonElasticHostMissing)
-        // ) {
-        //   setTestDisable(true);
-        // }
 
 
     }, [connectionSettings]);
@@ -805,7 +687,7 @@ export const AddNewClusterPanel = () => {
                             Test
                         </button>
                         <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
-                            Save
+                            Add
                         </button>
                     </div>
 
@@ -819,30 +701,37 @@ export const AddNewClusterPanel = () => {
                 <ToastContainer autoClose={3000} position="bottom-right"/>
             </div>
             <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
-                <h3 className="title">Cluster inject configuration</h3>
                 <div className="wrapper">
+                    <h3 className="title">Monitoring Cluster Injections</h3>
+                    {cluster && cluster.monitoring_cluster_injection && (
+                        <MonitoringClusterInjectionPanel
+                            monitoringClusterInjections={cluster.monitoring_cluster_injection}/>
+                    )}
+                    <Divider></Divider>
+                    <h3 className="title">Cluster inject configuration</h3>
+
                     {cluster && cluster.logstash_configurations && (
                         <LogstashConfigurationsPanel
                             files={cluster.logstash_configurations.es_monitoring_configuration_files}/>
                     )}
-                    <div className="actions">
-                        <button
-                            disabled={isDisabled}
-                            onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
-                            className="btn_save"
-                        >
-                            Download
-                        </button>
-                    </div>
+                    {/*<div className="actions">*/}
+                    {/*    <button*/}
+                    {/*        disabled={isDisabled}*/}
+                    {/*        onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}*/}
+                    {/*        className="btn_save"*/}
+                    {/*    >*/}
+                    {/*        Download*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
                 </div>
                 <Divider></Divider>
                 <h3 className="title">Logstash inject configurations</h3>
-                <div className="wrapper">
+                <div className="wrapper" >
                     {cluster.logstash_configurations &&
                         cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations && (
-                            <LogstashConfigurationsPanel
+                            <div className="hide"><LogstashConfigurationsPanel
                                 files={cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations}
-                            />
+                            /></div>
                         )}
 
                     <div className="actions">

@@ -1,83 +1,83 @@
 {
   "template": {
-    "settings": {
-      "index": {
-        "mapping": {
-          "total_fields": {
-            "limit": "10000"
-          }
-        }
-      }
-    },
     "mappings": {
-      "dynamic_templates": [],
       "properties": {
         "@timestamp": {
-          "type": "date",
-          "index": true,
-          "ignore_malformed": false,
-          "doc_values": true,
-          "store": false
+          "type": "date"
         },
         "elasticsearch": {
-          "type": "object",
           "properties": {
             "bulk_avg_size_in_bytes": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "bulk_avg_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "bulk_total_operations": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "bulk_total_size_in_bytes": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "bulk_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "cluster": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 }
               }
             },
             "completion_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "creation_date_string": {
               "type": "date"
             },
             "docs_deleted": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "fielddata_evictions": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "fielddata_memory_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "flush_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "flush_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "get_exists_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "get_exists_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "get_missing_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "get_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "index": {
               "type": "object",
@@ -87,11 +87,11 @@
                 },
                 "index_pattern": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 },
                 "name": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 },
                 "primaries": {
                   "type": "object",
@@ -100,7 +100,8 @@
                       "type": "object",
                       "properties": {
                         "ingest_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -108,13 +109,16 @@
                       "type": "object",
                       "properties": {
                         "current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "missing_time": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -122,34 +126,44 @@
                       "type": "object",
                       "properties": {
                         "delete_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "delete_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "failed_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_failed": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_last_period": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -157,7 +171,8 @@
                       "type": "object",
                       "properties": {
                         "current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -165,7 +180,8 @@
                       "type": "object",
                       "properties": {
                         "total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -173,7 +189,8 @@
                       "type": "object",
                       "properties": {
                         "evictions": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -181,34 +198,44 @@
                       "type": "object",
                       "properties": {
                         "fetch_last_period": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_last_period": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -216,10 +243,12 @@
                       "type": "object",
                       "properties": {
                         "ingest_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "size_in_bytes": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     }
@@ -229,13 +258,16 @@
                   "type": "object",
                   "properties": {
                     "primaries": {
-                      "type": "long"
+                      "type": "long",
+                      "time_series_metric": "gauge"
                     },
                     "replica": {
-                      "type": "long"
+                      "type": "long",
+                      "time_series_metric": "gauge"
                     },
                     "total": {
-                      "type": "long"
+                      "type": "long",
+                      "time_series_metric": "gauge"
                     }
                   }
                 },
@@ -257,19 +289,24 @@
                           "type": "object",
                           "properties": {
                             "avg_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "avg_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_operations": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -277,7 +314,8 @@
                           "type": "object",
                           "properties": {
                             "size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -285,13 +323,16 @@
                           "type": "object",
                           "properties": {
                             "count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "deleted": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "ingest_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -299,18 +340,21 @@
                           "type": "object",
                           "properties": {
                             "evictions": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "global_ordinals": {
                               "type": "object",
                               "properties": {
                                 "build_time_in_millis": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 }
                               }
                             },
                             "memory_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -318,13 +362,16 @@
                           "type": "object",
                           "properties": {
                             "periodic": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -332,25 +379,32 @@
                           "type": "object",
                           "properties": {
                             "current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "exists_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "exists_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "missing_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "missing_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -358,40 +412,51 @@
                           "type": "object",
                           "properties": {
                             "delete_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "delete_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "delete_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_failed": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "is_throttled": {
                               "type": "boolean"
                             },
                             "noop_update_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "throttle_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "write_load": {
-                              "type": "double"
+                              "type": "double",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -399,34 +464,44 @@
                           "type": "object",
                           "properties": {
                             "current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "current_docs": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "current_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_auto_throttle_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_docs": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_stopped_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_throttled_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -434,25 +509,32 @@
                           "type": "object",
                           "properties": {
                             "cache_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "cache_size": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "evictions": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "hit_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "memory_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "miss_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -460,13 +542,16 @@
                           "type": "object",
                           "properties": {
                             "current_as_source": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "current_as_target": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "throttle_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -474,19 +559,24 @@
                           "type": "object",
                           "properties": {
                             "external_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "external_total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "listeners": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -494,16 +584,20 @@
                           "type": "object",
                           "properties": {
                             "evictions": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "hit_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "memory_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "miss_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -511,46 +605,60 @@
                           "type": "object",
                           "properties": {
                             "fetch_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "fetch_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "fetch_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "open_contexts": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "scroll_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "scroll_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "scroll_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "suggest_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "suggest_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "suggest_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -558,43 +666,54 @@
                           "type": "object",
                           "properties": {
                             "count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "doc_values_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "file_sizes": {
                               "type": "object"
                             },
                             "fixed_bit_set_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_writer_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "max_unsafe_auto_id_timestamp": {
                               "type": "date"
                             },
                             "memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "norms_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "points_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "stored_fields_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "term_vectors_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "terms_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "version_map_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -602,7 +721,8 @@
                           "type": "object",
                           "properties": {
                             "total_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -610,13 +730,16 @@
                           "type": "object",
                           "properties": {
                             "reserved_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_data_set_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -624,19 +747,24 @@
                           "type": "object",
                           "properties": {
                             "earliest_last_modified_age": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "operations": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "uncommitted_operations": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "uncommitted_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -644,13 +772,16 @@
                           "type": "object",
                           "properties": {
                             "current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         }
@@ -663,19 +794,24 @@
                           "type": "object",
                           "properties": {
                             "avg_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "avg_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_operations": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -683,7 +819,8 @@
                           "type": "object",
                           "properties": {
                             "size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -691,13 +828,16 @@
                           "type": "object",
                           "properties": {
                             "count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "deleted": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "ingest_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -705,18 +845,21 @@
                           "type": "object",
                           "properties": {
                             "evictions": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "global_ordinals": {
                               "type": "object",
                               "properties": {
                                 "build_time_in_millis": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 }
                               }
                             },
                             "memory_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -724,13 +867,16 @@
                           "type": "object",
                           "properties": {
                             "periodic": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -738,25 +884,32 @@
                           "type": "object",
                           "properties": {
                             "current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "exists_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "exists_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "missing_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "missing_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -764,37 +917,47 @@
                           "type": "object",
                           "properties": {
                             "delete_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "delete_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "delete_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_failed": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "is_throttled": {
                               "type": "boolean"
                             },
                             "noop_update_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "throttle_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "write_load": {
                               "type": "double"
@@ -805,34 +968,44 @@
                           "type": "object",
                           "properties": {
                             "current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "current_docs": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "current_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_auto_throttle_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_docs": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_stopped_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_throttled_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -840,25 +1013,32 @@
                           "type": "object",
                           "properties": {
                             "cache_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "cache_size": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "evictions": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "hit_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "memory_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "miss_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -866,13 +1046,16 @@
                           "type": "object",
                           "properties": {
                             "current_as_source": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "current_as_target": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "throttle_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -880,19 +1063,24 @@
                           "type": "object",
                           "properties": {
                             "external_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "external_total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "listeners": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -900,16 +1088,20 @@
                           "type": "object",
                           "properties": {
                             "evictions": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "hit_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "memory_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "miss_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -917,46 +1109,60 @@
                           "type": "object",
                           "properties": {
                             "fetch_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "fetch_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "fetch_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "open_contexts": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "query_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "scroll_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "scroll_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "scroll_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "suggest_current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "suggest_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "suggest_total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -964,40 +1170,51 @@
                           "type": "object",
                           "properties": {
                             "count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "doc_values_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "fixed_bit_set_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "index_writer_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "max_unsafe_auto_id_timestamp": {
                               "type": "date"
                             },
                             "memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "norms_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "points_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "stored_fields_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "term_vectors_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "terms_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "version_map_memory_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -1005,7 +1222,8 @@
                           "type": "object",
                           "properties": {
                             "total_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -1013,13 +1231,16 @@
                           "type": "object",
                           "properties": {
                             "reserved_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_data_set_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -1027,19 +1248,24 @@
                           "type": "object",
                           "properties": {
                             "earliest_last_modified_age": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "operations": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "uncommitted_operations": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "uncommitted_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
@@ -1047,13 +1273,16 @@
                           "type": "object",
                           "properties": {
                             "current": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_time_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         }
@@ -1068,10 +1297,12 @@
                       "type": "object",
                       "properties": {
                         "count": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "ingest_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1079,13 +1310,16 @@
                       "type": "object",
                       "properties": {
                         "current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "missing_time": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1093,34 +1327,44 @@
                       "type": "object",
                       "properties": {
                         "delete_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "delete_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "failed_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_failed": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_last_period": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "index_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1128,7 +1372,8 @@
                       "type": "object",
                       "properties": {
                         "current": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1136,7 +1381,8 @@
                       "type": "object",
                       "properties": {
                         "total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1144,7 +1390,8 @@
                       "type": "object",
                       "properties": {
                         "evictions": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1152,34 +1399,44 @@
                       "type": "object",
                       "properties": {
                         "fetch_last_period": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "fetch_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_last_period": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_time_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "query_total": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -1187,10 +1444,12 @@
                       "type": "object",
                       "properties": {
                         "ingest_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "size_in_bytes": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     }
@@ -1198,276 +1457,359 @@
                 },
                 "uuid": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 }
               }
             },
             "indexing_delete_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "indexing_delete_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "memory_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "merges_current_docs": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "merges_current_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "merges_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "merges_total_docs": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "merges_total_size": {
-              "type": "keyword",
-              "ignore_above": 256
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "merges_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_bulk_avg_size_in_bytes": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_bulk_avg_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_bulk_total_operations": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_bulk_total_size_in_bytes": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_bulk_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_completion_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_fielddata_evictions": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_fielddata_memory_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_flush_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_flush_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_get_exists_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_get_exists_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_get_missing_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_get_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_indexing_delete_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_indexing_delete_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_memory_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_merges_current_docs": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_merges_current_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_merges_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_merges_total_docs": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_merges_total_size": {
-              "type": "keyword",
-              "ignore_above": 256
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_merges_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_query_cache_evictions": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_query_cache_memory_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_refresh_external_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_refresh_external_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_refresh_listeners": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_refresh_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_request_cache_hit_count": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_request_cache_memory_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_request_cache_miss_count": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_search_fetch_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_search_open_contexts": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_search_query_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_search_scroll_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_search_scroll_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_search_scroll_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_segments_count": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_segments_fixed_bitset_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_segments_index_writer_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_segments_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_segments_version_map_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_suggest_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_suggest_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_suggest_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_warmer_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_warmer_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "pri_warmer_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "query_cache_evictions": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "query_cache_memory_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "refresh_external_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "refresh_external_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "refresh_listeners": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "refresh_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "rep": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "request_cache_hit_count": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "request_cache_memory_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "request_cache_miss_count": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "sample_date": {
               "type": "date"
             },
             "search_fetch_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "search_open_contexts": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "search_query_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "search_scroll_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "search_scroll_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "search_scroll_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "search_throttled": {
               "type": "boolean"
             },
             "segments_count": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "segments_fixed_bitset_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "segments_index_writer_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "segments_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "segments_version_map_memory": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "suggest_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "suggest_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "suggest_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "tags": {
               "type": "keyword",
               "ignore_above": 256
             },
             "warmer_current": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "warmer_total": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "warmer_total_time": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             }
           }
         },
@@ -1476,11 +1818,11 @@
           "properties": {
             "dataset": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             },
             "module": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             }
           }
         },

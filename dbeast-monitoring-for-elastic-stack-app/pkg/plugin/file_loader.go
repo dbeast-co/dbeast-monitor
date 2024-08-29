@@ -193,6 +193,6 @@ func ReadFileToByteArray(filePath string) ([]byte, error) {
 		log.DefaultLogger.Error("Failed to read file %s: %v", filePath, err)
 		return nil, fmt.Errorf("failed to read files from folder: %v", err)
 	}
-	log.DefaultLogger.Info("Reading file: ", filePath)
+	log.DefaultLogger.Info("Reading file: " + filePath)
 	return data, nil
 }

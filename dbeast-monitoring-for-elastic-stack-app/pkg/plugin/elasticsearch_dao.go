@@ -103,7 +103,7 @@ func SendIndexTemplateToCluster(credentials Credentials, templateName string, te
 }
 
 func SendFirstIndicesToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
-	requestURL := credentials.Host + "/%3C/" + templateName + "-data-%7Bnow%2Fd%7D-000001%3E"
+	requestURL := credentials.Host + "/%3C" + templateName + "-%7Bnow%2Fd%7D-000001%3E"
 	return SendDataToCluster(credentials, requestURL, templateContent)
 }
 func SendDataToCluster(credentials Credentials, requestURL string, templateContent string) (*http.Response, error) {
