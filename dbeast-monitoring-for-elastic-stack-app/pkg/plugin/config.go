@@ -13,5 +13,6 @@ var (
 	EsIndexComponentsTemplatesFolder   = filepath.Join(EsComponentsTemplatesFolder, "component_templates")
 	EsIndexTemplatesTemplatesFolder    = filepath.Join(EsComponentsTemplatesFolder, "index_templates")
 	EsIndexFirstIndicesTemplatesFolder = filepath.Join(EsComponentsTemplatesFolder, "first_indices")
-	LogstashConfigurationsFolder       = "/etc/logstash/conf.d"
+	LogstashConfigurationsFolder       = "/opt/dbeast/logstash/config/conf.d"
+	LogstashKeystoreFile               = "logstash.keystore"
 )

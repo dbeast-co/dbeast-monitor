@@ -26,7 +26,8 @@ grafana:
           name: grafana-config
     - name: grafana-logs
       mountPath: /var/log/grafana
-      persistentVolumeClaim:
+      source:
+        persistentVolumeClaim:
           claimName: grafana-logs-pvc
     - name: grafana-storage
       mountPath: /var/lib/grafana
@@ -74,9 +75,11 @@ logstash:
           key: logstash.yml
     - name: logstash-lib
       mountPath: /var/lib/logstash
-      persistentVolumeClaim:
+      source:
+        persistentVolumeClaim:
           claimName: logstash-lib-pvc
     - name: logstash-logs
       mountPath: /var/log/logstash
-      persistentVolumeClaim:
+      source:
+        persistentVolumeClaim:
           claimName: logstash-logs-pvc
