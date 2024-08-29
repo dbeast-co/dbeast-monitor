@@ -7,7 +7,7 @@
       "index": {
         "lifecycle": {
           "name": "dbeast-index-30d",
-          "rollover_alias": "dbeast-mon-es-tasks"
+          "rollover_alias": "dbeast-mon-index-es-tasks"
         }
       }
     },

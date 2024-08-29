@@ -7,7 +7,7 @@
       "index": {
         "lifecycle": {
           "name": "dbeast-index-30d",
-          "rollover_alias": "dbeast-mon-corrupted-data"
+          "rollover_alias": "dbeast-mon-index-corrupted-data"
         }
       }
     },

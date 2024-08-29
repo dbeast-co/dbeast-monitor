@@ -128,5 +128,8 @@
         }
       }
     }
+  },
+  "_meta": {
+    "description": "The default mappings for the corrupted data"
   }
 }

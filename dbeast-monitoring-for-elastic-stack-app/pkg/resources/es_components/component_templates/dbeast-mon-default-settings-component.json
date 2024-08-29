@@ -8,5 +8,8 @@
         "auto_expand_replicas": "0-1"
       }
     }
+  },
+  "_meta": {
+    "description": "The default settings for all monitoring indices"
   }
 }

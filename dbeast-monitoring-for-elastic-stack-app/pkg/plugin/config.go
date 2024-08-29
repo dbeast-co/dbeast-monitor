@@ -16,4 +16,6 @@ var (
 	GrafanaLogstashConfigurationsFolder       = "/opt/dbeast/logstash/config"
 	GrafanaLogstashConf_dConfigurationsFolder = "/opt/dbeast/logstash/config/conf.d"
 	LogstashOriginalConfigurationsFolder      = "/usr/share/logstash/config/conf.d"
+	LogstashConfigurationsFolder              = "/opt/dbeast/logstash/config/conf.d"
+	LogstashKeystoreFile                      = "logstash.keystore"
 )

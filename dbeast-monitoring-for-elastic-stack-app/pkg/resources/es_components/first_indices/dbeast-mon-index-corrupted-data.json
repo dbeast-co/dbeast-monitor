@@ -1,6 +1,6 @@
 {
   "aliases": {
-    "dbeast-mon-corrupted-data": {
+    "dbeast-mon-index-corrupted-data": {
       "is_write_index": true
     }
   }

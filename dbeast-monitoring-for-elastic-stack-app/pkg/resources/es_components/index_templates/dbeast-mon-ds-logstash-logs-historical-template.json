@@ -6,7 +6,8 @@
     "settings": {
       "index": {
         "lifecycle": {
-          "name": "dbeast-ds-30d"
+          "name": "dbeast-ds-30d",
+          "rollover_alias": "dbeast-mon-ds-logstash-logs"
         }
       }
     },

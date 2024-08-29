@@ -6,7 +6,8 @@
     "settings": {
       "index": {
         "lifecycle": {
-          "name": "dbeast-tsds-30d"
+          "name": "dbeast-tsds-30d",
+          "rollover_alias": "dbeast-mon-tsds-logstash-metrics"
         },
         "mode": "time_series",
         "routing_path": [
