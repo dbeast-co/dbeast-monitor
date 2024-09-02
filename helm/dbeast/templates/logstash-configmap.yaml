@@ -4,7 +4,7 @@ metadata:
   name: logstash-config
 data:
   logstash.yml: |
-    {{ .Files.Get "files/logstash/logstash.yml" | indent 4 }}
+{{ .Files.Get "files/logstash/logstash.yml" | indent 4 }}
 
   pipelines.yml: |
     - pipeline.id: main

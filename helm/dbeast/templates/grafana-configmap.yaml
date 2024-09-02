@@ -4,7 +4,7 @@ metadata:
   name: grafana-config
 data:
   grafana.ini: |
-    {{ .Files.Get "files/grafana/grafana.ini" | indent 4 }}
-  
+{{ .Files.Get "files/grafana/grafana.ini" | indent 4 }}
+
   ldap.toml: |
-    {{ .Files.Get "files/grafana/ldap.toml" | indent 4 }}
+{{ .Files.Get "files/grafana/ldap.toml" | indent 4 }}
