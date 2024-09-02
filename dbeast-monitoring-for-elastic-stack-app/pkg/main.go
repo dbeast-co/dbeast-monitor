@@ -29,6 +29,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	if result := plugin.CreateKeystoreIfNotExists(plugin.LogstashConfigurationsFolder, plugin.LogstashKeystoreFile); result {
+		os.Exit(1)
+	}
+
 	if err = app.Manage("dbeast-dbeastmonitor-app", plugin.NewApp, app.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
 		os.Exit(1)

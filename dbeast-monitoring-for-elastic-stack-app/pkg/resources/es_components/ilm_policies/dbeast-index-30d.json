@@ -5,18 +5,13 @@
         "actions": {
           "rollover": {
             "max_age": "7d",
-            "max_primary_shard_size": "10gb",
-            "max_docs": 200000000
-          },
-          "set_priority": {
-            "priority": 100
+            "max_docs": 200000000,
+            "max_primary_shard_size": "50gb"
           },
           "forcemerge": {
             "max_num_segments": 1
-          },
-          "readonly": {}
-        },
-        "min_age": "0ms"
+          }
+        }
       },
       "delete": {
         "min_age": "30d",

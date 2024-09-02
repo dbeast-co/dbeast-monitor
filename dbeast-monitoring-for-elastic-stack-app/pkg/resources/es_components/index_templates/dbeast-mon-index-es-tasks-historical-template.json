@@ -1,0 +1,25 @@
+{
+  "index_patterns": [
+    "dbeast-mon-index-es-tasks-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-index-30d",
+          "rollover_alias": "dbeast-mon-index-es-tasks"
+        }
+      }
+    },
+    "aliases": {
+      "dbeast-mon-es-tasks": {}
+    }
+  },
+  "composed_of": [
+    "dbeast-mon-index-es-tasks-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "_meta": {
+    "description": "This template used for the Elasticsearch tasks"
+  }
+}

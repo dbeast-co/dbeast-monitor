@@ -88,7 +88,7 @@
                   }
                 },
                 "running_time": {
-                  "type": "integer"
+                  "type": "long"
                 },
                 "start_time": {
                   "type": "date"
@@ -179,5 +179,8 @@
       }
     },
     "aliases": {}
+  },
+  "_meta": {
+    "description": "The default mappings for the Elasticsearch tasks monitoring"
   }
 }

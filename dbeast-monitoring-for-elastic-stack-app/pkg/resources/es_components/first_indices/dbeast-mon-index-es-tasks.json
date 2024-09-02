@@ -1,6 +1,6 @@
 {
   "aliases": {
-    "dbeast-mon-es-tasks": {
+    "dbeast-mon-index-es-tasks": {
       "is_write_index": true
     }
   }

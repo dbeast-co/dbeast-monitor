@@ -23,72 +23,87 @@
                     "thread_pool": {
                       "properties": {
                         "completed_rate": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "largest": {
-                          "type": "integer"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "queue_size": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "max": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "rejected": {
-                          "type": "integer"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "rejected_rate": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "pool_size": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "active": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "completed": {
-                          "type": "integer"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "type": {
                           "type": "keyword",
-                          "ignore_above": 256
+                          "time_series_dimension": true
                         },
                         "core": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "size": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "name": {
                           "type": "keyword",
-                          "ignore_above": 256
+                          "time_series_dimension": true
                         },
                         "@version": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         },
                         "keep_alive": {
                           "type": "keyword",
                           "ignore_above": 256
                         },
                         "queue": {
-                          "type": "integer"
+                          "type": "integer",
+                          "time_series_metric": "gauge"
                         }
                       }
                     }
                   }
                 },
                 "port": {
-                  "type": "integer"
+                  "type": "integer",
+                  "time_series_metric": "gauge"
                 },
                 "ip": {
                   "type": "ip"
                 },
                 "name": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 },
                 "pid": {
-                  "type": "integer"
+                  "type": "integer",
+                  "time_series_metric": "gauge"
                 },
                 "id": {
                   "type": "keyword",
@@ -104,7 +119,7 @@
               "properties": {
                 "id": {
                   "type": "keyword",
-                  "ignore_above": 256
+                  "time_series_dimension": true
                 }
               }
             }
@@ -114,16 +129,19 @@
           "properties": {
             "module": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             },
             "dataset": {
               "type": "keyword",
-              "ignore_above": 256
+              "time_series_dimension": true
             }
           }
         }
       }
     },
     "aliases": {}
+  },
+  "_meta": {
+    "description": "The default mappings for the Thread pools monitoring"
   }
 }

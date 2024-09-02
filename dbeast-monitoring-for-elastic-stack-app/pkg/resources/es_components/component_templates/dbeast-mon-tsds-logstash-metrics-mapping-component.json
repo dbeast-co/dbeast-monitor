@@ -1,26 +1,13 @@
 {
   "template": {
     "mappings": {
-      "_source": {
-        "excludes": [],
-        "includes": [],
-        "enabled": true
-      },
-      "_routing": {
-        "required": false
-      },
-      "dynamic": false,
-      "dynamic_templates": [],
       "properties": {
         "@timestamp": {
-          "index": true,
-          "ignore_malformed": false,
-          "store": false,
-          "type": "date",
-          "doc_values": true
+          "type": "date"
         },
         "@version": {
-          "type": "long"
+          "type": "long",
+          "time_series_metric": "gauge"
         },
         "elasticsearch": {
           "type": "object",
@@ -29,8 +16,8 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "ignore_above": 256,
-                  "type": "keyword"
+                  "type": "keyword",
+                  "time_series_dimension": true
                 }
               }
             }
@@ -40,12 +27,12 @@
           "type": "object",
           "properties": {
             "dataset": {
-              "ignore_above": 256,
-              "type": "keyword"
+              "type": "keyword",
+              "time_series_dimension": true
             },
             "module": {
-              "ignore_above": 256,
-              "type": "keyword"
+              "type": "keyword",
+              "time_series_dimension": true
             }
           }
         },
@@ -53,8 +40,8 @@
           "type": "object",
           "properties": {
             "hostname": {
-              "ignore_above": 256,
-              "type": "keyword"
+              "type": "keyword",
+              "time_series_dimension": true
             }
           }
         },
@@ -94,31 +81,40 @@
                       "type": "object",
                       "properties": {
                         "duration_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "filtered": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "filtered_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "in": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "in_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "latency": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "out": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "out_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "queue_push_duration_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -135,10 +131,12 @@
                                   "type": "object",
                                   "properties": {
                                     "collection_count": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "collection_time_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -146,10 +144,12 @@
                                   "type": "object",
                                   "properties": {
                                     "collection_count": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "collection_time_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 }
@@ -167,16 +167,20 @@
                               "type": "date"
                             },
                             "heap_used_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "heap_used_percent": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "non_heap_committed_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "non_heap_used_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "pools": {
                               "type": "object",
@@ -185,7 +189,8 @@
                                   "type": "object",
                                   "properties": {
                                     "committed_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "max_in_bytes": {
                                       "type": "date"
@@ -194,10 +199,12 @@
                                       "type": "date"
                                     },
                                     "peak_used_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "used_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -205,19 +212,24 @@
                                   "type": "object",
                                   "properties": {
                                     "committed_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "max_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "peak_max_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "peak_used_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "used_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -225,19 +237,24 @@
                                   "type": "object",
                                   "properties": {
                                     "committed_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "max_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "peak_max_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "peak_used_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "used_in_bytes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 }
@@ -249,15 +266,18 @@
                           "type": "object",
                           "properties": {
                             "count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "peak_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
                         "uptime_in_millis": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -265,24 +285,24 @@
                       "type": "object",
                       "properties": {
                         "ephemeral_id": {
-                          "ignore_above": 256,
-                          "type": "keyword"
+                          "type": "keyword",
+                          "time_series_dimension": true
                         },
                         "host": {
-                          "ignore_above": 256,
-                          "type": "keyword"
+                          "type": "keyword",
+                          "time_series_dimension": true
                         },
                         "http_address": {
                           "ignore_above": 256,
                           "type": "keyword"
                         },
                         "id": {
-                          "ignore_above": 256,
-                          "type": "keyword"
+                          "type": "keyword",
+                          "time_series_dimension": true
                         },
                         "name": {
-                          "ignore_above": 256,
-                          "type": "keyword"
+                          "type": "keyword",
+                          "time_series_dimension": true
                         },
                         "snapshot": {
                           "type": "boolean"
@@ -315,36 +335,46 @@
                           "type": "object",
                           "properties": {
                             "duration_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "failures_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "filtered": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "filtered_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "in": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "in_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "out": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "out_rate": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "queue_push_duration_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
                         "filters_failures": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "flow": {
                           "dynamic": false,
@@ -355,26 +385,28 @@
                           "type": "keyword"
                         },
                         "id": {
-                          "ignore_above": 256,
-                          "type": "keyword"
+                          "type": "keyword",
+                          "time_series_dimension": true
                         },
                         "plugins": {
                           "type": "object",
                           "properties": {
                             "codecs": {
-                              "type": "nested",
                               "properties": {
                                 "decode": {
                                   "type": "object",
                                   "properties": {
                                     "duration_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "out": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "writes_in": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -382,10 +414,12 @@
                                   "type": "object",
                                   "properties": {
                                     "duration_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "writes_in": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -400,42 +434,51 @@
                               }
                             },
                             "filters": {
-                              "type": "nested",
                               "properties": {
                                 "aggregate_maps": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "code_errors": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "events": {
                                   "type": "object",
                                   "properties": {
                                     "duration_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "in": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "in_rate": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "latency": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "out": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "out_rate": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
                                 "failures": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "failures_rate": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "flow": {
                                   "dynamic": false,
@@ -452,7 +495,8 @@
                                   "doc_values": true
                                 },
                                 "matches": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "name": {
                                   "ignore_above": 256,
@@ -462,13 +506,16 @@
                                   "type": "object",
                                   "properties": {
                                     "[logstash][exception][reason]": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "[logstash][message]": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "message": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 }
@@ -482,16 +529,19 @@
                                   "type": "keyword"
                                 },
                                 "current_connections": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 },
                                 "events": {
                                   "type": "object",
                                   "properties": {
                                     "out": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "queue_push_duration_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -508,32 +558,36 @@
                                   "type": "keyword"
                                 },
                                 "peak_connections": {
-                                  "type": "long"
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
                                 }
                               }
                             },
                             "outputs": {
-                              "type": "nested",
                               "properties": {
                                 "bulk_requests": {
                                   "type": "object",
                                   "properties": {
                                     "failures": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "responses": {
                                       "type": "object",
                                       "properties": {
                                         "200": {
-                                          "type": "long"
+                                          "type": "long",
+                                          "time_series_metric": "gauge"
                                         }
                                       }
                                     },
                                     "successes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "with_errors": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -541,10 +595,12 @@
                                   "type": "object",
                                   "properties": {
                                     "dlq_routed": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "successes": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -552,13 +608,16 @@
                                   "type": "object",
                                   "properties": {
                                     "duration_in_millis": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "in": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     },
                                     "out": {
-                                      "type": "long"
+                                      "type": "long",
+                                      "time_series_metric": "gauge"
                                     }
                                   }
                                 },
@@ -586,13 +645,16 @@
                           "type": "object",
                           "properties": {
                             "events_count": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "max_queue_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "queue_size_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "type": {
                               "ignore_above": 256,
@@ -604,19 +666,22 @@
                           "type": "object",
                           "properties": {
                             "failures": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "last_success_timestamp": {
                               "ignore_above": 256,
                               "type": "keyword"
                             },
                             "successes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
                         "filters_failures_rate": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -641,29 +706,35 @@
                               }
                             },
                             "percent": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             },
                             "total_in_millis": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
                         "max_file_descriptors": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "mem": {
                           "type": "object",
                           "properties": {
                             "total_virtual_in_bytes": {
-                              "type": "long"
+                              "type": "long",
+                              "time_series_metric": "gauge"
                             }
                           }
                         },
                         "open_file_descriptors": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "peak_open_file_descriptors": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -671,7 +742,8 @@
                       "type": "object",
                       "properties": {
                         "events_count": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
@@ -679,10 +751,12 @@
                       "type": "object",
                       "properties": {
                         "failures": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         },
                         "successes": {
-                          "type": "long"
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     }
@@ -696,8 +770,8 @@
           "type": "object",
           "properties": {
             "name": {
-              "ignore_above": 256,
-              "type": "keyword"
+              "type": "keyword",
+              "time_series_dimension": true
             }
           }
         },
@@ -705,13 +779,16 @@
           "type": "object",
           "properties": {
             "batch_delay": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "batch_size": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             },
             "workers": {
-              "type": "long"
+              "type": "long",
+              "time_series_metric": "gauge"
             }
           }
         },

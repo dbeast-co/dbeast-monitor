@@ -1,9 +1,9 @@
 package plugin
 
 type Project struct {
-	ClusterConnectionSettings  EnvironmentConfig                  `json:"cluster_connection_settings"`
-	MonitoringClusterInjection MonitoringClusterInjectionSettings `json:"monitoring_cluster_injection"`
-	LogstashConfigurations     LogstashConfigurations             `json:"logstash_configurations"`
+	ClusterConnectionSettings  EnvironmentConfig       `json:"cluster_connection_settings"`
+	MonitoringClusterInjection []ConfigurationCheckbox `json:"monitoring_cluster_injection"`
+	LogstashConfigurations     LogstashConfigurations  `json:"logstash_configurations"`
 }
 
 type Credentials struct {
@@ -24,11 +24,11 @@ type EnvironmentConfig struct {
 	} `json:"mon"`
 }
 
-type MonitoringClusterInjectionSettings struct {
-	TemplatesInjection   bool `json:"templates_injection"`
-	ILMPoliciesInjection bool `json:"ilm_policies_injection"`
-	CreateFirsIndices    bool `json:"create_first_indices"`
-}
+//type MonitoringClusterInjectionSettings struct {
+//	TemplatesInjection   ConfigurationCheckbox `json:"templates_injection"`
+//	ILMPoliciesInjection ConfigurationCheckbox `json:"ilm_policies_injection"`
+//	CreateFirsIndices    ConfigurationCheckbox `json:"create_first_indices"`
+//}
 
 type LogstashHost struct {
 	ServerAddress      string `json:"server_address"`
