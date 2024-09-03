@@ -61,6 +61,7 @@ spec:
           subPath: {{ .subPath }}
           {{- end }}
         {{- end }}
+        #Run lifecycle if this is new installation
         lifecycle:
           postStart:
             exec:
