@@ -17,19 +17,20 @@ func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	w.Header().Add("Content-Type", "application/json")
 
-	var EnvironmentConfig EnvironmentConfig
-	if err := json.NewDecoder(req.Body).Decode(&EnvironmentConfig); err != nil {
+	var environmentConfig EnvironmentConfig
+	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
 		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
 		return
 	}
+	sanitizeEnvironmentConfig(&environmentConfig)
 	defer req.Body.Close()
 
 	var statusData StatusData
 
-	statusData.Prod.Elasticsearch = UpdateStatus(&EnvironmentConfig.Prod.Elasticsearch)
-	statusData.Mon.Elasticsearch = UpdateStatus(&EnvironmentConfig.Mon.Elasticsearch)
+	statusData.Prod.Elasticsearch = UpdateStatus(&environmentConfig.Prod.Elasticsearch)
+	statusData.Mon.Elasticsearch = UpdateStatus(&environmentConfig.Mon.Elasticsearch)
 
 	statusDataJSON, err := json.MarshalIndent(statusData, "", "")
 	if err != nil {

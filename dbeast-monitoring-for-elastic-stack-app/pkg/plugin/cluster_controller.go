@@ -32,6 +32,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
+	sanitizeEnvironmentConfig(&environmentConfig)
 	defer request.Body.Close()
 
 	clusterNameProd, uidProd, err := GetClusterInfo(environmentConfig.Prod.Elasticsearch)
@@ -67,6 +68,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
+	sanitizeEnvironmentConfig(&cluster.ClusterConnectionSettings)
 	defer request.Body.Close()
 
 	clusterNameProd, uidProd, err := GetClusterInfo(cluster.ClusterConnectionSettings.Prod.Elasticsearch)
