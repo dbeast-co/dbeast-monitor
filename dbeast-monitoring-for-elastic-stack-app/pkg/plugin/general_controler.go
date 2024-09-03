@@ -3,6 +3,7 @@ package plugin
 import (
 	"encoding/json"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
+	"strings"
 )
 
 /*
@@ -23,4 +24,16 @@ func CloneObject(data interface{}) interface{} {
 	}
 
 	return clonedTemplate
+}
+
+func sanitizeHost(host *string) {
+	if strings.HasSuffix(*host, "/") {
+		*host = strings.TrimSuffix(*host, "/")
+	}
+}
+
+func sanitizeEnvironmentConfig(config *EnvironmentConfig) {
+	sanitizeHost(&config.Prod.Elasticsearch.Host)
+	sanitizeHost(&config.Prod.Kibana.Host)
+	sanitizeHost(&config.Mon.Elasticsearch.Host)
 }
