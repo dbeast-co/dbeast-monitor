@@ -61,17 +61,17 @@ logstash:
     - name: LS_JAVA_OPTS
       value: "-Xms1g -Xmx1g"
   volumes:
-    - name: logstash-pvc
-      mountPath: /usr/share/logstash
+    - name: logstash-config-pvc
+      mountPath: /usr/share/logstash/config
       source:
         persistentVolumeClaim:
-          claimName: logstash-pvc
+          claimName: logstash-config-pvc
     - name: logstash-yml
       mountPath: /usr/share/logstash/config/logstash.yml
       subPath: logstash.yml
       source:
         configMap:
-          name: logstash-configmap
+          name: logstash-config
           key: logstash.yml
     - name: logstash-lib
       mountPath: /var/lib/logstash

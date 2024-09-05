@@ -38,10 +38,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: logstash-pvc
+  name: logstash-config-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.logstash.persistence.size }}
@@ -53,7 +53,7 @@ metadata:
   name: logstash-lib-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: {{ .Values.logstash.persistence.size }}
@@ -69,3 +69,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.logstash.persistence.size }}
+

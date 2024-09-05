@@ -62,10 +62,6 @@ spec:
           {{- end }}
         {{- end }}
         #Run lifecycle if this is new installation
-        lifecycle:
-          postStart:
-            exec:
-              command: [ "/bin/sh", "-c", "sleep 10; systemctl restart grafana; curl -X POST -H 'Content-Type: application/json' -d '{\"enabled\": true}' -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://localhost:3000/api/plugins/dbeast-dbeastmonitor-app/settings" ]
       volumes:
       {{- range .Values.grafana.volumes }}
       - name: {{ .name }}
