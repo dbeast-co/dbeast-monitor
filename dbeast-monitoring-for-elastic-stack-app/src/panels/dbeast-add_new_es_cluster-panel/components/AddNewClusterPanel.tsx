@@ -1,28 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './AddNewClusterPanel.scss';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import {toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider} from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-import {useTheme2} from '@grafana/ui';
+import { Spinner, useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
-import {getBackendSrv} from '@grafana/runtime';
-import {ConnectionSettings} from '../models/connection-settings';
-import {Datasource} from '../models/datasource';
-import {GrafanaDatasource} from '../models/grafana-datasource';
-import {BackendResponse} from '../models/backend-response';
-import {SERVER_URL} from '../config';
-import {Cluster, Host} from '../models/cluster';
-import {saveAs} from 'file-saver';
+import { getBackendSrv } from '@grafana/runtime';
+import { ConnectionSettings } from '../models/connection-settings';
+import { Datasource } from '../models/datasource';
+import { GrafanaDatasource } from '../models/grafana-datasource';
+import { BackendResponse } from '../models/backend-response';
+import { SERVER_URL } from '../config';
+import { Cluster, Host } from '../models/cluster';
+import { saveAs } from 'file-saver';
 
-import {LogstashConfigurationsPanel} from './LogstashConfigurationsPanel';
-import LogstashComponent, {Logstash} from './logstash';
-import {v4 as uuidv4} from 'uuid';
-import {MonitoringClusterInjectionPanel} from "./MonitoringClusterInjectionPanel";
+import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
+import LogstashComponent, { Logstash } from './logstash';
+import { v4 as uuidv4 } from 'uuid';
+import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPanel';
 
 const settings = require('../config.ts');
 
@@ -35,6 +35,7 @@ export const AddNewClusterPanel = () => {
     const backendSrv = getBackendSrv();
     const theme = useTheme2();
     const baseUrl = settings.SERVER_URL;
+    // let isSpinnerLoading = false;
 
     const [validHost, setValidHost] = useState(false);
     const [validKibanaHost, setValidKibanaHost] = useState(false);
@@ -92,7 +93,7 @@ export const AddNewClusterPanel = () => {
     const [logstashList, setLogstashList] = useState([] as Logstash[]);
 
     const onSave = () => {
-        setIsLoading(true);
+         setIsLoading(true)
         try {
 
             const formToSave = {
@@ -118,12 +119,13 @@ export const AddNewClusterPanel = () => {
                     },
                 });
                 Promise.all([promise1, promise2]).then(async (values) => {
-                    setIsLoading(false);
+                    // setIsLoading(false);
                     const [value1, value2] = values;
                     const dataSourcesFromResponse: Datasource[] = Object.values(value2);
                     let isErrorOccurred = false; // Flag to track if an error has occurred
                     for (const item of dataSourcesFromResponse) {
                         if (!isErrorOccurred) {
+
                             try {
                                 const isEqualDataSource = value1.find((item1: Datasource) => item1.uid === item.uid);
                                 if (isEqualDataSource) {
@@ -131,6 +133,8 @@ export const AddNewClusterPanel = () => {
                                 } else {
                                     await backendSrv.post('/api/datasources', JSON.stringify(item));
                                 }
+
+                                
                             } catch (error: any) {
                                 isErrorOccurred = true; // Set the flag to true upon encountering an error
                                 toast.error(`${error.message}`, {
@@ -140,9 +144,13 @@ export const AddNewClusterPanel = () => {
                                     hideProgressBar: true,
                                     draggable: false,
                                 });
+                                setIsLoading(false)
+                                // isSpinnerLoading = false
                                 break;
                             }
                         } else {
+
+                            setIsLoading(false)
                             break;
                         }
                     }
@@ -154,14 +162,17 @@ export const AddNewClusterPanel = () => {
                             hideProgressBar: true,
                             draggable: false,
                         });
+                        setIsLoading(false)
+
                     }
                 });
             }
         } catch (err: any) {
-            setIsLoading(false);
+            setIsLoading(false)
         } finally {
-            setIsLoading(false);
+            
         }
+        // isSpinnerLoading = false
     };
     const onTest = () => {
         setIsLoading(true);
@@ -537,12 +548,15 @@ export const AddNewClusterPanel = () => {
 
     return (
         <section className="connectionsAndConfig">
+
             <div
                 className={classNames({
                     source_panel: true,
                     isLight: theme.isLight,
                 })}
             >
+
+               
                 <h3 className="title">Source connection</h3>
 
                 <section>
@@ -691,13 +705,15 @@ export const AddNewClusterPanel = () => {
                         </button>
                     </div>
 
-                    {isLoading && (
-                        <div className="spinner_overlay">
-                            <CircularProgress color="primary"/>
-                        </div>
-                    )}
-                </section>
+                    {/*{isLoading && (*/}
+                    {/*    <div className="spinner_overlay">*/}
+                    {/*        <CircularProgress color="primary"/>*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
 
+
+                </section>
+                {isLoading && <Spinner></Spinner>}
                 <ToastContainer autoClose={3000} position="bottom-right"/>
             </div>
             <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
