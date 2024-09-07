@@ -240,8 +240,6 @@ export const AddNewClusterPanel = () => {
                 });
         } catch (error: any) {
             setIsLoading(false);
-        } finally {
-            setIsLoading(false);
         }
     };
 
