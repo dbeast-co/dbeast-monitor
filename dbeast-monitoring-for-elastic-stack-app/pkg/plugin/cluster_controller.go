@@ -56,7 +56,6 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 }
 
 func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Request) {
-
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
 	response.Header().Add("Content-Type", "application/json")
@@ -159,19 +158,32 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 		ctxLogger)
 
 	if err != nil {
+		ctxLogger.Error("Error while clean pipeline.yml file: " + err.Error())
 		response.WriteHeader(http.StatusInternalServerError)
-		response.Write([]byte(err.Error()))
-		return
-	} else {
-		response.WriteHeader(http.StatusOK)
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			response.WriteHeader(http.StatusInternalServerError)
+			ctxLogger.Error("Can't write to the response: " + err.Error())
+		}
 	}
 	err = DeleteFolder(GrafanaLogstashConf_dConfigurationsFolder, clusterId, ctxLogger)
 
 	if err != nil {
+		ctxLogger.Error("Error while delete folder: " + err.Error())
 		response.WriteHeader(http.StatusInternalServerError)
-		response.Write([]byte(err.Error()))
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			response.WriteHeader(http.StatusInternalServerError)
+			ctxLogger.Error("Can't write to the response: " + err.Error())
+		}
 	} else {
+		ctxLogger.Info("We delete all files for the cluster")
 		response.WriteHeader(http.StatusOK)
+		_, err := response.Write([]byte(`{"status":"ok"}`))
+		if err != nil {
+			response.WriteHeader(http.StatusInternalServerError)
+			ctxLogger.Error("Can't write to the response: " + err.Error())
+		}
 	}
 }
 

@@ -142,11 +142,9 @@ export const AddNewClusterPanel = () => {
                                     draggable: false,
                                 });
                                 setIsLoading(false)
-                                // isSpinnerLoading = false
                                 break;
                             }
                         } else {
-
                             setIsLoading(false)
                             break;
                         }
@@ -160,7 +158,6 @@ export const AddNewClusterPanel = () => {
                             draggable: false,
                         });
                         setIsLoading(false)
-
                     }
                 });
             }

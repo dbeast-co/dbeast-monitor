@@ -432,7 +432,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
                     <Dialog
                         open={this.state?.isOpenDialog!}
-                        onClose={() => this.handleDelete(true)}
+                        onClose={() => this.handleDelete(false)}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >

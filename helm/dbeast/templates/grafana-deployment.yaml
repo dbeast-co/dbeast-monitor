@@ -37,7 +37,7 @@ spec:
           - |
             curl -L -o /tmp/dbeast-monitor-plugin.tar.gz {{ .Values.grafana.pluginUrl }}
             mkdir -p /var/lib/grafana/plugins/dbeast-dbeastmonitor-app
-            tar -xvzf /tmp/dbeast-monitor-plugin.tar.gz -C /var/lib/grafana/plugins/dbeast-dbeastmonitor-app
+            tar -xvzf /tmp/dbeast-monitor-plugin.tar.gz -C /var/lib/grafana/plugins
         volumeMounts:
         - name: grafana-plugins
           mountPath: /var/lib/grafana/plugins
