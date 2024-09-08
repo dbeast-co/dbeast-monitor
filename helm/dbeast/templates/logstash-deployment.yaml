@@ -31,6 +31,8 @@ spec:
 
       containers:
       - name: logstash
+        securityContext:
+          runAsUser: 0
         image: {{ .Values.logstash.image }}
         ports:
         - containerPort: 5044

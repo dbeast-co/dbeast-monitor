@@ -15,7 +15,7 @@ grafana:
     - name: GF_LOG_LEVEL
       value: "info"
     - name: GF_LOG_MODE
-      value: "file"
+      value: "console file"
     - name: GF_INSTALL_PLUGINS
       value: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
   volumes:
