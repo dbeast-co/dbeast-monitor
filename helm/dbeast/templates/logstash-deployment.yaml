@@ -22,6 +22,7 @@ spec:
               if [ -z "$(ls -A /tmp/logstash)" ]; then
                 echo "Persistent volume is empty. Copying data from image..."
                 cp -R /usr/share/logstash/config/* /tmp/logstash/
+                mkdir -p /tmp/logstash/conf.d
               else
                 echo "Persistent volume is not empty. Skipping data copy."
               fi

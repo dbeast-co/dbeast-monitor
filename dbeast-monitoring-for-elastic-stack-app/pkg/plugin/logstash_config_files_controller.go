@@ -284,11 +284,7 @@ func DeleteTextBlockInFile(filePath string, startMarker string, endMarkerPrefix 
 
 func DeleteFolder(folderPath string, pattern string, logger log.Logger) error {
 	entries, err := ioutil.ReadDir(folderPath)
-	if err != nil {
-		return err
-	}
 
-	//logger.Info("The file list for delete: " + strings.Join(entries.Name(), ", "))
 	logger.Info("The config folder path: " + folderPath)
 	logger.Info("The file suffix for delete: " + pattern)
 	if err != nil {
