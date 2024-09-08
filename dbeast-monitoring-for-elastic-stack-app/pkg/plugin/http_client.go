@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type BasicAuthTransport struct {
@@ -44,9 +45,15 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 			Password:  credentials.Password,
 			Transport: tr,
 		}
-		client = &http.Client{Transport: authTransport}
+		client = &http.Client{
+			Transport: authTransport,
+			Timeout:   10 * time.Second,
+		}
 	} else {
-		client = &http.Client{Transport: tr}
+		client = &http.Client{
+			Transport: tr,
+			Timeout:   10 * time.Second,
+		}
 	}
 	return client, nil
 }
@@ -117,6 +124,28 @@ func ProcessPUTRequest(credentials Credentials, requestURL string, body string) 
 			}
 		}
 		log.DefaultLogger.Info("Response from the Put operation: " + string(body))
+	}
+
+	return response, nil
+}
+
+func ProcessHEADRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+	client, err := CreateHTTPClient(credentials)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
+		return nil, err
+	}
+
+	req, err := http.NewRequest("HEAD", requestURL, nil)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
+		return nil, err
+	}
+
+	response, err := client.Do(req)
+	if err != nil {
+		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
+		return response, err
 	}
 
 	return response, nil

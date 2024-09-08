@@ -111,6 +111,7 @@ export const AddNewClusterPanel = () => {
                         'Content-Type': 'application/json',
                         Accept: 'application/json',
                     },
+
                 });
                 const promise1 = backendSrv.get(`/api/datasources`, {
                     headers: {
@@ -134,7 +135,7 @@ export const AddNewClusterPanel = () => {
                                     await backendSrv.post('/api/datasources', JSON.stringify(item));
                                 }
 
-                                
+
                             } catch (error: any) {
                                 isErrorOccurred = true; // Set the flag to true upon encountering an error
                                 toast.error(`${error.message}`, {
@@ -170,7 +171,7 @@ export const AddNewClusterPanel = () => {
         } catch (err: any) {
             setIsLoading(false)
         } finally {
-            
+
         }
         // isSpinnerLoading = false
     };
@@ -554,7 +555,7 @@ export const AddNewClusterPanel = () => {
                 })}
             >
 
-               
+
                 <h3 className="title">Source connection</h3>
 
                 <section>

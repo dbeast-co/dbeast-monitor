@@ -269,7 +269,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     try {
                         await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
                     } catch (deleteError) {
-                        console.error('deleteError', deleteError);
+                        console.error('Delete data sources error: ', deleteError);
                         this.loading = false;
                     }
                 }
@@ -283,6 +283,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     },
                 });
             } catch (error: any) {
+                console.error('Delete from backend error: ', error);
                 toast.error(`${error.message}`, {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: false,
@@ -296,9 +297,9 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             // this.componentDidMount().then(() => {
             // });
             this.loading = false;
-            // window.location.reload();
+            window.location.reload();
         } catch (getError) {
-            console.error('getError', getError);
+            console.error('Cluster delete error: ', getError);
             this.loading = false;
         }
     };

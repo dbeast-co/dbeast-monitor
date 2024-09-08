@@ -25,21 +25,6 @@ func GetClusterHealth(credentials Credentials) (*http.Response, error) {
 }
 
 /*
-GetClusterInformation makes an HTTP GET request to retrieve cluster name and UID information based on the provided credentials
-and returns the HTTP response.
-*/
-func GetClusterInformation(credentials Credentials) (*http.Response, error) {
-	requestURL := credentials.Host + "/"
-	response, err := ProcessGETRequest(credentials, requestURL)
-
-	if err != nil {
-		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
-		return nil, err
-	}
-	return response, err
-}
-
-/*
 GetClusterInfo retrieves cluster name and UID from Elasticsearch and returns them.
 It uses the provided credentials to make a request to Elasticsearch and extracts cluster name and UID from the response.
 */
@@ -87,6 +72,17 @@ func GetClusterInfo(credentials Credentials) (string, string, error) {
 	return clusterName, uid, nil
 }
 
+func GetClusterInformation(credentials Credentials) (*http.Response, error) {
+	requestURL := credentials.Host + "/"
+	response, err := ProcessGETRequest(credentials, requestURL)
+
+	if err != nil {
+		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
+		return nil, err
+	}
+	return response, err
+}
+
 func SendILMToCluster(credentials Credentials, policyName string, policyContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_ilm/policy/" + policyName
 	return SendDataToCluster(credentials, requestURL, policyContent)
@@ -102,10 +98,11 @@ func SendIndexTemplateToCluster(credentials Credentials, templateName string, te
 	return SendDataToCluster(credentials, requestURL, templateContent)
 }
 
-func SendFirstIndicesToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
+func SendFirstIndexToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/%3C" + templateName + "-%7Bnow%2Fd%7D-000001%3E"
 	return SendDataToCluster(credentials, requestURL, templateContent)
 }
+
 func SendDataToCluster(credentials Credentials, requestURL string, templateContent string) (*http.Response, error) {
 	log.DefaultLogger.Info("Request path: " + requestURL)
 	log.DefaultLogger.Debug("Request host: " + credentials.Host)
@@ -117,4 +114,42 @@ func SendDataToCluster(credentials Credentials, requestURL string, templateConte
 		return response, err
 	}
 	return response, err
+}
+
+func CheckIsIndexExists(credentials Credentials, templateName string) (bool, error) {
+	requestUrl := credentials.Host + "/_cat/indices/" + templateName + "?format=json&h=index"
+	response, err := ProcessGETRequest(credentials, requestUrl)
+
+	if err != nil {
+		log.DefaultLogger.Error("Failed to check is index exists: " + err.Error())
+		return false, err
+	}
+
+	if response.StatusCode == http.StatusOK {
+		body, err := io.ReadAll(response.Body)
+		err2 := response.Body.Close()
+		if err2 != nil {
+			log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
+			return false, err2
+		}
+
+		var result []map[string]interface{}
+		err = json.Unmarshal([]byte(body), &result)
+		if err != nil {
+			log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
+			return false, err
+		}
+
+		if len(result) > 0 {
+			log.DefaultLogger.Debug("Index: " + templateName + " exists")
+			return true, nil
+		} else {
+			log.DefaultLogger.Debug("Index: " + templateName + " does not exist")
+			return false, nil
+		}
+
+	} else {
+		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
+		return false, err
+	}
 }

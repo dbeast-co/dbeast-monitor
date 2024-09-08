@@ -35,6 +35,10 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 	if err != nil {
 		return err
 	}
+	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+		"### Configuration files for the cluster Id: ",
+		logger)
+
 	pipelineFile := "\n\n### Configuration files for the cluster Id: " + clusterId + ", cluster name: " + clusterName + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {

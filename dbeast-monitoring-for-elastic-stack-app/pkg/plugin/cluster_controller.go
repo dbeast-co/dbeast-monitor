@@ -71,7 +71,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 	sanitizeEnvironmentConfig(&cluster.ClusterConnectionSettings)
 	defer request.Body.Close()
 
-	clusterNameProd, uidProd, err := GetClusterInfo(cluster.ClusterConnectionSettings.Prod.Elasticsearch)
+	clusterNameProd, clusterId, err := GetClusterInfo(cluster.ClusterConnectionSettings.Prod.Elasticsearch)
 	if err != nil {
 		log.DefaultLogger.Error("Error while receiving cluster info: " + err.Error())
 		response.WriteHeader(http.StatusInternalServerError)
@@ -118,9 +118,25 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		}
 	}
 
+	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+		"### Configuration files for the cluster Id: ",
+		ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		response.Write([]byte(err.Error()))
+		return
+	}
+	err = DeleteFolder(GrafanaLogstashConf_dConfigurationsFolder, clusterId, ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		response.Write([]byte(err.Error()))
+	}
+
 	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
 
-	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, uidProd)
+	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, clusterId)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
@@ -267,14 +283,22 @@ func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
 	}
 	return nil
 }
+
 func SendFirstIndicesToMonitoringCluster(credentials Credentials) error {
 	log.DefaultLogger.Info("First indices ingest")
 	for templateName, templateContent := range ESFirstIndicesTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
-		_, err := SendFirstIndicesToCluster(credentials, templateName, templateContent)
+		exists, err := CheckIsIndexExists(credentials, templateName)
 		if err != nil {
 			return err
+		}
+		log.DefaultLogger.Info("Is index exists response: ", exists)
+		if !exists {
+			_, err = SendFirstIndexToCluster(credentials, templateName, templateContent)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
