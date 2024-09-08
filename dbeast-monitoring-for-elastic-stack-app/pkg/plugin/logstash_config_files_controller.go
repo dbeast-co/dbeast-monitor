@@ -35,7 +35,7 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 	if err != nil {
 		return err
 	}
-	pipelineFile := "### Configuration files for the cluster Id: " + clusterId + ", cluster name: " + clusterName + "\n"
+	pipelineFile := "\n\n### Configuration files for the cluster Id: " + clusterId + ", cluster name: " + clusterName + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
 			configFileClone := strings.Clone(LSConfigs[configFile.Id])

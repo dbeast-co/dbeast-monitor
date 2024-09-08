@@ -270,6 +270,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                         await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
                     } catch (deleteError) {
                         console.error('deleteError', deleteError);
+                        this.loading = false;
                     }
                 }
             }
@@ -289,14 +290,16 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     hideProgressBar: true,
                     draggable: false,
                 });
+                this.loading = false;
             }
             // this.props.onDelete(this.state.cluster_uuid)
             // this.componentDidMount().then(() => {
             // });
             this.loading = false;
-            window.location.reload();
+            // window.location.reload();
         } catch (getError) {
             console.error('getError', getError);
+            this.loading = false;
         }
     };
 
