@@ -137,6 +137,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 
 	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, clusterId)
 
+	//Update Grafana datasource templates with actual values and return them to the Frontend for the future ingest into Grafana
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
