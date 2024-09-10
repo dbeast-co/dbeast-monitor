@@ -3933,6 +3933,9 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
         "@timestamp": {
           "type": "date"
         },
+        "@version": {
+          "type": "integer"
+        },
         "elasticsearch": {
           "properties": {
             "cluster": {
@@ -3945,88 +3948,23 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
             },
             "node": {
               "properties": {
+                "id": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                },
+                "name": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                },
                 "stats": {
                   "properties": {
-                    "ingest_pipeline": {
-                      "properties": {
-                        "current": {
-                          "type": "long",
-                          "time_series_metric": "gauge"
-                        },
-                        "time_in_millis": {
-                          "type": "long",
-                          "time_series_metric": "gauge"
-                        },
-                        "count": {
-                          "type": "long",
-                          "time_series_metric": "gauge"
-                        },
-                        "in_rate": {
-                          "type": "long",
-                          "time_series_metric": "gauge"
-                        },
-                        "processors": {
-                          "type": "object",
-                          "properties": {
-                            "number_in_pipeline": {
-                              "type": "long",
-                              "time_series_metric": "gauge"
-                            },
-                            "stats": {
-                              "properties": {
-                                "current": {
-                                  "type": "long",
-                                  "time_series_metric": "gauge"
-                                },
-                                "time_in_millis": {
-                                  "type": "long",
-                                  "time_series_metric": "gauge"
-                                },
-                                "count": {
-                                  "type": "long",
-                                  "time_series_metric": "gauge"
-                                },
-                                "failed": {
-                                  "type": "long",
-                                  "time_series_metric": "gauge"
-                                }
-                              }
-                            },
-                            "id": {
-                              "type": "keyword",
-                              "ignore_above": 256
-                            },
-                            "type": {
-                              "type": "keyword",
-                              "ignore_above": 256
-                            }
-                          }
-                        },
-                        "failed": {
-                          "type": "long",
-                          "time_series_metric": "gauge"
-                        },
-                        "id": {
-                          "type": "keyword",
-                          "time_series_dimension": true
-                        }
-                      }
-                    },
                     "ingest": {
                       "properties": {
                         "enrich": {
                           "properties": {
                             "cache_stats": {
                               "properties": {
-                                "hits": {
-                                  "type": "long",
-                                  "time_series_metric": "gauge"
-                                },
-                                "misses": {
-                                  "type": "long",
-                                  "time_series_metric": "gauge"
-                                },
-                                "hits_rate": {
+                                "count": {
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 },
@@ -4034,11 +3972,19 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 },
-                                "count": {
+                                "hits": {
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 },
                                 "hits_last_period": {
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
+                                },
+                                "hits_rate": {
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
+                                },
+                                "misses": {
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 }
@@ -4046,7 +3992,7 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
                             },
                             "coordinator_stats": {
                               "properties": {
-                                "executed_searches_total": {
+                                "executed_searches_last_period": {
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 },
@@ -4054,7 +4000,7 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 },
-                                "executed_searches_last_period": {
+                                "executed_searches_total": {
                                   "type": "long",
                                   "time_series_metric": "gauge"
                                 },
@@ -4075,32 +4021,107 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
                           }
                         }
                       }
+                    },
+                    "ingest_pipeline": {
+                      "properties": {
+                        "count": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        },
+                        "current": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        },
+                        "failed": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        },
+                        "failed_rate": {
+                          "type": "long"
+                        },
+                        "id": {
+                          "type": "keyword",
+                          "time_series_dimension": true
+                        },
+                        "in_rate": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        },
+                        "last_failed": {
+                          "type": "long"
+                        },
+                        "last_processed": {
+                          "type": "long"
+                        },
+                        "processors": {
+                          "properties": {
+                            "id": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            },
+                            "number_in_pipeline": {
+                              "type": "long",
+                              "time_series_metric": "gauge"
+                            },
+                            "stats": {
+                              "properties": {
+                                "count": {
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
+                                },
+                                "current": {
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
+                                },
+                                "failed": {
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
+                                },
+                                "failed_rate": {
+                                  "type": "long"
+                                },
+                                "in_rate": {
+                                  "type": "long"
+                                },
+                                "last_failed": {
+                                  "type": "long"
+                                },
+                                "last_processed": {
+                                  "type": "long"
+                                },
+                                "last_processing_time": {
+                                  "type": "long"
+                                },
+                                "latency": {
+                                  "type": "long"
+                                },
+                                "time_in_millis": {
+                                  "type": "long",
+                                  "time_series_metric": "gauge"
+                                }
+                              }
+                            },
+                            "type": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "processors_failures": {
+                          "type": "long"
+                        },
+                        "time_in_millis": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        }
+                      }
                     }
                   }
-                },
-                "name": {
-                  "type": "keyword",
-                  "time_series_dimension": true
-                },
-                "id": {
-                  "type": "keyword",
-                  "time_series_dimension": true
                 }
               }
-            }
-          }
-        },
-        "sample_date": {
-          "type": "date"
-        },
-        "@version": {
-          "type": "integer"
-        },
-        "metricset": {
-          "properties": {
-            "name": {
-              "type": "keyword",
-              "time_series_dimension": true
+            },
+            "number_of_ingest_nodes": {
+              "type": "long"
             }
           }
         },
@@ -4115,6 +4136,17 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
               "time_series_dimension": true
             }
           }
+        },
+        "metricset": {
+          "properties": {
+            "name": {
+              "type": "keyword",
+              "time_series_dimension": true
+            }
+          }
+        },
+        "sample_date": {
+          "type": "date"
         },
         "tags": {
           "type": "keyword",
@@ -4343,17 +4375,17 @@ PUT _index_template/dbeast-mon-index-corrupted-data-historical-template
 
 PUT %3Cdbeast-mon-index-es-tasks-%7Bnow%2Fd%7D-000001%3E
 {
-  "aliases": {
-    "dbeast-mon-index-es-tasks": {
-      "is_write_index": true
-    }
-  }
+"aliases": {
+"dbeast-mon-index-es-tasks": {
+"is_write_index": true
+}
+}
 }
 PUT %3Cdbeast-mon-index-corrupted-data-%7Bnow%2Fd%7D-000001%3E
 {
-  "aliases": {
-    "dbeast-mon-index-corrupted-data": {
-      "is_write_index": true
-    }
-  }
+"aliases": {
+"dbeast-mon-index-corrupted-data": {
+"is_write_index": true
+}
+}
 }
