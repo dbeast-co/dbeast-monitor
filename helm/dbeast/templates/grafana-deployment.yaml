@@ -31,6 +31,8 @@ spec:
 
       - name: install-dbeast-plugin
         image: curlimages/curl:7.85.0
+        securityContext:
+          runAsUser: 0
         command:
           - sh
           - -c
@@ -41,7 +43,6 @@ spec:
         volumeMounts:
         - name: grafana-plugins
           mountPath: /var/lib/grafana/plugins
-
 
       containers:
       - name: grafana
