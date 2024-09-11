@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: logstash
+  name: {{ .Release.Name }}-logstash
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: logstash
+      app: {{ .Release.Name }}-logstash
   template:
     metadata:
       labels:
-        app: logstash
+        app: {{ .Release.Name }}-logstash
     spec:
       initContainers:
         - name: logstash-init
@@ -43,26 +43,50 @@ spec:
           value: {{ .value }}
         {{- end }}
         volumeMounts:
+          - name: logstash-config-pvc
+            mountPath: /usr/share/logstash/config
+          - name: logstash-yml
+            mountPath: /usr/share/logstash/config/logstash.yml
+            subPath: logstash.yml
+          - name: logstash-lib
+            mountPath: /var/lib/logstash
+          - name: logstash-logs
+            mountPath: /var/log/logstash
         {{- range .Values.logstash.volumes }}
-        - name: {{ .name }}
-          mountPath: {{ .mountPath }}
-          {{- if .subPath }}
-          subPath: {{ .subPath }}
-          {{- end }}
+          - name: {{ .name }}
+            mountPath: {{ .mountPath }}
+            {{- if .subPath }}
+            subPath: {{ .subPath }}
+            {{- end }}
         {{- end }}
       volumes:
+        - name: logstash-config-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-logstash-config-pvc
+        - name: logstash-lib
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-logstash-lib-pvc
+        - name: logstash-logs
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-logstash-logs-pvc
+        - name: logstash-yml
+          configMap:
+            name: logstash-config
+            items:
+              - key: logstash.yml
+                path: logstash.yml
       {{- range .Values.logstash.volumes }}
-      - name: {{ .name }}
-        {{- if .source.configMap }}
-        configMap:
-          name: {{ .source.configMap.name }}
-          {{- if .source.configMap.key }}
-          items:
-            - key: {{ .source.configMap.key }}
-              path: {{ .source.configMap.path | default .source.configMap.key }}
-          {{- end }}
-        {{- else if .source.persistentVolumeClaim }}
-        persistentVolumeClaim:
-          claimName: {{ .source.persistentVolumeClaim.claimName }}
+        - name: {{ .name }}
+          {{- if .source.configMap }}
+          configMap:
+            name: {{ .source.configMap.name }}
+            {{- if .source.configMap.key }}
+            items:
+              - key: {{ .source.configMap.key }}
+                path: {{ .source.configMap.path | default .source.configMap.key }}
+            {{- end }}
+          {{- else if .source.persistentVolumeClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .source.persistentVolumeClaim.claimName }}
         {{- end }}
       {{- end }}

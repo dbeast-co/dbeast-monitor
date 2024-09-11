@@ -1,22 +1,6 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: logstash-config
+  name: {{ .Release.Name }}-logstash-config
 data:
-  logstash.yml: |
-{{ .Files.Get "files/logstash/logstash.yml" | indent 4 }}
-
-  pipelines.yml: |
-    - pipeline.id: main
-      path.config: "/usr/share/logstash/config/pipelines.yml"
-  
-  jvm.options: |
-    -Xms1g
-    -Xmx1g
-  
-  log4j2.properties: |
-    status = error
-    name = LogstashPropertiesConfig
-  
-  startup.options: |
-    LS_HEAP_SIZE="1g"
+{{ toYaml .Values.logstash.config | indent 2 }}

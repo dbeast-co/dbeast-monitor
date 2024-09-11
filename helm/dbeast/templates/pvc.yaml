@@ -2,71 +2,65 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: grafana-pvc
+  name: {{ .Release.Name }}-grafana-pvc
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: {{ .Values.grafana.persistence.grafana_storage.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.grafana.persistence.size }}
+      storage: {{ .Values.grafana.persistence.grafana_storage.size }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: grafana-plugins-pvc
+  name: {{ .Release.Name }}-grafana-plugins-pvc
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: {{ .Values.grafana.persistence.grafana_plugins.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.grafana.persistence.size }}
+      storage: {{ .Values.grafana.persistence.grafana_plugins.size }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: grafana-logs-pvc
+  name: {{ .Release.Name }}-grafana-logs-pvc
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: {{ .Values.grafana.persistence.grafana_logs.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.grafana.persistence.size }}
+      storage: {{ .Values.grafana.persistence.grafana_logs.size }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: logstash-config-pvc
+  name: {{ .Release.Name }}-logstash-config-pvc
 spec:
-  accessModes:
-    - ReadWriteMany
+  accessModes: {{ .Values.logstash.persistence.logstash_config.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.logstash.persistence.size }}
+      storage: {{ .Values.logstash.persistence.logstash_config.size }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: logstash-lib-pvc
+  name: {{ .Release.Name }}-logstash-lib-pvc
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: {{ .Values.logstash.persistence.logstash_lib.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.logstash.persistence.size }}
+      storage: {{ .Values.logstash.persistence.logstash_lib.size }}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: logstash-logs-pvc
+  name: {{ .Release.Name }}-logstash-logs-pvc
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: {{ .Values.logstash.persistence.logstash_logs.accessModes }}
   resources:
     requests:
-      storage: {{ .Values.logstash.persistence.size }}
+      storage: {{ .Values.logstash.persistence.logstash_logs.size }}
 

@@ -5,11 +5,18 @@ grafana:
     port: 3000
   resources: {}
   persistence:
-    enabled: true
-    storageClass: ""
-    accessModes:
-      - ReadWriteOnce
-    size: 10Gi
+    grafana_logs:
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+    grafana_storage:
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+    grafana_plugins:
+      accessModes:
+        - ReadWriteOnce
+      size: 2Gi
   pluginUrl: "https://github.com/dbeast-co/dbeast-monitor/releases/download/DevContainerVersion/dbeast-dbeastmonitor-app.tar.gz"
   env:
     - name: GF_LOG_LEVEL
@@ -18,32 +25,60 @@ grafana:
       value: "console file"
     - name: GF_INSTALL_PLUGINS
       value: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
-  volumes:
-    - name: grafana-config
-      mountPath: /etc/grafana
-      source:
-        configMap:
-          name: grafana-config
-    - name: grafana-logs
-      mountPath: /var/log/grafana
-      source:
-        persistentVolumeClaim:
-          claimName: grafana-logs-pvc
-    - name: grafana-storage
-      mountPath: /var/lib/grafana
-      source:
-        persistentVolumeClaim:
-          claimName: grafana-pvc
-    - name: grafana-plugins
-      mountPath: /var/lib/grafana/plugins
-      source:
-        persistentVolumeClaim:
-          claimName: grafana-plugins-pvc
-    - name: logstash-config
-      mountPath: /opt/dbeast/logstash/config
-      source:
-        persistentVolumeClaim:
-          claimName: logstash-config-pvc
+  volumes: {}
+  config:
+    grafana.ini:
+      app_mode: development
+      server:
+        domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ tpl (.Values.ingress.hosts | first) . }}{{ else }}''{{ end }}"
+      feature_toggles:
+        topnav: false
+    ldap:
+      enabled: false
+      config: |
+        [[servers]]
+        host = "127.0.0.1"
+        port = 389
+        use_ssl = false
+        start_tls = false
+        tls_ciphers = []
+        min_tls_version = ""
+        ssl_skip_verify = false
+        bind_dn = "cn=admin,dc=grafana,dc=org"
+        bind_password = 'grafana'
+        timeout = 10
+        search_filter = "(cn=%s)"
+        search_base_dns = ["dc=grafana,dc=org"]
+
+        [servers.attributes]
+        name = "givenName"
+        surname = "sn"
+        username = "cn"
+        member_of = "memberOf"
+        email =  "email"
+
+        [[servers.group_mappings]]
+        group_dn = "cn=admins,ou=groups,dc=grafana,dc=org"
+        org_role = "Admin"
+
+        [[servers.group_mappings]]
+        group_dn = "cn=editors,ou=groups,dc=grafana,dc=org"
+        org_role = "Editor"
+
+        [[servers.group_mappings]]
+        group_dn = "*"
+        org_role = "Viewer"
+
+ingress:
+  enabled: false
+  hosts:
+    - dbeast.local
+  paths:
+    - /
+  ingressClassName: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
 logstash:
   image: "logstash:8.14.3"
@@ -52,34 +87,36 @@ logstash:
     port: 5044
   resources: {}
   persistence:
-    enabled: true
-    storageClass: ""
-    accessModes:
-      - ReadWriteOnce
-    size: 10Gi
+    logstash_config:
+      accessModes:
+        - ReadWriteOnce
+      size: 2Gi
+    logstash_lib:
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+    logstash_logs:
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
   env:
     - name: LS_JAVA_OPTS
       value: "-Xms1g -Xmx1g"
-  volumes:
-    - name: logstash-config-pvc
-      mountPath: /usr/share/logstash/config
-      source:
-        persistentVolumeClaim:
-          claimName: logstash-config-pvc
-    - name: logstash-yml
-      mountPath: /usr/share/logstash/config/logstash.yml
-      subPath: logstash.yml
-      source:
-        configMap:
-          name: logstash-config
-          key: logstash.yml
-    - name: logstash-lib
-      mountPath: /var/lib/logstash
-      source:
-        persistentVolumeClaim:
-          claimName: logstash-lib-pvc
-    - name: logstash-logs
-      mountPath: /var/log/logstash
-      source:
-        persistentVolumeClaim:
-          claimName: logstash-logs-pvc
+  volumes: {}
+  config:
+    logstash.yml:
+      node.name: monitoring
+      path.data: /var/lib/logstash
+      path.logs: /var/log/logstash
+      config.reload.automatic: true
+    pipelines.yml: |
+      - pipeline.id: main
+        path.config: "/usr/share/logstash/config/pipelines.yml"
+    jvm.options: |
+      -Xms1g
+      -Xmx1g
+    log4j2.properties: |
+      status = error
+      name = LogstashPropertiesConfig
+    startup.options: |
+      LS_HEAP_SIZE="1g"
