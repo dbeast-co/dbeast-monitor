@@ -89,7 +89,7 @@ logstash:
   persistence:
     logstash_config:
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       size: 2Gi
     logstash_lib:
       accessModes:
