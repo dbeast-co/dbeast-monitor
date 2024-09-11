@@ -82,7 +82,7 @@ spec:
       volumes:
         - name: grafana-config
           configMap:
-            name: grafana-config
+            name: {{ .Release.Name }}-grafana-config
         - name: grafana-logs
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-grafana-logs-pvc
