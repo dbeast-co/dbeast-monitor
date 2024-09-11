@@ -65,8 +65,6 @@ spec:
             mountPath: /var/lib/grafana
           - name: grafana-plugins
             mountPath: /var/lib/grafana/plugins
-          - name: logstash-config
-            mountPath: /opt/dbeast/logstash/config
         {{- range .Values.grafana.volumes }}
           - name: {{ .name }}
             mountPath: {{ .mountPath }}
@@ -92,9 +90,6 @@ spec:
         - name: grafana-plugins
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-grafana-plugins-pvc
-        - name: logstash-config
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-logstash-config-pvc
       {{- range .Values.grafana.volumes }}
         - name: {{ .name }}
           {{- if .source.configMap }}
