@@ -140,6 +140,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 	//Update Grafana datasource templates with actual values and return them to the Frontend for the future ingest into Grafana
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
+		log.DefaultLogger.Error("Error while the updated templates parsing: " + err.Error())
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
