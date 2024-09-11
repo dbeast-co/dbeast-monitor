@@ -71,7 +71,7 @@ spec:
             claimName: {{ .Release.Name }}-logstash-logs-pvc
         - name: logstash-yml
           configMap:
-            name: logstash-config
+            name: {{ .Release.Name }}-logstash-config
             items:
               - key: logstash.yml
                 path: logstash.yml
