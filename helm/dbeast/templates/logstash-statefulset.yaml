@@ -27,7 +27,7 @@ spec:
                 echo "Persistent volume is not empty. Skipping data copy."
               fi
           volumeMounts:
-            - name: logstash-config-pvc
+            - name: logstash-config
               mountPath: /tmp/logstash
 
       containers:
@@ -43,7 +43,7 @@ spec:
           value: {{ .value }}
         {{- end }}
         volumeMounts:
-          - name: logstash-config-pvc
+          - name: logstash-config
             mountPath: /usr/share/logstash/config
           - name: logstash-yml
             mountPath: /usr/share/logstash/config/logstash.yml
@@ -60,7 +60,7 @@ spec:
             {{- end }}
         {{- end }}
       volumes:
-        - name: logstash-config-pvc
+        - name: logstash-config
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-logstash-config-pvc
         - name: logstash-lib
