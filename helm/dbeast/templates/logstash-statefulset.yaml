@@ -48,18 +48,6 @@ spec:
           - name: logstash-yml
             mountPath: /usr/share/logstash/config/logstash.yml
             subPath: logstash.yml
-#          - name: logstash-yml
-#            mountPath: /usr/share/logstash/config/pipelines.yml
-#            subPath: pipelines.yml
-#          - name: logstash-yml
-#            mountPath: /usr/share/logstash/config/log4j2.properties
-#            subPath: log4j2.properties
-#          - name: logstash-yml
-#            mountPath: /usr/share/logstash/config/jvm.options
-#            subPath: jvm.options
-#          - name: logstash-yml
-#            mountPath: /usr/share/logstash/config/startup.options
-#            subPath: startup.options
           - name: logstash-lib
             mountPath: /var/lib/logstash
           - name: logstash-logs
@@ -87,14 +75,6 @@ spec:
             items:
               - key: logstash.yml
                 path: logstash.yml
-#              - key: log4j2.properties
-#                path: log4j2.properties
-#              - key: pipelines.yml
-#                path: pipelines.yml
-#              - key: jvm.options
-#                path: jvm.options
-#              - key: startup.options
-#                path: startup.options
       {{- range .Values.logstash.volumes }}
         - name: {{ .name }}
           {{- if .source.configMap }}

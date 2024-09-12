@@ -109,14 +109,3 @@ logstash:
       path.data: /var/lib/logstash
       path.logs: /var/log/logstash
       config.reload.automatic: true
-    pipelines.yml: |
-      - pipeline.id: main
-        path.config: "/usr/share/logstash/config/pipelines.yml"
-    jvm.options: |
-      -Xms1g
-      -Xmx1g
-    log4j2.properties: |
-      status = error
-      name = LogstashPropertiesConfig
-    startup.options: |
-      LS_HEAP_SIZE="1g"
