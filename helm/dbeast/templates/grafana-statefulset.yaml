@@ -1,16 +1,16 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: grafana
+  name: {{ .Release.Name }}-grafana
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: grafana
+      app: {{ .Release.Name }}-grafana
   template:
     metadata:
       labels:
-        app: grafana
+        app: {{ .Release.Name }}-grafana
     spec:
       initContainers:
       - name: grafana-init
@@ -31,6 +31,8 @@ spec:
 
       - name: install-dbeast-plugin
         image: curlimages/curl:7.85.0
+        securityContext:
+          runAsUser: 0
         command:
           - sh
           - -c
@@ -41,7 +43,6 @@ spec:
         volumeMounts:
         - name: grafana-plugins
           mountPath: /var/lib/grafana/plugins
-
 
       containers:
       - name: grafana
@@ -56,12 +57,22 @@ spec:
           value: {{ .value }}
         {{- end }}
         volumeMounts:
+          - name: grafana-config
+            mountPath: /etc/grafana
+          - name: grafana-logs
+            mountPath: /var/log/grafana
+          - name: grafana-storage
+            mountPath: /var/lib/grafana
+          - name: grafana-plugins
+            mountPath: /var/lib/grafana/plugins
+          - name: logstash-config
+            mountPath: /opt/dbeast/logstash/config
         {{- range .Values.grafana.volumes }}
-        - name: {{ .name }}
-          mountPath: {{ .mountPath }}
-          {{- if .subPath }}
-          subPath: {{ .subPath }}
-          {{- end }}
+          - name: {{ .name }}
+            mountPath: {{ .mountPath }}
+            {{- if .subPath }}
+            subPath: {{ .subPath }}
+            {{- end }}
         {{- end }}
         #Run lifecycle if this is new installation
         lifecycle:
@@ -69,13 +80,28 @@ spec:
             exec:
               command: [ "/bin/sh", "-c", "sleep 30; curl -X POST -H 'Content-Type: application/json' -d '{\"enabled\": true}' -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://localhost:3000/api/plugins/dbeast-dbeastmonitor-app/settings" ]
       volumes:
+        - name: grafana-config
+          configMap:
+            name: {{ .Release.Name }}-grafana-config
+        - name: grafana-logs
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-grafana-logs-pvc
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-grafana-pvc
+        - name: grafana-plugins
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-grafana-plugins-pvc
+        - name: logstash-config
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-logstash-config-pvc
       {{- range .Values.grafana.volumes }}
-      - name: {{ .name }}
-        {{- if .source.configMap }}
-        configMap:
-          name: {{ .source.configMap.name }}
-        {{- else if .source.persistentVolumeClaim }}
-        persistentVolumeClaim:
-          claimName: {{ .source.persistentVolumeClaim.claimName }}
-        {{- end }}
+        - name: {{ .name }}
+          {{- if .source.configMap }}
+          configMap:
+            name: {{ .source.configMap.name }}
+          {{- else if .source.persistentVolumeClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .source.persistentVolumeClaim.claimName }}
+          {{- end }}
       {{- end }}
