@@ -37,9 +37,24 @@ spec:
           - sh
           - -c
           - |
-            curl -L -o /tmp/dbeast-monitor-plugin.tar.gz {{ .Values.grafana.pluginUrl }}
+            set -e
             mkdir -p /var/lib/grafana/plugins/dbeast-dbeastmonitor-app
-            tar -xvzf /tmp/dbeast-monitor-plugin.tar.gz -C /var/lib/grafana/plugins
+            if [ -z "$(ls -A /var/lib/grafana/plugins/dbeast-dbeastmonitor-app)" ]; then
+              echo "Persistent volume is empty. Copying data from image..."
+              curl -L -o /tmp/dbeast-monitor-plugin.tar.gz {{ tpl .Values.grafana.pluginUrl $ }}
+              tar -xvzf /tmp/dbeast-monitor-plugin.tar.gz -C /var/lib/grafana/plugins
+            else
+              if [[ "$(cat /var/lib/grafana/plugins/dbeast-dbeastmonitor-app/plugin.json | grep version )" != *"{{ .Values.appVersion }}"* ]]; then
+                rm -rf var/lib/grafana/plugins/dbeast-dbeastmonitor-app/*
+                curl -L -o /tmp/dbeast-monitor-plugin.tar.gz {{ tpl .Values.grafana.pluginUrl $ }}
+                tar -xvzf /tmp/dbeast-monitor-plugin.tar.gz -C /var/lib/grafana/plugins
+                echo "Installed the new plugin version: {{ .Values.appVersion }}"
+              else
+                echo "Persistent volume is not empty. Skipping data copy."
+              fi
+            fi
+
+
         volumeMounts:
         - name: grafana-plugins
           mountPath: /var/lib/grafana/plugins

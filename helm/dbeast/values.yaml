@@ -1,3 +1,4 @@
+appVersion: "0.8.1"
 grafana:
   image: "grafana/grafana-oss:9.5.10-ubuntu"
   service:
@@ -8,16 +9,16 @@ grafana:
     grafana_logs:
       accessModes:
         - ReadWriteOnce
-      size: 10Gi
+      size: 1Gi
     grafana_storage:
       accessModes:
         - ReadWriteOnce
-      size: 10Gi
+      size: 1Gi
     grafana_plugins:
       accessModes:
         - ReadWriteOnce
-      size: 2Gi
-  pluginUrl: "https://github.com/dbeast-co/dbeast-monitor/releases/download/DevContainerVersion/dbeast-dbeastmonitor-app.tar.gz"
+      size: 200Mi
+  pluginUrl: "https://github.com/dbeast-co/dbeast-monitor/releases/download/DevContainerVersion/dbeast-dbeastmonitor-app-{{ .Values.appVersion }}.tar.gz"
   env:
     - name: GF_LOG_LEVEL
       value: "info"
@@ -90,15 +91,15 @@ logstash:
     logstash_config:
       accessModes:
         - ReadWriteOnce
-      size: 2Gi
+      size: 10Mi
     logstash_lib:
       accessModes:
         - ReadWriteOnce
-      size: 10Gi
+      size: 10Mi
     logstash_logs:
       accessModes:
         - ReadWriteOnce
-      size: 10Gi
+      size: 1Gi
   env:
     - name: LS_JAVA_OPTS
       value: "-Xms1g -Xmx1g"

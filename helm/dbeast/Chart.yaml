@@ -2,4 +2,4 @@ apiVersion: v2
 name: dbeast-monitor
 description: A Helm chart for deploying dbeast-monitor
 version: 1.1.0
-appVersion: "0.8.1"
+
