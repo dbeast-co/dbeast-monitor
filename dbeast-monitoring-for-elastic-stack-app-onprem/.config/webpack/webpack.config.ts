@@ -142,6 +142,7 @@ const config = async (env): Promise<Configuration> => ({
   },
 
   plugins: [
+
     new CopyWebpackPlugin({
       patterns: [
         // If src/README.md exists use it; otherwise the root README
@@ -151,6 +152,7 @@ const config = async (env): Promise<Configuration> => ({
         { from: '../LICENSE', to: '.' },
         { from: '../CHANGELOG.md', to: '.', force: true },
         { from: '**/*.json', to: '.' }, // TODO<Add an error for checking the basic structure of the repo>
+        { from: '../dashboards/*.json', to: './dashboards', force: true  }, // Custom dashboards folder
         { from: '**/*.svg', to: '.', noErrorOnMissing: true }, // Optional
         { from: '**/*.png', to: '.', noErrorOnMissing: true }, // Optional
         { from: '**/*.html', to: '.', noErrorOnMissing: true }, // Optional
