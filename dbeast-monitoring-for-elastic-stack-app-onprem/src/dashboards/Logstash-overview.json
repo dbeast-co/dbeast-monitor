@@ -381,7 +381,7 @@
             }
           },
           "color": {
-            "mode": "continuous-YlRd"
+            "mode": "palette-classic"
           },
           "mappings": [],
           "thresholds": {
