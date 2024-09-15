@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dbeast-monitor/pkg/plugin"
+	"dbeast-monitor-container/pkg/plugin"
 	"os"
 	"strings"
 

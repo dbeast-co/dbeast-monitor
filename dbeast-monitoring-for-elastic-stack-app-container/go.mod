@@ -1,4 +1,4 @@
-module dbeast-monitor
+module dbeast-monitor-container
 
 go 1.22.6
 
