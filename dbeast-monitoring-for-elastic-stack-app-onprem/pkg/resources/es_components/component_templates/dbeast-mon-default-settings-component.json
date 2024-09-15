@@ -1,0 +1,15 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "codec": "best_compression",
+        "refresh_interval": "30s",
+        "number_of_shards": "1",
+        "auto_expand_replicas": "0-1"
+      }
+    }
+  },
+  "_meta": {
+    "description": "The default settings for all monitoring indices"
+  }
+}
