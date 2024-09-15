@@ -11,6 +11,6 @@ func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/add_cluster", a.AddClusterHandler)
 	mux.HandleFunc("/delete_cluster/", a.DeleteClusterHandler)
 	mux.HandleFunc("/download_logstash_monitoring_configuration_files", a.DownloadLogstashMonitoringConfigurationFilesHandler)
-	//mux.HandleFunc("/download_es_monitoring_configuration_files", a.DownloadElasticsearchMonitoringConfigurationFilesHandler)
+	mux.HandleFunc("/download_es_monitoring_configuration_files", a.DownloadElasticsearchMonitoringConfigurationFilesHandler)
 	mux.HandleFunc("/save", a.SaveClusterHandler)
 }
