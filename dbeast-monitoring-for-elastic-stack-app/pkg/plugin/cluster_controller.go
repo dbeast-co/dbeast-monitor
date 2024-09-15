@@ -117,20 +117,27 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		}
 	}
 
-	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+	err = DeleteTextBlockInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
 		"### Configuration files for the cluster Id: ",
 		ctxLogger)
 
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
-		response.Write([]byte(err.Error()))
-		return
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			log.DefaultLogger.Error("Error while write response: " + err.Error())
+			return
+		}
 	}
-	err = DeleteFolder(GrafanaLogstashConf_dConfigurationsFolder, clusterId, ctxLogger)
+	err = DeleteFolder(LogstashConfDConfigurationsFolder, clusterId, ctxLogger)
 
 	if err != nil {
 		response.WriteHeader(http.StatusInternalServerError)
-		response.Write([]byte(err.Error()))
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			log.DefaultLogger.Error("Error while write response: " + err.Error())
+			return
+		}
 	}
 
 	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
@@ -145,8 +152,13 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
+
 	response.WriteHeader(http.StatusOK)
-	response.Write(updatedTemplatesJSON)
+	_, err = response.Write(updatedTemplatesJSON)
+	if err != nil {
+		log.DefaultLogger.Error("Error while the updated templates parsing: " + err.Error())
+		return
+	}
 }
 
 func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
@@ -155,7 +167,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 	clusterId := request.URL.Path[len("/delete_cluster/"):]
 	ctxLogger.Info("Got request for the cluster delete. Cluster ID: " + clusterId)
 
-	err := DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+	err := DeleteTextBlockInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
 		"### Configuration files for the cluster Id: ",
 		ctxLogger)
 
@@ -168,7 +180,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 			ctxLogger.Error("Can't write to the response: " + err.Error())
 		}
 	}
-	err = DeleteFolder(GrafanaLogstashConf_dConfigurationsFolder, clusterId, ctxLogger)
+	err = DeleteFolder(LogstashConfDConfigurationsFolder, clusterId, ctxLogger)
 
 	if err != nil {
 		ctxLogger.Error("Error while delete folder: " + err.Error())

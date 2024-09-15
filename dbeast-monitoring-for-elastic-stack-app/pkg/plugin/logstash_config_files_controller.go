@@ -35,7 +35,7 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 	if err != nil {
 		return err
 	}
-	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+	err = DeleteTextBlockInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
 		"### Configuration files for the cluster Id: ",
 		logger)
 
@@ -47,17 +47,17 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 
-			fileAbsolutePath := filepath.Join(GrafanaLogstashConf_dConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
+			fileAbsolutePath := filepath.Join(LogstashConfDConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
 			WriteFilesToDisk(fileAbsolutePath, configFileClone, false, logger)
 
 			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
 
-			pipelinesPath := filepath.Join(LogstashOriginalConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
+			pipelinesPath := filepath.Join(LogstashConfDConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
 			pipelineFile += fmt.Sprintf("- pipeline.id: %s\n", pipelineId)
 			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", pipelinesPath)
 		}
 	}
-	fileAbsolutePath := filepath.Join(GrafanaLogstashConfigurationsFolder, "pipelines.yml")
+	fileAbsolutePath := filepath.Join(LogstashConfigurationsFolder, "pipelines.yml")
 	WriteFilesToDisk(fileAbsolutePath, pipelineFile, true, logger)
 	return nil
 }
@@ -183,8 +183,6 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 }
 
 func WriteFilesToDisk(fileInternalPath string, content string, isAppend bool, logger log.Logger) {
-	//var fileAbsoluteInternalPath = filepath.Join(GrafanaLogstashConfigurationsFolder, fileInternalPath)
-
 	logger.Debug("File content: ", content)
 	dir := filepath.Dir(fileInternalPath)
 	err := os.MkdirAll(dir, os.ModePerm)
