@@ -1,0 +1,3779 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "OverviewDashboard"
+      ],
+      "targetBlank": true,
+      "title": "Additional monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "panels": [],
+      "title": "Search tasks",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_tasks}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Running time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index pattern"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 273
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Analyze index pattern",
+                    "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasks number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 114
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 7,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Running time"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.task.request.index_pattern",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "20"
+              },
+              "type": "terms"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.task.running_time",
+              "id": "1",
+              "type": "max"
+            },
+            {
+              "field": "elasticsearch.task.task_id",
+              "id": "3",
+              "type": "cardinality"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: search_task",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Top tasks running time by index pattern",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Max": "Running time",
+              "Unique Count": "Tasks number",
+              "elasticsearch.task.request.index_pattern": "Index pattern"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_tasks}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 4,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 7,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: search_task",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Search tasks count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_tasks}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Analyze node",
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node\"]}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasks number"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 114
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Running time"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.task.node",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "20"
+              },
+              "type": "terms"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "elasticsearch.task.task_id",
+              "id": "3",
+              "type": "cardinality"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: search_task",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Search tasks per node",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Max": "Running time",
+              "Unique Count": "Tasks number",
+              "elasticsearch.task.node": "Node",
+              "elasticsearch.task.request.index_pattern": "Index pattern"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_tasks}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 4,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 7,
+        "y": 7
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Response time (s)",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.task.running_time",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: search_task",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Search response time (s)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_thread_pools}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 7,
+        "y": 13
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.node.name",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.node.stats.thread_pool.rejected_rate",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Search Thread pool rejects (rejects/s)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_tasks}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Task node"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Analyze node",
+                    "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Task node\"]}&${cluster_uid:queryparam}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index list"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 186
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Number of indices"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Run time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              },
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sample date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 183
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index patterns"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 176
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Size"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 66
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 407
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Aggregation"
+            },
+            "properties": [
+              {
+                "id": "custom.filterable",
+                "value": true
+              },
+              {
+                "id": "custom.width",
+                "value": 376
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Run time"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "50"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: search_task AND elasticsearch.task.request.query:* AND ${text_search_filter:raw} ",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Top running queries",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@version": true,
+              "_id": true,
+              "_index": true,
+              "_type": true,
+              "elasticsearch.cluster.id": true,
+              "elasticsearch.task.action": true,
+              "elasticsearch.task.description": false,
+              "elasticsearch.task.ip": true,
+              "elasticsearch.task.parent_task_id": true,
+              "elasticsearch.task.request.search_type": true,
+              "elasticsearch.task.start_time": true,
+              "elasticsearch.task.task_id": true,
+              "elasticsearch.task.timestamp": true,
+              "elasticsearch.task.type": true,
+              "event.dataset": true,
+              "event.module": true,
+              "highlight": true,
+              "metricset.name": true,
+              "sort": true
+            },
+            "indexByName": {
+              "@timestamp": 0,
+              "@version": 2,
+              "_id": 3,
+              "_index": 4,
+              "_type": 5,
+              "elasticsearch.cluster.id": 6,
+              "elasticsearch.task.action": 7,
+              "elasticsearch.task.description": 30,
+              "elasticsearch.task.ip": 8,
+              "elasticsearch.task.node": 9,
+              "elasticsearch.task.parent_task_id": 12,
+              "elasticsearch.task.query.aggregations": 25,
+              "elasticsearch.task.query.aggregations_levels": 26,
+              "elasticsearch.task.query.query": 27,
+              "elasticsearch.task.query.query_uid": 28,
+              "elasticsearch.task.query.sort": 29,
+              "elasticsearch.task.request.index_list": 13,
+              "elasticsearch.task.request.index_number": 14,
+              "elasticsearch.task.request.index_pattern": 11,
+              "elasticsearch.task.request.query": 15,
+              "elasticsearch.task.request.search_type": 16,
+              "elasticsearch.task.running_time": 10,
+              "elasticsearch.task.start_time": 1,
+              "elasticsearch.task.task_id": 17,
+              "elasticsearch.task.timestamp": 18,
+              "elasticsearch.task.type": 19,
+              "event.dataset": 20,
+              "event.module": 21,
+              "highlight": 22,
+              "metricset.name": 23,
+              "sort": 24
+            },
+            "renameByName": {
+              "@timestamp": "Sample date",
+              "elasticsearch.task.description": "description",
+              "elasticsearch.task.ip": "",
+              "elasticsearch.task.node": "Task node",
+              "elasticsearch.task.request.index_list": "Index list",
+              "elasticsearch.task.request.index_number": "Number of indices",
+              "elasticsearch.task.request.index_pattern": "Index patterns",
+              "elasticsearch.task.request.query": "Query",
+              "elasticsearch.task.running_time": "Run time",
+              "elasticsearch.task.start_time": "Start date"
+            }
+          }
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "source": "Query"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Sample date",
+                "Task node",
+                "Run time",
+                "Index patterns",
+                "Index list",
+                "Number of indices",
+                "description",
+                "size",
+                "query",
+                "aggregations"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Index list": 4,
+              "Index patterns": 3,
+              "Number of indices": 5,
+              "Run time": 2,
+              "Sample date": 0,
+              "Task node": 1,
+              "aggregations": 8,
+              "description": 9,
+              "query": 7,
+              "size": 6
+            },
+            "renameByName": {
+              "aggregations": "Aggregation",
+              "description": "Description",
+              "query": "Query",
+              "size": "Size"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 19,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Running time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index pattern"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 273
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index pattern",
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Tasks number"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 114
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 16,
+            "w": 7,
+            "x": 0,
+            "y": 29
+          },
+          "id": 21,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Running time"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.request.index_pattern",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "20"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.task.running_time",
+                  "id": "1",
+                  "type": "max"
+                },
+                {
+                  "field": "elasticsearch.task.task_id",
+                  "id": "3",
+                  "type": "cardinality"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: esql_task",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Top ESQL tasks running time by index pattern",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Max": "Running time",
+                  "Unique Count": "Tasks number",
+                  "elasticsearch.task.request.index_pattern": "Index pattern"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "bars",
+                "fillOpacity": 4,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 11,
+            "x": 7,
+            "y": 29
+          },
+          "id": 23,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.node",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: esql_task",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "ESQL tasks count",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node\"]}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Tasks number"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 114
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 16,
+            "w": 6,
+            "x": 18,
+            "y": 29
+          },
+          "id": 22,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Running time"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.node",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "20"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.task.task_id",
+                  "id": "3",
+                  "type": "cardinality"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: esql_task",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Tasks per node",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Max": "Running time",
+                  "Unique Count": "Tasks number",
+                  "elasticsearch.task.node": "Node",
+                  "elasticsearch.task.request.index_pattern": "Index pattern"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "bars",
+                "fillOpacity": 4,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 11,
+            "x": 7,
+            "y": 37
+          },
+          "id": 24,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "Response time (s)",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.task.running_time",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: esql_task",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Max Response time (s)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Task node"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Task node\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index list"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 186
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Number of indices"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 149
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Run time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 77
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Sample date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index patterns"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 176
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 66
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "query"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 407
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "aggregations"
+                },
+                "properties": [
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Description"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 347
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Query"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 600
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 45
+          },
+          "id": 25,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Run time"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "size": "50"
+                  },
+                  "type": "raw_data"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: esql_task AND elasticsearch.task.request.query:* AND ${text_search_filter:raw} ",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Top running queries",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "@version": true,
+                  "_id": true,
+                  "_index": true,
+                  "_type": true,
+                  "elasticsearch.cluster.id": true,
+                  "elasticsearch.task.action": true,
+                  "elasticsearch.task.description": false,
+                  "elasticsearch.task.ip": true,
+                  "elasticsearch.task.parent_task_id": true,
+                  "elasticsearch.task.query.aggregations": true,
+                  "elasticsearch.task.query.aggregations_levels": true,
+                  "elasticsearch.task.query.query_uid": true,
+                  "elasticsearch.task.query.sort": true,
+                  "elasticsearch.task.request.search_type": true,
+                  "elasticsearch.task.start_time": true,
+                  "elasticsearch.task.task_id": true,
+                  "elasticsearch.task.timestamp": true,
+                  "elasticsearch.task.type": true,
+                  "event.dataset": true,
+                  "event.module": true,
+                  "highlight": true,
+                  "metricset.name": true,
+                  "sort": true
+                },
+                "indexByName": {
+                  "@timestamp": 0,
+                  "@version": 2,
+                  "_id": 3,
+                  "_index": 4,
+                  "_type": 5,
+                  "elasticsearch.cluster.id": 6,
+                  "elasticsearch.task.action": 7,
+                  "elasticsearch.task.description": 30,
+                  "elasticsearch.task.ip": 8,
+                  "elasticsearch.task.node": 9,
+                  "elasticsearch.task.parent_task_id": 12,
+                  "elasticsearch.task.query.aggregations": 25,
+                  "elasticsearch.task.query.aggregations_levels": 26,
+                  "elasticsearch.task.query.query": 27,
+                  "elasticsearch.task.query.query_uid": 28,
+                  "elasticsearch.task.query.sort": 29,
+                  "elasticsearch.task.request.index_list": 13,
+                  "elasticsearch.task.request.index_number": 14,
+                  "elasticsearch.task.request.index_pattern": 11,
+                  "elasticsearch.task.request.query": 15,
+                  "elasticsearch.task.request.search_type": 16,
+                  "elasticsearch.task.running_time": 10,
+                  "elasticsearch.task.start_time": 1,
+                  "elasticsearch.task.task_id": 17,
+                  "elasticsearch.task.timestamp": 18,
+                  "elasticsearch.task.type": 19,
+                  "event.dataset": 20,
+                  "event.module": 21,
+                  "highlight": 22,
+                  "metricset.name": 23,
+                  "sort": 24
+                },
+                "renameByName": {
+                  "@timestamp": "Sample date",
+                  "elasticsearch.task.description": "Description",
+                  "elasticsearch.task.ip": "",
+                  "elasticsearch.task.node": "Task node",
+                  "elasticsearch.task.request.index_list": "Index list",
+                  "elasticsearch.task.request.index_number": "Number of indices",
+                  "elasticsearch.task.request.index_pattern": "Index patterns",
+                  "elasticsearch.task.request.query": "Query",
+                  "elasticsearch.task.running_time": "Run time",
+                  "elasticsearch.task.start_time": "Start date"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "ESQL tasks",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 8,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 230
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Tasks"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 5,
+            "x": 0,
+            "y": 55
+          },
+          "id": 10,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.node",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: write_task",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Panel Title",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Count": "Tasks",
+                  "elasticsearch.task.node": "Node"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 2,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "always",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 6,
+            "x": 5,
+            "y": 55
+          },
+          "id": 15,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.node",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: write_task",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Write operations count",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index pattern"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 302
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index pattern",
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Bulk size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 113
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max Bulk size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 113
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Min Bulk size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 109
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Avg Run time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 112
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max run time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 110
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Tasks"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 13,
+            "x": 11,
+            "y": 55
+          },
+          "id": 9,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Tasks"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.request.index_pattern",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "20"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.task.request.bulk_size",
+                  "id": "1",
+                  "type": "avg"
+                },
+                {
+                  "field": "elasticsearch.task.request.bulk_size",
+                  "id": "3",
+                  "type": "max"
+                },
+                {
+                  "field": "elasticsearch.task.request.bulk_size",
+                  "id": "4",
+                  "type": "min"
+                },
+                {
+                  "field": "elasticsearch.task.running_time",
+                  "id": "5",
+                  "type": "avg"
+                },
+                {
+                  "field": "elasticsearch.task.running_time",
+                  "id": "6",
+                  "type": "max"
+                },
+                {
+                  "id": "8",
+                  "type": "count"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: write_task",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Ingest Bulk analytics",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Average elasticsearch.task.request.bulk_size": "Avg Bulk size",
+                  "Average elasticsearch.task.running_time": "Avg Run time",
+                  "Count": "Tasks",
+                  "Max elasticsearch.task.request.bulk_size": "Max Bulk size",
+                  "Max elasticsearch.task.running_time": "Max run time",
+                  "Min": "Min Bulk size",
+                  "elasticsearch.task.request.index_pattern": "Index pattern"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 6,
+            "x": 5,
+            "y": 64
+          },
+          "id": 17,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.name",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "10"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.rejected_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Write Thread pool rejects",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "left",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Task node"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 136
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Task node\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index list"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 206
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Indices"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 73
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Run time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 79
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Sample date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 197
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index patterns"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 176
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "description"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 769
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 66
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Bulk size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 80
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Shard"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 64
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 72
+          },
+          "id": 11,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Run time"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "size": "100"
+                  },
+                  "type": "raw_data"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: write_task AND ${text_search_filter:raw}",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Top running queries",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "@version": true,
+                  "_id": true,
+                  "_index": true,
+                  "_type": true,
+                  "elasticsearch.cluster.id": true,
+                  "elasticsearch.task.action": true,
+                  "elasticsearch.task.description": false,
+                  "elasticsearch.task.ip": true,
+                  "elasticsearch.task.parent_task_id": true,
+                  "elasticsearch.task.request.search_type": true,
+                  "elasticsearch.task.start_time": true,
+                  "elasticsearch.task.task_id": true,
+                  "elasticsearch.task.timestamp": true,
+                  "elasticsearch.task.type": true,
+                  "event.dataset": true,
+                  "event.module": true,
+                  "highlight": true,
+                  "metricset.name": true,
+                  "sort": true
+                },
+                "indexByName": {
+                  "@timestamp": 0,
+                  "@version": 2,
+                  "_id": 3,
+                  "_index": 4,
+                  "_type": 5,
+                  "elasticsearch.cluster.id": 6,
+                  "elasticsearch.task.action": 7,
+                  "elasticsearch.task.description": 17,
+                  "elasticsearch.task.ip": 8,
+                  "elasticsearch.task.node": 9,
+                  "elasticsearch.task.parent_task_id": 13,
+                  "elasticsearch.task.request.bulk_size": 10,
+                  "elasticsearch.task.request.index_list": 14,
+                  "elasticsearch.task.request.index_number": 15,
+                  "elasticsearch.task.request.index_pattern": 12,
+                  "elasticsearch.task.request.shard_number": 16,
+                  "elasticsearch.task.running_time": 11,
+                  "elasticsearch.task.start_time": 1,
+                  "elasticsearch.task.task_id": 18,
+                  "elasticsearch.task.timestamp": 19,
+                  "elasticsearch.task.type": 20,
+                  "event.dataset": 21,
+                  "event.module": 22,
+                  "highlight": 23,
+                  "metricset.name": 24,
+                  "sort": 25
+                },
+                "renameByName": {
+                  "@timestamp": "Sample date",
+                  "elasticsearch.task.description": "description",
+                  "elasticsearch.task.ip": "",
+                  "elasticsearch.task.node": "Task node",
+                  "elasticsearch.task.request.bulk_size": "Bulk size",
+                  "elasticsearch.task.request.index_list": "Index list",
+                  "elasticsearch.task.request.index_number": "Indices",
+                  "elasticsearch.task.request.index_pattern": "Index patterns",
+                  "elasticsearch.task.request.query": "Query",
+                  "elasticsearch.task.request.shard_number": "Shard",
+                  "elasticsearch.task.running_time": "Run time",
+                  "elasticsearch.task.start_time": "Start date"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Write tasks",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 12,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "left",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "elasticsearch.task.action"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 284
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 73
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 25,
+            "w": 5,
+            "x": 0,
+            "y": 82
+          },
+          "id": 18,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Count"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.task.action",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Tasks actions list ",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start date"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Task node"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Task node\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 9,
+            "y": 82
+          },
+          "id": 13,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: general AND ${text_search_filter:raw}",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Another tasks count",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "@version": true,
+                  "_id": true,
+                  "_index": true,
+                  "_type": true,
+                  "elasticsearch.cluster.id": true,
+                  "elasticsearch.task.action": false,
+                  "elasticsearch.task.description": false,
+                  "elasticsearch.task.ip": true,
+                  "elasticsearch.task.parent_task_id": true,
+                  "elasticsearch.task.request.search_type": true,
+                  "elasticsearch.task.start_time": false,
+                  "elasticsearch.task.task_id": true,
+                  "elasticsearch.task.timestamp": true,
+                  "elasticsearch.task.type": true,
+                  "event.dataset": true,
+                  "event.module": true,
+                  "highlight": true,
+                  "metricset.name": true,
+                  "sort": true
+                },
+                "indexByName": {
+                  "@timestamp": 0,
+                  "@version": 2,
+                  "_id": 3,
+                  "_index": 4,
+                  "_type": 5,
+                  "elasticsearch.cluster.id": 6,
+                  "elasticsearch.task.action": 7,
+                  "elasticsearch.task.description": 16,
+                  "elasticsearch.task.ip": 8,
+                  "elasticsearch.task.node": 9,
+                  "elasticsearch.task.parent_task_id": 13,
+                  "elasticsearch.task.request.bulk_size": 10,
+                  "elasticsearch.task.request.index_list": 14,
+                  "elasticsearch.task.request.index_number": 15,
+                  "elasticsearch.task.request.index_pattern": 12,
+                  "elasticsearch.task.running_time": 11,
+                  "elasticsearch.task.start_time": 1,
+                  "elasticsearch.task.task_id": 17,
+                  "elasticsearch.task.timestamp": 18,
+                  "elasticsearch.task.type": 19,
+                  "event.dataset": 20,
+                  "event.module": 21,
+                  "highlight": 22,
+                  "metricset.name": 23,
+                  "sort": 24
+                },
+                "renameByName": {
+                  "@timestamp": "Sample date",
+                  "elasticsearch.task.description": "description",
+                  "elasticsearch.task.ip": "",
+                  "elasticsearch.task.node": "Task node",
+                  "elasticsearch.task.request.bulk_size": "Bulk size",
+                  "elasticsearch.task.request.index_list": "Index list",
+                  "elasticsearch.task.request.index_number": "Number of indices",
+                  "elasticsearch.task.request.index_pattern": "Index patterns",
+                  "elasticsearch.task.request.query": "Query",
+                  "elasticsearch.task.running_time": "Run time",
+                  "elasticsearch.task.start_time": "Start date"
+                }
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "number",
+                    "targetField": "Start date"
+                  }
+                ],
+                "fields": {}
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_tasks}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 131
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsIso"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Task node"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 115
+                  },
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Task node\"]}&${cluster_uid:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Run time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 85
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Sample date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 197
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "description"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 566
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "elasticsearch.task.action"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 300
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 157
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 19,
+            "w": 19,
+            "x": 5,
+            "y": 88
+          },
+          "id": 16,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Run time"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_tasks}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "size": "100"
+                  },
+                  "type": "raw_data"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND metricset.name: general AND ${text_search_filter:raw}",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Top running queries",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "@version": true,
+                  "_id": true,
+                  "_index": true,
+                  "_type": true,
+                  "elasticsearch.cluster.id": true,
+                  "elasticsearch.task.action": false,
+                  "elasticsearch.task.description": false,
+                  "elasticsearch.task.ip": true,
+                  "elasticsearch.task.parent_task_id": true,
+                  "elasticsearch.task.request.search_type": true,
+                  "elasticsearch.task.start_time": false,
+                  "elasticsearch.task.task_id": true,
+                  "elasticsearch.task.timestamp": true,
+                  "elasticsearch.task.type": true,
+                  "event.dataset": true,
+                  "event.module": true,
+                  "highlight": true,
+                  "metricset.name": true,
+                  "sort": true
+                },
+                "indexByName": {
+                  "@timestamp": 0,
+                  "@version": 2,
+                  "_id": 3,
+                  "_index": 4,
+                  "_type": 5,
+                  "elasticsearch.cluster.id": 6,
+                  "elasticsearch.task.action": 7,
+                  "elasticsearch.task.description": 16,
+                  "elasticsearch.task.ip": 8,
+                  "elasticsearch.task.node": 9,
+                  "elasticsearch.task.parent_task_id": 13,
+                  "elasticsearch.task.request.bulk_size": 10,
+                  "elasticsearch.task.request.index_list": 14,
+                  "elasticsearch.task.request.index_number": 15,
+                  "elasticsearch.task.request.index_pattern": 12,
+                  "elasticsearch.task.running_time": 11,
+                  "elasticsearch.task.start_time": 1,
+                  "elasticsearch.task.task_id": 17,
+                  "elasticsearch.task.timestamp": 18,
+                  "elasticsearch.task.type": 19,
+                  "event.dataset": 20,
+                  "event.module": 21,
+                  "highlight": 22,
+                  "metricset.name": 23,
+                  "sort": 24
+                },
+                "renameByName": {
+                  "@timestamp": "Sample date",
+                  "elasticsearch.task.description": "description",
+                  "elasticsearch.task.ip": "",
+                  "elasticsearch.task.node": "Task node",
+                  "elasticsearch.task.request.bulk_size": "Bulk size",
+                  "elasticsearch.task.request.index_list": "Index list",
+                  "elasticsearch.task.request.index_number": "Number of indices",
+                  "elasticsearch.task.request.index_pattern": "Index patterns",
+                  "elasticsearch.task.request.query": "Query",
+                  "elasticsearch.task.running_time": "Run time",
+                  "elasticsearch.task.start_time": "Start date"
+                }
+              }
+            },
+            {
+              "id": "convertFieldType",
+              "options": {
+                "conversions": [
+                  {
+                    "destinationType": "number",
+                    "targetField": "Start date"
+                  }
+                ],
+                "fields": {}
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Another tasks",
+      "type": "row"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [
+    "DBeastMonitor",
+    "OverviewDashboard"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+        },
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "Grafana-DS-API"
+        },
+        "definition": "$[*].name",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Cluster Name",
+        "multi": false,
+        "name": "cluster_uid",
+        "options": [],
+        "query": {
+          "annotationDashboard": "",
+          "annotationLimit": 100,
+          "annotationNewState": "",
+          "annotationPattern": "",
+          "annotationPrevState": "",
+          "annotationRange": "",
+          "annotationRules": true,
+          "annotationType": "",
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$[*].name"
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "requestType": "datasources",
+          "urlPath": "/"
+        },
+        "refresh": 1,
+        "regex": "/^Elasticsearch-direct-prod--(?<text>.+?)--(?<value>.*)/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_tasks",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-tasks--(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic Thread pools",
+        "multi": false,
+        "name": "es_thread_pools",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "*",
+          "value": "*"
+        },
+        "hide": 0,
+        "label": "Free search",
+        "name": "text_search_filter",
+        "options": [
+          {
+            "selected": true,
+            "text": "*",
+            "value": "*"
+          }
+        ],
+        "query": "*",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "datasource": {
+          "type": "elasticsearch",
+          "uid": "${es_tasks}"
+        },
+        "filters": [],
+        "hide": 0,
+        "name": "Filters",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Elasticsearch tasks analytics",
+  "uid": "elasticsearch-tasks-analytics",
+  "version": 5,
+  "weekStart": ""
+}
