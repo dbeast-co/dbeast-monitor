@@ -36,6 +36,9 @@
                 "type": {
                   "ignore_above": 256,
                   "type": "keyword"
+                },
+                "count": {
+                  "type": "long"
                 }
               }
             },

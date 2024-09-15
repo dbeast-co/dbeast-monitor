@@ -3499,6 +3499,9 @@ PUT _component_template/dbeast-mon-ds-logstash-logs-mapping-component
                 "type": {
                   "ignore_above": 256,
                   "type": "keyword"
+                },
+                "count": {
+                  "type": "long"
                 }
               }
             },
