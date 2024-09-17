@@ -1303,6 +1303,14 @@
                         "ingest_rate": {
                           "type": "long",
                           "time_series_metric": "gauge"
+                        },
+                        "deleted": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        },
+                        "delete_rate": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
