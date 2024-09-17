@@ -111,8 +111,8 @@
               "name": "pipeline_name"
             },
             {
-              "jsonPath": "$.hits.hits.[0]._source.logstash.node.stats.pipeline.filters_failures",
-              "language": "jsonpath",
+              "jsonPath": "$.hits.hits.[0]._source.logstash.node.stats.pipeline.($exists(\"filters_failures\") ? filter_failures : 0)",
+              "language": "jsonata",
               "name": "filters_failures"
             }
           ],
@@ -322,10 +322,7 @@
               "options": "Plugin Id"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 374
-              }
+
             ]
           },
           {
@@ -492,46 +489,47 @@
           "cacheDurationSeconds": 0,
           "fields": [
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].name",
-              "name": "Plugin"
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].name : \"\")",
+              "name": "Plugin",
+              "language": "jsonata"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].id",
-              "language": "jsonpath",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].id : \"\")",
+              "language": "jsonata",
               "name": "Plugin Id"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.in",
-              "language": "jsonpath",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.in : \"\")",
+              "language": "jsonata",
               "name": "In"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.in_rate",
-              "language": "jsonpath",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.in_rate : \"\")",
+              "language": "jsonata",
               "name": "In rate"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.out",
-              "language": "jsonpath",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.out : \"\")",
+              "language": "jsonata",
               "name": "Out"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.out_rate",
-              "language": "jsonpath",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.out_rate : \"\")",
+              "language": "jsonata",
               "name": "Out rate"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].events.($exists(latency) ? latency: 0)",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.($exists(latency) ? latency: 0) : \"\")",
               "language": "jsonata",
               "name": "Latency"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].($exists(failures) ? failures: 0)",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].($exists(failures) ? failures: 0) : \"\")",
               "language": "jsonata",
               "name": "Failures"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.plugins.filters[*].($exists(failures_rate) ? failures_rate: 0)",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].($exists(failures_rate) ? failures_rate: 0) : \"\")",
               "language": "jsonata",
               "name": "Failures rate"
             }
@@ -818,7 +816,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "logstash.exception.count": "Count",
+              "Sum": "Count",
               "logstash.exception.type": "Exception",
               "logstash.log.pipeline_name": "Pipeline"
             }

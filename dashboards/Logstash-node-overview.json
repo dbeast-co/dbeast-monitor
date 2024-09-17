@@ -3663,10 +3663,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 302
-              },
-              {
                 "id": "custom.align",
                 "value": "center"
               },
@@ -4194,7 +4190,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "logstash.exception.count": "Count",
+              "Sum": "Count",
               "logstash.exception.type": "Exception",
               "logstash.log.pipeline_name": "Pipeline"
             }
