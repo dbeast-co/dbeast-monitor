@@ -3734,8 +3734,8 @@
         "frameIndex": 1,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "filter_failures"
+            "displayName": "Failures rate",
+            "desc": true
           }
         ]
       },
@@ -4067,10 +4067,6 @@
                     "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_uid:queryparam}"
                   }
                 ]
-              },
-              {
-                "id": "custom.width",
-                "value": 309
               },
               {
                 "id": "custom.filterable",
