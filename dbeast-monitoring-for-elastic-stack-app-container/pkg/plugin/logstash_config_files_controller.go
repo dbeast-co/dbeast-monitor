@@ -35,9 +35,6 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 	if err != nil {
 		return err
 	}
-	err = DeleteTextBlockInFile(LogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
-		"### Configuration files for the cluster Id: ",
-		logger)
 
 	pipelineFile := "\n\n### Configuration files for the cluster Id: " + clusterId + ", cluster name: " + clusterName + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
@@ -47,7 +44,7 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 
-			fileAbsolutePath := filepath.Join(LogstashConfDConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
+			fileAbsolutePath := filepath.Join(GrafanaLogstashConfDConfigurationsFolder, clusterName+"-"+clusterId, configFile.Id)
 			WriteFilesToDisk(fileAbsolutePath, configFileClone, false, logger)
 
 			pipelineId := strings.ReplaceAll(configFile.Id, ".conf", "") + "-" + clusterName + "-" + clusterId
@@ -57,7 +54,7 @@ func SaveLogstashConfigurationFiles(project Project, logger log.Logger) error {
 			pipelineFile += fmt.Sprintf("  path.config: \"%s\"\n\n", pipelinesPath)
 		}
 	}
-	fileAbsolutePath := filepath.Join(LogstashConfigurationsFolder, "pipelines.yml")
+	fileAbsolutePath := filepath.Join(GrafanaLogstashConfigurationsFolder, "pipelines.yml")
 	WriteFilesToDisk(fileAbsolutePath, pipelineFile, true, logger)
 	return nil
 }
