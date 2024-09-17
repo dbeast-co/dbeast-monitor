@@ -669,7 +669,7 @@
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 300,
+          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
@@ -700,7 +700,7 @@
               "name": "FS Free"
             },
             {
-              "jsonPath": "$.nodes.roles[$ ~> $contains(\"data_hot\") ? \"data_hot\" : null]",
+              "jsonPath": "$.nodes.[*].roles[$ ~> $contains(\"data_hot\") ? \"data_hot\" : null]",
               "language": "jsonata",
               "name": "Roles"
             },
@@ -985,7 +985,7 @@
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 300,
+          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
@@ -1016,7 +1016,7 @@
               "name": "FS Free"
             },
             {
-              "jsonPath": "$.nodes.roles[$ ~> $contains(\"data_warm\") ? \"data_warm\" : null]",
+              "jsonPath": "$.nodes.[*].roles[$ ~> $contains(\"data_warm\") ? \"data_warm\" : null]",
               "language": "jsonata",
               "name": "Roles"
             },
@@ -1301,7 +1301,7 @@
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 300,
+          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
@@ -1332,7 +1332,7 @@
               "name": "FS Free"
             },
             {
-              "jsonPath": "$.nodes.roles[$ ~> $contains(\"data_cold\") ? \"data_cold\" : null]",
+              "jsonPath": "$.nodes.[*].roles[$ ~> $contains(\"data_cold\") ? \"data_cold\" : null]",
               "language": "jsonata",
               "name": "Roles"
             },

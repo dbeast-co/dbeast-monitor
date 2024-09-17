@@ -929,17 +929,6 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/.*/"
-            },
-            "properties": [
-              {
-                "id": "filterable"
-              }
-            ]
-          },
-          {
-            "matcher": {
               "id": "byName",
               "options": "Total size"
             },
@@ -950,7 +939,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 94
+                "value": 110
               },
               {
                 "id": "custom.align",
@@ -959,16 +948,11 @@
             ]
           },
           {
-
             "matcher": {
               "id": "byName",
               "options": "Index name"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 316
-              },
               {
                 "id": "links",
                 "value": [
@@ -1001,7 +985,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 117
+                "value": 110
               },
               {
                 "id": "unit",
@@ -1017,7 +1001,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 164
+                "value": 110
               }
             ]
           },
@@ -1029,7 +1013,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 119
+                "value": 110
               }
             ]
           },
@@ -1041,7 +1025,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 114
+                "value": 110
               }
             ]
           },
@@ -1053,7 +1037,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 133
+                "value": 110
               }
             ]
           },
@@ -1065,7 +1049,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 120
+                "value": 110
               },
               {
                 "id": "unit",
@@ -1081,7 +1065,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 88
+                "value": 80
               },
               {
                 "id": "mappings",
@@ -1111,9 +1095,12 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "color-background",
-                  "mode": "gradient"
+                  "mode": "gradient",
+                  "type": "color-background"
                 }
+              },
+              {
+                "id": "filterable"
               }
             ]
           },
@@ -1125,11 +1112,27 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 150
+                "value": 120
               },
               {
                 "id": "unit",
                 "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Docs deleted"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
               }
             ]
           }
@@ -1137,8 +1140,8 @@
       },
       "gridPos": {
         "h": 21,
-        "w": 19,
-        "x": 2,
+        "w": 22,
+        "x": 1,
         "y": 18
       },
       "id": 10,
@@ -1161,8 +1164,8 @@
         },
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Ingest rate"
+            "displayName": "Ingest rate",
+            "desc": true
           }
         ]
       },
@@ -1243,7 +1246,6 @@
             },
             {
               "id": "13",
-              "type": "bucket_script",
               "pipelineVariables": [
                 {
                   "name": "pri_store",
@@ -1256,6 +1258,18 @@
               ],
               "settings": {
                 "script": "params.pri_store / params.pri_shards"
+              },
+              "type": "bucket_script"
+            },
+            {
+              "id": "14",
+              "type": "top_metrics",
+              "settings": {
+                "order": "desc",
+                "metrics": [
+                  "elasticsearch.index.total.docs.deleted"
+                ],
+                "orderBy": "@timestamp"
               }
             }
           ],
@@ -1287,6 +1301,7 @@
             },
             "renameByName": {
               "Average": "Ingest rate",
+              "Bucket Script": "Avg shard size",
               "Count": "Unassigned",
               "Max": "Primaries shards",
               "Max elasticsearch.index.shards.primaries": "Primary shards",
@@ -1303,7 +1318,7 @@
               "elasticsearch.index.name": "Index name",
               "elasticsearch.rep": "number of replicas",
               "zero": "",
-              "Bucket Script": "Avg shard size"
+              "Top Metrics": "Docs deleted"
             }
           }
         }
