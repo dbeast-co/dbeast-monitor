@@ -45,20 +45,18 @@
   "panels": [
     {
       "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_index_stats_status}"
+        "uid": "${es_index_stats_status}",
+        "type": "elasticsearch"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": true
+            "inspect": false,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -73,6 +71,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -88,7 +89,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 145
+                "value": 120
               }
             ]
           },
@@ -104,7 +105,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 148
+                "value": 119
               }
             ]
           },
@@ -120,7 +121,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 150
+                "value": 120
               }
             ]
           },
@@ -162,6 +163,9 @@
                   "mode": "basic",
                   "type": "color-background"
                 }
+              },
+              {
+                "id": "filterable"
               }
             ]
           },
@@ -172,10 +176,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 309
-              },
-              {
                 "id": "links",
                 "value": [
                   {
@@ -184,17 +184,10 @@
                     "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/.*/"
-            },
-            "properties": [
+              },
               {
-                "id": "filterable"
+                "id": "custom.inspect",
+                "value": true
               }
             ]
           },
@@ -206,7 +199,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 125
+                "value": 120
               }
             ]
           },
@@ -218,7 +211,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 134
+                "value": 118
               }
             ]
           },
@@ -231,6 +224,9 @@
               {
                 "id": "custom.width",
                 "value": 144
+              },
+              {
+                "id": "filterable"
               }
             ]
           },
@@ -243,6 +239,10 @@
               {
                 "id": "custom.width",
                 "value": 351
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
               }
             ]
           },
@@ -254,11 +254,23 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 150
+                "value": 122
               },
               {
                 "id": "unit",
                 "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Delete docs"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
               }
             ]
           }
@@ -272,21 +284,25 @@
       },
       "id": 26,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -335,10 +351,6 @@
             }
           ],
           "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -370,6 +382,17 @@
               "field": "elasticsearch.index.shards.total",
               "id": "8",
               "type": "max"
+            },
+            {
+              "id": "10",
+              "type": "top_metrics",
+              "settings": {
+                "order": "desc",
+                "metrics": [
+                  "elasticsearch.index.total.docs.deleted"
+                ],
+                "orderBy": "@timestamp"
+              }
             }
           ],
           "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: $index_name",
@@ -405,7 +428,8 @@
               "elasticsearch.index.health": "Health",
               "elasticsearch.index.index_pattern": "Index pattern",
               "elasticsearch.index.name": "Index",
-              "elasticsearch.index.status": "Status"
+              "elasticsearch.index.status": "Status",
+              "Top Metrics": "Delete docs"
             }
           }
         },
