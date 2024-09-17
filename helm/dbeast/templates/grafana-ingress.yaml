@@ -1,0 +1,33 @@
+{{- $relname := .Release.Name -}}
+{{- $values := .Values -}}
+{{- if .Values.ingress.enabled -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $relname }}-grafana-ingress
+  annotations:
+{{ toYaml $values.ingress.annotations | indent 4 }}
+spec:
+  ingressClassName: {{ $values.ingress.ingressClassName }}
+  tls:
+    - hosts:
+      {{- range $values.ingress.hosts }}
+      - {{ . }}
+      {{- end }}
+  rules:
+  {{- range $values.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+        {{ range $values.ingress.paths }}
+          - path: {{ . }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $relname }}-grafana
+                port:
+                  number: {{ $values.grafana.service.port }}
+        {{ end }}
+  {{- end }}
+{{- end }}

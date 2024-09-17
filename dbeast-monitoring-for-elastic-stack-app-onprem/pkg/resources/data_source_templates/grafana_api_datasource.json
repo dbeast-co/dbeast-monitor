@@ -1,0 +1,23 @@
+{
+  "uid": "Grafana-DS-API",
+  "orgId": 1,
+  "name": "Grafana-DS-API",
+  "type": "volkovlabs-grapi-datasource",
+  "typeLogoUrl": "",
+  "access": "proxy",
+  "url": "",
+  "user": "",
+  "database": "",
+  "basicAuth": false,
+  "basicAuthUser": "",
+  "withCredentials": false,
+  "isDefault": false,
+  "jsonData": {
+    "requestMode": "local",
+    "url": "admin"
+  },
+  "secureJsonFields": {
+    "token": true
+  },
+  "readOnly": false
+}

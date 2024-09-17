@@ -1,0 +1,100 @@
+{
+  "cluster_connection_settings": {
+    "prod": {
+      "elasticsearch": {
+        "host": "",
+        "authentication_enabled": false,
+        "username": "",
+        "password": "",
+        "status": "UNTESTED"
+      },
+      "kibana": {
+        "host": "",
+        "authentication_enabled": false,
+        "username": "",
+        "password": "",
+        "status": "UNTESTED"
+      }
+    },
+    "mon": {
+      "elasticsearch": {
+        "host": "",
+        "authentication_enabled": false,
+        "username": "",
+        "password": "",
+        "status": "UNTESTED"
+      }
+    }
+  },
+  "monitoring_cluster_injection": [
+    {
+      "label": "Inject index templates",
+      "id": "templates_injection",
+      "is_checked": true
+    },
+    {
+      "label": "Inject ILM policies",
+      "id": "ilm_policies_injection",
+      "is_checked": true
+    },
+    {
+      "label": "Inject the first indices",
+      "id": "create_first_indices",
+      "is_checked": true
+    }
+  ],
+  "logstash_configurations": {
+    "es_monitoring_configuration_files": [
+      {
+        "label": "Index stats",
+        "id": "dbeast-mon-es-index-stats.conf",
+        "is_checked": true
+      },
+      {
+        "label": "Indices summary",
+        "id": "dbeast-mon-es-indices-summary.conf",
+        "is_checked": true
+      },
+      {
+        "label": "Shards stats",
+        "id": "dbeast-mon-es-shards-stats.conf",
+        "is_checked": true
+      },
+      {
+        "label": "Tasks",
+        "id": "dbeast-mon-es-tasks.conf",
+        "is_checked": true
+      },
+      {
+        "label": "ES ingest pipelines",
+        "id": "dbeast-mon-es-ingest_pipelines-metrics.conf",
+        "is_checked": true
+      },
+      {
+        "label": "ES enrich queue",
+        "id": "dbeast-mon-es-enrich_queue-metrics.conf",
+        "is_checked": true
+      },
+      {
+        "label": "Thread pools",
+        "id": "dbeast-mon-es-thread_pools.conf",
+        "is_checked": true
+      }
+    ],
+    "logstash_monitoring_configuration_files": {
+      "configurations": [
+        {
+          "label": "Logstash logs",
+          "id": "dbeast-mon-logstash-logs.conf",
+          "is_checked": true
+        },
+        {
+          "label": "Logstash metrics",
+          "id": "dbeast-mon-logstash-metrics.conf",
+          "is_checked": true
+        }
+      ],
+      "hosts": []
+    }
+  }
+}

@@ -1,0 +1,35 @@
+.container {
+  margin: 1rem 1.5rem 1rem unset !important;
+
+  .header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-block-end: 2rem;
+  }
+  .card-section{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+  }
+
+  .card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(500px,1fr));
+    grid-gap: 7rem;
+    width: 100%;
+    
+
+    &[data-col="1"] {
+      grid-template-columns: repeat(1,1fr);
+    }
+
+  }
+  .card-item-wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+}

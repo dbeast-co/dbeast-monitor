@@ -1,0 +1,3 @@
+{
+  "baseApiUrl": "http://localhost1:1234/grafana_backend/data_sources"
+}

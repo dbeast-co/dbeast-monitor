@@ -1,0 +1,54 @@
+services:
+  grafana-init:
+    image: grafana/grafana-oss:9.5.10
+    container_name: grafana-init
+    user: "0:0"
+    volumes:
+      - /opt/dbeast/grafana2/config:/mnt/grafana/config
+      - /opt/dbeast/grafana2/data:/mnt/grafana/data
+    entrypoint: >
+      sh -c "        
+        # Copy the default grafana.ini if it doesn't exist
+        if [ ! -f /mnt/grafana/config/grafana.ini ]; then
+          cp -r /etc/grafana/* /mnt/grafana/config;
+        fi;
+        if [ ! -f /mnt/data/grafana.db ]; then
+          cp -r /var/lib/grafana/* /mnt/grafana/data;
+        fi;
+      
+        # Modify the grafana.ini file
+        # Append 'topnav = false' directly after the '[feature_toggles]' line
+        if grep -q '^\[feature_toggles\]' /mnt/grafana/config/grafana.ini; then
+          echo 'Appending topnav = false...';
+          sed -i '$!N;/\[feature_toggles\]/!P;D' /mnt/config/grafana.ini
+          sed -i '/^\[feature_toggles\]/a\topnav = false' /mnt/grafana/config/grafana.ini;
+        else
+          echo '[feature_toggles] not found, adding it and appending topnav = false...';
+          echo '[feature_toggles]' >> /mnt/grafana/config/grafana.ini;
+          echo 'topnav = false' >> /mnt/grafana/config/grafana.ini;
+        fi;
+      
+      
+        sed -i 's/^;app_mode = production/app_mode = development/' /mnt/grafana/config/grafana.ini;
+      
+      
+        # Download and install the DBeast Monitor plugin
+        wget -q https://github.com/dbeast-co/dbeast-monitor/releases/download/DevContainerVersion/dbeast-dbeastmonitor-app.tar.gz &&
+        mkdir -p /mnt/grafana/data/plugins/dbeast-dbeastmonitor-app &&
+        tar -xzf dbeast-dbeastmonitor-app.tar.gz -C /mnt/grafana/data/plugins/dbeast-dbeastmonitor-app --strip-components=1;
+      "
+    restart: "no"
+  grafana:
+    image: grafana/grafana-oss:9.5.10
+    container_name: grafana
+    user: "0:0"
+    environment:
+      - GF_INSTALL_PLUGINS=marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource
+    volumes:
+      - /opt/dbeast/grafana2/data:/var/lib/grafana
+      - /opt/dbeast/grafana2/logs:/var/log/grafana
+      - /opt/dbeast/grafana2/config:/etc/grafana
+    ports:
+      - "3000:3000"
+
+

@@ -1,0 +1,112 @@
+appVersion: "0.8.1"
+grafana:
+  image: "grafana/grafana-oss:9.5.10-ubuntu"
+  service:
+    type: ClusterIP
+    port: 3000
+  resources: {}
+  persistence:
+    grafana_logs:
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+    grafana_storage:
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+    grafana_plugins:
+      accessModes:
+        - ReadWriteOnce
+      size: 200Mi
+  pluginUrl: "https://github.com/dbeast-co/dbeast-monitor/releases/download/DevContainerVersion/dbeast-dbeastmonitor-app-{{ .Values.appVersion }}.tar.gz"
+  env:
+    - name: GF_LOG_LEVEL
+      value: "info"
+    - name: GF_LOG_MODE
+      value: "console file"
+    - name: GF_INSTALL_PLUGINS
+      value: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
+  volumes: {}
+  config:
+    grafana.ini:
+      app_mode: development
+      server:
+        domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ tpl (.Values.ingress.hosts | first) . }}{{ else }}''{{ end }}"
+      feature_toggles:
+        topnav: false
+    ldap:
+      enabled: false
+      config: |
+        [[servers]]
+        host = "127.0.0.1"
+        port = 389
+        use_ssl = false
+        start_tls = false
+        tls_ciphers = []
+        min_tls_version = ""
+        ssl_skip_verify = false
+        bind_dn = "cn=admin,dc=grafana,dc=org"
+        bind_password = 'grafana'
+        timeout = 10
+        search_filter = "(cn=%s)"
+        search_base_dns = ["dc=grafana,dc=org"]
+
+        [servers.attributes]
+        name = "givenName"
+        surname = "sn"
+        username = "cn"
+        member_of = "memberOf"
+        email =  "email"
+
+        [[servers.group_mappings]]
+        group_dn = "cn=admins,ou=groups,dc=grafana,dc=org"
+        org_role = "Admin"
+
+        [[servers.group_mappings]]
+        group_dn = "cn=editors,ou=groups,dc=grafana,dc=org"
+        org_role = "Editor"
+
+        [[servers.group_mappings]]
+        group_dn = "*"
+        org_role = "Viewer"
+
+ingress:
+  enabled: false
+  hosts:
+    - dbeast.local
+  paths:
+    - /
+  ingressClassName: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+logstash:
+  image: "logstash:8.14.3"
+  service:
+    type: ClusterIP
+    port: 5044
+  resources: {}
+  persistence:
+    logstash_config:
+      accessModes:
+        - ReadWriteOnce
+      size: 10Mi
+    logstash_lib:
+      accessModes:
+        - ReadWriteOnce
+      size: 10Mi
+    logstash_logs:
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+  env:
+    - name: LS_JAVA_OPTS
+      value: "-Xms1g -Xmx1g"
+  volumes: {}
+  config:
+    logstash.yml: |
+      node.name: monitoring
+      path.data: /var/lib/logstash
+      path.logs: /var/log/logstash
+      config.reload.automatic: true
