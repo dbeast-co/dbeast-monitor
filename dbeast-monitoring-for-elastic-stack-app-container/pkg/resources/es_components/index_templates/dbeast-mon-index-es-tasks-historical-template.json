@@ -19,6 +19,7 @@
     "dbeast-mon-index-es-tasks-mapping-component",
     "dbeast-mon-default-settings-component"
   ],
+  "priority": 1,
   "_meta": {
     "description": "This template used for the Elasticsearch tasks"
   }

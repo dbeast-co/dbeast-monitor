@@ -11,6 +11,7 @@
     "dbeast-mon-tsds-es-shards-stats-mapping-component",
     "dbeast-mon-default-settings-component"
   ],
+  "priority": 1,
   "_meta": {
     "description": "This template used for the shards monitoring"
   }
