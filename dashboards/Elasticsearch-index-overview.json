@@ -1123,7 +1123,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Docs deleted"
+              "options": "Deleted"
             },
             "properties": [
               {
@@ -1164,8 +1164,8 @@
         },
         "sortBy": [
           {
-            "displayName": "Ingest rate",
-            "desc": true
+            "desc": true,
+            "displayName": "Ingest rate"
           }
         ]
       },
@@ -1263,14 +1263,8 @@
             },
             {
               "id": "14",
-              "type": "top_metrics",
-              "settings": {
-                "order": "desc",
-                "metrics": [
-                  "elasticsearch.index.total.docs.deleted"
-                ],
-                "orderBy": "@timestamp"
-              }
+              "type": "max",
+              "field": "elasticsearch.index.total.docs.deleted"
             }
           ],
           "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: *$index_name*",
@@ -1289,15 +1283,17 @@
               "zero": false
             },
             "indexByName": {
+              "elasticsearch.index.name": 0,
+              "elasticsearch.index.health": 1,
               "Max elasticsearch.index.shards.primaries": 2,
               "Max elasticsearch.index.shards.total": 3,
               "Max elasticsearch.index.total.docs.count": 4,
-              "Sum elasticsearch.index.primaries.indexing.index_rate": 5,
-              "Sum elasticsearch.index.primaries.store.size_in_bytes": 7,
-              "Sum elasticsearch.index.total.search.query_rate": 6,
-              "Sum elasticsearch.index.total.store.size_in_bytes": 8,
-              "elasticsearch.index.health": 1,
-              "elasticsearch.index.name": 0
+              "Max elasticsearch.index.total.docs.deleted": 5,
+              "Sum elasticsearch.index.primaries.indexing.index_rate": 6,
+              "Sum elasticsearch.index.total.search.query_rate": 7,
+              "Sum elasticsearch.index.primaries.store.size_in_bytes": 8,
+              "Sum elasticsearch.index.total.store.size_in_bytes": 9,
+              "Bucket Script": 10
             },
             "renameByName": {
               "Average": "Ingest rate",
@@ -1312,13 +1308,14 @@
               "Sum elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
               "Sum elasticsearch.index.total.search.query_rate": "Query rate",
               "Sum elasticsearch.index.total.store.size_in_bytes": "Total size",
+              "Top Metrics": "Docs deleted",
               "Unassigned": "Unassigned",
               "elasticsearch.index.health": "Health",
               "elasticsearch.index.index_pattern": "Index pattern",
               "elasticsearch.index.name": "Index name",
               "elasticsearch.rep": "number of replicas",
               "zero": "",
-              "Top Metrics": "Docs deleted"
+              "Max elasticsearch.index.total.docs.deleted": "Deleted"
             }
           }
         }

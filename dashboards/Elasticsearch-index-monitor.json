@@ -265,7 +265,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Delete docs"
+              "options": "Deleted"
             },
             "properties": [
               {
@@ -385,14 +385,8 @@
             },
             {
               "id": "10",
-              "type": "top_metrics",
-              "settings": {
-                "order": "desc",
-                "metrics": [
-                  "elasticsearch.index.total.docs.deleted"
-                ],
-                "orderBy": "@timestamp"
-              }
+              "type": "max",
+              "field": "elasticsearch.index.total.docs.deleted"
             }
           ],
           "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: $index_name",
@@ -429,7 +423,7 @@
               "elasticsearch.index.index_pattern": "Index pattern",
               "elasticsearch.index.name": "Index",
               "elasticsearch.index.status": "Status",
-              "Top Metrics": "Delete docs"
+              "Max elasticsearch.index.total.docs.deleted": "Deleted"
             }
           }
         },
