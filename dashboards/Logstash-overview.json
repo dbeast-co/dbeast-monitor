@@ -554,7 +554,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 94
+                "value": 90
               }
             ]
           },
@@ -566,7 +566,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 158
+                "value": 120
               },
               {
                 "id": "custom.cellOptions",
@@ -589,7 +589,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 128
+                "value": 120
               },
               {
                 "id": "custom.cellOptions",
@@ -627,10 +627,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 140
-              },
-              {
                 "id": "links",
                 "value": [
                   {
@@ -648,10 +644,6 @@
               "options": "Host"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 137
-              },
               {
                 "id": "links",
                 "value": [
@@ -722,7 +714,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "0"
               },
               "type": "terms"
             },
@@ -733,7 +725,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "0"
               },
               "type": "terms"
             },
@@ -785,7 +777,7 @@
             {
               "field": "logstash.node.stats.process.cpu.percent",
               "id": "6",
-              "type": "max"
+              "type": "sum"
             },
             {
               "field": "logstash.node.stats.jvm.mem.heap_used_percent",
@@ -810,7 +802,7 @@
               "Max logstash.node.stats.events.in_rate": 6,
               "Max logstash.node.stats.events.out_rate": 7,
               "Max logstash.node.stats.jvm.mem.heap_used_percent": 5,
-              "Max logstash.node.stats.process.cpu.percent": 4,
+              "Sum": 4,
               "host.hostname": 1,
               "logstash.node.stats.logstash.name": 0,
               "logstash.node.stats.logstash.status": 2,
@@ -820,7 +812,7 @@
               "Max logstash.node.stats.events.in_rate": "Income rate",
               "Max logstash.node.stats.events.out_rate": "Outcome rate",
               "Max logstash.node.stats.jvm.mem.heap_used_percent": "Heap usage",
-              "Max logstash.node.stats.process.cpu.percent": "CPU usage",
+              "Sum": "CPU usage",
               "host.hostname": "Host",
               "logstash.node.stats.logstash.name": "Node Name",
               "logstash.node.stats.logstash.status": "Status",
@@ -1771,7 +1763,7 @@
               "field": "logstash.exception.count"
             }
           ],
-          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: $cluster_uid  AND logstash.exception.count: [0 TO 10000000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1786,7 +1778,7 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "logstash.exception.count": "Count",
+              "Sum": "Count",
               "host.hostname": "Host",
               "logstash.exception.type": "Exception",
               "logstash.log.pipeline_name": "Pipeline",
