@@ -1,5 +1,29 @@
 # Changelog
 
+## Version 1.0.0
+**We released the first version for Kubernetes with Helm charts! Now we have Kubernetes and on-prem versions!** 
+
+- Features:
+  * [FEAT] Kubernetes image development #44[#44](https://github.com/dbeast-co/dbeast-monitor/issues/44)
+  * [FEAT] Add storage and memory per tier status in the "Stack monitoring" dashboard #65[#65](https://github.com/dbeast-co/dbeast-monitor/issues/65)
+  * [FEAT] Add deleted docs in the "Index status" #148[#148](https://github.com/dbeast-co/dbeast-monitor/issues/148)
+  * [FEAT] Logstash index stats pipeline - add docs.deleted rates #133[#133](https://github.com/dbeast-co/dbeast-monitor/issues/133)
+  * [FEAT] Logstash logs pipeline optimization #46[#46](https://github.com/dbeast-co/dbeast-monitor/issues/46)
+  * [FEAT] Add storage and memory per tier status in the "Stack monitoring" dashboard #65[#65](https://github.com/dbeast-co/dbeast-monitor/issues/65)
+  
+- Bug fixes
+  * [BUG] Incorrect avg shard size in the "Index pattern monitor" dashboard #147[#147](https://github.com/dbeast-co/dbeast-monitor/issues/147)
+  * [BUG] In the index summary there is no ingest rate data in case of the index closed #144[#144](https://github.com/dbeast-co/dbeast-monitor/issues/144)
+  * [BUG] In the Thread pools mapping change fields type from the integer to the long #138[#138](https://github.com/dbeast-co/dbeast-monitor/issues/138)
+  * [BUG] Incorrect rollover alias in the new index definition #137[#137](https://github.com/dbeast-co/dbeast-monitor/issues/137)
+
+- Updated dashboards
+  * Elastic stack monitor
+  * Logstash overview
+  * Logstash instance monitor
+  * Logstash pipeline analytics
+  * Elasticsearch index monitor
+
 ## Version 0.8.1
 - Bug fixes
   * [BUG] Incorrect elasticsearch.tasks.running_time mapping in the Tasks mapping #109[#109](https://github.com/dbeast-co/dbeast-monitor/issues/109)
