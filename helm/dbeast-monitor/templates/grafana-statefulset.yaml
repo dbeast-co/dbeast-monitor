@@ -61,6 +61,8 @@ spec:
 
       containers:
       - name: grafana
+        resources:
+          {{- toYaml .Values.grafana.resources | nindent 10 }}
         securityContext:
           runAsUser: 0
         image: {{ .Values.grafana.image }}

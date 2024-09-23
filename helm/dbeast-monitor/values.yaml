@@ -4,7 +4,10 @@ grafana:
   service:
     type: ClusterIP
     port: 3000
-  resources: {}
+  resources:
+    requests:
+      cpu: 1
+      memory: 2Gi
   persistence:
     grafana_logs:
       accessModes:
@@ -85,8 +88,11 @@ logstash:
   image: "logstash:8.14.3"
   service:
     type: ClusterIP
-    port: 5044
-  resources: {}
+    port: 9600
+  resources:
+    requests:
+      cpu: 1
+      memory: 2Gi
   persistence:
     logstash_config:
       accessModes:

@@ -32,11 +32,13 @@ spec:
 
       containers:
       - name: logstash
+        resources:
+          {{- toYaml .Values.logstash.resources | nindent 10 }}
         securityContext:
           runAsUser: 0
         image: {{ .Values.logstash.image }}
         ports:
-        - containerPort: 5044
+        - containerPort: {{ .Values.logstash.service.port }}
         env:
         {{- range .Values.logstash.env }}
         - name: {{ .name }}
