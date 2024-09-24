@@ -120,6 +120,7 @@ export const AddNewClusterPanel = () => {
                     },
                 });
                 Promise.all([promise1, promise2]).then(async (values) => {
+                    setIsLoading(true)
                     const [value1, value2] = values;
                     const dataSourcesFromResponse: Datasource[] = Object.values(value2);
                     let isErrorOccurred = false; // Flag to track if an error has occurred
