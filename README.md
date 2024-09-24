@@ -7,6 +7,11 @@ Elasticsearch, Logstash, and Kibana. This application supports the monitoring of
 used for the analytics is delivered by Beats and Logstash and stored in Elasticsearch. You can use your production
 Elasticsearch cluster as the data storage, but we strongly recommend using a dedicated monitoring cluster.
 
+## Container versions
+
+- [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
+
+
 ## Documentation
 
 The project documentation is available on our [wiki](https://github.com/dbeast-co/dbeast-monitor/wiki).
