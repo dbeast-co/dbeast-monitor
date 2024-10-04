@@ -1,28 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './AddNewClusterPanel.scss';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-import {toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {Dialog, DialogActions, DialogContent, DialogTitle, Divider} from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-import {Spinner, useTheme2} from '@grafana/ui';
+import { Spinner, useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
-import {getBackendSrv} from '@grafana/runtime';
-import {ConnectionSettings} from '../models/connection-settings';
-import {Datasource} from '../models/datasource';
-import {GrafanaDatasource} from '../models/grafana-datasource';
-import {BackendResponse} from '../models/backend-response';
-import {SERVER_URL} from '../config';
-import {Cluster, Host} from '../models/cluster';
-import {saveAs} from 'file-saver';
+import { getBackendSrv } from '@grafana/runtime';
+import { ConnectionSettings } from '../models/connection-settings';
+import { Datasource } from '../models/datasource';
+import { GrafanaDatasource } from '../models/grafana-datasource';
+import { BackendResponse } from '../models/backend-response';
+import { SERVER_URL } from '../config';
+import { Cluster, Host } from '../models/cluster';
+import { saveAs } from 'file-saver';
 
-import {LogstashConfigurationsPanel} from './LogstashConfigurationsPanel';
-import LogstashComponent, {Logstash} from './logstash';
-import {v4 as uuidv4} from 'uuid';
-import {MonitoringClusterInjectionPanel} from './MonitoringClusterInjectionPanel';
+import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
+import LogstashComponent, { Logstash } from './logstash';
+import { v4 as uuidv4 } from 'uuid';
+import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPanel';
 
 const settings = require('../config.ts');
 
@@ -405,7 +405,7 @@ export const AddNewClusterPanel = () => {
         fetch(`${SERVER_URL}/new_cluster`).then((response) => {
             response.json().then((data: Cluster) => {
                 setCluster(data);
-                const {status: prodStatus} = data.cluster_connection_settings.prod.elasticsearch;
+                const {status: prodStatus} = data.cluster_connection_settings.prod?.elasticsearch;
 
                 const {status: monStatus} = data.cluster_connection_settings.mon.elasticsearch;
                 if (prodStatus === 'UNTESTED' || prodStatus === 'ERROR' || monStatus === 'UNTESTED' || monStatus === 'ERROR') {

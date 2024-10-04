@@ -3,9 +3,38 @@
 
   .header {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     width: 100%;
     margin-block-end: 2rem;
+
+    h1{
+      text-align: center;
+      width: 100%;
+    }
+    .sorting-filters-container{
+      display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+      .sorting-select{
+        border: 1px solid #d9d9d9;
+       color: rgba(255, 255, 255, 0.87);
+      }
+      .MuiSelect-icon {
+        color: rgba(255, 255, 255, 0.87);
+      }
+
+    }
+    .search-filter{
+      .MuiOutlinedInput-root{
+        border: 1px solid #d9d9d9;
+        color: rgba(255, 255, 255, 0.87);
+      }
+      .MuiInputLabel-root{
+        color: rgba(255, 255, 255, 0.87);
+      }
+    }
   }
   .card-section{
     display: flex;
