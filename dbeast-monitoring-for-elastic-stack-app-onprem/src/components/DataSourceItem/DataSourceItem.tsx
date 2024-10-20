@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import { getBackendSrv } from '@grafana/runtime';
-import { ClusterStatsItemState, MonitorState } from '../../types/clusterStatsItemState';
+import React, {PureComponent} from 'react';
+import {getBackendSrv} from '@grafana/runtime';
+import {ClusterStatsItemState, MonitorState} from '../../types/clusterStatsItemState';
 import './data-source-item.scss';
 import {
   Dialog,
@@ -16,13 +16,14 @@ import {
   SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import { Button, ButtonVariant, Spinner, stylesFactory, useTheme } from '@grafana/ui';
+import {Button, ButtonVariant, Spinner, stylesFactory, useTheme} from '@grafana/ui';
 import classNames from 'classnames';
 
 interface Props {
   dataSourceItem: any;
   theme: any;
   onDelete: (uid: string) => void;
+  refreshTime: number;
 }
 
 const MyComponent = (_: any) => {
@@ -72,6 +73,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     dataColdNodes: 0,
     monitorName: '',
     isOpenDialog: false,
+    refreshIntervalId: null
   };
   outlined: ButtonVariant | undefined = 'destructive';
   listItem: HTMLElement | undefined = undefined;
@@ -169,63 +171,168 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   };
 
   async componentDidMount() {
+
+    if (this.state.refreshIntervalId! > 0) {
+      this.setRefreshInterval();
+    }
+    this.getDataFromAPI()
+
+
     // console.log('Props: ', this.props.theme)
+    // //<editor-fold desc="get data from API">
+    // await getBackendSrv()
+    //   .get(
+    //     `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
+    //   )
+    //   .then((dataSources: any) => {
+    //     const {} = dataSources;
+    //     this.setState({
+    //       cluster_uuid: dataSources.cluster_uuid,
+    //       cluster_name: dataSources.cluster_name,
+    //       status: dataSources.status,
+    //       versions: dataSources.nodes.versions,
+    //       numberOfIndices: dataSources.indices.count,
+    //       numberOfShards: dataSources.indices.shards.total,
+    //       numberOfUnassignedShards: 0,
+    //       docsCount: this.nFormatter(dataSources.indices.docs.count),
+    //       usedStorage: this.formatBytes(dataSources.indices.store.size_in_bytes),
+    //       totalStorage: this.formatBytes(dataSources.nodes.fs.total_in_bytes),
+    //       totalNodes: dataSources.nodes.count.total,
+    //       dataNodes: dataSources.nodes.count.data,
+    //       dataHotNodes: dataSources.nodes.count.data_hot,
+    //       dataWarmNodes: dataSources.nodes.count.data_warm,
+    //       dataColdNodes: dataSources.nodes.count.data_cold,
+    //     });
+    //   })
+    //   .catch((e) => {
+    //     let regex = new RegExp(/Elasticsearch-direct-prod-(.*)--(.*)/g);
+    //     const uid: string = this.props.dataSourceItem.uid;
+    //     const matches = regex.exec(uid);
+    //     this.setState({
+    //       cluster_name: matches ? matches[1] : '',
+    //       cluster_uuid: matches ? matches[2] : '',
+    //       status: 'ERROR',
+    //       versions: ['-'],
+    //       numberOfIndices: 0,
+    //       numberOfShards: 0,
+    //       numberOfUnassignedShards: 0,
+    //       docsCount: '0',
+    //       usedStorage: '0',
+    //       totalStorage: '0',
+    //       totalNodes: 0,
+    //       dataNodes: 0,
+    //       dataHotNodes: 0,
+    //       dataWarmNodes: 0,
+    //       dataColdNodes: 0,
+    //     });
+    //   });
+    // if (this.state.status !== 'ERROR') {
+    //   await getBackendSrv()
+    //     .get(
+    //       `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/health?filter_path=unassigned_shards`
+    //     )
+    //     .then((health: any) => {
+    //       this.setState({
+    //         numberOfUnassignedShards: health.unassigned_shards,
+    //       });
+    //     });
+    // }
+    // //</editor-fold>
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    // Check if the onRefresh prop has changed, then reset the interval
+    if (prevProps.refreshTime !== this.props.refreshTime) {
+      this.setRefreshInterval();
+    }
+  }
+
+  componentWillUnmount() {
+    // Clear interval when the component is unmounted to prevent memory leaks
+    if (this.state.refreshIntervalId) {
+      clearInterval(this.state.refreshIntervalId);
+    }
+  }
+
+  setRefreshInterval() {
+    const { refreshTime, dataSourceItem } = this.props;
+
+    // Clear any existing interval
+    if (this.state.refreshIntervalId) {
+      clearInterval(this.state.refreshIntervalId);
+    }
+
+    // Set a new interval if onRefresh is greater than 0
+    if (refreshTime > 0) {
+      const intervalId = setInterval(() => {
+        this.getDataFromAPI();
+        console.log(`Refreshing data for item with ID: ${dataSourceItem.id}`);
+        // You can add the actual refresh logic here
+      }, refreshTime * 1000); // Convert seconds to milliseconds
+
+      // @ts-ignore
+      this.setState({ refreshIntervalId: intervalId }); // Store interval ID in the state
+    }
+  }
+
+
+  async getDataFromAPI(){
     await getBackendSrv()
-      .get(
-        `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
-      )
-      .then((dataSources: any) => {
-        const {} = dataSources;
-        this.setState({
-          cluster_uuid: dataSources.cluster_uuid,
-          cluster_name: dataSources.cluster_name,
-          status: dataSources.status,
-          versions: dataSources.nodes.versions,
-          numberOfIndices: dataSources.indices.count,
-          numberOfShards: dataSources.indices.shards.total,
-          numberOfUnassignedShards: 0,
-          docsCount: this.nFormatter(dataSources.indices.docs.count),
-          usedStorage: this.formatBytes(dataSources.indices.store.size_in_bytes),
-          totalStorage: this.formatBytes(dataSources.nodes.fs.total_in_bytes),
-          totalNodes: dataSources.nodes.count.total,
-          dataNodes: dataSources.nodes.count.data,
-          dataHotNodes: dataSources.nodes.count.data_hot,
-          dataWarmNodes: dataSources.nodes.count.data_warm,
-          dataColdNodes: dataSources.nodes.count.data_cold,
-        });
-      })
-      .catch((e) => {
-        let regex = new RegExp(/Elasticsearch-direct-prod-(.*)--(.*)/g);
-        const uid: string = this.props.dataSourceItem.uid;
-        const matches = regex.exec(uid);
-        this.setState({
-          cluster_name: matches ? matches[1] : '',
-          cluster_uuid: matches ? matches[2] : '',
-          status: 'ERROR',
-          versions: ['-'],
-          numberOfIndices: 0,
-          numberOfShards: 0,
-          numberOfUnassignedShards: 0,
-          docsCount: '0',
-          usedStorage: '0',
-          totalStorage: '0',
-          totalNodes: 0,
-          dataNodes: 0,
-          dataHotNodes: 0,
-          dataWarmNodes: 0,
-          dataColdNodes: 0,
-        });
-      });
-    if (this.state.status !== 'ERROR') {
-      await getBackendSrv()
         .get(
-          `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/health?filter_path=unassigned_shards`
+            `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
         )
-        .then((health: any) => {
+        .then((dataSources: any) => {
+          const {} = dataSources;
           this.setState({
-            numberOfUnassignedShards: health.unassigned_shards,
+            cluster_uuid: dataSources.cluster_uuid,
+            cluster_name: dataSources.cluster_name,
+            status: dataSources.status,
+            versions: dataSources.nodes.versions,
+            numberOfIndices: dataSources.indices.count,
+            numberOfShards: dataSources.indices.shards.total,
+            numberOfUnassignedShards: 0,
+            docsCount: this.nFormatter(dataSources.indices.docs.count),
+            usedStorage: this.formatBytes(dataSources.indices.store.size_in_bytes),
+            totalStorage: this.formatBytes(dataSources.nodes.fs.total_in_bytes),
+            totalNodes: dataSources.nodes.count.total,
+            dataNodes: dataSources.nodes.count.data,
+            dataHotNodes: dataSources.nodes.count.data_hot,
+            dataWarmNodes: dataSources.nodes.count.data_warm,
+            dataColdNodes: dataSources.nodes.count.data_cold,
+          });
+        })
+        .catch((e) => {
+          let regex = new RegExp(/Elasticsearch-direct-prod-(.*)--(.*)/g);
+          const uid: string = this.props.dataSourceItem.uid;
+          const matches = regex.exec(uid);
+          this.setState({
+            cluster_name: matches ? matches[1] : '',
+            cluster_uuid: matches ? matches[2] : '',
+            status: 'ERROR',
+            versions: ['-'],
+            numberOfIndices: 0,
+            numberOfShards: 0,
+            numberOfUnassignedShards: 0,
+            docsCount: '0',
+            usedStorage: '0',
+            totalStorage: '0',
+            totalNodes: 0,
+            dataNodes: 0,
+            dataHotNodes: 0,
+            dataWarmNodes: 0,
+            dataColdNodes: 0,
           });
         });
+    if (this.state.status !== 'ERROR') {
+      await getBackendSrv()
+          .get(
+              `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/health?filter_path=unassigned_shards`
+          )
+          .then((health: any) => {
+            this.setState({
+              numberOfUnassignedShards: health.unassigned_shards,
+            });
+          });
     }
   }
 
