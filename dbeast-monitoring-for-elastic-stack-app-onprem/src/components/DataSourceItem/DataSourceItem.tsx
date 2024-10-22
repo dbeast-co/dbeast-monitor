@@ -94,7 +94,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   }
 
   handleChange = (event: SelectChangeEvent) => {
-    console.log(this.props.dataSourceItem)
+
 
     const inputString = this.props.dataSourceItem.uid;
     const uid = inputString.split('--').slice(2).join('--');

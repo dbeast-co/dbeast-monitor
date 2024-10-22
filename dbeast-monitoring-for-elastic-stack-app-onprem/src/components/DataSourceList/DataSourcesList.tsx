@@ -3,7 +3,7 @@ import {DataSourceItem} from '../DataSourceItem/DataSourceItem';
 import './data-source-list.scss';
 import {useTheme2} from '@grafana/ui';
 import classNames from 'classnames';
-import {FormControl, InputLabel, MenuItem, Select} from '@mui/material';
+import {FormControl, MenuItem, Select} from '@mui/material';
 
 /**
  * Properties
@@ -24,9 +24,7 @@ export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
 
 
   function onSelectAutoRefresh(event: any) {
-    console.log('onSelectAutoRefresh');
     setSelectedTime(event?.target!.value);
-
   }
 
   return (
@@ -41,15 +39,14 @@ export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
       </header>
 
       <div className="filters"><FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Refresh interval</InputLabel>
+        {/*<InputLabel id="demo-simple-select-label"></InputLabel>*/}
         <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={selectedTime || null}
+            value={selectedTime || 60}
             label="Age"
             onChange={onSelectAutoRefresh}
         >
-          <MenuItem value={10}>10sec</MenuItem>
           <MenuItem value={60}>1min</MenuItem>
           <MenuItem value={120}>2min</MenuItem>
           <MenuItem value={300}>5min</MenuItem>
