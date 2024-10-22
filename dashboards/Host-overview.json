@@ -107,7 +107,7 @@
             "cellOptions": {
               "type": "auto"
             },
-            "inspect": true
+            "inspect": false
           },
           "mappings": [
             {
@@ -143,6 +143,10 @@
               {
                 "id": "unit",
                 "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
               }
             ]
           },
@@ -155,6 +159,10 @@
               {
                 "id": "unit",
                 "value": "bytes"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 140
               }
             ]
           },
@@ -167,6 +175,10 @@
               {
                 "id": "unit",
                 "value": "short"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
               }
             ]
           },
@@ -179,6 +191,10 @@
               {
                 "id": "unit",
                 "value": "short"
+              },
+              {
+                "id": "custom.width",
+                "value": 129
               }
             ]
           },
@@ -189,8 +205,8 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 223
+                "id": "custom.inspect",
+                "value": true
               }
             ]
           },
@@ -203,6 +219,10 @@
               {
                 "id": "unit",
                 "value": "ms"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
               }
             ]
           },
@@ -215,6 +235,46 @@
               {
                 "id": "unit",
                 "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 139
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node roles"
+            },
+            "properties": [
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Number of shards"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Transport address"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 180
               }
             ]
           }
@@ -257,7 +317,7 @@
             {
               "jsonPath": "$.nodes.*.transport_address",
               "language": "jsonpath",
-              "name": "Transport addresss"
+              "name": "Transport address"
             },
             {
               "jsonPath": "$.nodes.*.indices.shard_stats.total_count",
@@ -285,20 +345,25 @@
               "name": "Free space"
             },
             {
-              "name": "Uptime",
               "jsonPath": "$.nodes.*.jvm.uptime_in_millis",
-              "language": "jsonpath"
+              "language": "jsonpath",
+              "name": "Uptime"
             },
             {
-              "name": "JVM Heap",
               "jsonPath": "$.nodes.*.jvm.mem.heap_max_in_bytes",
-              "language": "jsonpath"
+              "language": "jsonpath",
+              "name": "JVM Heap"
+            },
+            {
+              "name": "Node roles",
+              "jsonPath": "$.nodes.*.$join($map(roles, $string), \", \")",
+              "language": "jsonata"
             }
           ],
           "method": "GET",
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/_nodes/$node_name/stats?filter_path=cluster_name,nodes.*.jvm.uptime_in_millis,nodes.*.indices.docs.count,nodes.*.indices.docs.deleted,nodes.*.indices.shard_stats.total_count,nodes.*.name,nodes.*.transport_address,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+          "urlPath": "/_nodes/$node_name/stats?filter_path=nodes.*.roles,nodes.*.jvm.uptime_in_millis,nodes.*.indices.docs.count,nodes.*.indices.docs.deleted,nodes.*.indices.shard_stats.total_count,nodes.*.name,nodes.*.transport_address,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
         }
       ],
       "title": "Node stats",
@@ -309,14 +374,15 @@
             "excludeByName": {},
             "indexByName": {
               "Node name": 0,
-              "Transport addresss": 1,
-              "Uptime": 2,
-              "Number of shards": 3,
-              "Docs count": 4,
-              "Docs deleted": 5,
-              "JVM Heap": 6,
-              "Total space": 7,
-              "Free space": 8
+              "Node roles": 1,
+              "Transport address": 2,
+              "Uptime": 3,
+              "Number of shards": 4,
+              "Docs count": 5,
+              "Docs deleted": 6,
+              "JVM Heap": 7,
+              "Total space": 8,
+              "Free space": 9
             },
             "renameByName": {}
           }
@@ -4114,6 +4180,251 @@
         {
           "datasource": {
             "type": "elasticsearch",
+            "uid": "${es_shards_stats_status}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Number of shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 140
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG Shard size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 140
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Index name"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index",
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  },
+                  {
+                    "id": "filterable"
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.inspect",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 140
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG Docs count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 140
+                  },
+                  {
+                    "id": "unit",
+                    "value": "short"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Docs count"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 140
+                  },
+                  {
+                    "id": "unit",
+                    "value": "short"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 18,
+            "x": 3,
+            "y": 30
+          },
+          "id": 82,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "AVG Shard size"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.index.name",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "3",
+                    "size": "20"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats_status}"
+              },
+              "metrics": [
+                {
+                  "id": "1",
+                  "type": "count"
+                },
+                {
+                  "field": "elasticsearch.shard.store.size_in_bytes",
+                  "id": "3",
+                  "type": "avg"
+                },
+                {
+                  "field": "elasticsearch.shard.store.size_in_bytes",
+                  "id": "4",
+                  "type": "sum"
+                },
+                {
+                  "field": "elasticsearch.shard.docs.count",
+                  "id": "5",
+                  "type": "avg"
+                },
+                {
+                  "field": "elasticsearch.shard.docs.count",
+                  "id": "6",
+                  "type": "sum"
+                }
+              ],
+              "query": "NOT elasticsearch.shard.state: UNASSIGNED",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Shards per index stats",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Average": "Shard size",
+                  "Average elasticsearch.shard.docs.count": "AVG Docs count",
+                  "Average elasticsearch.shard.store.size_in_bytes": "AVG Shard size",
+                  "Count": "Number of shards",
+                  "Sum": "Total size",
+                  "Sum elasticsearch.shard.docs.count": "Total Docs count",
+                  "Sum elasticsearch.shard.store.size_in_bytes": "Total size",
+                  "elasticsearch.index.name": "Index name"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
             "uid": "${es_shards_stats}"
           },
           "fieldConfig": {
@@ -4141,15 +4452,35 @@
                 ]
               }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.*/"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index",
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 31
+            "y": 44
           },
           "id": 41,
+          "maxDataPoints": 10,
           "options": {
             "colWidth": 0.9,
             "legend": {
@@ -4249,19 +4580,20 @@
         },
         {
           "datasource": {
-            "uid": "${es_shards_stats}",
-            "type": "elasticsearch"
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
           },
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "lineWidth": 1,
-                "fillOpacity": 70
-              },
               "color": {
                 "mode": "continuous-GrYlRd"
               },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 1
+              },
               "mappings": [],
+              "min": 1,
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -4274,27 +4606,46 @@
                     "value": 80
                   }
                 ]
-              },
-              "min": 1
+              }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.*/"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index",
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 30
+            "y": 44
           },
           "id": 79,
+          "maxDataPoints": 10,
           "options": {
-            "showValue": "auto",
-            "rowHeight": 0.9,
             "colWidth": 0.9,
             "legend": {
-              "showLegend": true,
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
+            "rowHeight": 0.9,
+            "showValue": "auto",
             "tooltip": {
               "mode": "single",
               "sort": "none"
@@ -4303,10 +4654,6 @@
           "pluginVersion": "9.5.10",
           "targets": [
             {
-              "datasource": {
-                "type": "elasticsearch",
-                "uid": "${es_shards_stats}"
-              },
               "alias": "",
               "bucketAggs": [
                 {
@@ -4334,6 +4681,10 @@
                 }
               ],
               "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
               "fields": [
                 {
                   "jsonPath": ""
@@ -4385,19 +4736,20 @@
         },
         {
           "datasource": {
-            "uid": "${es_shards_stats}",
-            "type": "elasticsearch"
+            "type": "elasticsearch",
+            "uid": "${es_shards_stats}"
           },
           "fieldConfig": {
             "defaults": {
-              "custom": {
-                "lineWidth": 1,
-                "fillOpacity": 70
-              },
               "color": {
                 "mode": "continuous-GrYlRd"
               },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 1
+              },
               "mappings": [],
+              "min": 1,
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
@@ -4410,27 +4762,46 @@
                     "value": 80
                   }
                 ]
-              },
-              "min": 1
+              }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.*/"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index",
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 30
+            "y": 44
           },
           "id": 80,
+          "maxDataPoints": 10,
           "options": {
-            "showValue": "auto",
-            "rowHeight": 0.9,
             "colWidth": 0.9,
             "legend": {
-              "showLegend": true,
               "displayMode": "list",
-              "placement": "bottom"
+              "placement": "bottom",
+              "showLegend": true
             },
+            "rowHeight": 0.9,
+            "showValue": "auto",
             "tooltip": {
               "mode": "single",
               "sort": "none"
@@ -4439,22 +4810,18 @@
           "pluginVersion": "9.5.10",
           "targets": [
             {
-              "datasource": {
-                "type": "elasticsearch",
-                "uid": "${es_shards_stats}"
-              },
               "alias": "",
               "bucketAggs": [
                 {
+                  "field": "elasticsearch.index.name",
                   "id": "4",
-                  "type": "terms",
                   "settings": {
                     "min_doc_count": "1",
-                    "size": "10",
                     "order": "desc",
-                    "orderBy": "_term"
+                    "orderBy": "_term",
+                    "size": "10"
                   },
-                  "field": "elasticsearch.index.name"
+                  "type": "terms"
                 },
                 {
                   "field": "@timestamp",
@@ -4470,6 +4837,10 @@
                 }
               ],
               "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_shards_stats}"
+              },
               "fields": [
                 {
                   "jsonPath": ""
@@ -4478,9 +4849,9 @@
               "method": "GET",
               "metrics": [
                 {
+                  "field": "elasticsearch.shard.search.fetch_last_period",
                   "id": "1",
-                  "type": "avg",
-                  "field": "elasticsearch.shard.search.fetch_last_period"
+                  "type": "avg"
                 }
               ],
               "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.shard.search.fetch_last_period: [1 TO 100000] AND elasticsearch.node.name: $node_name",
@@ -4524,15 +4895,35 @@
                 ]
               }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.*/"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index",
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 39
+            "y": 52
           },
           "id": 77,
+          "maxDataPoints": 10,
           "options": {
             "colWidth": 0.9,
             "legend": {
@@ -4658,15 +5049,35 @@
                 ]
               }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.*/"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index pattern",
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__series.name}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 39
+            "y": 52
           },
           "id": 78,
+          "maxDataPoints": 10,
           "options": {
             "colWidth": 0.9,
             "legend": {
@@ -4768,15 +5179,35 @@
                 ]
               }
             },
-            "overrides": []
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/.*/"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze index pattern",
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__series.name}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 39
+            "y": 52
           },
           "id": 81,
+          "maxDataPoints": 10,
           "options": {
             "colWidth": 0.9,
             "legend": {
@@ -4872,7 +5303,7 @@
             "h": 15,
             "w": 24,
             "x": 0,
-            "y": 8
+            "y": 16
           },
           "id": 74,
           "options": {
@@ -5120,6 +5551,21 @@
         "queryValue": "",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_shards_stats_status",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-status--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

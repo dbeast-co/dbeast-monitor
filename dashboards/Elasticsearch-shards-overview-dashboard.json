@@ -662,16 +662,13 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
               "type": "auto"
             },
-            "filterable": false,
-            "inspect": false
+            "inspect": false,
+            "filterable": false
           },
           "mappings": [],
           "thresholds": {
@@ -686,26 +683,25 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Index pattern"
+              "options": "Index name"
             },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 176
-              },
               {
                 "id": "links",
                 "value": [
                   {
                     "targetBlank": true,
                     "title": "Analyze index pattern",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                    "url": "d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                   }
                 ]
               }
@@ -719,7 +715,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 100
+                "value": 110
               },
               {
                 "id": "custom.cellOptions",
@@ -746,16 +742,16 @@
       },
       "id": 6,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": true,
           "reducer": [
             "sum"
           ],
-          "show": true
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
@@ -809,7 +805,8 @@
             "indexByName": {},
             "renameByName": {
               "Sum": "Indexing rate",
-              "elasticsearch.index.index_pattern": "Index pattern"
+              "elasticsearch.index.index_pattern": "Index pattern",
+              "elasticsearch.index.name": "Index name"
             }
           }
         }

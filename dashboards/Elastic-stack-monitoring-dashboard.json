@@ -1792,6 +1792,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -2129,6 +2133,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -2365,6 +2373,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -2601,6 +2613,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -2938,6 +2954,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -3174,6 +3194,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -3511,6 +3535,10 @@
               {
                 "id": "custom.align",
                 "value": "left"
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           },
@@ -3757,6 +3785,17 @@
                   {
                     "id": "custom.align",
                     "value": "left"
+                  },
+                  {
+                    "id": "filterable"
+                  },
+                  {
+                    "id": "custom.inspect",
+                    "value": true
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
                   }
                 ]
               },
@@ -3775,6 +3814,17 @@
                         "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                       }
                     ]
+                  },
+                  {
+                    "id": "filterable"
+                  },
+                  {
+                    "id": "custom.inspect",
+                    "value": true
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
                   }
                 ]
               },
@@ -3818,6 +3868,9 @@
                     "value": {
                       "type": "color-background"
                     }
+                  },
+                  {
+                    "id": "filterable"
                   }
                 ]
               },
@@ -4800,6 +4853,10 @@
                         "targetBlank": true
                       }
                     ]
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
                   }
                 ]
               },
