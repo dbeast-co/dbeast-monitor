@@ -45,7 +45,7 @@ export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
         <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={selectedTime || 10}
+            value={selectedTime || null}
             label="Age"
             onChange={onSelectAutoRefresh}
         >

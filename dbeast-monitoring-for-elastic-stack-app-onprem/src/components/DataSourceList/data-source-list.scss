@@ -34,8 +34,9 @@
 
 }
 .filters{
-  max-width: 350px;
-  margin-block-end: 1rem;
+  max-width: 200px;
+  margin-block-end: 5rem;
+  margin-inline-start: 13rem;
 }
 .MuiInputBase-formControl{
   border: 1px solid #d9d9d9 !important;
@@ -45,4 +46,7 @@
 }
 .MuiSelect-select {
   color: #ffffff !important;
+}
+.MuiSelect-icon{
+    color: #ffffff !important;
 }
