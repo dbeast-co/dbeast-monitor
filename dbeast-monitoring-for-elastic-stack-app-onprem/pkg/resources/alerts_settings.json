@@ -1,0 +1,128 @@
+{
+  "alert_list": {
+    "title": "Alert list",
+    "id": "alert_list",
+    "order": 0,
+    "is_expanded": false,
+    "items": [
+      {
+        "label": "",
+        "id": "",
+        "type": "checkbox",
+        "tooltip": "",
+        "properties": {
+          "is_checked": true,
+          "is_disabled": true
+        }
+      },
+      {
+        "label": "",
+        "id": "",
+        "type": "input",
+        "tooltip": null,
+        "properties": {
+          "placeholder": "default value",
+          "is_disabled": false,
+          "validation_message": ""
+        }
+      },
+      {
+        "label": "",
+        "id": "",
+        "type": "text_area",
+        "tooltip": null,
+        "properties": {
+          "placeholder": "default value",
+          "is_disabled": false,
+          "max_chars": 1000,
+          "validation_message": ""
+        }
+      },
+      {
+        "label": "",
+        "id": "",
+        "type": "number",
+        "tooltip": null,
+        "properties": {
+          "placeholder": "default value",
+          "is_disabled": false,
+          "min_value": 1,
+          "validation_message": ""
+        }
+      },
+      {
+        "label": "",
+        "id": "",
+        "type": "radio",
+        "tooltip": null,
+        "properties": {
+          "is_disabled": false,
+          "buttons": [
+            {
+              "name": "button_group_name1",
+              "label": "",
+              "id": "",
+              "is_checked": true
+            },
+            {
+              "name": "button_group_name1",
+              "label": "",
+              "id": "",
+              "is_checked": false
+            }
+          ]
+        }
+      },
+      {
+        "label": "",
+        "id": "",
+        "type": "select",
+        "tooltip": null,
+        "properties": {
+          "is_disabled": false,
+          "options": [
+            {
+              "label": "",
+              "id": "",
+              "is_selected": true
+            },
+            {
+              "label": "",
+              "id": "",
+              "is_selected": true
+            }
+          ]
+        }
+      },
+      {
+        "label": "",
+        "id": "",
+        "type": "chips",
+        "tooltip": null,
+        "properties": {
+          "is_disabled": false,
+          "chips": [
+            "",
+            ""
+          ]
+        }
+      }
+    ]
+  },
+  "alert_settings": {
+    "title": "Alert settings",
+    "id": "alert_settings",
+    "order": 1,
+    "is_expanded": false,
+    "items": [
+      {
+        "label": "",
+        "id": "",
+        "type": "checkbox",
+        "properties": {
+          "is_checked": true
+        }
+      }
+    ]
+  }
+}
