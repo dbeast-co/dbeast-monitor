@@ -14,9 +14,11 @@ export interface ClusterStatsItemState {
   dataHotNodes: number;
   dataWarmNodes: number;
   dataColdNodes: number;
-  monitorName: string | null | undefined;
+  monitorName?: string | null | undefined;
   isOpenDialog?: boolean;
   refreshIntervalId: null | number;
+  uid?: string;
+  name?: string;
 }
 
 export interface MonitorState {

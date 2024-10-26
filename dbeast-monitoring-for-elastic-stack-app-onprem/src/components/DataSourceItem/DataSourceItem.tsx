@@ -1,6 +1,6 @@
-import React, {PureComponent} from 'react';
-import {getBackendSrv} from '@grafana/runtime';
-import {ClusterStatsItemState, MonitorState} from '../../types/clusterStatsItemState';
+import React, { PureComponent } from 'react';
+import { getBackendSrv } from '@grafana/runtime';
+import { ClusterStatsItemState, MonitorState } from '../../types/clusterStatsItemState';
 import './data-source-item.scss';
 import {
   Dialog,
@@ -16,7 +16,7 @@ import {
   SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import {Button, ButtonVariant, Spinner, stylesFactory, useTheme} from '@grafana/ui';
+import { Button, ButtonVariant, Spinner, stylesFactory, useTheme } from '@grafana/ui';
 import classNames from 'classnames';
 
 interface Props {
@@ -34,7 +34,6 @@ const MyComponent = (_: any) => {
   return (
     <div style={styles.container}>
       <div>Hello, This is My Component!</div>
-      {/* Add more components and content as needed */}
     </div>
   );
 };
@@ -49,31 +48,29 @@ const getStyles = stylesFactory((theme) => ({
   },
 }));
 
-export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> {
+export class DataSourceItem extends PureComponent<Props> {
   monitorState: MonitorState = {
     monitorName: '',
   };
   loading = false;
 
   state: ClusterStatsItemState = {
-    cluster_name: '',
     cluster_uuid: '',
+    cluster_name: '',
     status: '',
     versions: ['-'],
     numberOfIndices: 0,
     numberOfShards: 0,
     numberOfUnassignedShards: 0,
-    docsCount: '0',
-    usedStorage: '0',
-    totalStorage: '0',
+    docsCount: '',
+    usedStorage: '',
+    totalStorage: '',
     totalNodes: 0,
     dataNodes: 0,
     dataHotNodes: 0,
     dataWarmNodes: 0,
     dataColdNodes: 0,
-    monitorName: '',
-    isOpenDialog: false,
-    refreshIntervalId: null
+    refreshIntervalId: null,
   };
   outlined: ButtonVariant | undefined = 'destructive';
   listItem: HTMLElement | undefined = undefined;
@@ -94,18 +91,13 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   }
 
   handleChange = (event: SelectChangeEvent) => {
-
-
-    const inputString = this.props.dataSourceItem.uid;
-    const uid = inputString.split('--').slice(2).join('--');
-
     this.setState({
       monitorName: event.target.value as string,
     });
     switch (event.target.value as string) {
       case 'stack-monitoring':
         window.open(
-          `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
         this.setState({
@@ -115,7 +107,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'logstash-overview':
         window.open(
-          `/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
 
@@ -125,7 +117,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'index-overview':
         window.open(
-          `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
 
@@ -135,7 +127,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'shards-overview':
         window.open(
-          `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
 
@@ -145,7 +137,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'ingest-pipelines-overview':
         window.open(
-          `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
 
@@ -155,7 +147,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'tasks-analytics':
         window.open(
-          `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
 
@@ -165,7 +157,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'ml-jobs-analytics':
         window.open(
-          `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_uid=${uid}`,
+          `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_uid=${this.state.uid}`,
           '_blank'
         );
         this.setState({
@@ -175,22 +167,76 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     }
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    console.log('this.props.dataSourceItem', this.props.dataSourceItem);
 
-    if (this.state.refreshIntervalId! > 0) {
+    // setTimeout(() => {
+    this.setState({
+      cluster_uuid: this.props.dataSourceItem.cluster_uuid,
+      cluster_name: this.props.dataSourceItem.cluster_name,
+      status: this.props.dataSourceItem.status,
+      versions: this.props.dataSourceItem.nodes.versions,
+      numberOfIndices: this.props.dataSourceItem.indices.count,
+      numberOfShards: this.props.dataSourceItem.indices.shards.total,
+      numberOfUnassignedShards: 0,
+      docsCount: this.nFormatter(this.props.dataSourceItem.indices.docs.count),
+      usedStorage: this.formatBytes(this.props.dataSourceItem.indices.store.size_in_bytes),
+      totalStorage: this.formatBytes(this.props.dataSourceItem.nodes.fs.total_in_bytes),
+      totalNodes: this.props.dataSourceItem.nodes.count.total,
+      dataNodes: this.props.dataSourceItem.nodes.count.data,
+      dataHotNodes: this.props.dataSourceItem.nodes.count.data_hot,
+      dataWarmNodes: this.props.dataSourceItem.nodes.count.data_warm,
+      dataColdNodes: this.props.dataSourceItem.nodes.count.data_cold,
+      refreshIntervalId: null,
+    });
+    // }, 100);
+
+    const { refreshTime } = this.props;
+    if (refreshTime! > 0) {
       this.setRefreshInterval();
     }
-    this.getDataFromAPI()
+    this.getDataFromAPI();
+  }
 
+  componentDidUpdate(prevProps: Props) {
+    // Check if the onRefresh prop has changed, then reset the interval
+    if (prevProps.refreshTime !== this.props.refreshTime) {
+      this.setRefreshInterval();
+    }
+  }
 
-    // console.log('Props: ', this.props.theme)
-    // //<editor-fold desc="get data from API">
+  componentWillUnmount() {
+    // Clear interval when the component is unmounted to prevent memory leaks
+    if (this.state.refreshIntervalId) {
+      clearInterval(this.state.refreshIntervalId);
+    }
+  }
+
+  setRefreshInterval() {
+    const { refreshTime } = this.props;
+
+    // Clear any existing interval
+    if (this.state.refreshIntervalId) {
+      clearInterval(this.state.refreshIntervalId);
+    }
+
+    // Set a new interval if onRefresh is greater than 0
+    if (refreshTime > 0) {
+      setInterval(() => {
+        this.getDataFromAPI();
+      }, refreshTime * 1000); // Convert seconds to milliseconds
+    }
+  }
+
+  async getDataFromAPI() {
+    console.log('getDataFromAPI');
     // await getBackendSrv()
     //   .get(
     //     `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
     //   )
     //   .then((dataSources: any) => {
     //     const {} = dataSources;
+    //
     //     this.setState({
     //       cluster_uuid: dataSources.cluster_uuid,
     //       cluster_name: dataSources.cluster_name,
@@ -208,6 +254,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     //       dataWarmNodes: dataSources.nodes.count.data_warm,
     //       dataColdNodes: dataSources.nodes.count.data_cold,
     //     });
+    //
+    //     console.log('dataSources', dataSources);
     //   })
     //   .catch((e) => {
     //     let regex = new RegExp(/Elasticsearch-direct-prod-(.*)--(.*)/g);
@@ -242,103 +290,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     //       });
     //     });
     // }
-    // //</editor-fold>
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    // Check if the onRefresh prop has changed, then reset the interval
-    if (prevProps.refreshTime !== this.props.refreshTime) {
-      this.setRefreshInterval();
-    }
-  }
-
-  componentWillUnmount() {
-    // Clear interval when the component is unmounted to prevent memory leaks
-    if (this.state.refreshIntervalId) {
-      clearInterval(this.state.refreshIntervalId);
-    }
-  }
-
-  setRefreshInterval() {
-    const { refreshTime, dataSourceItem } = this.props;
-
-    // Clear any existing interval
-    if (this.state.refreshIntervalId) {
-      clearInterval(this.state.refreshIntervalId);
-    }
-
-    // Set a new interval if onRefresh is greater than 0
-    if (refreshTime > 0) {
-      const intervalId = setInterval(() => {
-        this.getDataFromAPI();
-        console.log(`Refreshing data for item with ID: ${dataSourceItem.id}`);
-        // You can add the actual refresh logic here
-      }, refreshTime * 1000); // Convert seconds to milliseconds
-
-      // @ts-ignore
-      this.setState({ refreshIntervalId: intervalId }); // Store interval ID in the state
-    }
-  }
-
-
-  async getDataFromAPI(){
-    await getBackendSrv()
-        .get(
-            `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
-        )
-        .then((dataSources: any) => {
-          const {} = dataSources;
-          this.setState({
-            cluster_uuid: dataSources.cluster_uuid,
-            cluster_name: dataSources.cluster_name,
-            status: dataSources.status,
-            versions: dataSources.nodes.versions,
-            numberOfIndices: dataSources.indices.count,
-            numberOfShards: dataSources.indices.shards.total,
-            numberOfUnassignedShards: 0,
-            docsCount: this.nFormatter(dataSources.indices.docs.count),
-            usedStorage: this.formatBytes(dataSources.indices.store.size_in_bytes),
-            totalStorage: this.formatBytes(dataSources.nodes.fs.total_in_bytes),
-            totalNodes: dataSources.nodes.count.total,
-            dataNodes: dataSources.nodes.count.data,
-            dataHotNodes: dataSources.nodes.count.data_hot,
-            dataWarmNodes: dataSources.nodes.count.data_warm,
-            dataColdNodes: dataSources.nodes.count.data_cold,
-          });
-        })
-        .catch((e) => {
-          let regex = new RegExp(/Elasticsearch-direct-prod-(.*)--(.*)/g);
-          const uid: string = this.props.dataSourceItem.uid;
-          const matches = regex.exec(uid);
-          this.setState({
-            cluster_name: matches ? matches[1] : '',
-            cluster_uuid: matches ? matches[2] : '',
-            status: 'ERROR',
-            versions: ['-'],
-            numberOfIndices: 0,
-            numberOfShards: 0,
-            numberOfUnassignedShards: 0,
-            docsCount: '0',
-            usedStorage: '0',
-            totalStorage: '0',
-            totalNodes: 0,
-            dataNodes: 0,
-            dataHotNodes: 0,
-            dataWarmNodes: 0,
-            dataColdNodes: 0,
-          });
-        });
-    if (this.state.status !== 'ERROR') {
-      await getBackendSrv()
-          .get(
-              `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/health?filter_path=unassigned_shards`
-          )
-          .then((health: any) => {
-            this.setState({
-              numberOfUnassignedShards: health.unassigned_shards,
-            });
-          });
-    }
   }
 
   nFormatter(num: number): string {
@@ -361,7 +312,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     this.setState({ isOpenDialog: true });
   };
   onTest = () => {
-    this.componentDidMount().then(() => {});
+    this.componentDidMount();
   };
   onDeleteCluster = async () => {
     const backendSrv = getBackendSrv();
@@ -384,9 +335,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         }
       }
 
-      // this.props.onDelete(this.state.cluster_uuid)
-      // this.componentDidMount().then(() => {
-      // });
       this.loading = false;
       window.location.reload();
     } catch (getError) {
@@ -414,11 +362,11 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         >
           <header>
             <div className="col header-cluster">
-              <h3>{this.state.cluster_name}</h3>
-              <p>{this.state.cluster_uuid}</p>
+              <h3>{this.props.dataSourceItem.cluster_name}</h3>
+              <p>{this.props.dataSourceItem.cluster_uuid}</p>
             </div>
             <div className="actions col">
-              <span className={this.state.status.toUpperCase()}>{this.state.status.toUpperCase()}</span>
+              <span className={this.props.dataSourceItem.status.toUpperCase()}>{this.state.status.toUpperCase()}</span>
             </div>
           </header>
 
