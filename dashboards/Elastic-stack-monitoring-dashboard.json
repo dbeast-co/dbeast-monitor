@@ -504,14 +504,11 @@
     },
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -532,6 +529,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           },
           "unit": "bytes"
         },
@@ -642,26 +642,26 @@
       },
       "id": 117,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
@@ -689,11 +689,6 @@
               "name": "FS Free"
             },
             {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].roles[$ ~> $contains(\"data_hot\") ? \"data_hot\" : null] : null)",
-              "language": "jsonata",
-              "name": "Roles"
-            },
-            {
               "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
               "language": "jsonata",
               "name": "host"
@@ -707,6 +702,22 @@
       ],
       "title": "Hot tier stats",
       "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "binary": {
+              "left": "CPU",
+              "reducer": "sum",
+              "operator": "*",
+              "right": "0"
+            },
+            "alias": "GroupByField"
+          }
+        },
         {
           "id": "groupBy",
           "options": {
@@ -782,6 +793,10 @@
                   "sum"
                 ],
                 "operation": "aggregate"
+              },
+              "GroupByField": {
+                "aggregations": [],
+                "operation": "groupby"
               }
             }
           }
@@ -791,7 +806,8 @@
           "options": {
             "excludeByName": {
               "Roles": true,
-              "role": true
+              "role": true,
+              "GroupByField": true
             },
             "indexByName": {
               "CPU (mean)": 6,
@@ -815,20 +831,35 @@
               "total_in_bytes (sum)": "Total storage"
             }
           }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "fieldName": "Nodes",
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                }
+              }
+            ],
+            "type": "include",
+            "match": "any"
+          }
         }
       ],
       "type": "table"
     },
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -849,6 +880,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           },
           "unit": "bytes"
         },
@@ -959,26 +993,26 @@
       },
       "id": 118,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
@@ -1006,11 +1040,6 @@
               "name": "FS Free"
             },
             {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].roles[$ ~> $contains(\"data_warm\") ? \"data_warm\" : null] : null)",
-              "language": "jsonata",
-              "name": "Roles"
-            },
-            {
               "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
               "language": "jsonata",
               "name": "host"
@@ -1024,6 +1053,22 @@
       ],
       "title": "Warm tier stats",
       "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "binary": {
+              "left": "CPU",
+              "reducer": "sum",
+              "operator": "*",
+              "right": "0"
+            },
+            "alias": "GroupByField"
+          }
+        },
         {
           "id": "groupBy",
           "options": {
@@ -1099,6 +1144,10 @@
                   "sum"
                 ],
                 "operation": "aggregate"
+              },
+              "GroupByField": {
+                "aggregations": [],
+                "operation": "groupby"
               }
             }
           }
@@ -1108,7 +1157,8 @@
           "options": {
             "excludeByName": {
               "Roles": true,
-              "role": true
+              "role": true,
+              "GroupByField": true
             },
             "indexByName": {
               "CPU (mean)": 6,
@@ -1132,20 +1182,35 @@
               "total_in_bytes (sum)": "Total storage"
             }
           }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "fieldName": "Nodes",
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                }
+              }
+            ],
+            "type": "include",
+            "match": "any"
+          }
         }
       ],
       "type": "table"
     },
     {
       "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+        "uid": "${es_direct_prod}",
+        "type": "marcusolsson-json-datasource"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -1166,6 +1231,9 @@
                 "value": 80
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           },
           "unit": "bytes"
         },
@@ -1276,26 +1344,26 @@
       },
       "id": 119,
       "options": {
+        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "countRows": false,
-          "fields": "",
+          "show": false,
           "reducer": [
             "sum"
           ],
-          "show": false
+          "countRows": false,
+          "fields": ""
         },
-        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
+          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
@@ -1323,11 +1391,6 @@
               "name": "FS Free"
             },
             {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].roles[$ ~> $contains(\"data_cold\") ? \"data_cold\" : null] : null)",
-              "language": "jsonata",
-              "name": "Roles"
-            },
-            {
               "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
               "language": "jsonata",
               "name": "host"
@@ -1341,6 +1404,22 @@
       ],
       "title": "Cold tier stats",
       "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "binary": {
+              "left": "CPU",
+              "reducer": "sum",
+              "operator": "*",
+              "right": "0"
+            },
+            "alias": "GroupByField"
+          }
+        },
         {
           "id": "groupBy",
           "options": {
@@ -1416,6 +1495,10 @@
                   "sum"
                 ],
                 "operation": "aggregate"
+              },
+              "GroupByField": {
+                "aggregations": [],
+                "operation": "groupby"
               }
             }
           }
@@ -1425,7 +1508,8 @@
           "options": {
             "excludeByName": {
               "Roles": true,
-              "role": true
+              "role": true,
+              "GroupByField": true
             },
             "indexByName": {
               "CPU (mean)": 6,
@@ -1448,6 +1532,24 @@
               "percent (mean)": "AVG CPU usage",
               "total_in_bytes (sum)": "Total storage"
             }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "fieldName": "Nodes",
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                }
+              }
+            ],
+            "type": "include",
+            "match": "any"
           }
         }
       ],
