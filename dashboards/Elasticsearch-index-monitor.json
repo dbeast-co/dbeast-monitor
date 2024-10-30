@@ -45,8 +45,8 @@
   "panels": [
     {
       "datasource": {
-        "uid": "${es_index_stats_status}",
-        "type": "elasticsearch"
+        "uid": "-- Mixed --",
+        "type": "datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -237,10 +237,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 351
-              },
-              {
                 "id": "custom.inspect",
                 "value": true
               }
@@ -294,7 +290,8 @@
           "countRows": false,
           "fields": ""
         },
-        "sortBy": []
+        "sortBy": [],
+        "frameIndex": 0
       },
       "pluginVersion": "9.5.10",
       "targets": [
@@ -384,9 +381,9 @@
               "type": "max"
             },
             {
+              "field": "elasticsearch.index.total.docs.deleted",
               "id": "10",
-              "type": "max",
-              "field": "elasticsearch.index.total.docs.deleted"
+              "type": "max"
             }
           ],
           "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.name: $index_name",
@@ -394,36 +391,179 @@
           "refId": "A",
           "timeField": "@timestamp",
           "urlPath": ""
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "refId": "B",
+          "hide": false,
+          "cacheDurationSeconds": 0,
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/$index_name/_settings",
+          "fields": [
+            {
+              "jsonPath": "$.*.settings.index.($exists(lifecycle) and $exists(lifecycle.name) ? lifecycle.name : \"\")",
+              "language": "jsonata",
+              "name": "ILM"
+            },
+            {
+              "name": "Max elasticsearch.index.shards.primaries",
+              "jsonPath": "$.*.settings.index.number_of_shards",
+              "language": "jsonata"
+            }
+          ]
         }
       ],
       "title": "Index status",
       "transformations": [
         {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Index": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Primary shards": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Index pattern": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Health": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Status": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Max elasticsearch.index.shards.primaries": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "elasticsearch.index.name": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "elasticsearch.index.health": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "elasticsearch.index.status": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "elasticsearch.index.index_pattern": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Max elasticsearch.index.total.store.size_in_bytes": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Max elasticsearch.index.primaries.store.size_in_bytes": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Max elasticsearch.index.total.docs.count": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Max elasticsearch.index.shards.total": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "Max elasticsearch.index.total.docs.deleted": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
+              "ILM": {
+                "aggregations": [
+                  "firstNotNull"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "Max elasticsearch.index.primaries.store.size_in_bytes": 4,
-              "Max elasticsearch.index.shards.primaries": 6,
-              "Max elasticsearch.index.shards.total": 7,
-              "Max elasticsearch.index.total.docs.count": 8,
-              "Max elasticsearch.index.total.store.size_in_bytes": 5,
-              "elasticsearch.index.health": 2,
-              "elasticsearch.index.index_pattern": 1,
-              "elasticsearch.index.name": 0,
-              "elasticsearch.index.status": 3
+              "elasticsearch.index.name (lastNotNull)": 0,
+              "elasticsearch.index.index_pattern (lastNotNull)": 1,
+              "elasticsearch.index.health (lastNotNull)": 2,
+              "elasticsearch.index.status (lastNotNull)": 3,
+              "ILM (firstNotNull)": 4,
+              "Max elasticsearch.index.shards.primaries": 5,
+              "Max elasticsearch.index.shards.total (lastNotNull)": 6,
+              "Max elasticsearch.index.total.docs.count (lastNotNull)": 7,
+              "Max elasticsearch.index.total.docs.deleted (lastNotNull)": 8,
+              "Max elasticsearch.index.primaries.store.size_in_bytes (lastNotNull)": 9,
+              "Max elasticsearch.index.total.store.size_in_bytes (lastNotNull)": 10
             },
             "renameByName": {
               "Max elasticsearch.index.primaries.store.size_in_bytes": "Primary size",
               "Max elasticsearch.index.shards.primaries": "Primary shards",
               "Max elasticsearch.index.shards.total": "Total shards",
               "Max elasticsearch.index.total.docs.count": "Documents",
+              "Max elasticsearch.index.total.docs.deleted": "Deleted",
               "Max elasticsearch.index.total.store.size_in_bytes": "Total size",
               "elasticsearch.index.health": "Health",
               "elasticsearch.index.index_pattern": "Index pattern",
               "elasticsearch.index.name": "Index",
               "elasticsearch.index.status": "Status",
-              "Max elasticsearch.index.total.docs.deleted": "Deleted"
+              "ILM": "",
+              "ILM B": "ILM",
+              "ILM (firstNotNull)": "ILM",
+              "elasticsearch.index.name (lastNotNull)": "Index",
+              "elasticsearch.index.health (lastNotNull)": "Health",
+              "elasticsearch.index.status (lastNotNull)": "Status",
+              "elasticsearch.index.index_pattern (lastNotNull)": "Index pattern",
+              "Max elasticsearch.index.total.store.size_in_bytes (lastNotNull)": "Total size",
+              "Max elasticsearch.index.primaries.store.size_in_bytes (lastNotNull)": "Primary size",
+              "Max elasticsearch.index.shards.total (last)": "Total shards",
+              "Max elasticsearch.index.total.docs.count (lastNotNull)": "Documents",
+              "Max elasticsearch.index.total.docs.deleted (last)": "Deleted",
+              "Max elasticsearch.index.shards.total (lastNotNull)": "Total shards",
+              "Max elasticsearch.index.total.docs.deleted (lastNotNull)": "Deleted"
             }
           }
         },
@@ -2379,6 +2519,22 @@
         "queryValue": "",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_direct_prod",
+        "options": [],
+        "query": "marcusolsson-json-datasource",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

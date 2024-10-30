@@ -4395,7 +4395,7 @@
                   "type": "sum"
                 }
               ],
-              "query": "NOT elasticsearch.shard.state: UNASSIGNED",
+              "query": "NOT elasticsearch.shard.state: UNASSIGNED AND elasticsearch.node.name: $node_name AND elasticsearch.cluster.id: $cluster_uid",
               "refId": "A",
               "timeField": "@timestamp"
             }
