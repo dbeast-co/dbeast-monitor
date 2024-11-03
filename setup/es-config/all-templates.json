@@ -1396,6 +1396,14 @@ PUT _component_template/dbeast-mon-tsds-es-index-stats-mapping-component
                         "ingest_rate": {
                           "type": "long",
                           "time_series_metric": "gauge"
+                        },
+                        "deleted": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
+                        },
+                        "delete_rate": {
+                          "type": "long",
+                          "time_series_metric": "gauge"
                         }
                       }
                     },
