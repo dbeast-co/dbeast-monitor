@@ -1,5 +1,22 @@
 # Changelog
 
+## Version 1.0.1
+
+- Features:
+  * [FEAT] In the "Cluster list" dashboard - redevelope monitors links to route even if the cluster not received the status #160[#44](https://github.com/dbeast-co/dbeast-monitor/issues/44)
+  * [FEAT] Add node roles to the "Host overview" dashboard #68[#68](https://github.com/dbeast-co/dbeast-monitor/issues/68)
+  * [FEAT] Remove data from the "Tier stats" in case of the tier doesn't exists #156[#156](https://github.com/dbeast-co/dbeast-monitor/issues/156)
+
+- Bug fixes
+  * [BUG] There is no docs.deleted mapping in the on-prem version #167[#167](https://github.com/dbeast-co/dbeast-monitor/issues/167)
+  * [BUG] In the "Stack monitor" dashboard "Tier" panels, there is an error in case of the flat architecture #166[#166](https://github.com/dbeast-co/dbeast-monitor/issues/166)
+  
+- Updated dashboards
+  * Elastic stack monitor
+  * Host overview
+  * Elasticsearch shards overview 
+  * Elasticsearch index pattern monitor
+
 ## Version 1.0.0
 **We released the first version for Kubernetes with Helm charts! Now we have Kubernetes and on-prem versions!**
 
