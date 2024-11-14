@@ -1598,7 +1598,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1711,9 +1711,10 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Cluster ingest rate - EPS(Events per second)",
+      "title": "Cluster ingest rate - EPS(MAX Events per second)",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -1745,7 +1746,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1824,8 +1825,9 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Cluster Search rate - QPS(Query per second)",
-      "type": "timeseries"
+      "title": "Cluster Search rate - QPS(MAX Query per second)",
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "collapsed": false,
@@ -4799,7 +4801,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -4897,7 +4899,8 @@
           ],
           "title": "Rejects",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -5104,7 +5107,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5202,7 +5205,8 @@
           ],
           "title": "Completed Write requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -5234,7 +5238,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5332,7 +5336,8 @@
           ],
           "title": "Completed Search requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -5364,7 +5369,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5462,7 +5467,8 @@
           ],
           "title": "Rejected Write requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -5494,7 +5500,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5592,7 +5598,8 @@
           ],
           "title": "Rejected Search requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         }
       ],
       "title": "Thread pools overview",

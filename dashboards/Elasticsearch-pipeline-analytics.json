@@ -410,7 +410,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -499,7 +499,8 @@
       ],
       "title": "Pipeline ingest",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     }
   ],
   "refresh": "1m",
@@ -620,7 +621,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},

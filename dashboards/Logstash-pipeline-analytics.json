@@ -164,7 +164,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -322,7 +322,6 @@
               "options": "Plugin Id"
             },
             "properties": [
-
             ]
           },
           {
@@ -584,7 +583,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -611,7 +610,6 @@
           }
         },
         "overrides": [
-
         ]
       },
       "gridPos": {

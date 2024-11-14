@@ -224,7 +224,7 @@
             "fillOpacity": 0,
             "gradientMode": "none",
             "spanNulls": true,
-            "showPoints": "auto",
+            "showPoints": "never",
             "pointSize": 5,
             "stacking": {
               "mode": "normal",
@@ -358,7 +358,7 @@
             "fillOpacity": 0,
             "gradientMode": "opacity",
             "spanNulls": true,
-            "showPoints": "auto",
+            "showPoints": "never",
             "pointSize": 5,
             "stacking": {
               "mode": "normal",

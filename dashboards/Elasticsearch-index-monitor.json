@@ -825,7 +825,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -945,7 +945,8 @@
       ],
       "title": "Indexing rate",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -982,7 +983,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1085,7 +1086,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -1122,7 +1124,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1224,7 +1226,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -1261,7 +1264,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1351,7 +1354,8 @@
       ],
       "title": "Query rate",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -1389,7 +1393,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1521,7 +1525,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -1558,7 +1563,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1648,7 +1653,8 @@
       ],
       "title": "Docs count",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "collapsed": true,
@@ -1690,7 +1696,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -1810,7 +1816,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -1929,7 +1935,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2049,7 +2055,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2170,7 +2176,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2291,7 +2297,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",

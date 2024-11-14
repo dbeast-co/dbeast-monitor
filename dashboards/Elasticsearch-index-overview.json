@@ -127,7 +127,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -223,7 +223,8 @@
         }
       ],
       "title": "Ingest rate",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -255,7 +256,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -354,7 +355,8 @@
         }
       ],
       "title": "Search rate",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
