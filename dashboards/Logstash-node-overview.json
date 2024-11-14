@@ -296,7 +296,8 @@
       ],
       "title": "Data flow rates",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -573,7 +574,8 @@
       ],
       "title": "CPU usage",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -694,7 +696,8 @@
       ],
       "title": "Exceptions rate",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -843,7 +846,8 @@
       ],
       "title": "JVM heap usage",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "collapsed": true,
@@ -1663,7 +1667,8 @@
               "options": {}
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -1888,7 +1893,8 @@
           ],
           "title": "Memory usage",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -2074,7 +2080,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -2517,7 +2524,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -3020,7 +3028,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         }
       ],
       "title": "Server level Stats",
@@ -3397,7 +3406,8 @@
           ],
           "title": "AVG Pipelines Current worker utilization",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -3531,7 +3541,8 @@
           ],
           "title": "AVG Pipelines Last 1 min worker utilization (%)",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -3690,7 +3701,8 @@
           ],
           "title": "AVG Pipelines worker utilization (number of workers)",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         },
         {
           "datasource": {
@@ -3825,7 +3837,8 @@
           ],
           "title": "AVG Pipelines Last 1 min worker utilization more then 90%",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 25
         }
       ],
       "title": "Flow Stats (Not for the Windows)",
@@ -3974,7 +3987,8 @@
       ],
       "title": "Pipelines outcome rates",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -4131,7 +4145,8 @@
       ],
       "title": "Logstash logs rate per pipeline",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
@@ -4617,7 +4632,8 @@
       ],
       "title": "Exceptions rate per pipeline",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 25
     },
     {
       "datasource": {
