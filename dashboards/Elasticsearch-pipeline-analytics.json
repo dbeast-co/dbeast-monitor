@@ -500,7 +500,7 @@
       "title": "Pipeline ingest",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     }
   ],
   "refresh": "1m",

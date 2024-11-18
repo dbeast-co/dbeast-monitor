@@ -1714,7 +1714,7 @@
       "title": "Cluster ingest rate - EPS(MAX Events per second)",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1827,7 +1827,7 @@
       ],
       "title": "Cluster Search rate - QPS(MAX Query per second)",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "collapsed": false,
@@ -4900,7 +4900,7 @@
           "title": "Rejects",
           "transformations": [],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5206,7 +5206,7 @@
           "title": "Completed Write requests rate",
           "transformations": [],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5337,7 +5337,7 @@
           "title": "Completed Search requests rate",
           "transformations": [],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5468,7 +5468,7 @@
           "title": "Rejected Write requests rate",
           "transformations": [],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5599,7 +5599,7 @@
           "title": "Rejected Search requests rate",
           "transformations": [],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         }
       ],
       "title": "Thread pools overview",

@@ -1212,7 +1212,7 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1438,7 +1438,7 @@
       "title": "Memory usage",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1625,7 +1625,7 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -2070,7 +2070,7 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -2526,7 +2526,7 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "collapsed": true,
@@ -2677,7 +2677,7 @@
           ],
           "title": "Ingest rate (EPS)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2818,7 +2818,7 @@
           ],
           "title": "Search rate (QPS)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2952,7 +2952,7 @@
           ],
           "title": "JVM heap usage (%)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3109,7 +3109,7 @@
           ],
           "title": "Ingest latency (ms)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3266,7 +3266,7 @@
           ],
           "title": "Search latency (ms)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3459,7 +3459,7 @@
           "title": "GC count",
           "transformations": [],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3592,7 +3592,7 @@
           ],
           "title": "CPU Utilization (%)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3711,7 +3711,7 @@
           ],
           "title": "Segment count",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3935,7 +3935,7 @@
           ],
           "title": "Avg GC duration (ms)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {

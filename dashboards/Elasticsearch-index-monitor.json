@@ -946,8 +946,8 @@
       "title": "Indexing rate",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25,
-      "maxDataPoints": 25
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1088,8 +1088,8 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25,
-      "maxDataPoints": 25
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1229,8 +1229,8 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25,
-      "maxDataPoints": 25
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1358,8 +1358,8 @@
       "title": "Query rate",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25,
-      "maxDataPoints": 25
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1530,8 +1530,8 @@
         }
       ],
       "type": "timeseries",
-      "maxDataPoints": 25,
-      "maxDataPoints": 25
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1659,8 +1659,8 @@
       "title": "Docs count",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25,
-      "maxDataPoints": 25
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "collapsed": true,
@@ -1791,7 +1791,7 @@
           ],
           "title": "Indexing rate per shard",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1911,7 +1911,7 @@
           ],
           "title": "Search queries count",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2032,7 +2032,7 @@
           ],
           "title": "Search fetch count for the period",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2154,7 +2154,7 @@
           ],
           "title": "Indexing latency per shard",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2276,7 +2276,7 @@
           ],
           "title": "Avg search query latency",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2397,7 +2397,7 @@
           ],
           "title": "Search fetch latency",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         }
       ],
       "title": "Shards analytics",

@@ -345,7 +345,7 @@
       ],
       "title": "Search tasks count",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -618,7 +618,7 @@
       ],
       "title": "Search response time (s)",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -739,7 +739,7 @@
       ],
       "title": "Search Thread pool rejects (rejects/s)",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1420,7 +1420,7 @@
           ],
           "title": "ESQL tasks count",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1692,7 +1692,7 @@
           ],
           "title": "Max Response time (s)",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2309,7 +2309,7 @@
           ],
           "title": "Write operations count",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2678,7 +2678,7 @@
           ],
           "title": "Write Thread pool rejects",
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3364,7 +3364,7 @@
             }
           ],
           "type": "timeseries",
-          "maxDataPoints": 25
+          "maxDataPoints": 100
         },
         {
           "datasource": {

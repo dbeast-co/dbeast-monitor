@@ -224,7 +224,7 @@
       ],
       "title": "Ingest rate",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -356,7 +356,7 @@
       ],
       "title": "Search rate",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {

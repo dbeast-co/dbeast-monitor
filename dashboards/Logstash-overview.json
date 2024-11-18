@@ -342,7 +342,7 @@
       ],
       "title": "Outcome rates",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -476,7 +476,7 @@
       ],
       "title": "Exceptions rate",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {

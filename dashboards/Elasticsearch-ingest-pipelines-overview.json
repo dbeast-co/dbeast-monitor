@@ -903,7 +903,7 @@
       ],
       "title": "Outcome rates",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1040,7 +1040,7 @@
       ],
       "title": "Enrich queue status",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {

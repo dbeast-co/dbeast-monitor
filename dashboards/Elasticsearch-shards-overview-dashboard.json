@@ -229,7 +229,7 @@
       ],
       "title": "Indexing rate per index ( For indices with indexing rate greater than 1 Events/s )",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -945,7 +945,7 @@
       ],
       "title": "Indexing latency per index ( For indices with latency greater than 1 ms) ",
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "collapsed": false,

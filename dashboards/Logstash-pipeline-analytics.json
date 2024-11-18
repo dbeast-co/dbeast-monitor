@@ -282,7 +282,7 @@
       "title": "Pipeline ingest",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -673,7 +673,7 @@
       "title": "Exceptions",
       "transformations": [],
       "type": "timeseries",
-      "maxDataPoints": 25
+      "maxDataPoints": 100
     },
     {
       "datasource": {
