@@ -114,33 +114,33 @@ export const AddNewClusterPanel = () => {
                 });
                 Promise.all([promise1, promise2]).then(async (values) => {
                     setIsLoading(false);
-                    const [value1, value2] = values;
-                    const dataSourcesFromResponse: Datasource[] = Object.values(value2);
+                    // const [value1, value2] = values;
+                    // const dataSourcesFromResponse: Datasource[] = Object.values(value2);
                     let isErrorOccurred = false; // Flag to track if an error has occurred
-                    for (const item of dataSourcesFromResponse) {
-                        if (!isErrorOccurred) {
-                            try {
-                                const isEqualDataSource = value1.find((item1: Datasource) => item1.uid === item.uid);
-                                if (isEqualDataSource) {
-                                    await backendSrv.put(`/api/datasources/uid/${item.uid}`, JSON.stringify(item));
-                                } else {
-                                    await backendSrv.post('/api/datasources', JSON.stringify(item));
-                                }
-                            } catch (error: any) {
-                                isErrorOccurred = true; // Set the flag to true upon encountering an error
-                                toast.error(`${error.message}`, {
-                                    position: toast.POSITION.BOTTOM_RIGHT,
-                                    autoClose: false,
-                                    closeButton: true,
-                                    hideProgressBar: true,
-                                    draggable: false,
-                                });
-                                break; // Exit from the loop on the first error
-                            }
-                        } else {
-                            break; // Exit from the loop if an error has already occurred
-                        }
-                    }
+                    // for (const item of dataSourcesFromResponse) {
+                    //     if (!isErrorOccurred) {
+                    //         try {
+                    //             const isEqualDataSource = value1.find((item1: Datasource) => item1.uid === item.uid);
+                    //             if (isEqualDataSource) {
+                    //                 await backendSrv.put(`/api/datasources/uid/${item.uid}`, JSON.stringify(item));
+                    //             } else {
+                    //                 await backendSrv.post('/api/datasources', JSON.stringify(item));
+                    //             }
+                    //         } catch (error: any) {
+                    //             isErrorOccurred = true; // Set the flag to true upon encountering an error
+                    //             toast.error(`${error.message}`, {
+                    //                 position: toast.POSITION.BOTTOM_RIGHT,
+                    //                 autoClose: false,
+                    //                 closeButton: true,
+                    //                 hideProgressBar: true,
+                    //                 draggable: false,
+                    //             });
+                    //             break; // Exit from the loop on the first error
+                    //         }
+                    //     } else {
+                    //         break; // Exit from the loop if an error has already occurred
+                    //     }
+                    // }
                     if (!isErrorOccurred) {
                         toast.success('Source connections was successfully saved!', {
                             position: toast.POSITION.BOTTOM_RIGHT,
