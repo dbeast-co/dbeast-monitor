@@ -179,7 +179,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -296,7 +296,8 @@
       ],
       "title": "Data flow rates",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -459,7 +460,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -573,7 +574,8 @@
       ],
       "title": "CPU usage",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -606,7 +608,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -633,7 +635,7 @@
           }
         },
         "overrides": [
-         ]
+        ]
       },
       "gridPos": {
         "h": 5,
@@ -694,7 +696,8 @@
       ],
       "title": "Exceptions rate",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -729,7 +732,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -843,7 +846,8 @@
       ],
       "title": "JVM heap usage",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "collapsed": true,
@@ -1482,7 +1486,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -1663,7 +1667,8 @@
               "options": {}
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1700,7 +1705,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -1888,7 +1893,8 @@
           ],
           "title": "Memory usage",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1920,7 +1926,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2074,7 +2080,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2363,7 +2370,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2517,7 +2524,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2817,7 +2825,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3020,7 +3028,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         }
       ],
       "title": "Server level Stats",
@@ -3231,12 +3240,565 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 12
+      },
+      "id": 82,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 2,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            }
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 12,
+            "x": 0,
+            "y": 13
+          },
+          "id": 79,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "logstash.node.stats.pipeline.id",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${logstash_mon_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "logstash.node.stats.pipeline.flow.worker_utilization.current",
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "AVG Pipelines Current worker utilization",
+          "transformations": [],
+          "type": "timeseries",
+          "maxDataPoints": 100
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 2,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 12,
+            "x": 12,
+            "y": 13
+          },
+          "id": 80,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "logstash.node.stats.pipeline.id",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${logstash_mon_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "logstash.node.stats.pipeline.flow.worker_utilization.last_1_minute",
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "AVG Pipelines Last 1 min worker utilization (%)",
+          "transformations": [],
+          "type": "timeseries",
+          "maxDataPoints": 100
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 2,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            }
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "id": 81,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "logstash.node.stats.pipeline.id",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto",
+                    "min_doc_count": "1"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${logstash_mon_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "logstash.node.stats.pipeline.flow.worker_concurrency.last_15_minutes",
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "AVG Pipelines worker utilization (number of workers)",
+          "transformations": [],
+          "type": "timeseries",
+          "maxDataPoints": 100
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 2,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "max": 110,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "id": 83,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "logstash.node.stats.pipeline.id",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 300,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${logstash_mon_metrics}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "logstash.node.stats.pipeline.flow.worker_utilization.last_1_minute",
+                  "id": "1",
+                  "type": "avg"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.flow.worker_utilization.last_1_minute:>90",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "AVG Pipelines Last 1 min worker utilization more then 90%",
+          "transformations": [],
+          "type": "timeseries",
+          "maxDataPoints": 100
+        }
+      ],
+      "title": "Flow Stats (Not for the Windows)",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
       },
       "id": 71,
       "panels": [],
@@ -3275,7 +3837,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -3307,7 +3869,7 @@
         "h": 5,
         "w": 13,
         "x": 0,
-        "y": 13
+        "y": 14
       },
       "id": 76,
       "options": {
@@ -3373,7 +3935,8 @@
       ],
       "title": "Pipelines outcome rates",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -3406,7 +3969,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -3464,7 +4027,7 @@
         "h": 5,
         "w": 11,
         "x": 13,
-        "y": 13
+        "y": 14
       },
       "id": 75,
       "options": {
@@ -3530,7 +4093,8 @@
       ],
       "title": "Logstash logs rate per pipeline",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -3716,7 +4280,7 @@
         "h": 18,
         "w": 13,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "hideTimeOverride": true,
       "id": 73,
@@ -3916,7 +4480,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -3944,14 +4508,13 @@
           }
         },
         "overrides": [
-
         ]
       },
       "gridPos": {
         "h": 5,
         "w": 11,
         "x": 13,
-        "y": 18
+        "y": 19
       },
       "id": 77,
       "options": {
@@ -4017,7 +4580,8 @@
       ],
       "title": "Exceptions rate per pipeline",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -4104,7 +4668,7 @@
         "h": 13,
         "w": 11,
         "x": 13,
-        "y": 23
+        "y": 24
       },
       "id": 15,
       "options": {

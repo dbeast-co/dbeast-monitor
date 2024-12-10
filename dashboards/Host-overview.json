@@ -1030,7 +1030,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1211,7 +1211,8 @@
           "options": {}
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1248,7 +1249,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1436,7 +1437,8 @@
       ],
       "title": "Memory usage",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1468,7 +1470,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1494,7 +1496,7 @@
           },
           "unit": "bytes"
         },
-        "overrides":[]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -1622,7 +1624,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1911,7 +1914,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2066,7 +2069,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -2366,7 +2370,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2393,7 +2397,6 @@
           "unit": "none"
         },
         "overrides": [
-
         ]
       },
       "gridPos": {
@@ -2522,7 +2525,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "collapsed": true,
@@ -2564,7 +2568,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2672,7 +2676,8 @@
             }
           ],
           "title": "Ingest rate (EPS)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2704,7 +2709,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2812,7 +2817,8 @@
             }
           ],
           "title": "Search rate (QPS)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2846,7 +2852,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2945,7 +2951,8 @@
             }
           ],
           "title": "JVM heap usage (%)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2977,7 +2984,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3101,7 +3108,8 @@
             }
           ],
           "title": "Ingest latency (ms)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3133,7 +3141,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3257,7 +3265,8 @@
             }
           ],
           "title": "Search latency (ms)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3289,7 +3298,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3449,7 +3458,8 @@
           ],
           "title": "GC count",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3482,7 +3492,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3581,7 +3591,8 @@
             }
           ],
           "title": "CPU Utilization (%)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3613,7 +3624,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3699,7 +3710,8 @@
             }
           ],
           "title": "Segment count",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3731,7 +3743,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3922,7 +3934,8 @@
             }
           ],
           "title": "Avg GC duration (ms)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {

@@ -224,7 +224,7 @@
             "fillOpacity": 0,
             "gradientMode": "none",
             "spanNulls": true,
-            "showPoints": "auto",
+            "showPoints": "never",
             "pointSize": 5,
             "stacking": {
               "mode": "normal",
@@ -341,7 +341,8 @@
         }
       ],
       "title": "Outcome rates",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -358,7 +359,7 @@
             "fillOpacity": 0,
             "gradientMode": "opacity",
             "spanNulls": true,
-            "showPoints": "auto",
+            "showPoints": "never",
             "pointSize": 5,
             "stacking": {
               "mode": "normal",
@@ -474,7 +475,8 @@
         }
       ],
       "title": "Exceptions rate",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {

@@ -132,7 +132,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -228,7 +228,8 @@
         }
       ],
       "title": "Indexing rate per index ( For indices with indexing rate greater than 1 Events/s )",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -847,7 +848,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -943,7 +944,8 @@
         }
       ],
       "title": "Indexing latency per index ( For indices with latency greater than 1 ms) ",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "collapsed": false,

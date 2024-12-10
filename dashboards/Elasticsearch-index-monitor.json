@@ -825,7 +825,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -945,7 +945,9 @@
       ],
       "title": "Indexing rate",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -982,7 +984,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1085,7 +1087,9 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1122,7 +1126,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1224,7 +1228,9 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1261,7 +1267,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1351,7 +1357,9 @@
       ],
       "title": "Query rate",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1389,7 +1397,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1521,7 +1529,9 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1558,7 +1568,7 @@
               "linearThreshold": 1,
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1648,7 +1658,9 @@
       ],
       "title": "Docs count",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100,
+      "maxDataPoints": 100
     },
     {
       "collapsed": true,
@@ -1690,7 +1702,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -1778,7 +1790,8 @@
             }
           ],
           "title": "Indexing rate per shard",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1810,7 +1823,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -1897,7 +1910,8 @@
             }
           ],
           "title": "Search queries count",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1929,7 +1943,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2017,7 +2031,8 @@
             }
           ],
           "title": "Search fetch count for the period",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2049,7 +2064,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2138,7 +2153,8 @@
             }
           ],
           "title": "Indexing latency per shard",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2170,7 +2186,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2259,7 +2275,8 @@
             }
           ],
           "title": "Avg search query latency",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2291,7 +2308,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2379,7 +2396,8 @@
             }
           ],
           "title": "Search fetch latency",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         }
       ],
       "title": "Shards analytics",

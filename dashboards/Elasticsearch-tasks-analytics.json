@@ -269,7 +269,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -344,7 +344,8 @@
         }
       ],
       "title": "Search tasks count",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -539,7 +540,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -616,7 +617,8 @@
         }
       ],
       "title": "Search response time (s)",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -648,7 +650,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -736,7 +738,8 @@
         }
       ],
       "title": "Search Thread pool rejects (rejects/s)",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1330,7 +1333,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -1416,7 +1419,8 @@
             }
           ],
           "title": "ESQL tasks count",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -1611,7 +1615,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -1687,7 +1691,8 @@
             }
           ],
           "title": "Max Response time (s)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2217,7 +2222,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "always",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2303,7 +2308,8 @@
             }
           ],
           "title": "Write operations count",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2583,7 +2589,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -2671,7 +2677,8 @@
             }
           ],
           "title": "Write Thread pool rejects",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3160,7 +3167,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3356,7 +3363,8 @@
               }
             }
           ],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
