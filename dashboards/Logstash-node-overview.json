@@ -3307,33 +3307,7 @@
                 ]
               },
               "unit": "percent"
-            },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cs_servers"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            }
           },
           "gridPos": {
             "h": 5,
@@ -3342,7 +3316,7 @@
             "y": 13
           },
           "id": 79,
-          "maxDataPoints": 20,
+          "maxDataPoints": 100,
           "options": {
             "legend": {
               "calcs": [],
@@ -3477,7 +3451,7 @@
             "y": 13
           },
           "id": 80,
-          "maxDataPoints": 20,
+          "maxDataPoints": 100,
           "options": {
             "legend": {
               "calcs": [],
@@ -3601,33 +3575,7 @@
                   }
                 ]
               }
-            },
-            "overrides": [
-              {
-                "__systemRef": "hideSeriesFrom",
-                "matcher": {
-                  "id": "byNames",
-                  "options": {
-                    "mode": "exclude",
-                    "names": [
-                      "cs_servers"
-                    ],
-                    "prefix": "All except:",
-                    "readOnly": true
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": true
-                    }
-                  }
-                ]
-              }
-            ]
+            }
           },
           "gridPos": {
             "h": 5,
@@ -3636,7 +3584,7 @@
             "y": 18
           },
           "id": 81,
-          "maxDataPoints": 20,
+          "maxDataPoints": 100,
           "options": {
             "legend": {
               "calcs": [],
@@ -3773,7 +3721,7 @@
             "y": 18
           },
           "id": 83,
-          "maxDataPoints": 20,
+          "maxDataPoints": 100,
           "options": {
             "legend": {
               "calcs": [],
