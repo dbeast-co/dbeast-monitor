@@ -15,20 +15,18 @@ type Credentials struct {
 }
 
 type EnvironmentConfig struct {
-	Prod struct {
-		Elasticsearch Credentials `json:"elasticsearch"`
-		Kibana        Credentials `json:"kibana"`
-	} `json:"prod"`
-	Mon struct {
-		Elasticsearch Credentials `json:"elasticsearch"`
-	} `json:"mon"`
+	Prod ProdEnvironmentConfig `json:"prod"`
+	Mon  MonEnvironmentConfig  `json:"mon"`
 }
 
-//type MonitoringClusterInjectionSettings struct {
-//	TemplatesInjection   ConfigurationCheckbox `json:"templates_injection"`
-//	ILMPoliciesInjection ConfigurationCheckbox `json:"ilm_policies_injection"`
-//	CreateFirsIndices    ConfigurationCheckbox `json:"create_first_indices"`
-//}
+type ProdEnvironmentConfig struct {
+	Elasticsearch Credentials `json:"elasticsearch"`
+	Kibana        Credentials `json:"kibana"`
+}
+
+type MonEnvironmentConfig struct {
+	Elasticsearch Credentials `json:"elasticsearch"`
+}
 
 type LogstashHost struct {
 	ServerAddress      string `json:"server_address"`
@@ -65,4 +63,46 @@ type StatusData struct {
 type Status struct {
 	Status string `json:"status"`
 	Error  string `json:"error"`
+}
+
+// Index template definition
+// Root structure representing the entire JSON
+type IndexTemplate struct {
+	IndexPatterns []string `json:"index_patterns"`
+	Template      Template `json:"template"`
+	ComposedOf    []string `json:"composed_of"`
+	Priority      int      `json:"priority"`
+	Meta          Meta     `json:"_meta"`
+}
+
+// Represents the "template" field
+type Template struct {
+	Settings TemplateSettings `json:"settings"`
+	Aliases  map[string]Alias `json:"aliases"`
+}
+
+// Represents the "settings" field under "template"
+type TemplateSettings struct {
+	Index IndexSettings `json:"index"`
+}
+
+// Represents the "index" field under "settings"
+type IndexSettings struct {
+	Lifecycle IndexLifecycle `json:"lifecycle"`
+}
+
+// Represents the "lifecycle" field under "index"
+type IndexLifecycle struct {
+	Name          string `json:"name"`
+	RolloverAlias string `json:"rollover_alias"`
+}
+
+// Represents the "aliases" field under "template"
+type Alias struct {
+	// Empty object, no fields required currently
+}
+
+// Represents the "_meta" field
+type Meta struct {
+	Description string `json:"description"`
 }

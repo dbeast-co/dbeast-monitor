@@ -83,6 +83,12 @@ func GetClusterInformation(credentials Credentials) (*http.Response, error) {
 	return response, err
 }
 
+func SendIndexRolloverCommandToCluster(credentials Credentials, indexName string) (*http.Response, error) {
+	requestURL := credentials.Host + "/" + indexName + "/_rollover"
+	log.DefaultLogger.Info("Request path: " + requestURL)
+	return ProcessPOSTRequest(credentials, requestURL, "")
+}
+
 func SendILMToCluster(credentials Credentials, policyName string, policyContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_ilm/policy/" + policyName
 	return SendDataToCluster(credentials, requestURL, policyContent)
@@ -152,4 +158,15 @@ func CheckIsIndexExists(credentials Credentials, templateName string) (bool, err
 		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
 		return false, err
 	}
+}
+
+func DeleteIndex(credentials Credentials, indexName string) (*http.Response, error) {
+	requestURL := credentials.Host + "/" + indexName
+	response, err := ProcessDELETERequest(credentials, requestURL)
+
+	if err != nil {
+		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
+		return nil, err
+	}
+	return response, err
 }
