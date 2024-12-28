@@ -85,6 +85,15 @@
       "defaultNav": true
     },
     {
+      "type": "page",
+      "name": "Update",
+      "path": "/a/%PLUGIN_ID%/update-1",
+      "role": "Viewer",
+      "uid": "update",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
       "type": "dashboard",
       "name": "Add new cluster",
       "path": "dashboards/Add-new-cluster-dashboard.json",
