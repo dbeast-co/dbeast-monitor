@@ -1558,7 +1558,10 @@
               "field": "system.network.in.bytes",
               "hide": true,
               "id": "1",
-              "type": "max"
+              "type": "max",
+              "settings": {
+                "script": "_value/60"
+              }
             },
             {
               "field": "1",
@@ -1574,7 +1577,10 @@
               "field": "system.network.out.bytes",
               "hide": true,
               "id": "5",
-              "type": "max"
+              "type": "max",
+              "settings": {
+                "script": "_value/60"
+              }
             },
             {
               "field": "5",
