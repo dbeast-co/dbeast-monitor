@@ -41,7 +41,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
                 )}
 
                 {/*Source connection*/}
-
+                <div>KUKU</div>
 
                 {/* Disable the plugin */}
                 {enabled && (
