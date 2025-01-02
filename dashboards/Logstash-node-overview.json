@@ -1511,13 +1511,14 @@
                   }
                 ]
               },
-              "unit": "percentunit"
+              "unit": "percentunit",
+              "max": 1
             },
             "overrides": [
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Average system.cpu.user.pct"
+                  "options": "Average system.cpu.user.norm.pct"
                 },
                 "properties": [
                   {
@@ -1529,7 +1530,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Average system.cpu.system.pct"
+                  "options": "Average system.cpu.system.norm.pct"
                 },
                 "properties": [
                   {
@@ -1541,7 +1542,43 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Average system.cpu.iowait.pct"
+                  "options": "Average system.cpu.nice.norm.pct"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Nice CPU usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.cpu.softirq.norm.pct"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Softirq CPU usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.cpu.irq.norm.pct"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Irq CPU usage"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Average system.cpu.iowait.norm.pct"
                 },
                 "properties": [
                   {
@@ -1617,37 +1654,37 @@
               "method": "GET",
               "metrics": [
                 {
-                  "field": "system.cpu.user.pct",
+                  "field": "system.cpu.user.norm.pct",
                   "hide": false,
                   "id": "1",
                   "type": "avg"
                 },
                 {
-                  "field": "system.cpu.system.pct",
+                  "field": "system.cpu.system.norm.pct",
                   "hide": false,
                   "id": "3",
                   "type": "avg"
                 },
                 {
-                  "field": "system.cpu.nice.pct",
+                  "field": "system.cpu.nice.norm.pct",
                   "hide": false,
                   "id": "4",
                   "type": "avg"
                 },
                 {
-                  "field": "system.cpu.softirq.pct",
+                  "field": "system.cpu.softirq.norm.pct",
                   "hide": false,
                   "id": "5",
                   "type": "avg"
                 },
                 {
-                  "field": "system.cpu.irq.pct",
+                  "field": "system.cpu.irq.norm.pct",
                   "hide": false,
                   "id": "6",
                   "type": "avg"
                 },
                 {
-                  "field": "system.cpu.iowait.pct",
+                  "field": "system.cpu.iowait.norm.pct",
                   "hide": false,
                   "id": "7",
                   "type": "avg"
@@ -1662,10 +1699,6 @@
           ],
           "title": "CPU usage",
           "transformations": [
-            {
-              "id": "organize",
-              "options": {}
-            }
           ],
           "type": "timeseries",
           "maxDataPoints": 100
