@@ -4483,6 +4483,22 @@
               "logstash.node.stats.pipeline.id": "Pipeline"
             }
           }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "fieldName": "In",
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                }
+              }
+            ],
+            "type": "exclude",
+            "match": "any"
+          }
         }
       ],
       "type": "table",
