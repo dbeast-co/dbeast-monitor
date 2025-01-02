@@ -5127,7 +5127,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                       }
@@ -5341,7 +5341,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -5497,7 +5497,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -5653,7 +5653,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -5784,7 +5784,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -5938,7 +5938,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index pattern",
                         "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__series.name}"
                       }
@@ -6068,7 +6068,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index pattern",
                         "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__series.name}"
                       }

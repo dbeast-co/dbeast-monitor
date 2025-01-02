@@ -633,7 +633,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields.Node}&${cluster_uid:queryparam}"
                   }

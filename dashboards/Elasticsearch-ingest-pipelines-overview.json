@@ -170,7 +170,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze pipeline",
                     "url": "/d/elasticsearch-pipeline-analytics/elasticsearch-pipeline-analytics?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}"
                   }
@@ -526,7 +526,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node name\"]}"
                   }
