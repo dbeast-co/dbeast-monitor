@@ -1570,46 +1570,45 @@
     },
     {
       "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_index_stats}"
+        "uid": "${es_index_stats}",
+        "type": "elasticsearch"
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
             "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "lineWidth": 1,
             "fillOpacity": 0,
             "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
+            "spanNulls": true,
+            "showPoints": "never",
             "pointSize": 5,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+            "axisCenteredZero": false,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
+          "color": {
+            "mode": "palette-classic"
+          },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1622,13 +1621,14 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "min": 0
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Max elasticsearch.index.summary.total.indexing.index_rate"
+              "options": "10000 <= 60000 ? Sum elasticsearch.index.total.indexing.index_rate : params.total/(10000/60000)"
             },
             "properties": [
               {
@@ -1640,7 +1640,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Max elasticsearch.index.summary.primaries.indexing.index_rate"
+              "options": "10000 <= 60000 ? Sum elasticsearch.index.primaries.indexing.index_rate : params.primary/(10000/60000)"
             },
             "properties": [
               {
@@ -1658,20 +1658,25 @@
         "y": 9
       },
       "id": 36,
+      "maxDataPoints": 100,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
         "tooltip": {
           "mode": "single",
           "sort": "none"
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
         }
       },
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1683,35 +1688,53 @@
               "type": "date_histogram"
             }
           ],
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats}"
-          },
           "hide": false,
           "metrics": [
             {
-              "field": "elasticsearch.index.summary.total.indexing.index_rate",
+              "field": "elasticsearch.index.total.indexing.index_rate",
+              "hide": true,
               "id": "1",
-              "settings": {
-                "script": "_value <= 0 ? 0 : _value"
-              },
-              "type": "max"
+              "type": "sum"
             },
             {
-              "field": "elasticsearch.index.summary.primaries.indexing.index_rate",
+              "field": "elasticsearch.index.primaries.indexing.index_rate",
+              "hide": true,
               "id": "3",
+              "type": "sum"
+            },
+            {
+              "id": "4",
+              "pipelineVariables": [
+                {
+                  "name": "total",
+                  "pipelineAgg": "1"
+                }
+              ],
               "settings": {
-                "script": "_value <= 0 ? 0 : _value"
+                "script": "${__interval_ms} <= 60000 ? params.total : params.total/(${__interval_ms}/60000)"
               },
-              "type": "max"
+              "type": "bucket_script"
+            },
+            {
+              "id": "5",
+              "pipelineVariables": [
+                {
+                  "name": "primary",
+                  "pipelineAgg": "3"
+                }
+              ],
+              "settings": {
+                "script": "${__interval_ms} <= 60000 ? params.primary : params.primary/(${__interval_ms}/60000)"
+              },
+              "type": "bucket_script"
             }
           ],
-          "query": "event.dataset: indices_stats AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: index_stats AND elasticsearch.cluster.id: $cluster_uid",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Cluster ingest rate - EPS(Events per second)",
+      "title": "Cluster ingest rate - EPS(MAX Events per second)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -1745,7 +1768,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1794,6 +1817,10 @@
       },
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -1805,27 +1832,21 @@
               "type": "date_histogram"
             }
           ],
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_index_stats}"
-          },
           "metrics": [
             {
-              "field": "elasticsearch.index.summary.total.search.query_rate",
-              "id": "1",
-              "settings": {
-                "script": "_value <= 0 ? 0 : _value"
-              },
-              "type": "max"
+              "id": "3",
+              "type": "sum",
+              "field": "elasticsearch.index.total.search.query_rate"
             }
           ],
-          "query": "event.dataset: indices_stats AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: index_stats AND elasticsearch.cluster.id: $cluster_uid",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
-      "title": "Cluster Search rate - QPS(Query per second)",
-      "type": "timeseries"
+      "title": "Cluster Search rate - QPS(MAX Query per second)",
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "collapsed": false,
@@ -1885,7 +1906,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -2226,7 +2247,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -2466,7 +2487,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -2706,7 +2727,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -3047,7 +3068,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -3287,7 +3308,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -3628,7 +3649,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze Node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
                   }
@@ -3878,7 +3899,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze Logstash",
                         "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                       }
@@ -3911,7 +3932,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze Logstash",
                         "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                       }
@@ -4799,7 +4820,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -4897,7 +4918,8 @@
           ],
           "title": "Rejects",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5104,7 +5126,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5202,7 +5224,8 @@
           ],
           "title": "Completed Write requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5234,7 +5257,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5332,7 +5355,8 @@
           ],
           "title": "Completed Search requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5364,7 +5388,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5462,7 +5486,8 @@
           ],
           "title": "Rejected Write requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -5494,7 +5519,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": true,
                 "stacking": {
                   "group": "A",
@@ -5592,7 +5617,8 @@
           ],
           "title": "Rejected Search requests rate",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         }
       ],
       "title": "Thread pools overview",

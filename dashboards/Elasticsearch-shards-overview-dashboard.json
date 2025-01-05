@@ -132,7 +132,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -228,7 +228,8 @@
         }
       ],
       "title": "Indexing rate per index ( For indices with indexing rate greater than 1 Events/s )",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -280,7 +281,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index",
                     "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
@@ -437,7 +438,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index",
                     "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
@@ -699,7 +700,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index pattern",
                     "url": "d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                   }
@@ -847,7 +848,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -943,7 +944,8 @@
         }
       ],
       "title": "Indexing latency per index ( For indices with latency greater than 1 ms) ",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "collapsed": false,
@@ -1008,7 +1010,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index",
                     "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
                   }
@@ -1183,7 +1185,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index",
                     "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
@@ -1359,7 +1361,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index",
                     "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
@@ -1535,7 +1537,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze index",
                     "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }

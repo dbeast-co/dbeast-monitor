@@ -224,7 +224,7 @@
             "fillOpacity": 0,
             "gradientMode": "none",
             "spanNulls": true,
-            "showPoints": "auto",
+            "showPoints": "never",
             "pointSize": 5,
             "stacking": {
               "mode": "normal",
@@ -341,7 +341,8 @@
         }
       ],
       "title": "Outcome rates",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -358,7 +359,7 @@
             "fillOpacity": 0,
             "gradientMode": "opacity",
             "spanNulls": true,
-            "showPoints": "auto",
+            "showPoints": "never",
             "pointSize": 5,
             "stacking": {
               "mode": "normal",
@@ -474,7 +475,8 @@
         }
       ],
       "title": "Exceptions rate",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -630,7 +632,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Host overview",
                     "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                   }
@@ -648,7 +650,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Host overview",
                     "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                   }
@@ -1311,7 +1313,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze pipeline",
                     "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}&${cluster_uid:queryparam}"
                   }
@@ -1337,7 +1339,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Host overvew",
                     "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                   }
@@ -1613,7 +1615,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze pipeline",
                     "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_uid:queryparam}"
                   }
@@ -1643,7 +1645,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Host overview",
                     "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
                   }
