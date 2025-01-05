@@ -3828,7 +3828,7 @@
           "maxDataPoints": 100
         }
       ],
-      "title": "Flow Stats (Not for the Windows)",
+      "title": "Flow Stats",
       "type": "row"
     },
     {
