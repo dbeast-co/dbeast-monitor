@@ -9,7 +9,6 @@
   * [FEAT] Change ingest rate fields in the "Stack monitoring" dashboard  #199[#199](https://github.com/dbeast-co/dbeast-monitor/issues/199)
   * [FEAT] "Index monitor" dashboard upgrades list #36[#36](https://github.com/dbeast-co/dbeast-monitor/issues/36)
   * [FEAT] "Host overview" dashboard upgrades list #25[#25](https://github.com/dbeast-co/dbeast-monitor/issues/25)
-  * [FEAT] Remove opening links in the new tabs #202[#202](https://github.com/dbeast-co/dbeast-monitor/issues/202)
   * [FEAT] Add the version number into the ES templates and logstash pipelines #205[#205](https://github.com/dbeast-co/dbeast-monitor/issues/205)
 
 - Bug fixes
