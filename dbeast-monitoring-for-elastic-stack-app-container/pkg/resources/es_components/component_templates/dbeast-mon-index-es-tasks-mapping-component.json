@@ -181,6 +181,7 @@
     "aliases": {}
   },
   "_meta": {
-    "description": "The default mappings for the Elasticsearch tasks monitoring"
+    "description": "The default mappings for the Elasticsearch tasks monitoring",
+    "version": "1.0.2"
   }
 }

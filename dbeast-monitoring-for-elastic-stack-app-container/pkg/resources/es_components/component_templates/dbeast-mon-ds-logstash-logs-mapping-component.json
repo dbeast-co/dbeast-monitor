@@ -198,6 +198,7 @@
     }
   },
   "_meta": {
-    "description": "The default mappings for the Logstash logs"
+    "description": "The default mappings for the Logstash logs",
+    "version": "1.0.2"
   }
 }

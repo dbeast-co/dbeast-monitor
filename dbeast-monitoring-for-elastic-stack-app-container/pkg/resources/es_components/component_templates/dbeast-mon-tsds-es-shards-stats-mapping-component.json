@@ -352,6 +352,7 @@
     }
   },
   "_meta": {
-    "description": "The default mappings for the shards monitoring"
+    "description": "The default mappings for the shards monitoring",
+    "version": "1.0.2"
   }
 }

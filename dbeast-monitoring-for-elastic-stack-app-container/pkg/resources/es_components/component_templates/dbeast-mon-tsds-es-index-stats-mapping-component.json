@@ -1841,6 +1841,7 @@
     }
   },
   "_meta": {
-    "description": "default mappings for the monitoring ecs indices"
+    "description": "default mappings for the indices monitoring",
+    "version": "1.0.2"
   }
 }

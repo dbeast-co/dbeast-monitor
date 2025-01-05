@@ -28,6 +28,7 @@
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the shards monitoring"
+    "description": "This template used for the shards monitoring",
+    "version": "1.0.2"
   }
 }

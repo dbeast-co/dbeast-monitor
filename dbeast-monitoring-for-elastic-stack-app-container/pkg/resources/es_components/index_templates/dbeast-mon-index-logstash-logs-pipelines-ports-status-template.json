@@ -13,6 +13,7 @@
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Logstash port usage status"
+    "description": "This template used for the Logstash port usage status",
+    "version": "1.0.2"
   }
 }

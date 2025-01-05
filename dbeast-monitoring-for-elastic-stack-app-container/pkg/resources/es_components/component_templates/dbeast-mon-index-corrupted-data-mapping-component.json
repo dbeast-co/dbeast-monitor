@@ -130,6 +130,7 @@
     }
   },
   "_meta": {
-    "description": "The default mappings for the corrupted data"
+    "description": "The default mappings for the corrupted data",
+    "version": "1.0.2"
   }
 }

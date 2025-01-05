@@ -24,6 +24,7 @@
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Logstash logs"
+    "description": "This template used for the Logstash logs",
+    "version": "1.0.2"
   }
 }

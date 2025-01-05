@@ -21,6 +21,7 @@
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch tasks"
+    "description": "This template used for the Elasticsearch tasks",
+    "version": "1.0.2"
   }
 }

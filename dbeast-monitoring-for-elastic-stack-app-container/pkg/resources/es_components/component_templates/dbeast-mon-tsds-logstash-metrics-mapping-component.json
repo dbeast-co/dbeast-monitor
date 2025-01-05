@@ -803,6 +803,7 @@
     }
   },
   "_meta": {
-    "description": "The default mappings for the Logstash metrics"
+    "description": "The default mappings for the Logstash metrics",
+    "version": "1.0.2"
   }
 }

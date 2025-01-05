@@ -28,6 +28,7 @@
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch thread pools metrics"
+    "description": "This template used for the Elasticsearch thread pools metrics",
+    "version": "1.0.2"
   }
 }

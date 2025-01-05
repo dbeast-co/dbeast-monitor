@@ -142,6 +142,7 @@
     "aliases": {}
   },
   "_meta": {
-    "description": "The default mappings for the Thread pools monitoring"
+    "description": "The default mappings for the Thread pools monitoring",
+    "version": "1.0.2"
   }
 }

@@ -28,6 +28,7 @@
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the index monitoring"
+    "description": "This template used for the index monitoring",
+    "version": "1.0.2"
   }
 }

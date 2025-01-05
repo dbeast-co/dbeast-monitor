@@ -197,6 +197,7 @@
     }
   },
   "_meta": {
-    "description": "The default mappings for the Elasticsearch ingest pipelines monitoring"
+    "description": "The default mappings for the Elasticsearch ingest pipelines monitoring",
+    "version": "1.0.2"
   }
 }

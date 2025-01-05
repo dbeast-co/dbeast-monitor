@@ -1934,7 +1934,8 @@ PUT _component_template/dbeast-mon-tsds-es-index-stats-mapping-component
     }
   },
   "_meta": {
-    "description": "default mappings for the monitoring ecs indices"
+    "description": "default mappings for the indices monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -1968,7 +1969,8 @@ PUT _index_template/dbeast-mon-tsds-es-index-stats-historical-template
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the index monitoring"
+    "description": "This template used for the index monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -1988,7 +1990,8 @@ PUT _index_template/dbeast-mon-index-es-index-stats-status-template
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the index monitoring"
+    "description": "This template used for the index monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -2347,7 +2350,8 @@ PUT _component_template/dbeast-mon-tsds-es-shards-stats-mapping-component
     }
   },
   "_meta": {
-    "description": "The default mappings for the shards monitoring"
+    "description": "The default mappings for the shards monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -2381,7 +2385,8 @@ PUT _index_template/dbeast-mon-tsds-es-shards-stats-historical-template
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the shards monitoring"
+    "description": "This template used for the shards monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -2400,7 +2405,8 @@ PUT _index_template/dbeast-mon-index-es-shards-stats-status-template
     "dbeast-mon-default-settings-component"
   ],
   "_meta": {
-    "description": "This template used for the shards monitoring"
+    "description": "This template used for the shards monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -2547,6 +2553,10 @@ PUT _component_template/dbeast-mon-tsds-es-thread_pools-mapping-component
       }
     },
     "aliases": {}
+  },
+  "_meta": {
+    "description": "The default mappings for the Thread pools monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -2580,7 +2590,8 @@ PUT _index_template/dbeast-mon-tsds-es-thread_pools-historical-template
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch thread pools metrics"
+    "description": "This template used for the Elasticsearch thread pools metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -2600,7 +2611,8 @@ PUT _index_template/dbeast-mon-index-es-thread_pools-status-template
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch thread pools metrics"
+    "description": "This template used for the Elasticsearch thread pools metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -3410,7 +3422,8 @@ PUT _component_template/dbeast-mon-tsds-logstash-metrics-mapping-component
     }
   },
   "_meta": {
-    "description": "The default mappings for the Logstash metrics"
+    "description": "The default mappings for the Logstash metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -3444,7 +3457,8 @@ PUT _index_template/dbeast-mon-tsds-logstash-metrics-historical-template
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Logstash metrics"
+    "description": "This template used for the Logstash metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -3464,7 +3478,8 @@ PUT _index_template/dbeast-mon-index-logstash-metrics-status-template
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Logstash metrics"
+    "description": "This template used for the Logstash metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -3669,7 +3684,8 @@ PUT _component_template/dbeast-mon-ds-logstash-logs-mapping-component
     }
   },
   "_meta": {
-    "description": "The default mappings for the Logstash logs"
+    "description": "The default mappings for the Logstash logs",
+    "version": "1.0.2"
   }
 }
 
@@ -3699,7 +3715,8 @@ PUT _index_template/dbeast-mon-ds-logstash-logs-historical-template
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Logstash logs"
+    "description": "This template used for the Logstash logs",
+    "version": "1.0.2"
   }
 }
 
@@ -3719,7 +3736,8 @@ PUT _index_template/dbeast-mon-index-logstash-logs-pipelines-ports-status-templa
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Logstash port usage status"
+    "description": "This template used for the Logstash port usage status",
+    "version": "1.0.2"
   }
 }
 
@@ -3905,6 +3923,10 @@ PUT _component_template/dbeast-mon-index-es-tasks-mapping-component
       }
     },
     "aliases": {}
+  },
+  "_meta": {
+    "description": "The default mappings for the Elasticsearch tasks monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -3931,7 +3953,8 @@ PUT _index_template/dbeast-mon-index-es-tasks-historical-template
     "dbeast-mon-default-settings-component"
   ],
   "_meta": {
-    "description": "This template used for the Elasticsearch tasks"
+    "description": "This template used for the Elasticsearch tasks",
+    "version": "1.0.2"
   }
 }
 
@@ -4165,6 +4188,10 @@ PUT _component_template/dbeast-mon-tsds-es-ingest_pipelines-mapping-component
         }
       }
     }
+  },
+  "_meta": {
+    "description": "The default mappings for the Elasticsearch ingest pipelines monitoring",
+    "version": "1.0.2"
   }
 }
 
@@ -4198,7 +4225,8 @@ PUT _index_template/dbeast-mon-tsds-ingest_pipelines-historical-template
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch pipelines metrics"
+    "description": "This template used for the Elasticsearch pipelines metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -4218,7 +4246,8 @@ PUT _index_template/dbeast-mon-index-es-ingest_pipelines-status-template
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch pipelines metrics"
+    "description": "This template used for the Elasticsearch pipelines metrics",
+    "version": "1.0.2"
   }
 }
 
@@ -4353,6 +4382,10 @@ PUT _component_template/dbeast-mon-index-corrupted-data-mapping-component
         }
       }
     }
+  },
+  "_meta": {
+    "description": "The default mappings for the corrupted data",
+    "version": "1.0.2"
   }
 }
 
@@ -4380,7 +4413,8 @@ PUT _index_template/dbeast-mon-index-corrupted-data-historical-template
   ],
   "priority": 1,
   "_meta": {
-    "description": "This template used for the corrupted data, that can't be sent to TSDS"
+    "description": "This template used for the corrupted data, that can't be sent to TSDS",
+    "version": "1.0.2"
   }
 }
 

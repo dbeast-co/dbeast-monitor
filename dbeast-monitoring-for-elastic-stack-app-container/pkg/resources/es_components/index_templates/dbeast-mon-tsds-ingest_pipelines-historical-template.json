@@ -28,6 +28,7 @@
   },
   "priority": 1,
   "_meta": {
-    "description": "This template used for the Elasticsearch pipelines metrics"
+    "description": "This template used for the Elasticsearch pipelines metrics",
+    "version": "1.0.2"
   }
 }

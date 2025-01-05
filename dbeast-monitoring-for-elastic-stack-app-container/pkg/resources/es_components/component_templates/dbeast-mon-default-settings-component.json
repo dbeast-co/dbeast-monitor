@@ -10,6 +10,7 @@
     }
   },
   "_meta": {
-    "description": "The default settings for all monitoring indices"
+    "description": "The default settings for all monitoring indices",
+    "version": "1.0.2"
   }
 }
