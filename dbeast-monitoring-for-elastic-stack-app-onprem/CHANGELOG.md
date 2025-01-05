@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 1.0.2
+
+- Features:
+  * [FEAT] Add Flow parameters to the Logstash Host Overview dashboard #185[#185](https://github.com/dbeast-co/dbeast-monitor/issues/185)
+  * [FEAT] Define all Date histogram graphs "Max data points" #68[#186](https://github.com/dbeast-co/dbeast-monitor/issues/186)
+  * [FEAT] Update CPU utilization in the "Host overview" dashboard #203[#203](https://github.com/dbeast-co/dbeast-monitor/issues/203)
+  * [FEAT] Change ingest rate fields in the "Stack monitoring" dashboard  #199[#199](https://github.com/dbeast-co/dbeast-monitor/issues/199)
+  * [FEAT] "Index monitor" dashboard upgrades list #36[#36](https://github.com/dbeast-co/dbeast-monitor/issues/36)
+  * [FEAT] "Host overview" dashboard upgrades list #25[#25](https://github.com/dbeast-co/dbeast-monitor/issues/25)
+  * [FEAT] Remove opening links in the new tabs #202[#202](https://github.com/dbeast-co/dbeast-monitor/issues/202)
+  * [FEAT] Add the version number into the ES templates and logstash pipelines #205[#205](https://github.com/dbeast-co/dbeast-monitor/issues/205)
+
+- Bug fixes
+  * [BUG] Incorrect Network visualization #203[#203](https://github.com/dbeast-co/dbeast-monitor/issues/203)
+  * [BUG] Incorrect Logstash ports visualization in case of the pipeline doesn't exists #201[#201](https://github.com/dbeast-co/dbeast-monitor/issues/201)
+
+- Updated dashboards
+  * All dashboards
+
 ## Version 1.0.1
 
 - Features:
