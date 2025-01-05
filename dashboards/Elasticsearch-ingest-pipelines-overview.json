@@ -1,6 +1,5 @@
 {
   "__inputs": [
-
   ],
   "__elements": {},
   "__requires": [
@@ -171,7 +170,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze pipeline",
                     "url": "/d/elasticsearch-pipeline-analytics/elasticsearch-pipeline-analytics?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-pipeline_id=${__data.fields[\"Pipeline name\"]}"
                   }
@@ -527,7 +526,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "targetBlank": true,
+                    "targetBlank": false,
                     "title": "Analyze node",
                     "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-node_name=${__data.fields[\"Node name\"]}"
                   }
@@ -799,7 +798,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -903,7 +902,8 @@
         }
       ],
       "title": "Outcome rates",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -935,7 +935,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "always",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1039,7 +1039,8 @@
         }
       ],
       "title": "Enrich queue status",
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {

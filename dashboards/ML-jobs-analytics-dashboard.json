@@ -1,6 +1,5 @@
 {
   "__inputs": [
-
   ],
   "__elements": {},
   "__requires": [
@@ -1198,7 +1197,7 @@
       "title": "Another Nodes stats",
       "type": "row"
     },
-     {
+    {
       "collapsed": false,
       "datasource": {
         "type": "marcusolsson-json-datasource",

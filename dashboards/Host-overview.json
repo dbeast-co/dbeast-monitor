@@ -1030,7 +1030,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1055,13 +1055,14 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "percentunit",
+          "max": 1
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Average system.cpu.user.pct"
+              "options": "Average system.cpu.user.norm.pct"
             },
             "properties": [
               {
@@ -1073,7 +1074,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average system.cpu.system.pct"
+              "options": "Average system.cpu.system.norm.pct"
             },
             "properties": [
               {
@@ -1085,7 +1086,43 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average system.cpu.iowait.pct"
+              "options": "Average system.cpu.nice.norm.pct"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Nice CPU usage"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average system.cpu.softirq.norm.pct"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Softirq CPU usage"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average system.cpu.irq.norm.pct"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Irq CPU usage"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average system.cpu.iowait.norm.pct"
             },
             "properties": [
               {
@@ -1119,7 +1156,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 9
+        "y": 15
       },
       "id": 36,
       "options": {
@@ -1161,37 +1198,37 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "system.cpu.user.pct",
+              "field": "system.cpu.user.norm.pct",
               "hide": false,
               "id": "1",
               "type": "avg"
             },
             {
-              "field": "system.cpu.system.pct",
+              "field": "system.cpu.system.norm.pct",
               "hide": false,
               "id": "3",
               "type": "avg"
             },
             {
-              "field": "system.cpu.nice.pct",
+              "field": "system.cpu.nice.norm.pct",
               "hide": false,
               "id": "4",
               "type": "avg"
             },
             {
-              "field": "system.cpu.softirq.pct",
+              "field": "system.cpu.softirq.norm.pct",
               "hide": false,
               "id": "5",
               "type": "avg"
             },
             {
-              "field": "system.cpu.irq.pct",
+              "field": "system.cpu.irq.norm.pct",
               "hide": false,
               "id": "6",
               "type": "avg"
             },
             {
-              "field": "system.cpu.iowait.pct",
+              "field": "system.cpu.iowait.norm.pct",
               "hide": false,
               "id": "7",
               "type": "avg"
@@ -1206,12 +1243,9 @@
       ],
       "title": "CPU usage",
       "transformations": [
-        {
-          "id": "organize",
-          "options": {}
-        }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1248,7 +1282,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -1436,7 +1470,8 @@
       ],
       "title": "Memory usage",
       "transformations": [],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1468,7 +1503,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1494,7 +1529,7 @@
           },
           "unit": "bytes"
         },
-        "overrides":[]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -1556,7 +1591,10 @@
               "field": "system.network.in.bytes",
               "hide": true,
               "id": "1",
-              "type": "max"
+              "type": "max",
+              "settings": {
+                "script": "_value/60"
+              }
             },
             {
               "field": "1",
@@ -1572,7 +1610,10 @@
               "field": "system.network.out.bytes",
               "hide": true,
               "id": "5",
-              "type": "max"
+              "type": "max",
+              "settings": {
+                "script": "_value/60"
+              }
             },
             {
               "field": "5",
@@ -1622,7 +1663,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -1911,7 +1953,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2066,7 +2108,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "datasource": {
@@ -2366,7 +2409,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2393,7 +2436,6 @@
           "unit": "none"
         },
         "overrides": [
-
         ]
       },
       "gridPos": {
@@ -2522,7 +2564,8 @@
           }
         }
       ],
-      "type": "timeseries"
+      "type": "timeseries",
+      "maxDataPoints": 100
     },
     {
       "collapsed": true,
@@ -2564,7 +2607,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2672,7 +2715,8 @@
             }
           ],
           "title": "Ingest rate (EPS)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2704,7 +2748,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2812,7 +2856,8 @@
             }
           ],
           "title": "Search rate (QPS)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2846,7 +2891,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -2945,7 +2990,8 @@
             }
           ],
           "title": "JVM heap usage (%)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -2977,7 +3023,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3101,7 +3147,8 @@
             }
           ],
           "title": "Ingest latency (ms)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3133,7 +3180,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3257,7 +3304,8 @@
             }
           ],
           "title": "Search latency (ms)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3289,7 +3337,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3449,7 +3497,8 @@
           ],
           "title": "GC count",
           "transformations": [],
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3482,7 +3531,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3581,7 +3630,8 @@
             }
           ],
           "title": "CPU Utilization (%)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3613,7 +3663,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3699,7 +3749,8 @@
             }
           ],
           "title": "Segment count",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -3731,7 +3782,7 @@
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "auto",
+                "showPoints": "never",
                 "spanNulls": false,
                 "stacking": {
                   "group": "A",
@@ -3922,7 +3973,8 @@
             }
           ],
           "title": "Avg GC duration (ms)",
-          "type": "timeseries"
+          "type": "timeseries",
+          "maxDataPoints": 100
         },
         {
           "datasource": {
@@ -4164,7 +4216,7 @@
           "type": "table"
         }
       ],
-      "title": "Node level Stats",
+      "title": "Node level stats",
       "type": "row"
     },
     {
@@ -4174,6 +4226,832 @@
         "w": 24,
         "x": 0,
         "y": 29
+      },
+      "id": 117,
+      "panels": [
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Thread pool"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 163
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Rejected"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Rejected rate"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 19,
+            "w": 6,
+            "x": 0,
+            "y": 30
+          },
+          "id": 118,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Rejected rate"
+              }
+            ]
+          },
+          "pluginVersion": "9.5.10",
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.name",
+                  "id": "2",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "3",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                }
+              ],
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.rejected",
+                  "id": "1",
+                  "type": "max"
+                },
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.rejected_rate",
+                  "id": "3",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid",
+              "refId": "A",
+              "timeField": "@timestamp"
+            }
+          ],
+          "title": "Thread pools rejects per Thread poll",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "Max elasticsearch.node.stats.thread_pool.rejected": 2,
+                  "Max elasticsearch.node.stats.thread_pool.rejected_rate": 3,
+                  "elasticsearch.node.name": 0,
+                  "elasticsearch.node.stats.thread_pool.name": 1
+                },
+                "renameByName": {
+                  "Max elasticsearch.node.stats.thread_pool.rejected": "Rejected",
+                  "Max elasticsearch.node.stats.thread_pool.rejected_rate": "Rejected rate",
+                  "elasticsearch.node.name": "Node",
+                  "elasticsearch.node.stats.thread_pool.name": "Thread pool"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 18,
+            "x": 6,
+            "y": 30
+          },
+          "id": 114,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.name",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "1",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.rejected_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.rejected_rate:>1",
+              "queryParams": "",
+              "refId": "Completed",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Rejects",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 6,
+            "y": 37
+          },
+          "id": 111,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.name",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.completed_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "queryParams": "",
+              "refId": "Completed",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Completed Write requests rate",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 15,
+            "y": 37
+          },
+          "id": 112,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.name",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.completed_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
+              "queryParams": "",
+              "refId": "Completed",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Completed Search requests rate",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 6,
+            "y": 43
+          },
+          "id": 113,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.name",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.rejected_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "queryParams": "",
+              "refId": "Completed",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Rejected Write requests rate",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 15,
+            "y": 43
+          },
+          "id": 116,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "alias": "",
+              "bucketAggs": [
+                {
+                  "field": "elasticsearch.node.name",
+                  "id": "3",
+                  "settings": {
+                    "min_doc_count": "1",
+                    "order": "desc",
+                    "orderBy": "_term",
+                    "size": "0"
+                  },
+                  "type": "terms"
+                },
+                {
+                  "field": "@timestamp",
+                  "id": "2",
+                  "settings": {
+                    "interval": "auto"
+                  },
+                  "type": "date_histogram"
+                }
+              ],
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${es_thread_pools}"
+              },
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "field": "elasticsearch.node.stats.thread_pool.rejected_rate",
+                  "id": "1",
+                  "type": "max"
+                }
+              ],
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
+              "queryParams": "",
+              "refId": "Completed",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Rejected Search requests rate",
+          "transformations": [],
+          "type": "timeseries"
+        }
+      ],
+      "title": "Thread pools stats",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
       },
       "id": 47,
       "panels": [
@@ -4249,7 +5127,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                       }
@@ -4463,7 +5341,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -4619,7 +5497,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -4775,7 +5653,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -4906,7 +5784,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index",
                         "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__series.name}"
                       }
@@ -5060,7 +5938,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index pattern",
                         "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__series.name}"
                       }
@@ -5190,7 +6068,7 @@
                     "id": "links",
                     "value": [
                       {
-                        "targetBlank": true,
+                        "targetBlank": false,
                         "title": "Analyze index pattern",
                         "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__series.name}"
                       }
@@ -5290,7 +6168,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 31
       },
       "id": 72,
       "panels": [
@@ -5566,6 +6444,22 @@
         "queryValue": "",
         "refresh": 1,
         "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-status--(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic Thread pools",
+        "multi": false,
+        "name": "es_thread_pools",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }
