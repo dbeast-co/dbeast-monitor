@@ -86,7 +86,18 @@ PUT _component_template/dbeast-mon-default-settings-component
         "number_of_shards": "1",
         "auto_expand_replicas": "0-1"
       }
+    },
+    "mappings": {
+      "properties": {
+        "app_version": {
+          "type":"keyword"
+        }
+      }
     }
+  },
+  "_meta": {
+    "description": "The default settings for all monitoring indices",
+    "version": "1.0.2"
   }
 }
 
