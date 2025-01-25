@@ -9,6 +9,8 @@ import {Project} from '../../panels/dbeast-add_new_es_cluster-panel/models/proje
 interface OwnProps {
     project: Project;
     handleUpgrade: (project: Project) => void;
+    handleClose: () => void;
+    handleSkip: () => void;
 }
 
 type Props = OwnProps;
@@ -33,15 +35,26 @@ const PasswordDialogComponent: FunctionComponent<Props> = (props) => {
 
        props.handleUpgrade(project);
     }
+    const handleClose = () => {
+        props.handleClose();
+    }
+    const handleSkip = () => {
+        props.handleSkip();
+    }
 
   return (
       <Dialog open={true}>
-        <DialogTitle>Upgrade</DialogTitle>
+
+        <DialogTitle>Upgrade project
+            <Button
+                onClick={handleClose}
+                className="close-button"
+                style={{ position: 'absolute', right: '16px', top: '16px' }}
+            >
+                X
+            </Button>
+        </DialogTitle>
         <DialogContent>
-
-
-
-
             {props.project.authentication_enabled && (
                 <>
                     <label className="label">Host url:</label>
@@ -73,6 +86,7 @@ const PasswordDialogComponent: FunctionComponent<Props> = (props) => {
             )}
             <div className="actions">
                 <Button variant={'primary'} onClick={handleUpgrade}>Upgrade</Button>
+                <Button variant={'primary'} onClick={handleSkip}>Skip</Button>
             </div>
 
         </DialogContent>

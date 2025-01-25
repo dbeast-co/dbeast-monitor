@@ -85,8 +85,8 @@ const config = async (env): Promise<Configuration> => ({
           loader: 'swc-loader',
           options: {
             jsc: {
-              baseUrl: './src',
-              target: 'es2015',
+              baseUrl: '/Users/yevgenylevin/Documents/Develop/DBeast/dbeast-monitor/dbeast-monitoring-for-elastic-stack-app-container/src',
+              target: 'es2016',
               loose: false,
               parser: {
                 syntax: 'typescript',

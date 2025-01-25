@@ -21,21 +21,21 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
 
     const [showDialog, setShowDialog] = React.useState(false);
 
- const [project, setProject] = React.useState<Project>({
+    const [project, setProject] = React.useState<Project>({
         host: "",
         authentication_enabled: false,
         username: "",
         status: "",
         password: ""
     });
+    const settings = require('../../panels/dbeast-add_new_es_cluster-panel/config.ts');
 
 
-
-   const  onUpgradeAll =  async() => {
-      const datasources =   await getBackendSrv()
+    const onUpgradeAll = async () => {
+        const datasources = await getBackendSrv()
             .get('/api/datasources')
             .then((dataSources: any[]) => {
-                console.log("Not filtered datasources",dataSources);
+                console.log("Not filtered datasources", dataSources);
 
                 const regex = /^Elasticsearch-direct-mon--(?!monitoring).*$/;
                 return dataSources.filter((dataSource: any) => {
@@ -44,35 +44,35 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
             });
 
 
-        console.log("filtered datasources",datasources);
+        console.log("filtered datasources", datasources);
 
-       const uniqueProjects: Project[] = [];
-       const urlSet = new Set<string>();
+        const uniqueProjects: Project[] = [];
+        const urlSet = new Set<string>();
 
-       datasources.forEach((dataSource: any) => {
-           const { url, basicAuthUser, basicAuth } = dataSource;
+        datasources.forEach((dataSource: any) => {
+            const {url, basicAuthUser, basicAuth} = dataSource;
 
 
-           // Check if the URL is already processed
-           if (!urlSet.has(url)) {
-               urlSet.add(url); // Add URL to the Set to track uniqueness
+            // Check if the URL is already processed
+            if (!urlSet.has(url)) {
+                urlSet.add(url); // Add URL to the Set to track uniqueness
 
-               const newObject: Project = {
-                   host: url,
-                   authentication_enabled: basicAuth,
-                   username: basicAuthUser,
-                   status: "",
-                   password: ""
-               };
-               setProject(newObject);
+                const newObject: Project = {
+                    host: url,
+                    authentication_enabled: basicAuth,
+                    username: basicAuthUser,
+                    status: "",
+                    password: ""
+                };
+                setProject(newObject);
 
-               uniqueProjects.push(newObject);
-               setShowDialog(true);
-               // Add the new Project object to the array
+                uniqueProjects.push(newObject);
+                setShowDialog(true);
+                // Add the new Project object to the array
 
-           }
-       });
-       setUniqProjects(uniqueProjects);
+            }
+        });
+        setUniqProjects(uniqueProjects);
 
         //TODO: Convert to JSON
         //TODO: Over forEach Take property "url" and "basicAuthUser" and "basicAuth" create new object like Project where url = host ,basicAuth = authentication_enabled, basicAuthUser = username.If there's same url in the array, then skip it to create new object.
@@ -87,66 +87,74 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
 
     };
 
-    const onUpgrade = async  (project: Project) => {
+    const onUpgrade = async (project: Project) => {
         console.log("Project to Upgrade", project);
-        const response = await getBackendSrv().post('/api/update_cluster', project);
+        const baseUrl = settings.SERVER_URL;
+        const response = await getBackendSrv().post(`${baseUrl}/update_cluster`, JSON.stringify(project));
         console.log('Cluster updated successfully:', response);
 
 
         setShowDialog(false);
     };
+    const onCloseDialog = () => {
+        setShowDialog(false);
+    }
+    const onSkip = () => {
+        console.log("Skip");
+    }
     return <div className="gf-form-group">
         <div>
             {/* Enable the plugin */}
 
             <Legend>Enable / Disable</Legend>
             {!enabled && <>
-                    <div className={s.colorWeak}>The plugin is currently not enabled.</div>
-                    <Button
-                        className={s.marginTop}
-                        variant="primary"
-                        onClick={() =>
-                            updatePluginAndReload(plugin.meta.id, {
-                                enabled: true,
-                                pinned: true,
-                                jsonData,
-                            })
-                        }
-                    >
-                        Enable plugin
-                    </Button>
+                <div className={s.colorWeak}>The plugin is currently not enabled.</div>
+                <Button
+                    className={s.marginTop}
+                    variant="primary"
+                    onClick={() =>
+                        updatePluginAndReload(plugin.meta.id, {
+                            enabled: true,
+                            pinned: true,
+                            jsonData,
+                        })
+                    }
+                >
+                    Enable plugin
+                </Button>
 
 
-                </>}
+            </>}
 
             {/*Source connection*/}
 
             <div className="actions">
-                <Button variant="primary" onClick={()=>onUpgradeAll()}>Upgrade all</Button>
+                <Button variant="primary" onClick={() => onUpgradeAll()}>Upgrade all</Button>
             </div>
 
 
-            {showDialog && <PasswordDialog project={project} handleUpgrade={(project)=> onUpgrade(project) }  />}
+            {showDialog && <PasswordDialog handleSkip={onSkip} handleClose={onCloseDialog} project={project}
+                                           handleUpgrade={(project) => onUpgrade(project)}/>}
 
 
             {/* Disable the plugin */}
             {enabled && <>
-                    <div className={s.colorWeak}>The plugin is currently enabled.</div>
-                    <Button
-                        className={s.marginTop}
-                        variant="destructive"
-                        onClick={() =>
-                            updatePluginAndReload(plugin.meta.id, {
-                                enabled: false,
-                                pinned: false,
-                                jsonData,
-                            })
-                        }
-                    >
-                        Disable plugin
-                    </Button>
+                <div className={s.colorWeak}>The plugin is currently enabled.</div>
+                <Button
+                    className={s.marginTop}
+                    variant="destructive"
+                    onClick={() =>
+                        updatePluginAndReload(plugin.meta.id, {
+                            enabled: false,
+                            pinned: false,
+                            jsonData,
+                        })
+                    }
+                >
+                    Disable plugin
+                </Button>
 
-                </>}
+            </>}
         </div>
     </div>;
 };
