@@ -40,17 +40,12 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
         const datasources = await getBackendSrv()
             .get('/api/datasources')
             .then((dataSources: any[]) => {
-
-
-                const regex = /^Elasticsearch-direct-mon--(?!monitoring).*$/;
+                //TODO: Filter datasources by regex
+                const regex = /^Elasticsearch-direct-mon--.*$/;
                 return dataSources.filter((dataSource: any) => {
                     return dataSource.uid.match(regex);
                 });
             });
-
-
-
-
 
         const urlSet = new Set<string>();
 
