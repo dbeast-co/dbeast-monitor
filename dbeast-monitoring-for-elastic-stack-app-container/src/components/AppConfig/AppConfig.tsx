@@ -4,6 +4,9 @@ import {AppPluginMeta, GrafanaTheme2, PluginConfigPageProps, PluginMeta} from '@
 import {getBackendSrv} from '@grafana/runtime';
 import {css} from '@emotion/css';
 import {lastValueFrom} from 'rxjs';
+import {Project} from '../../panels/dbeast-add_new_es_cluster-panel/models/project';
+import PasswordDialog from './password-dialog';
+import "./AppConfig.scss"
 
 export type AppPluginSettings = {};
 
@@ -14,57 +17,138 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     const s = useStyles2(getStyles);
     const {enabled, jsonData} = plugin.meta;
 
-    return (
-        <div className="gf-form-group">
-            <div>
-                {/* Enable the plugin */}
-                <Legend>Enable / Disable</Legend>
-                {!enabled && (
-                    <>
-                        <div className={s.colorWeak}>The plugin is currently not enabled.</div>
-                        <Button
-                            className={s.marginTop}
-                            variant="primary"
-                            onClick={() =>
-                                updatePluginAndReload(plugin.meta.id, {
-                                    enabled: true,
-                                    pinned: true,
-                                    jsonData,
-                                })
-                            }
-                        >
-                            Enable plugin
-                        </Button>
+    const [_, setUniqProjects] = React.useState<Project[]>([]);
+
+    const [showDialog, setShowDialog] = React.useState(false);
+
+ const [project, setProject] = React.useState<Project>({
+        host: "",
+        authentication_enabled: false,
+        username: "",
+        status: "",
+        password: ""
+    });
 
 
-                    </>
-                )}
 
-                {/*Source connection*/}
+   const  onUpgradeAll =  async() => {
+      const datasources =   await getBackendSrv()
+            .get('/api/datasources')
+            .then((dataSources: any[]) => {
+                console.log("Not filtered datasources",dataSources);
+
+                const regex = /^Elasticsearch-direct-mon--(?!monitoring).*$/;
+                return dataSources.filter((dataSource: any) => {
+                    return dataSource.uid.match(regex);
+                });
+            });
 
 
-                {/* Disable the plugin */}
-                {enabled && (
-                    <>
-                        <div className={s.colorWeak}>The plugin is currently enabled.</div>
-                        <Button
-                            className={s.marginTop}
-                            variant="destructive"
-                            onClick={() =>
-                                updatePluginAndReload(plugin.meta.id, {
-                                    enabled: false,
-                                    pinned: false,
-                                    jsonData,
-                                })
-                            }
-                        >
-                            Disable plugin
-                        </Button>
-                    </>
-                )}
+        console.log("filtered datasources",datasources);
+
+       const uniqueProjects: Project[] = [];
+       const urlSet = new Set<string>();
+
+       datasources.forEach((dataSource: any) => {
+           const { url, basicAuthUser, basicAuth } = dataSource;
+
+
+           // Check if the URL is already processed
+           if (!urlSet.has(url)) {
+               urlSet.add(url); // Add URL to the Set to track uniqueness
+
+               const newObject: Project = {
+                   host: url,
+                   authentication_enabled: basicAuth,
+                   username: basicAuthUser,
+                   status: "",
+                   password: ""
+               };
+               setProject(newObject);
+
+               uniqueProjects.push(newObject);
+               setShowDialog(true);
+               // Add the new Project object to the array
+
+           }
+       });
+       setUniqProjects(uniqueProjects);
+
+        //TODO: Convert to JSON
+        //TODO: Over forEach Take property "url" and "basicAuthUser" and "basicAuth" create new object like Project where url = host ,basicAuth = authentication_enabled, basicAuthUser = username.If there's same url in the array, then skip it to create new object.
+
+        //TODO: Create dialog for each object to ask for password (url,username and password where url and username take from the object) check if there's authentication_enabled = true, then ask for password and show username and url.
+
+        //TODO: If  authentication_enabled = true, username and password required.
+        //TODO: On click on "Upgrade" button, send the object to the backend '/update_cluster' endpoint.
+        //TODO: Add spinner while upgrading and only after success upgrade show another dialog for next object.
+        //TODO: Add another button "Skip" to skip to next object in array
+
+
+    };
+
+    const onUpgrade = async  (project: Project) => {
+        console.log("Project to Upgrade", project);
+        const response = await getBackendSrv().post('/api/update_cluster', project);
+        console.log('Cluster updated successfully:', response);
+
+
+        setShowDialog(false);
+    };
+    return <div className="gf-form-group">
+        <div>
+            {/* Enable the plugin */}
+
+            <Legend>Enable / Disable</Legend>
+            {!enabled && <>
+                    <div className={s.colorWeak}>The plugin is currently not enabled.</div>
+                    <Button
+                        className={s.marginTop}
+                        variant="primary"
+                        onClick={() =>
+                            updatePluginAndReload(plugin.meta.id, {
+                                enabled: true,
+                                pinned: true,
+                                jsonData,
+                            })
+                        }
+                    >
+                        Enable plugin
+                    </Button>
+
+
+                </>}
+
+            {/*Source connection*/}
+
+            <div className="actions">
+                <Button variant="primary" onClick={()=>onUpgradeAll()}>Upgrade all</Button>
             </div>
+
+
+            {showDialog && <PasswordDialog project={project} handleUpgrade={(project)=> onUpgrade(project) }  />}
+
+
+            {/* Disable the plugin */}
+            {enabled && <>
+                    <div className={s.colorWeak}>The plugin is currently enabled.</div>
+                    <Button
+                        className={s.marginTop}
+                        variant="destructive"
+                        onClick={() =>
+                            updatePluginAndReload(plugin.meta.id, {
+                                enabled: false,
+                                pinned: false,
+                                jsonData,
+                            })
+                        }
+                    >
+                        Disable plugin
+                    </Button>
+
+                </>}
         </div>
-    );
+    </div>;
 };
 
 const getStyles = (theme: GrafanaTheme2) => ({

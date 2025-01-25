@@ -1,0 +1,31 @@
+.actions {
+  display: flex;
+  column-gap: 10px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  margin-block-start: 10px;
+  align-self: flex-end;
+
+
+  button
+  {
+    min-width: 75px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: none;
+    color: #000;
+    background: #00bcd4;
+
+    &:hover {
+      background: #00a6b9;
+      color: #000;
+    }
+  }
+
+  button[disabled] {
+    background: #c2c2c2;
+    cursor: not-allowed;
+  }
+
+}
