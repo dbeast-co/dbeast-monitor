@@ -28,6 +28,8 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
         status: "",
         password: ""
     });
+
+    const [isShowSpinner, setIsShowSpinner] = React.useState(false);
     const settings = require('../../panels/dbeast-add_new_es_cluster-panel/config.ts');
 
 
@@ -35,7 +37,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
         const datasources = await getBackendSrv()
             .get('/api/datasources')
             .then((dataSources: any[]) => {
-                console.log("Not filtered datasources", dataSources);
+
 
                 const regex = /^Elasticsearch-direct-mon--(?!monitoring).*$/;
                 return dataSources.filter((dataSource: any) => {
@@ -44,7 +46,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
             });
 
 
-        console.log("filtered datasources", datasources);
+
 
         const uniqueProjects: Project[] = [];
         const urlSet = new Set<string>();
@@ -88,13 +90,19 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     };
 
     const onUpgrade = async (project: Project) => {
-        console.log("Project to Upgrade", project);
+        setIsShowSpinner(true);
         const baseUrl = settings.SERVER_URL;
         const response = await getBackendSrv().post(`${baseUrl}/update_cluster`, JSON.stringify(project));
         console.log('Cluster updated successfully:', response);
 
+        if(response === "True"){
+            setIsShowSpinner(false);
+            setShowDialog(false);
+        }else{
 
-        setShowDialog(false);
+        }
+
+
     };
     const onCloseDialog = () => {
         setShowDialog(false);
@@ -133,7 +141,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
             </div>
 
 
-            {showDialog && <PasswordDialog handleSkip={onSkip} handleClose={onCloseDialog} project={project}
+            {showDialog && <PasswordDialog isShowSpinner={isShowSpinner} handleSkip={onSkip} handleClose={onCloseDialog} project={project}
                                            handleUpgrade={(project) => onUpgrade(project)}/>}
 
 

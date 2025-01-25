@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useEffect} from 'react';
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material';
 import TextField from '@mui/material/TextField';
-import {Button} from '@grafana/ui';
+import {Button, Spinner} from '@grafana/ui';
 import "./password-dialog.scss";
 import {Project} from '../../panels/dbeast-add_new_es_cluster-panel/models/project';
 
@@ -11,6 +11,7 @@ interface OwnProps {
     handleUpgrade: (project: Project) => void;
     handleClose: () => void;
     handleSkip: () => void;
+    isShowSpinner: boolean;
 }
 
 type Props = OwnProps;
@@ -90,6 +91,10 @@ const PasswordDialogComponent: FunctionComponent<Props> = (props) => {
             </div>
 
         </DialogContent>
+
+          {props.isShowSpinner && (
+            <Spinner></Spinner>
+          )}
         <DialogActions>
 
         </DialogActions>
