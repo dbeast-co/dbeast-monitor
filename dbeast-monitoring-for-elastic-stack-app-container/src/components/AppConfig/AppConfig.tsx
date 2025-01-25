@@ -30,9 +30,12 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     });
 
     const [isShowSpinner, setIsShowSpinner] = React.useState(false);
+
+    const [showError, setShowError] = React.useState(false);
+
     const settings = require('../../panels/dbeast-add_new_es_cluster-panel/config.ts');
-
-
+    let uniqueProjects: Project[] = [];
+   let index = 0;
     const onUpgradeAll = async () => {
         const datasources = await getBackendSrv()
             .get('/api/datasources')
@@ -48,7 +51,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
 
 
 
-        const uniqueProjects: Project[] = [];
+
         const urlSet = new Set<string>();
 
         datasources.forEach((dataSource: any) => {
@@ -98,8 +101,10 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
         if(response === "True"){
             setIsShowSpinner(false);
             setShowDialog(false);
+            setShowError(false)
         }else{
-
+            setShowDialog(true);
+            setShowError(true)
         }
 
 
@@ -109,6 +114,15 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     }
     const onSkip = () => {
         console.log("Skip");
+        if (index < uniqueProjects.length) {
+            index++;
+            setProject(uniqueProjects[index]);
+            console.log(uniqueProjects[index])
+        }
+
+
+
+
     }
     return <div className="gf-form-group">
         <div>
@@ -141,7 +155,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
             </div>
 
 
-            {showDialog && <PasswordDialog isShowSpinner={isShowSpinner} handleSkip={onSkip} handleClose={onCloseDialog} project={project}
+            {showDialog && <PasswordDialog isShowError={showError} isShowSpinner={isShowSpinner} handleSkip={onSkip} handleClose={onCloseDialog} project={project}
                                            handleUpgrade={(project) => onUpgrade(project)}/>}
 
 

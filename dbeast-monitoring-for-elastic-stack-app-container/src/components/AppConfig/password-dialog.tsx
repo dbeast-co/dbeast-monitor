@@ -12,6 +12,7 @@ interface OwnProps {
     handleClose: () => void;
     handleSkip: () => void;
     isShowSpinner: boolean;
+    isShowError: boolean;
 }
 
 type Props = OwnProps;
@@ -56,7 +57,7 @@ const PasswordDialogComponent: FunctionComponent<Props> = (props) => {
             </Button>
         </DialogTitle>
         <DialogContent>
-            {props.project.authentication_enabled && (
+            {props.project.authentication_enabled && !props.isShowError && (
                 <>
                     <label className="label">Host url:</label>
                     <span className="value">{props.project.host}</span>
@@ -91,6 +92,10 @@ const PasswordDialogComponent: FunctionComponent<Props> = (props) => {
             </div>
 
         </DialogContent>
+
+          {props.isShowError && (
+                <div className="error-message">Cannot update cluster with url: {props.project.host}</div>
+          )}
 
           {props.isShowSpinner && (
             <Spinner></Spinner>
