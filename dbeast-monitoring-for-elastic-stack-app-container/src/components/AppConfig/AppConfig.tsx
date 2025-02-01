@@ -17,74 +17,70 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     const s = useStyles2(getStyles);
     const {enabled, jsonData} = plugin.meta;
 
-    const [_, setUniqProjects] = React.useState<Project[]>([]);
+    const [uniqueProjects, setUniqueProjects] = React.useState<Project[]>([]);
+
+    const [projectIndex, setProjectIndex] = React.useState(0);
 
     const [showDialog, setShowDialog] = React.useState(false);
 
-    const [project, setProject] = React.useState<Project>({
-        host: "",
-        authentication_enabled: false,
-        username: "",
-        status: "",
-        password: ""
-    });
+    // const [project, setProject] = React.useState<Project>({
+    //     host: "",
+    //     authentication_enabled: false,
+    //     username: "",
+    //     status: "",
+    //     password: ""
+    // });
 
     const [isShowSpinner, setIsShowSpinner] = React.useState(false);
 
     const [showError, setShowError] = React.useState(false);
 
     const settings = require('../../panels/dbeast-add_new_es_cluster-panel/config.ts');
-    let uniqueProjects: Project[] = [];
-   let index = 0;
-    const onUpgradeAll = async () => {
-        const datasources = await getBackendSrv()
-            .get('/api/datasources')
-            .then((dataSources: any[]) => {
-                //TODO: Filter datasources by regex
-                const regex = /^Elasticsearch-direct-mon--.*$/;
-                return dataSources.filter((dataSource: any) => {
-                    return dataSource.uid.match(regex);
-                });
-            });
 
+
+
+
+
+
+
+    const fetchDataSources = async () => {
+        try {
+            const dataSources = await getBackendSrv().get('/api/datasources');
+            return dataSources.filter((dataSource: any) => /^Elasticsearch-direct-mon--.*$/.test(dataSource.uid));
+        } catch (error) {
+            console.error("Error fetching data sources:", error);
+            return [];
+        }
+    };
+
+    const extractUniqueProjects = (dataSources: any[]): Project[] => {
         const urlSet = new Set<string>();
-
-        datasources.forEach((dataSource: any) => {
-            const {url, basicAuthUser, basicAuth} = dataSource;
-
-
-            // Check if the URL is already processed
-            if (!urlSet.has(url)) {
-                urlSet.add(url); // Add URL to the Set to track uniqueness
-
-                const newObject: Project = {
-                    host: url,
-                    authentication_enabled: basicAuth,
-                    username: basicAuthUser,
+        return dataSources.reduce<Project[]>((acc, dataSource) => {
+            if (!urlSet.has(dataSource.url)) {
+                urlSet.add(dataSource.url);
+                acc.push({
+                    host: dataSource.url,
+                    authentication_enabled: dataSource.basicAuth,
+                    username: dataSource.basicAuthUser,
                     status: "",
                     password: ""
-                };
-                setProject(newObject);
-
-                uniqueProjects.push(newObject);
-                setShowDialog(true);
-                // Add the new Project object to the array
-
+                });
             }
-        });
-        setUniqProjects(uniqueProjects);
+            return acc;
+        }, []);
+    };
 
-        //TODO: Convert to JSON
-        //TODO: Over forEach Take property "url" and "basicAuthUser" and "basicAuth" create new object like Project where url = host ,basicAuth = authentication_enabled, basicAuthUser = username.If there's same url in the array, then skip it to create new object.
+    const onUpgradeAll = async () => {
+        const dataSources = await fetchDataSources();
+        const projects = extractUniqueProjects(dataSources);
+        setUniqueProjects(projects);
+        if (projects.length > 0) {
 
-        //TODO: Create dialog for each object to ask for password (url,username and password where url and username take from the object) check if there's authentication_enabled = true, then ask for password and show username and url.
+                setProjectIndex(0);
+                setShowDialog(true);
 
-        //TODO: If  authentication_enabled = true, username and password required.
-        //TODO: On click on "Upgrade" button, send the object to the backend '/update_cluster' endpoint.
-        //TODO: Add spinner while upgrading and only after success upgrade show another dialog for next object.
-        //TODO: Add another button "Skip" to skip to next object in array
-
-
+            setShowDialog(true);
+        }
     };
 
     const onUpgrade = async (project: Project) => {
@@ -109,12 +105,12 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
     }
     const onSkip = () => {
         console.log("Skip");
-        if (index < uniqueProjects.length) {
-            index++;
-            setProject(uniqueProjects[index]);
-            console.log(uniqueProjects[index])
-        }
 
+        if (projectIndex < uniqueProjects.length - 1) {
+            setProjectIndex(prevIndex => prevIndex + 1);
+        } else {
+            setShowDialog(false);
+        }
 
 
 
@@ -150,7 +146,7 @@ export const AppConfig = ({plugin}: AppConfigProps) => {
             </div>
 
 
-            {showDialog && <PasswordDialog isShowError={showError} isShowSpinner={isShowSpinner} handleSkip={onSkip} handleClose={onCloseDialog} project={project}
+            {showDialog && <PasswordDialog isShowError={showError} isShowSpinner={isShowSpinner} handleSkip={onSkip} handleClose={onCloseDialog} project={uniqueProjects[projectIndex]}
                                            handleUpgrade={(project) => onUpgrade(project)}/>}
 
 
