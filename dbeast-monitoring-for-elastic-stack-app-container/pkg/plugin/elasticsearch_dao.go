@@ -153,9 +153,8 @@ func CheckIsIndexExists(credentials Credentials, templateName string) (bool, err
 			log.DefaultLogger.Debug("Index: " + templateName + " does not exist")
 			return false, nil
 		}
-
 	} else {
-		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
+		log.DefaultLogger.Error("Failed to check is index exists. HTTP status: " + response.Status)
 		return false, err
 	}
 }
