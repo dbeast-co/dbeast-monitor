@@ -150,8 +150,15 @@ func ProcessPUTRequest(credentials Credentials, requestURL string, body string) 
 	req.Header = Header
 
 	response, err := client.Do(req)
-	if err != nil {
-		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
+	if err != nil || response.StatusCode != 200 {
+		if err != nil {
+			log.DefaultLogger.Error("HTTP request failed: " + err.Error())
+		}
+		if response != nil {
+			log.DefaultLogger.Error("HTTP request failed: " + response.Status)
+			responseBody, _ := io.ReadAll(response.Body)
+			log.DefaultLogger.Error("HTTP request body: " + string(responseBody))
+		}
 		return response, err
 	} else {
 		body, err := io.ReadAll(response.Body)
@@ -169,7 +176,7 @@ func ProcessPUTRequest(credentials Credentials, requestURL string, body string) 
 				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
 			}
 		}
-		log.DefaultLogger.Info("Response from the Put operation: " + string(body))
+		log.DefaultLogger.Info("Response from the Put operation: " + string(body) + " ( " + response.Status + " )")
 	}
 
 	return response, nil
