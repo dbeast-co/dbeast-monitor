@@ -21,6 +21,7 @@
     margin-block-start: 1rem;
   }
 
+
   .actions {
     display: unset !important;
     margin-top: 0 !important;
@@ -43,6 +44,8 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
+
+
   }
 
   p {
@@ -246,5 +249,12 @@
   .fa-spinner{
     font-size: 4rem;
   }
+}
+.col{
+    &.header-cluster{
+        max-width: 80%;
+      white-space: nowrap;
+        overflow: auto;
+    }
 }
 
