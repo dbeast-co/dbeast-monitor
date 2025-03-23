@@ -454,7 +454,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -550,7 +550,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -647,7 +647,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -747,7 +747,7 @@
         },
         "textMode": "value_and_name"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -848,7 +848,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -950,7 +950,7 @@
         "showUnfilled": true,
         "valueMode": "color"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -1041,6 +1041,7 @@
             }
           },
           "mappings": [],
+          "max": 1,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1055,8 +1056,7 @@
               }
             ]
           },
-          "unit": "percentunit",
-          "max": 1
+          "unit": "percentunit"
         },
         "overrides": [
           {
@@ -1068,18 +1068,6 @@
               {
                 "id": "displayName",
                 "value": "User CPU usage"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Average system.cpu.system.norm.pct"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "System CPU usage"
               }
             ]
           },
@@ -1098,6 +1086,18 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "Average system.cpu.irq.norm.pct"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "IRQ CPU usage"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "Average system.cpu.softirq.norm.pct"
             },
             "properties": [
@@ -1110,12 +1110,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average system.cpu.irq.norm.pct"
+              "options": "Average system.cpu.system.norm.pct"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Irq CPU usage"
+                "value": "System CPU usage"
               }
             ]
           },
@@ -1154,11 +1154,12 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
+        "w": 6,
         "x": 0,
-        "y": 15
+        "y": 9
       },
       "id": 36,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1234,7 +1235,7 @@
               "type": "avg"
             }
           ],
-          "query": "event.dataset: system.cpu AND host.hostname: $node_host",
+          "query": "event.dataset: system.cpu AND ( host.hostname: $node_host OR  host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1243,9 +1244,9 @@
       ],
       "title": "CPU usage",
       "transformations": [
+
       ],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1383,11 +1384,12 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 6,
         "y": 9
       },
       "id": 61,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1461,7 +1463,7 @@
               "type": "avg"
             }
           ],
-          "query": "host.hostname: $node_host AND event.dataset: system.memory",
+          "query": "event.dataset: system.memory AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1470,8 +1472,7 @@
       ],
       "title": "Memory usage",
       "transformations": [],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1533,16 +1534,17 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 12,
         "y": 9
       },
       "id": 63,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -1591,10 +1593,7 @@
               "field": "system.network.in.bytes",
               "hide": true,
               "id": "1",
-              "type": "max",
-              "settings": {
-                "script": "_value/60"
-              }
+              "type": "max"
             },
             {
               "field": "1",
@@ -1610,10 +1609,7 @@
               "field": "system.network.out.bytes",
               "hide": true,
               "id": "5",
-              "type": "max",
-              "settings": {
-                "script": "_value/60"
-              }
+              "type": "max"
             },
             {
               "field": "5",
@@ -1639,7 +1635,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "event.dataset: system.network AND host.hostname: $node_host",
+          "query": "event.dataset: system.network AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1663,8 +1659,7 @@
           }
         }
       ],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1673,66 +1668,78 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
-          }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 16
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 9
       },
       "id": 42,
       "options": {
-        "calculate": false,
-        "calculation": {
-          "xBuckets": {
-            "mode": "size"
-          }
-        },
-        "cellGap": 2,
-        "color": {
-          "exponent": 0.5,
-          "fill": "dark-orange",
-          "min": 1,
-          "mode": "scheme",
-          "reverse": false,
-          "scale": "exponential",
-          "scheme": "RdYlGn",
-          "steps": 53
-        },
-        "exemplars": {
-          "color": "rgba(255,0,255,0.7)"
-        },
-        "filterValues": {
-          "le": 1
-        },
         "legend": {
-          "show": true
-        },
-        "rowsFrame": {
-          "layout": "unknown"
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "show": true,
-          "yHistogram": true
-        },
-        "yAxis": {
-          "axisPlacement": "left",
-          "reverse": false
+          "mode": "single",
+          "sort": "none"
         }
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -1743,7 +1750,7 @@
               "settings": {
                 "min_doc_count": "1",
                 "order": "desc",
-                "orderBy": "_term",
+                "orderBy": "6",
                 "size": "10"
               },
               "type": "terms"
@@ -1787,28 +1794,45 @@
               "type": "derivative"
             },
             {
-              "id": "5",
+              "field": "system.diskio.write.time",
+              "hide": true,
+              "id": "6",
+              "type": "avg"
+            },
+            {
+              "field": "6",
+              "hide": true,
+              "id": "7",
+              "pipelineAgg": "6",
+              "type": "derivative"
+            },
+            {
+              "id": "8",
               "pipelineVariables": [
                 {
-                  "name": "io",
+                  "name": "count",
                   "pipelineAgg": "4"
+                },
+                {
+                  "name": "time",
+                  "pipelineAgg": "7"
                 }
               ],
               "settings": {
-                "script": "params.io / 60"
+                "script": "params.time/params.count"
               },
               "type": "bucket_script"
             }
           ],
-          "query": "host.hostname: $node_host",
+          "query": "system.diskio.name :* AND (host.hostname: $node_host OR host.name: $node_name )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
           "urlPath": ""
         }
       ],
-      "title": "Disk Write IOPS",
-      "type": "heatmap"
+      "title": "Disk Write Latency (ms)",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1819,9 +1843,185 @@
         "defaults": {
           "color": {
             "fixedColor": "dark-green",
-            "mode": "fixed"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 16
+      },
+      "id": 84,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "process.name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "5"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "3",
+              "settings": {
+                "interval": "1m",
+                "min_doc_count": "1",
+                "timeZone": "utc",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "system.process.cpu.total.norm.pct",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "process.name:* AND system.process.cpu.total.norm.pct :* AND ( host.hostname: $node_host OR host.name: $node_host )",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Processes By CPU",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "@timestamp": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_metrics}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-green",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1845,28 +2045,26 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
+        "h": 7,
+        "w": 6,
+        "x": 6,
         "y": 16
       },
       "id": 66,
+      "maxDataPoints": 100,
       "options": {
-        "displayMode": "gradient",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showUnfilled": true,
-        "valueMode": "color"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -1912,7 +2110,7 @@
               "type": "max"
             }
           ],
-          "query": "process.name:* AND host.name: $node_host",
+          "query": "process.name:* AND system.process.memory.rss.pct :* AND (  hosthost.name: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1921,7 +2119,7 @@
       ],
       "title": "Processes By Memory",
       "transformations": [],
-      "type": "bargauge"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1979,21 +2177,21 @@
           },
           "unit": "none"
         },
-        "overrides": [
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
+        "h": 7,
+        "w": 6,
+        "x": 12,
         "y": 16
       },
       "id": 64,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -2084,7 +2282,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "event.dataset: system.network AND host.hostname: $node_host",
+          "query": "event.dataset: system.network AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -2108,8 +2306,7 @@
           }
         }
       ],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -2132,12 +2329,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 0,
-        "y": 22
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 16
       },
-      "id": 43,
+      "id": 83,
       "options": {
         "calculate": false,
         "calculation": {
@@ -2177,7 +2374,7 @@
           "reverse": false
         }
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -2219,7 +2416,7 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "system.diskio.read.count",
+              "field": "system.diskio.write.count",
               "hide": true,
               "id": "1",
               "type": "avg"
@@ -2245,14 +2442,14 @@
               "type": "bucket_script"
             }
           ],
-          "query": "host.hostname: $node_host",
+          "query": "system.diskio.name :* AND (host.hostname: $node_host OR host.name: $node_name )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
           "urlPath": ""
         }
       ],
-      "title": "Disk Read  IOPS",
+      "title": "Disk Write IOPS",
       "type": "heatmap"
     },
     {
@@ -2290,10 +2487,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 22
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 23
       },
       "id": 67,
       "options": {
@@ -2311,7 +2508,7 @@
         "showUnfilled": true,
         "valueMode": "color"
       },
-      "pluginVersion": "9.5.5",
+      "pluginVersion": "9.5.10",
       "targets": [
         {
           "alias": "",
@@ -2357,7 +2554,7 @@
               "type": "max"
             }
           ],
-          "query": "process.name:* AND host.name: $node_host",
+          "query": "process.name:* AND system.process.cpu.total.norm.pct :* AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -2377,6 +2574,119 @@
           }
         }
       ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_metrics}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.4
+              },
+              {
+                "color": "red",
+                "value": 0.8
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 23
+      },
+      "id": 85,
+      "options": {
+        "displayMode": "gradient",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "process.name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "5"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "3",
+              "settings": {
+                "interval": "1m",
+                "min_doc_count": "1",
+                "timeZone": "utc",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "system.process.memory.rss.pct",
+              "id": "1",
+              "type": "max"
+            }
+          ],
+          "query": "process.name:* AND system.process.memory.rss.pct :* AND (  hosthost.name: $node_host OR host.name: $node_host )",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Processes By Memory",
+      "transformations": [],
       "type": "bargauge"
     },
     {
@@ -2435,21 +2745,21 @@
           },
           "unit": "none"
         },
-        "overrides": [
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 22
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 23
       },
       "id": 65,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
@@ -2540,7 +2850,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "event.dataset: system.network AND host.hostname: $node_host",
+          "query": "event.dataset: system.network AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -2564,8 +2874,151 @@
           }
         }
       ],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_metrics}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 23
+      },
+      "id": 43,
+      "options": {
+        "calculate": false,
+        "calculation": {
+          "xBuckets": {
+            "mode": "size"
+          }
+        },
+        "cellGap": 2,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "min": 1,
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "RdYlGn",
+          "steps": 53
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "unknown"
+        },
+        "tooltip": {
+          "show": true,
+          "yHistogram": true
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "system.diskio.name",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "3",
+              "settings": {
+                "interval": "1m",
+                "min_doc_count": "0",
+                "offset": "1m",
+                "timeZone": "utc",
+                "trimEdges": "0"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "method": "GET",
+          "metrics": [
+            {
+              "field": "system.diskio.read.count",
+              "hide": true,
+              "id": "1",
+              "type": "avg"
+            },
+            {
+              "field": "1",
+              "hide": true,
+              "id": "4",
+              "pipelineAgg": "1",
+              "type": "derivative"
+            },
+            {
+              "id": "5",
+              "pipelineVariables": [
+                {
+                  "name": "io",
+                  "pipelineAgg": "4"
+                }
+              ],
+              "settings": {
+                "script": "params.io / 60"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "system.diskio.name :* AND (host.hostname: $node_host OR host.name: $node_name )",
+          "queryParams": "",
+          "refId": "A",
+          "timeField": "@timestamp",
+          "urlPath": ""
+        }
+      ],
+      "title": "Disk Read  IOPS",
+      "type": "heatmap"
     },
     {
       "collapsed": true,
@@ -6213,7 +6666,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "host.name: $node_name",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND host.name: $node_name",
               "refId": "A",
               "timeField": "@timestamp"
             }
