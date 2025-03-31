@@ -247,4 +247,11 @@
     font-size: 4rem;
   }
 }
+.col{
+    &.header-cluster{
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: auto;
+    }
+}
 
