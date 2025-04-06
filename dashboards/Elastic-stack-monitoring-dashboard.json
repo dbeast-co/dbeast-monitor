@@ -1930,7 +1930,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 167
+                "value": 120
               },
               {
                 "id": "unit",
@@ -1969,7 +1969,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 159
+                "value": 120
               },
               {
                 "id": "unit",
@@ -2002,7 +2002,7 @@
               },
               {
                 "id": "unit",
-                "value": "percentunit"
+                "value": "bytes"
               },
               {
                 "id": "thresholds",
@@ -2053,6 +2053,51 @@
               {
                 "id": "custom.width",
                 "value": 70
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Available storage %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.15
+                    },
+                    {
+                      "value": 0.2,
+                      "color": "transparent"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
               }
             ]
           }
@@ -2160,16 +2205,16 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Available storage",
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "alias": "Available storage %",
             "binary": {
               "left": "A Available storage",
               "operator": "/",
               "reducer": "sum",
               "right": "A Total Storage"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
             }
           }
         },
@@ -2186,13 +2231,14 @@
               "Storage total": false
             },
             "indexByName": {
-              "Available storage": 5,
-              "Heap used": 3,
               "Node name": 0,
               "Shards": 1,
+              "CPU": 2,
+              "Heap used": 3,
               "Total Storage": 4,
-              "Version": 6,
-              "CPU": 2
+              "Available storage": 5,
+              "Available storage %": 6,
+              "Version": 7
             },
             "renameByName": {
               "Total Storage": ""
@@ -2751,7 +2797,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 167
+                "value": 120
               },
               {
                 "id": "unit",
@@ -2790,7 +2836,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 159
+                "value": 120
               },
               {
                 "id": "unit",
@@ -2823,7 +2869,7 @@
               },
               {
                 "id": "unit",
-                "value": "percentunit"
+                "value": "bytes"
               },
               {
                 "id": "thresholds",
@@ -2874,6 +2920,51 @@
               {
                 "id": "custom.width",
                 "value": 70
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Available storage %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.15
+                    },
+                    {
+                      "value": 0.2,
+                      "color": "transparent"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
               }
             ]
           }
@@ -2981,16 +3072,16 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Available storage",
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "alias": "Available storage %",
             "binary": {
               "left": "A Available storage",
               "operator": "/",
               "reducer": "sum",
               "right": "A Total Storage"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
             }
           }
         },
@@ -3007,13 +3098,14 @@
               "Storage total": false
             },
             "indexByName": {
-              "Available storage": 5,
-              "Heap used": 3,
               "Node name": 0,
               "Shards": 1,
+              "CPU": 2,
+              "Heap used": 3,
               "Total Storage": 4,
-              "Version": 6,
-              "CPU": 2
+              "Available storage": 5,
+              "Available storage %": 6,
+              "Version": 7
             },
             "renameByName": {
               "Total Storage": ""
@@ -3332,7 +3424,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 167
+                "value": 120
               },
               {
                 "id": "unit",
@@ -3371,7 +3463,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 159
+                "value": 120
               },
               {
                 "id": "unit",
@@ -3404,7 +3496,7 @@
               },
               {
                 "id": "unit",
-                "value": "percentunit"
+                "value": "bytes"
               },
               {
                 "id": "thresholds",
@@ -3455,6 +3547,51 @@
               {
                 "id": "custom.width",
                 "value": 70
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Available storage %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.15
+                    },
+                    {
+                      "value": 0.2,
+                      "color": "transparent"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "color"
               }
             ]
           }
@@ -3562,16 +3699,16 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Available storage",
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "alias": "Available storage %",
             "binary": {
               "left": "A Available storage",
               "operator": "/",
               "reducer": "sum",
               "right": "A Total Storage"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
             }
           }
         },
@@ -3588,13 +3725,14 @@
               "Storage total": false
             },
             "indexByName": {
-              "Available storage": 5,
-              "Heap used": 3,
               "Node name": 0,
               "Shards": 1,
+              "CPU": 2,
+              "Heap used": 3,
               "Total Storage": 4,
-              "Version": 6,
-              "CPU": 2
+              "Available storage": 5,
+              "Available storage %": 6,
+              "Version": 7
             },
             "renameByName": {
               "Total Storage": ""
