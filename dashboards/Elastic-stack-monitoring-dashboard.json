@@ -5808,91 +5808,55 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "source_node"
+                  "options": "Size (B)"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 122
+                    "value": 100
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "target_node"
+                  "options": "Size (%)"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 109
+                    "value": 100
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "bytes_total"
+                  "options": "Translog (%)"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 106
+                    "value": 100
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "bytes_percent"
+                  "options": "Files (%)"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 124
+                    "value": 100
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "translog_ops_percent"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 169
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "files_percent"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 103
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "index"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 136
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "shard"
+                  "options": "Shard"
                 },
                 "properties": [
                   {
@@ -5988,7 +5952,26 @@
             }
           ],
           "title": "Data relocation",
-          "type": "table"
+          "type": "table",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "index": "Index",
+                  "shard": "Shard",
+                  "source_node": "Source",
+                  "target_node": "Target",
+                  "bytes_total": "Size (B)",
+                  "bytes_percent": "Size (%)",
+                  "files_percent": "Files (%)",
+                  "translog_ops_percent": "Translog (%)"
+                }
+              }
+            }
+          ]
         },
         {
           "datasource": {
