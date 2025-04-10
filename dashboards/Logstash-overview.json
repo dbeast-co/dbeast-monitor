@@ -1102,7 +1102,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "logstash.elasticsearch.cluster.id: $cluster_uid",
+              "query": "elasticsearch.cluster.id: $cluster_uid",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",

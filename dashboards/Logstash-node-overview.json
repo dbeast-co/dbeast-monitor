@@ -3229,7 +3229,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "logstash.elasticsearch.cluster.id: $cluster_uid AND ( host.hostname: $ls_host OR host.name: $ls_host)",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND ( host.hostname: $ls_host OR host.name: $ls_host)",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
