@@ -1499,7 +1499,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "0"
               },
               "type": "terms"
             },
@@ -1532,13 +1532,18 @@
       "title": "Pipelines overview",
       "transformations": [
         {
-          "id": "merge",
-          "options": {}
+          "id": "joinByField",
+          "options": {
+            "byField": "logstash.node.stats.pipeline.id",
+            "mode": "outer"
+          }
         },
         {
           "id": "organize",
           "options": {
-            "excludeByName": {},
+            "excludeByName": {
+              "host.hostname 2": true
+            },
             "indexByName": {
               "Max": 2,
               "Max logstash.node.stats.pipeline.events.failures_rate": 8,
@@ -1564,6 +1569,22 @@
               "host.hostname": "Host",
               "logstash.node.stats.pipeline.id": "Pipeline name"
             }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "fieldName": "In",
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                }
+              }
+            ],
+            "type": "exclude",
+            "match": "any"
           }
         }
       ],
