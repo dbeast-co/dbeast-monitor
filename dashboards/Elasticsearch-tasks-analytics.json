@@ -564,7 +564,7 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -616,7 +616,7 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Search response time (s)",
+      "title": "Search response",
       "type": "timeseries",
       "maxDataPoints": 100
     },
@@ -843,7 +843,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sample date"
+              "options": "Start date"
             },
             "properties": [
               {
@@ -1044,7 +1044,7 @@
               "sort": 24
             },
             "renameByName": {
-              "@timestamp": "Sample date",
+              "@timestamp": "Start date",
               "elasticsearch.task.description": "description",
               "elasticsearch.task.ip": "",
               "elasticsearch.task.node": "Task node",
@@ -1069,7 +1069,7 @@
           "options": {
             "include": {
               "names": [
-                "Sample date",
+                "Start date",
                 "Task node",
                 "Run time",
                 "Index patterns",
@@ -1092,7 +1092,7 @@
               "Index patterns": 3,
               "Number of indices": 5,
               "Run time": 2,
-              "Sample date": 0,
+              "Start date": 0,
               "Task node": 1,
               "aggregations": 8,
               "description": 9,
@@ -1796,7 +1796,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Sample date"
+                  "options": "Start date"
                 },
                 "properties": [
                   {
@@ -2009,7 +2009,7 @@
                   "sort": 24
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "Description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
@@ -2790,7 +2790,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Sample date"
+                  "options": "Start date"
                 },
                 "properties": [
                   {
@@ -2981,7 +2981,7 @@
                   "sort": 25
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
@@ -3336,7 +3336,7 @@
                   "sort": 24
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
@@ -3460,7 +3460,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Sample date"
+                  "options": "Start date"
                 },
                 "properties": [
                   {
@@ -3626,7 +3626,7 @@
                   "sort": 24
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
