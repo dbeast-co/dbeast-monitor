@@ -1957,7 +1957,7 @@
               "type": "max"
             }
           ],
-          "query": "process.name:* AND system.process.cpu.total.norm.pct :* AND ( host.hostname: $node_host OR host.name: $node_host )",
+          "query": "process.name:* AND system.process.cpu.total.norm.pct:* AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -2549,12 +2549,12 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "system.process.cpu.total.pct",
+              "field": "system.process.cpu.total.norm.pct",
               "id": "1",
               "type": "max"
             }
           ],
-          "query": "process.name:* AND system.process.cpu.total.norm.pct :* AND ( host.hostname: $node_host OR host.name: $node_host )",
+          "query": "process.name:* AND system.process.cpu.total.norm.pct:* AND ( host.hostname: $node_host OR host.name: $node_host )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
