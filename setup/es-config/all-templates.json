@@ -2944,6 +2944,9 @@ PUT _component_template/dbeast-mon-tsds-logstash-metrics-mapping-component
                         "version": {
                           "ignore_above": 256,
                           "type": "keyword"
+                        },
+                        "symptom": {
+                          "type": "keyword"
                         }
                       }
                     },
@@ -3429,6 +3432,91 @@ PUT _component_template/dbeast-mon-tsds-logstash-metrics-mapping-component
                         "filters_failures_rate": {
                           "type": "long",
                           "time_series_metric": "gauge"
+                        },
+                        "symptom": {
+                          "type": "keyword"
+                        },
+                        "diagnosis": {
+                          "type": "object",
+                          "properties": {
+                            "help_url": {
+                              "ignore_above": 256,
+                              "type": "keyword"
+                            },
+                            "action": {
+                              "ignore_above": 256,
+                              "type": "keyword"
+                            },
+                            "cause": {
+                              "type": "keyword"
+                            },
+                            "id": {
+                              "ignore_above": 256,
+                              "type": "keyword"
+                            }
+                          }
+                        },
+                        "details": {
+                          "type": "object",
+                          "properties": {
+                            "flow": {
+                              "properties": {
+                                "worker_utilization": {
+                                  "properties": {
+                                    "current": {
+                                      "type": "float"
+                                    },
+                                    "last_24_hours": {
+                                      "type": "float"
+                                    },
+                                    "last_1_hour": {
+                                      "type": "float"
+                                    },
+                                    "last_5_minutes": {
+                                      "type": "float"
+                                    },
+                                    "last_15_minutes": {
+                                      "type": "float"
+                                    },
+                                    "lifetime": {
+                                      "type": "float"
+                                    },
+                                    "last_1_minute": {
+                                      "type": "float"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "status": {
+                              "properties": {
+                                "state": {
+                                  "type": "keyword"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "impacts": {
+                          "properties": {
+                            "severity": {
+                              "type": "long"
+                            },
+                            "impact_areas": {
+                              "ignore_above": 256,
+                              "type": "keyword"
+                            },
+                            "description": {
+                              "type": "keyword"
+                            },
+                            "id": {
+                              "ignore_above": 256,
+                              "type": "keyword"
+                            }
+                          }
+                        },
+                        "status": {
+                          "type": "keyword"
                         }
                       }
                     },
@@ -3551,7 +3639,7 @@ PUT _component_template/dbeast-mon-tsds-logstash-metrics-mapping-component
   },
   "_meta": {
     "description": "The default mappings for the Logstash metrics",
-    "version": "1.0.2"
+    "version": "1.0.3"
   }
 }
 
