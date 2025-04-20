@@ -589,7 +589,7 @@
       },
       "targets": [
         {
-          "alias": "Response time (s)",
+          "alias": "",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -1638,7 +1638,8 @@
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "ms"
             },
             "overrides": []
           },
@@ -1663,7 +1664,7 @@
           },
           "targets": [
             {
-              "alias": "Response time (s)",
+              "alias": "",
               "bucketAggs": [
                 {
                   "field": "@timestamp",
@@ -1690,7 +1691,7 @@
               "timeField": "@timestamp"
             }
           ],
-          "title": "Max Response time (s)",
+          "title": "Max Response time",
           "type": "timeseries",
           "maxDataPoints": 100
         },
