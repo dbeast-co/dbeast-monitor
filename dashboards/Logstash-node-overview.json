@@ -649,7 +649,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -3144,12 +3144,12 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "@timestamp"
+                  "options": "Date"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 162
+                    "value": 190
                   }
                 ]
               },
@@ -3264,6 +3264,7 @@
                   "logstash.message": 4
                 },
                 "renameByName": {
+                  "@timestamp": "Date",
                   "log.level": "Log level",
                   "logstash.log.pipeline_name": "Pipeline",
                   "logstash.log.type": "Log type",

@@ -416,7 +416,7 @@
         "legend": {
           "showLegend": true,
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "calcs": [],
           "sortBy": "Last *",
           "sortDesc": true
@@ -879,7 +879,7 @@
         "legend": {
           "showLegend": true,
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "values": [
             "percent"
           ]
@@ -1003,31 +1003,19 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "@timestamp"
+                  "options": "Date"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 162
+                    "value": 190
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "host.name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 131
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "host.hostname"
+                  "options": "Host"
                 },
                 "properties": [
                   {
@@ -1127,7 +1115,6 @@
                 "include": {
                   "names": [
                     "@timestamp",
-                    "host.name",
                     "host.hostname",
                     "log.level",
                     "logstash.log.pipeline_name",
@@ -1144,13 +1131,14 @@
                 "indexByName": {
                   "@timestamp": 0,
                   "host.hostname": 1,
-                  "host.name": 2,
-                  "log.level": 3,
-                  "logstash.log.type": 4,
-                  "logstash.log.pipeline_name": 5,
-                  "logstash.message": 6
+                  "log.level": 2,
+                  "logstash.log.type": 3,
+                  "logstash.log.pipeline_name": 4,
+                  "logstash.message": 5
                 },
                 "renameByName": {
+                  "@timestamp": "Date",
+                  "host.hostname": "Host",
                   "log.level": "Log level",
                   "logstash.log.pipeline_name": "Pipeline",
                   "logstash.message": "Message",
@@ -1640,20 +1628,22 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "host.hostname 2": true,
-              "Count": true
+              "Count": true,
+              "host.hostname 2": true
             },
             "indexByName": {
-              "host.hostname": 0,
+              "host.hostname 1": 0,
               "logstash.node.stats.pipeline.id": 1,
               "logstash.node.stats.pipeline.status": 2,
-              "Max logstash.node.stats.pipeline.events.in": 3,
-              "Max logstash.node.stats.pipeline.events.in_rate": 4,
-              "Max logstash.node.stats.pipeline.events.out": 5,
-              "Max logstash.node.stats.pipeline.events.out_rate": 6,
-              "Max logstash.node.stats.pipeline.filters_failures": 7,
-              "Max logstash.node.stats.pipeline.filters_failures_rate": 8,
-              "Count": 9
+              "Max": 3,
+              "Max logstash.node.stats.pipeline.events.in": 4,
+              "Max logstash.node.stats.pipeline.events.in_rate": 5,
+              "Max logstash.node.stats.pipeline.events.out": 6,
+              "Max logstash.node.stats.pipeline.events.out_rate": 7,
+              "Max logstash.node.stats.pipeline.filters_failures": 8,
+              "Max logstash.node.stats.pipeline.filters_failures_rate": 9,
+              "Count": 10,
+              "host.hostname 2": 11
             },
             "renameByName": {
               "Max": "Port",
@@ -1668,7 +1658,8 @@
               "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": "failures_rate",
               "host.hostname": "Host",
               "logstash.node.stats.pipeline.id": "Pipeline name",
-              "logstash.node.stats.pipeline.status": "Status"
+              "logstash.node.stats.pipeline.status": "Status",
+              "host.hostname 1": "Host"
             }
           }
         },
@@ -1684,8 +1675,8 @@
                 "fieldName": "In"
               }
             ],
-            "type": "exclude",
-            "match": "any"
+            "match": "any",
+            "type": "exclude"
           }
         }
       ],
@@ -1800,6 +1791,10 @@
               {
                 "id": "custom.width",
                 "value": 58
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           }

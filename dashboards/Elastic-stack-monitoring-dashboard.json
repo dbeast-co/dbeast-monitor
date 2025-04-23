@@ -1992,7 +1992,7 @@
         "type": "elasticsearch",
         "uid": "${es_shard_stats}"
       },
-      "description": "Fetch Per Second",
+      "description": "FPS - Fetch Per Second",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2042,8 +2042,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "/s"
+          }
         },
         "overrides": []
       },
@@ -2121,7 +2120,7 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Cluster fetch operations rate per node",
+      "title": "Cluster fetch operations rate per node (FPS)",
       "type": "timeseries"
     },
     {
@@ -4540,7 +4539,7 @@
                     "min_doc_count": "1",
                     "order": "desc",
                     "orderBy": "_term",
-                    "size": "10"
+                    "size": "0"
                   },
                   "type": "terms"
                 },
@@ -4551,7 +4550,7 @@
                     "min_doc_count": "1",
                     "order": "desc",
                     "orderBy": "_term",
-                    "size": "10"
+                    "size": "0"
                   },
                   "type": "terms"
                 },
@@ -4562,7 +4561,7 @@
                     "min_doc_count": "1",
                     "order": "desc",
                     "orderBy": "_term",
-                    "size": "10"
+                    "size": "0"
                   },
                   "type": "terms"
                 },
@@ -4573,7 +4572,7 @@
                     "min_doc_count": "1",
                     "order": "desc",
                     "orderBy": "_term",
-                    "size": "10"
+                    "size": "0"
                   },
                   "type": "terms"
                 }
@@ -6062,7 +6061,8 @@
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "s"
             },
             "overrides": [
               {
@@ -6221,6 +6221,10 @@
                 [
                   "format",
                   "json"
+                ],
+                [
+                  "time",
+                  "s"
                 ]
               ],
               "queryParams": "",
