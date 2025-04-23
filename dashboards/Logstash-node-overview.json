@@ -105,7 +105,7 @@
               "type": "raw_data"
             }
           ],
-          "query": "metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_metrics AND metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: $cluster_uid",
           "refId": "A",
           "timeField": "@timestamp"
         }

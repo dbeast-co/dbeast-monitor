@@ -122,7 +122,7 @@
           "params": [
             [
               "q",
-              "logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_uid}"
+              "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host"
             ]
           ],
           "queryParams": "",
@@ -533,7 +533,7 @@
           "params": [
             [
               "q",
-              "logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_uid}"
+              "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host"
             ]
           ],
           "queryParams": "",
@@ -619,7 +619,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -673,24 +673,6 @@
         "type": "elasticsearch",
         "uid": "${logstash_mon_metrics_status}"
       },
-      "fieldConfig": {
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 6,
         "w": 10,
@@ -699,22 +681,18 @@
       },
       "id": 11,
       "options": {
-        "afterRender": "",
+        "everyRow": true,
+        "editors": [],
+        "editor": {
+          "language": "markdown",
+          "format": "auto",
+          "height": 200
+        },
         "content": "{{#if diagnostic}}\n```json\n{{{json diagnostic}}}\n```\n{{else}}\nThe pipeline is healthy\n{{/if}}",
         "defaultContent": "The query didn't return any results.",
-        "editor": {
-          "format": "auto",
-          "language": "markdown"
-        },
-        "editors": [],
-        "externalScripts": [],
-        "externalStyles": [],
         "helpers": "",
-        "renderMode": "everyRow",
-        "styles": "",
-        "wrap": true
+        "styles": ""
       },
-      "pluginVersion": "4.5.0",
       "targets": [
         {
           "alias": "",
@@ -727,17 +705,41 @@
             {
               "id": "1",
               "settings": {
-                "size": "10"
+                "size": "500"
               },
               "type": "raw_data"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: health_report AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.id: ${pipeline_id}",
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: health_report AND metricset.name: pipelines AND host.hostname:$ls_host AND logstash.node.stats.pipeline.id: ${pipeline_id}",
           "refId": "A",
           "timeField": "@timestamp"
         }
       ],
       "title": "Status explanation for the Yellow and Red statuses",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "logstash.node.stats.pipeline.status",
+                "logstash.node.stats.pipeline.diagnosis"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "logstash.node.stats.pipeline.diagnosis": "diagnostic",
+              "logstash.node.stats.pipeline.status": "Status"
+            }
+          }
+        }
+      ],
       "type": "marcusolsson-dynamictext-panel"
     },
     {

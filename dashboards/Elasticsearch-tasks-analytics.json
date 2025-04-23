@@ -911,18 +911,6 @@
                 "value": 376
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Description"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 140
-              }
-            ]
           }
         ]
       },
@@ -984,7 +972,7 @@
           "urlPath": ""
         }
       ],
-      "title": "Top running queries",
+      "title": "Top running tasks",
       "transformations": [
         {
           "id": "organize",
@@ -2823,12 +2811,8 @@
                 },
                 "properties": [
                   {
-                    "id": "custom.width",
-                    "value": 769
-                  },
-                  {
                     "id": "custom.filterable",
-                    "value": true
+                    "value": false
                   }
                 ]
               },
@@ -2927,7 +2911,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Top running queries",
+          "title": "Top running tasks",
           "transformations": [
             {
               "id": "organize",
@@ -3477,12 +3461,8 @@
                 },
                 "properties": [
                   {
-                    "id": "custom.width",
-                    "value": 566
-                  },
-                  {
                     "id": "custom.filterable",
-                    "value": true
+                    "value": false
                   }
                 ]
               },
@@ -3573,7 +3553,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Top running queries",
+          "title": "Top running tasks",
           "transformations": [
             {
               "id": "organize",
