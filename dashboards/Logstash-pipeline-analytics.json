@@ -113,7 +113,7 @@
               "name": "pipeline_name"
             },
             {
-              "jsonPath": "$.hits.hits.[0]._source.logstash.node.stats.pipeline.($exists(\"filters_failures\") ? filter_failures : 0)",
+              "jsonPath": "$.hits.hits.[0]._source.logstash.node.stats.pipeline.($exists(\"filters_failures\") ? filters_failures : 0)",
               "language": "jsonata",
               "name": "filters_failures"
             }
@@ -498,7 +498,7 @@
               "name": "In"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.in_rate : \"\")",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.($exists(in_rate) ? in_rate: \"\") : \"\")",
               "language": "jsonata",
               "name": "In rate"
             },
@@ -508,7 +508,7 @@
               "name": "Out"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.out_rate : \"\")",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.($exists(out_rate) ? out_rate: \"\") : \"\")",
               "language": "jsonata",
               "name": "Out rate"
             },
