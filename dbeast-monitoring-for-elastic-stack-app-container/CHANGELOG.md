@@ -1,5 +1,26 @@
 # Changelog
 
+## Version 1.0.3
+
+- Features:
+  * [FEAT] Add Logstash health_report API data to the Logstash dashboards #216[#216](https://github.com/dbeast-co/dbeast-monitor/issues/216)
+  * [FEAT] In the Index pattern overview Add ingest rate without index name #211[#211](https://github.com/dbeast-co/dbeast-monitor/issues/211)
+  * [FEAT] "Host overview" dashboard - server level changes #209[#209](https://github.com/dbeast-co/dbeast-monitor/issues/209)
+  * [FEAT] Change the query date in the tasks dashboard #198[#198](https://github.com/dbeast-co/dbeast-monitor/issues/198)
+  * [FEAT] "Elastic Stack Monitoring" in the "Nodes stats" block add available storage size in Bytes #45[#45](https://github.com/dbeast-co/dbeast-monitor/issues/45)
+  * [FEAT] "Elastic Stack Monitoring" dashboard upgrades list #21[#21](https://github.com/dbeast-co/dbeast-monitor/issues/21)
+
+- Bug fixes
+  * [BUG] Incorrect filter definition in the "Host overview" need to add cluster id #195[#195](https://github.com/dbeast-co/dbeast-monitor/issues/195)
+  * [BUG] Fix time units in the "Tasks analytics" dashboard #207[#207](https://github.com/dbeast-co/dbeast-monitor/issues/207)
+  * [BUG] Incorrect legend in the "Ingest rate" panel in the "Stack monitor" dashboard #208[#208](https://github.com/dbeast-co/dbeast-monitor/issues/208)
+  * [BUG] Incorrect status visualization in case of the Elastic Cloud usage #212[#212](https://github.com/dbeast-co/dbeast-monitor/issues/212)
+  * [BUG] In the "Logstash overview" and "Logstash node overview" dashboards replace logstash.elasticsearch.cluster.id #215[#215](https://github.com/dbeast-co/dbeast-monitor/issues/215)
+  * [BUG] In the "Shards overview" remove limitations from the heatmaps #214[#214](https://github.com/dbeast-co/dbeast-monitor/issues/214)
+
+- Updated dashboards
+  * All dashboards
+
 ## Version 1.0.2
 
 - Features:

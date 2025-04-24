@@ -1,5 +1,0 @@
-apiVersion: v2
-name: dbeast-monitor
-description: A Helm chart for deploying "DBeast Monitor" for Elastic Stack
-version: 1.0.0
-
