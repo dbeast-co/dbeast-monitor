@@ -416,7 +416,7 @@
         "legend": {
           "showLegend": true,
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "calcs": [],
           "sortBy": "Last *",
           "sortDesc": true
@@ -533,6 +533,16 @@
                         "color": "green",
                         "index": 0,
                         "text": "GREEN"
+                      },
+                      "yellow": {
+                        "color": "yellow",
+                        "index": 1,
+                        "text": "YELLOW"
+                      },
+                      "red": {
+                        "color": "red",
+                        "index": 2,
+                        "text": "RED"
                       }
                     },
                     "type": "value"
@@ -869,7 +879,7 @@
         "legend": {
           "showLegend": true,
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "values": [
             "percent"
           ]
@@ -993,31 +1003,19 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "@timestamp"
+                  "options": "Date"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 162
+                    "value": 190
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "host.name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 131
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "host.hostname"
+                  "options": "Host"
                 },
                 "properties": [
                   {
@@ -1102,7 +1100,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "logstash.elasticsearch.cluster.id: $cluster_uid",
+              "query": "elasticsearch.cluster.id: $cluster_uid",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -1117,7 +1115,6 @@
                 "include": {
                   "names": [
                     "@timestamp",
-                    "host.name",
                     "host.hostname",
                     "log.level",
                     "logstash.log.pipeline_name",
@@ -1134,13 +1131,14 @@
                 "indexByName": {
                   "@timestamp": 0,
                   "host.hostname": 1,
-                  "host.name": 2,
-                  "log.level": 3,
-                  "logstash.log.type": 4,
-                  "logstash.log.pipeline_name": 5,
-                  "logstash.message": 6
+                  "log.level": 2,
+                  "logstash.log.type": 3,
+                  "logstash.log.pipeline_name": 4,
+                  "logstash.message": 5
                 },
                 "renameByName": {
+                  "@timestamp": "Date",
+                  "host.hostname": "Host",
                   "log.level": "Log level",
                   "logstash.log.pipeline_name": "Pipeline",
                   "logstash.message": "Message",
@@ -1212,7 +1210,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 64
+                "value": 60
               }
             ]
           },
@@ -1224,7 +1222,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 76
+                "value": 75
               }
             ]
           },
@@ -1271,7 +1269,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 90
+                "value": 60
               },
               {
                 "id": "unit",
@@ -1302,10 +1300,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 290
-              },
-              {
                 "id": "custom.align",
                 "value": "center"
               },
@@ -1332,10 +1326,6 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 161
-              },
-              {
                 "id": "links",
                 "value": [
                   {
@@ -1348,6 +1338,10 @@
               {
                 "id": "custom.filterable",
                 "value": true
+              },
+              {
+                "id": "custom.width",
+                "value": 165
               }
             ]
           },
@@ -1376,6 +1370,49 @@
               {
                 "id": "unit",
                 "value": "short"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "green": {
+                        "text": "GREEN",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "yellow": {
+                        "text": "YELLOW",
+                        "color": "yellow",
+                        "index": 1
+                      },
+                      "red": {
+                        "text": "RED",
+                        "color": "red",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
               }
             ]
           }
@@ -1479,7 +1516,7 @@
               "type": "max"
             }
           ],
-          "query": "event.dataset: logstash_metrics AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: logstash_metrics AND metricset.name: pipelines",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1499,20 +1536,20 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "0"
               },
               "type": "terms"
             },
             {
+              "field": "host.hostname",
               "id": "3",
-              "type": "terms",
               "settings": {
                 "min_doc_count": "1",
-                "size": "10",
                 "order": "desc",
-                "orderBy": "_term"
+                "orderBy": "_term",
+                "size": "10"
               },
-              "field": "host.hostname"
+              "type": "terms"
             }
           ],
           "hide": false,
@@ -1526,29 +1563,87 @@
           "query": "elasticsearch.cluster.id: $cluster_uid",
           "refId": "B",
           "timeField": "@timestamp"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
+          },
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "logstash.node.stats.pipeline.id",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "logstash.node.stats.pipeline.status",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "0"
+              },
+              "type": "terms"
+            }
+          ],
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "hide": false,
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "8",
+              "type": "count"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: health_report AND metricset.name: pipelines",
+          "queryParams": "",
+          "refId": "C",
+          "timeField": "@timestamp",
+          "urlPath": ""
         }
       ],
       "timeFrom": "1y",
       "title": "Pipelines overview",
       "transformations": [
         {
-          "id": "merge",
-          "options": {}
+          "id": "joinByField",
+          "options": {
+            "byField": "logstash.node.stats.pipeline.id",
+            "mode": "outer"
+          }
         },
         {
           "id": "organize",
           "options": {
-            "excludeByName": {},
+            "excludeByName": {
+              "Count": true,
+              "host.hostname 2": true
+            },
             "indexByName": {
-              "Max": 2,
-              "Max logstash.node.stats.pipeline.events.failures_rate": 8,
-              "Max logstash.node.stats.pipeline.events.in": 3,
-              "Max logstash.node.stats.pipeline.events.in_rate": 4,
-              "Max logstash.node.stats.pipeline.events.out": 5,
-              "Max logstash.node.stats.pipeline.events.out_rate": 6,
-              "Max logstash.node.stats.pipeline.filters_failures": 7,
-              "host.hostname": 0,
-              "logstash.node.stats.pipeline.id": 1
+              "host.hostname 1": 0,
+              "logstash.node.stats.pipeline.id": 1,
+              "logstash.node.stats.pipeline.status": 2,
+              "Max": 3,
+              "Max logstash.node.stats.pipeline.events.in": 4,
+              "Max logstash.node.stats.pipeline.events.in_rate": 5,
+              "Max logstash.node.stats.pipeline.events.out": 6,
+              "Max logstash.node.stats.pipeline.events.out_rate": 7,
+              "Max logstash.node.stats.pipeline.filters_failures": 8,
+              "Max logstash.node.stats.pipeline.filters_failures_rate": 9,
+              "Count": 10,
+              "host.hostname 2": 11
             },
             "renameByName": {
               "Max": "Port",
@@ -1562,8 +1657,26 @@
               "Max logstash.node.stats.pipeline.plugins.filters.failures": "filter_failures",
               "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": "failures_rate",
               "host.hostname": "Host",
-              "logstash.node.stats.pipeline.id": "Pipeline name"
+              "logstash.node.stats.pipeline.id": "Pipeline name",
+              "logstash.node.stats.pipeline.status": "Status",
+              "host.hostname 1": "Host"
             }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "In"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
           }
         }
       ],
@@ -1678,6 +1791,10 @@
               {
                 "id": "custom.width",
                 "value": 58
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           }

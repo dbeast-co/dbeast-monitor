@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production ",
     "mage": "mage -v",
-    "mage_win": "c:\\app\\mage\\mage -v",
+    "mage_win": "c:\\app\\mage -v",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development --watch",
     "test": "jest --watch --onlyChanged",
     "test:ci": "jest --passWithNoTests --maxWorkers 4",
