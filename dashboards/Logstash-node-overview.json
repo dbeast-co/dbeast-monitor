@@ -105,7 +105,7 @@
               "type": "raw_data"
             }
           ],
-          "query": "metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_metrics AND metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: $cluster_uid",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -649,7 +649,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -3144,12 +3144,12 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "@timestamp"
+                  "options": "Date"
                 },
                 "properties": [
                   {
                     "id": "custom.width",
-                    "value": 162
+                    "value": 190
                   }
                 ]
               },
@@ -3229,7 +3229,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "logstash.elasticsearch.cluster.id: $cluster_uid AND ( host.hostname: $ls_host OR host.name: $ls_host)",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND ( host.hostname: $ls_host OR host.name: $ls_host)",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3264,6 +3264,7 @@
                   "logstash.message": 4
                 },
                 "renameByName": {
+                  "@timestamp": "Date",
                   "log.level": "Log level",
                   "logstash.log.pipeline_name": "Pipeline",
                   "logstash.log.type": "Log type",
@@ -4137,8 +4138,8 @@
     },
     {
       "datasource": {
-        "type": "datasource",
-        "uid": "-- Mixed --"
+        "uid": "-- Mixed --",
+        "type": "datasource"
       },
       "fieldConfig": {
         "defaults": {
@@ -4312,6 +4313,49 @@
                 "value": "short"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "green": {
+                        "text": "GREEN",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "yellow": {
+                        "text": "YELLOW",
+                        "color": "yellow",
+                        "index": 1
+                      },
+                      "red": {
+                        "text": "RED",
+                        "color": "red",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
           }
         ]
       },
@@ -4345,6 +4389,10 @@
       "pluginVersion": "9.5.10",
       "targets": [
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -4360,10 +4408,6 @@
             }
           ],
           "cacheDurationSeconds": 300,
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${logstash_mon_metrics_status}"
-          },
           "fields": [
             {
               "jsonPath": ""
@@ -4410,6 +4454,10 @@
           "urlPath": ""
         },
         {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_logs_ports}"
+          },
           "alias": "",
           "bucketAggs": [
             {
@@ -4424,10 +4472,6 @@
               "type": "terms"
             }
           ],
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${logstash_mon_logs_ports}"
-          },
           "hide": false,
           "metrics": [
             {
@@ -4442,6 +4486,56 @@
           "query": "elasticsearch.cluster.id: $cluster_uid AND host.hostname:$ls_host",
           "refId": "B",
           "timeField": "@timestamp"
+        },
+        {
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
+          },
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "logstash.node.stats.pipeline.id",
+              "id": "2",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "id": "9",
+              "type": "terms",
+              "settings": {
+                "min_doc_count": "1",
+                "size": "10",
+                "order": "desc",
+                "orderBy": "_term"
+              },
+              "field": "logstash.node.stats.pipeline.status"
+            }
+          ],
+          "cacheDurationSeconds": 300,
+          "fields": [
+            {
+              "jsonPath": ""
+            }
+          ],
+          "hide": false,
+          "method": "GET",
+          "metrics": [
+            {
+              "id": "8",
+              "type": "count"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: health_report AND metricset.name: pipelines AND host.hostname:$ls_host",
+          "queryParams": "",
+          "refId": "C",
+          "timeField": "@timestamp",
+          "urlPath": ""
         }
       ],
       "timeFrom": "1y",
@@ -4457,16 +4551,20 @@
         {
           "id": "organize",
           "options": {
-            "excludeByName": {},
+            "excludeByName": {
+              "Count": true
+            },
             "indexByName": {
-              "Max": 1,
-              "Max logstash.node.stats.pipeline.events.in": 2,
-              "Max logstash.node.stats.pipeline.events.in_rate": 3,
-              "Max logstash.node.stats.pipeline.events.out": 4,
-              "Max logstash.node.stats.pipeline.events.out_rate": 5,
-              "Max logstash.node.stats.pipeline.plugins.filters.failures": 6,
-              "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": 7,
-              "logstash.node.stats.pipeline.id": 0
+              "logstash.node.stats.pipeline.id": 0,
+              "logstash.node.stats.pipeline.status": 1,
+              "Max": 2,
+              "Max logstash.node.stats.pipeline.events.in": 3,
+              "Max logstash.node.stats.pipeline.events.in_rate": 4,
+              "Max logstash.node.stats.pipeline.events.out": 5,
+              "Max logstash.node.stats.pipeline.events.out_rate": 6,
+              "Max logstash.node.stats.pipeline.filters_failures": 7,
+              "Max logstash.node.stats.pipeline.filters_failures_rate": 8,
+              "Count": 8
             },
             "renameByName": {
               "Max": "Port",
@@ -4480,7 +4578,8 @@
               "Max logstash.node.stats.pipeline.plugins.filters.failures": "filter_failures",
               "Max logstash.node.stats.pipeline.plugins.filters.failures_rate": "failures_rate",
               "host.hostname": "Host",
-              "logstash.node.stats.pipeline.id": "Pipeline"
+              "logstash.node.stats.pipeline.id": "Pipeline",
+              "logstash.node.stats.pipeline.status": "Status"
             }
           }
         },
@@ -4489,15 +4588,15 @@
           "options": {
             "filters": [
               {
-                "fieldName": "In",
                 "config": {
                   "id": "isNull",
                   "options": {}
-                }
+                },
+                "fieldName": "In"
               }
             ],
-            "type": "exclude",
-            "match": "any"
+            "match": "any",
+            "type": "exclude"
           }
         }
       ],

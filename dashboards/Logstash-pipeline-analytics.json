@@ -24,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -74,6 +73,7 @@
       },
       "id": 4,
       "options": {
+        "afterRender": "",
         "content": "Pipeline: {{pipeline_name}} <br />\nLogstash host: {{host}} <br />\nLogstash name: {{name}} <br />\nNumber of filters failures: {{filters_failures}} <br />",
         "defaultContent": "The query didn't return any results.",
         "editor": {
@@ -82,12 +82,14 @@
           "language": "markdown"
         },
         "editors": [],
-        "everyRow": true,
         "externalScripts": [],
         "externalStyles": [],
         "helpers": "",
-        "styles": ""
+        "renderMode": "everyRow",
+        "styles": "",
+        "wrap": true
       },
+      "pluginVersion": "4.5.0",
       "targets": [
         {
           "cacheDurationSeconds": 0,
@@ -111,7 +113,7 @@
               "name": "pipeline_name"
             },
             {
-              "jsonPath": "$.hits.hits.[0]._source.logstash.node.stats.pipeline.($exists(\"filters_failures\") ? filter_failures : 0)",
+              "jsonPath": "$.hits.hits.[0]._source.logstash.node.stats.pipeline.($exists(\"filters_failures\") ? filters_failures : 0)",
               "language": "jsonata",
               "name": "filters_failures"
             }
@@ -120,7 +122,7 @@
           "params": [
             [
               "q",
-              "logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_uid}"
+              "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host"
             ]
           ],
           "queryParams": "",
@@ -224,6 +226,7 @@
         "y": 0
       },
       "id": 8,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -281,16 +284,18 @@
       ],
       "title": "Pipeline ingest",
       "transformations": [],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
     },
     {
       "datasource": {
-        "uid": "${es_direct_mon}",
-        "type": "marcusolsson-json-datasource"
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_mon}"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -311,20 +316,9 @@
                 "value": 80
               }
             ]
-          },
-          "color": {
-            "mode": "thresholds"
           }
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Plugin Id"
-            },
-            "properties": [
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -459,39 +453,39 @@
         ]
       },
       "gridPos": {
-        "h": 23,
+        "h": 29,
         "w": 14,
         "x": 10,
         "y": 0
       },
       "id": 2,
       "options": {
-        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "show": false,
+          "countRows": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "countRows": false,
-          "fields": ""
+          "show": false
         },
         "frameIndex": 1,
+        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
       "targets": [
         {
+          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_mon}"
           },
-          "cacheDurationSeconds": 0,
           "fields": [
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].name : \"\")",
-              "name": "Plugin",
-              "language": "jsonata"
+              "language": "jsonata",
+              "name": "Plugin"
             },
             {
               "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].id : \"\")",
@@ -504,7 +498,7 @@
               "name": "In"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.in_rate : \"\")",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.($exists(in_rate) ? in_rate: \"\") : \"\")",
               "language": "jsonata",
               "name": "In rate"
             },
@@ -514,7 +508,7 @@
               "name": "Out"
             },
             {
-              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.out_rate : \"\")",
+              "jsonPath": "$.hits.hits[*]._source.logstash.node.stats.pipeline.($exists(\"plugins\") ? plugins.filters[*].events.($exists(out_rate) ? out_rate: \"\") : \"\")",
               "language": "jsonata",
               "name": "Out rate"
             },
@@ -539,7 +533,7 @@
           "params": [
             [
               "q",
-              "logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_uid}"
+              "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND logstash.node.stats.pipeline.id:$pipeline_id AND host.hostname:$ls_host"
             ]
           ],
           "queryParams": "",
@@ -610,8 +604,7 @@
             ]
           }
         },
-        "overrides": [
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 5,
@@ -620,12 +613,13 @@
         "y": 5
       },
       "id": 9,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -658,9 +652,9 @@
           "method": "GET",
           "metrics": [
             {
+              "field": "logstash.exception.count",
               "id": "1",
-              "type": "sum",
-              "field": "logstash.exception.count"
+              "type": "sum"
             }
           ],
           "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND logstash.node.stats.pipeline.id: $pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_uid}",
@@ -672,8 +666,81 @@
       ],
       "title": "Exceptions",
       "transformations": [],
-      "type": "timeseries",
-      "maxDataPoints": 100
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${logstash_mon_metrics_status}"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 10,
+        "x": 0,
+        "y": 10
+      },
+      "id": 11,
+      "options": {
+        "everyRow": true,
+        "editors": [],
+        "editor": {
+          "language": "markdown",
+          "format": "auto",
+          "height": 200
+        },
+        "content": "{{#if diagnostic}}\n```json\n{{{json diagnostic}}}\n```\n{{else}}\nThe pipeline is healthy\n{{/if}}",
+        "defaultContent": "The query didn't return any results.",
+        "helpers": "",
+        "styles": ""
+      },
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${logstash_mon_metrics_status}"
+          },
+          "metrics": [
+            {
+              "id": "1",
+              "settings": {
+                "size": "500"
+              },
+              "type": "raw_data"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: health_report AND metricset.name: pipelines AND host.hostname:$ls_host AND logstash.node.stats.pipeline.id: ${pipeline_id}",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Status explanation for the Yellow and Red statuses",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "logstash.node.stats.pipeline.status",
+                "logstash.node.stats.pipeline.diagnosis"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "logstash.node.stats.pipeline.diagnosis": "diagnostic",
+              "logstash.node.stats.pipeline.status": "Status"
+            }
+          }
+        }
+      ],
+      "type": "marcusolsson-dynamictext-panel"
     },
     {
       "datasource": {
@@ -750,7 +817,7 @@
         "h": 5,
         "w": 10,
         "x": 0,
-        "y": 10
+        "y": 16
       },
       "id": 6,
       "options": {
@@ -796,9 +863,9 @@
           "method": "GET",
           "metrics": [
             {
+              "field": "logstash.exception.count",
               "id": "1",
-              "type": "sum",
-              "field": "logstash.exception.count"
+              "type": "sum"
             }
           ],
           "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host) AND logstash.log.pipeline_name: $pipeline_id AND \nelasticsearch.cluster.id: $cluster_uid",
@@ -832,6 +899,9 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "auto",
             "cellOptions": {
@@ -852,9 +922,6 @@
                 "value": 80
               }
             ]
-          },
-          "color": {
-            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -888,20 +955,20 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 15
+        "y": 21
       },
       "id": 10,
       "options": {
-        "showHeader": true,
         "cellHeight": "sm",
         "footer": {
-          "show": false,
+          "countRows": false,
+          "fields": "",
           "reducer": [
             "sum"
           ],
-          "countRows": false,
-          "fields": ""
+          "show": false
         },
+        "showHeader": true,
         "sortBy": []
       },
       "pluginVersion": "9.5.10",
@@ -1106,8 +1173,8 @@
         },
         "definition": "$.hits.hits[*]._source.logstash.node.stats.pipeline.id",
         "hide": 0,
-        "label": "Pipeline Name",
         "includeAll": false,
+        "label": "Pipeline Name",
         "multi": false,
         "name": "pipeline_id",
         "options": [],
@@ -1137,11 +1204,26 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "logstash_mon_metrics_status",
+        "multi": false,
+        "name": "logstash_mon_metrics_status",
+        "options": [],
+        "query": "elasticsearch",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_uid}/",
+        "skipUrlSync": false,
+        "type": "datasource"
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},

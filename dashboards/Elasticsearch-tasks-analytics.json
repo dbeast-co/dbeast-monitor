@@ -564,7 +564,7 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -589,7 +589,7 @@
       },
       "targets": [
         {
-          "alias": "Response time (s)",
+          "alias": "",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -616,7 +616,7 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Search response time (s)",
+      "title": "Search response",
       "type": "timeseries",
       "maxDataPoints": 100
     },
@@ -843,7 +843,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sample date"
+              "options": "Start date"
             },
             "properties": [
               {
@@ -911,18 +911,6 @@
                 "value": 376
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Description"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 140
-              }
-            ]
           }
         ]
       },
@@ -984,7 +972,7 @@
           "urlPath": ""
         }
       ],
-      "title": "Top running queries",
+      "title": "Top running tasks",
       "transformations": [
         {
           "id": "organize",
@@ -1044,7 +1032,7 @@
               "sort": 24
             },
             "renameByName": {
-              "@timestamp": "Sample date",
+              "@timestamp": "Start date",
               "elasticsearch.task.description": "description",
               "elasticsearch.task.ip": "",
               "elasticsearch.task.node": "Task node",
@@ -1069,7 +1057,7 @@
           "options": {
             "include": {
               "names": [
-                "Sample date",
+                "Start date",
                 "Task node",
                 "Run time",
                 "Index patterns",
@@ -1092,7 +1080,7 @@
               "Index patterns": 3,
               "Number of indices": 5,
               "Run time": 2,
-              "Sample date": 0,
+              "Start date": 0,
               "Task node": 1,
               "aggregations": 8,
               "description": 9,
@@ -1638,7 +1626,8 @@
                     "value": 80
                   }
                 ]
-              }
+              },
+              "unit": "ms"
             },
             "overrides": []
           },
@@ -1663,7 +1652,7 @@
           },
           "targets": [
             {
-              "alias": "Response time (s)",
+              "alias": "",
               "bucketAggs": [
                 {
                   "field": "@timestamp",
@@ -1690,7 +1679,7 @@
               "timeField": "@timestamp"
             }
           ],
-          "title": "Max Response time (s)",
+          "title": "Max Response time",
           "type": "timeseries",
           "maxDataPoints": 100
         },
@@ -1796,7 +1785,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Sample date"
+                  "options": "Start date"
                 },
                 "properties": [
                   {
@@ -2009,7 +1998,7 @@
                   "sort": 24
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "Description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
@@ -2790,7 +2779,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Sample date"
+                  "options": "Start date"
                 },
                 "properties": [
                   {
@@ -2822,12 +2811,8 @@
                 },
                 "properties": [
                   {
-                    "id": "custom.width",
-                    "value": 769
-                  },
-                  {
                     "id": "custom.filterable",
-                    "value": true
+                    "value": false
                   }
                 ]
               },
@@ -2926,7 +2911,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Top running queries",
+          "title": "Top running tasks",
           "transformations": [
             {
               "id": "organize",
@@ -2981,7 +2966,7 @@
                   "sort": 25
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
@@ -3336,7 +3321,7 @@
                   "sort": 24
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",
@@ -3460,7 +3445,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Sample date"
+                  "options": "Start date"
                 },
                 "properties": [
                   {
@@ -3476,12 +3461,8 @@
                 },
                 "properties": [
                   {
-                    "id": "custom.width",
-                    "value": 566
-                  },
-                  {
                     "id": "custom.filterable",
-                    "value": true
+                    "value": false
                   }
                 ]
               },
@@ -3572,7 +3553,7 @@
               "urlPath": ""
             }
           ],
-          "title": "Top running queries",
+          "title": "Top running tasks",
           "transformations": [
             {
               "id": "organize",
@@ -3626,7 +3607,7 @@
                   "sort": 24
                 },
                 "renameByName": {
-                  "@timestamp": "Sample date",
+                  "@timestamp": "Start date",
                   "elasticsearch.task.description": "description",
                   "elasticsearch.task.ip": "",
                   "elasticsearch.task.node": "Task node",

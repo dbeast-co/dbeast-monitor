@@ -461,7 +461,7 @@
             "excludeByName": {
               "cluster_uuid": true,
               "elasticsearch.cluster.id": true,
-              "logstash.elasticsearch.cluster.id": true
+              "elasticsearch.cluster.id": true
             },
             "indexByName": {},
             "renameByName": {

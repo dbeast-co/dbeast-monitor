@@ -1,13 +1,2 @@
-/backend/out/
-/backend/grafana-backend/target/
-/backend/grafana-backend/out/
-/backend/general-utils/target/
-/backend/general-utils/out/
-/backend/elk-clients/target/
-/backend/elk-clients/out/
-/backend/rest-server/out/
-/backend/rest-server/target/
-/backend/toolkit-runner/out/
-/backend/toolkit-runner/target/
 /tmp/
 /not-used/

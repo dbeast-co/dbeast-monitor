@@ -227,8 +227,9 @@
           "urlPath": ""
         }
       ],
-      "title": "Indexing rate per index ( For indices with indexing rate greater than 1 Events/s )",
+      "title": "Indexing rate per index",
       "type": "timeseries",
+      "description": "Include indices with an indexing rate greater than 1 Events/s",
       "maxDataPoints": 100
     },
     {
@@ -335,7 +336,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -365,7 +366,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Indexing rates per node ( For indices with rate greater than 1 Events/s)",
+      "title": "Indexing rates per node",
+      "description": "Include indices with a rate greater than 1 Events/s",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -492,7 +494,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -522,7 +524,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Average index latency per Node per Shard ( latency greater than 1 ms) ",
+      "title": "Average index latency per Node per Shard",
+      "description": "Include latency greater than 1 ms",
       "transformations": [
         {
           "id": "groupingToMatrix",
@@ -943,7 +946,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Indexing latency per index ( For indices with latency greater than 1 ms) ",
+      "title": "Indexing latency per index",
+      "description": "For indices with latency greater than 1 ms",
       "type": "timeseries",
       "maxDataPoints": 100
     },
@@ -1064,7 +1068,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "15"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -1243,7 +1247,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "15"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -1419,7 +1423,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "15"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -1445,7 +1449,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Average Query latency per node per index per shard ( greater than 100ms)",
+      "title": "Average Query latency per node per index per shard",
+      "description": "Include indices with a latency greater then 100ms",
       "transformations": [
         {
           "id": "filterByValue",
@@ -1595,7 +1600,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "15"
+                "size": "0"
               },
               "type": "terms"
             }
@@ -1621,7 +1626,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Average Fetch latency per index per node per shard ( greater than 1ms)",
+      "title": "Average Fetch latency per index per node per shard",
+      "description": "Include indices with latency greater than 1ms",
       "transformations": [
         {
           "id": "filterByValue",
