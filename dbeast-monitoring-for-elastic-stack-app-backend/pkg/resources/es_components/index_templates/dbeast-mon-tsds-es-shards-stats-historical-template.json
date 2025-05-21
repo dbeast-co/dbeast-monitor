@@ -1,0 +1,34 @@
+{
+  "index_patterns": [
+    "dbeast-mon-tsds-es-shards-stats"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-tsds-30d",
+          "rollover_alias": "dbeast-mon-index-corrupted-data"
+        },
+        "mode": "time_series",
+        "routing_path": [
+          "elasticsearch.cluster.id"
+        ]
+      }
+    },
+    "aliases": {
+      "dbeast-mon-es-shards-stats": {}
+    }
+  },
+  "composed_of": [
+    "dbeast-mon-tsds-es-shards-stats-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "data_stream": {
+    "hidden": false
+  },
+  "priority": 1,
+  "_meta": {
+    "description": "This template used for the shards monitoring",
+    "version": "1.0.2"
+  }
+}

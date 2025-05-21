@@ -1,0 +1,358 @@
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "date_diff": {
+          "type": "long",
+          "time_series_metric": "gauge"
+        },
+        "elasticsearch": {
+          "type": "object",
+          "properties": {
+            "cluster": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                }
+              }
+            },
+            "index": {
+              "type": "object",
+              "properties": {
+                "index_pattern": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                },
+                "name": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                }
+              }
+            },
+            "node": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                },
+                "ip": {
+                  "type": "ip"
+                },
+                "name": {
+                  "type": "keyword",
+                  "time_series_dimension": true
+                }
+              }
+            },
+            "shard": {
+              "type": "object",
+              "properties": {
+                "docs": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "ingest_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    }
+                  }
+                },
+                "get": {
+                  "type": "object",
+                  "properties": {
+                    "current": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "exists_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "exists_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "missing_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "missing_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    }
+                  }
+                },
+                "indexing": {
+                  "type": "object",
+                  "properties": {
+                    "delete_current": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "delete_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "delete_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "delete_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_current": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_failed": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_failed_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_last_period": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_latency": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "index_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    }
+                  }
+                },
+                "number": {
+                  "type": "long",
+                  "time_series_dimension": true
+                },
+                "primary": {
+                  "type": "boolean"
+                },
+                "query_cache": {
+                  "type": "object",
+                  "properties": {
+                    "evictions": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "memory_size": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    }
+                  }
+                },
+                "search": {
+                  "type": "object",
+                  "properties": {
+                    "fetch_current": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "fetch_last_period": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "fetch_latency": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "fetch_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "fetch_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "fetch_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "open_contexts": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "query_current": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "query_last_period": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "query_latency": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "query_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "query_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "query_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "scroll_current": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "scroll_time": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "scroll_total": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    }
+                  }
+                },
+                "state": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                },
+                "store": {
+                  "type": "object",
+                  "properties": {
+                    "ingest_rate": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "size_in_bytes": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    }
+                  }
+                },
+                "unassigned": {
+                  "type": "object",
+                  "properties": {
+                    "at": {
+                      "type": "date"
+                    },
+                    "for": {
+                      "type": "long",
+                      "time_series_metric": "gauge"
+                    },
+                    "reason": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "dataset": {
+              "type": "keyword",
+              "time_series_dimension": true
+            },
+            "duration": {
+              "type": "long",
+              "time_series_metric": "gauge"
+            },
+            "module": {
+              "type": "keyword",
+              "time_series_dimension": true
+            }
+          }
+        },
+        "host": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "keyword",
+              "time_series_dimension": true
+            }
+          }
+        },
+        "http": {
+          "type": "object",
+          "properties": {
+            "request": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "sample_date": {
+          "type": "date"
+        },
+        "tags": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "url": {
+          "type": "object",
+          "properties": {
+            "full": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    }
+  },
+  "_meta": {
+    "description": "The default mappings for the shards monitoring",
+    "version": "1.0.2"
+  }
+}

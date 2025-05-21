@@ -1,0 +1,204 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "analysis": {
+          "normalizer": {
+            "lowercase_normalizer": {
+              "filter": [
+                "lowercase",
+                "asciifolding"
+              ],
+              "type": "custom",
+              "char_filter": []
+            }
+          }
+        }
+      }
+    },
+    "mappings": {
+      "dynamic_templates": [],
+      "properties": {
+        "logstash": {
+          "type": "object",
+          "properties": {
+            "exception": {
+              "type": "object",
+              "properties": {
+                "mapping_exception_field": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "reason": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "type": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "count": {
+                  "type": "long"
+                }
+              }
+            },
+            "node": {
+              "type": "object",
+              "properties": {
+                "stats": {
+                  "type": "object",
+                  "properties": {
+                    "pipeline": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "ignore_above": 256,
+                          "type": "keyword"
+                        }
+                      }
+                    },
+                    "logstash": {
+                      "type": "object",
+                      "properties": {
+                        "host": {
+                          "ignore_above": 256,
+                          "type": "keyword"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "elasticsearch": {
+              "type": "object",
+              "properties": {
+                "cluster": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "ignore_above": 256,
+                      "type": "keyword"
+                    }
+                  }
+                }
+              }
+            },
+            "log": {
+              "type": "object",
+              "properties": {
+                "pipeline_listener_port": {
+                  "type": "integer"
+                },
+                "pipeline_action": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "module": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "pipeline_generated_id": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "pipeline_id": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "type": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "pipeline_name": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "pipeline_listener_host": {
+                  "type": "ip"
+                },
+                "timestamp": {
+                  "type": "date"
+                }
+              }
+            },
+            "message": {
+              "type": "text"
+            }
+          }
+        },
+        "@timestamp": {
+          "type": "date"
+        },
+        "elasticsearch": {
+          "type": "object",
+          "properties": {
+            "cluster": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            }
+          }
+        },
+        "log": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                }
+              }
+            },
+            "level": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "@version": {
+          "type": "integer"
+        },
+        "host": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "ignore_above": 256,
+              "type": "keyword"
+            },
+            "name": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "original": {
+              "type": "text"
+            },
+            "module": {
+              "ignore_above": 256,
+              "type": "keyword"
+            },
+            "dataset": {
+              "ignore_above": 256,
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  },
+  "_meta": {
+    "description": "The default mappings for the Logstash logs",
+    "version": "1.0.2"
+  }
+}

@@ -6,6 +6,8 @@
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production ",
     "mage": "mage -v",
     "mage_win": "c:\\app\\mage\\mage -v",
+    "build_and_mage_win": "webpack -c ./.config/webpack/webpack.config.ts --env production && cd ../dbeast-monitoring-for-elastic-stack-app-backend && c:\\app\\mage\\mage -v && xcopy .\\dist\\* ..\\dbeast-monitoring-for-elastic-stack-app-onprem\\dist /E /I /Y",
+
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development --watch",
     "test": "jest --watch --onlyChanged",
     "test:ci": "jest --passWithNoTests --maxWorkers 4",
