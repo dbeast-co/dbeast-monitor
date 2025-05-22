@@ -1,2 +1,5 @@
 /tmp/
 /not-used/
+/dbeast-monitoring-for-elastic-stack-app-onprem/.config/webpack/
+
+/dbeast-monitoring-for-elastic-stack-app-container/.config/webpack/
