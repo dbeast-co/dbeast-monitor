@@ -38,7 +38,7 @@ export class App extends PureComponent<Props, State> {
       .then((dataSources: any[]) => {
         const regex = new RegExp(/Elasticsearch-direct-prod-.*/g);
         return dataSources.filter((dataSource: any) => {
-          return dataSource.uid.match(regex);
+          return dataSource.name.match(regex);
         });
       });
 
