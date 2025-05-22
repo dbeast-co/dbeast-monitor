@@ -85,6 +85,15 @@
       "defaultNav": true
     },
     {
+      "type": "page",
+      "name": "Cluster's list",
+      "path": "/a/%PLUGIN_ID%/clusterslist",
+      "role": "Viewer",
+      "uid": "cluster-list",
+      "addToNav": true,
+      "defaultNav": true
+    },
+    {
       "type": "dashboard",
       "name": "Add new cluster",
       "path": "dashboards/Add-new-cluster-dashboard.json",

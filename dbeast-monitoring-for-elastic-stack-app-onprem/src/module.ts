@@ -1,9 +1,10 @@
 import { AppPlugin } from '@grafana/data';
-import { App } from './components/App';
+// import { App } from './components/App';
+import { ClustersList } from  './pages/ClustersList';
 import { AppConfig } from './components/AppConfig';
 
 // @ts-ignore
-export const plugin = new AppPlugin<{}>().setRootPage(App).addConfigPage({
+export const plugin = new AppPlugin<{}>().setRootPage(ClustersList).addConfigPage({
   title: 'Configuration',
   icon: 'cog',
   body: AppConfig,
