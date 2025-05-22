@@ -235,7 +235,7 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentia
 		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
 		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + clusterName + "--" + uid
-		OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + clusterName + "--" + uid
+		//OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + clusterName + "--" + uid
 
 		OneClonedTemplate["url"] = credentials.Host
 		OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled
@@ -265,7 +265,7 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 			clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
 			OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + database + "--" + clusterName + "--" + uid
-			OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + database + "--" + clusterName + "--" + uid
+			//OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + database + "--" + clusterName + "--" + uid
 
 			OneClonedTemplate["url"] = credentials.Host
 			OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled

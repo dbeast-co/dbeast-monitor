@@ -1,7 +1,6 @@
 {
   "orgId": 1,
   "name": "Elasticsearch-mon-",
-  "uid": "Elasticsearch-mon-",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",

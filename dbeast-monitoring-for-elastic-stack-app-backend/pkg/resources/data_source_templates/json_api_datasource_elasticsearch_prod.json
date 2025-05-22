@@ -1,7 +1,6 @@
 {
   "orgId": 1,
   "name": "Elasticsearch-direct-prod--",
-  "uid": "Elasticsearch-direct-prod--",
   "type": "marcusolsson-json-datasource",
   "typeName": "JSON API",
   "access": "proxy",

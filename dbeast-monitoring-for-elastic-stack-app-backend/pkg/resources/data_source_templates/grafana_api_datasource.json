@@ -1,5 +1,4 @@
 {
-  "uid": "Grafana-DS-API",
   "orgId": 1,
   "name": "Grafana-DS-API",
   "type": "volkovlabs-grapi-datasource",
