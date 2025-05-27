@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
 import {getBackendSrv} from '@grafana/runtime';
 import {Alert} from '@grafana/ui';
-import {DataSourceList} from '../DataSourceList/DataSourcesList';
 import './app.scss';
+import {DataSourceList} from "../DataSourceList/DataSourcesList";
 
 /**
  * Properties
@@ -57,9 +57,23 @@ export class App extends PureComponent<Props, State> {
         </Alert>
       );
     }
-    return (
-        <>
+    // const path = window.location.pathname;
 
+    // if (path.includes('/clusters')) {
+    //   return <ClustersList />;
+    // }
+    return (
+    //     <Routes>
+    //       <Route path="one" element={<ClustersList />} />
+    //       {/*<Route path={`${ROUTES.Three}/:id?`} element={<PageThree />} />*/}
+    //
+    //       {/*/!* Full-width page (this page will have no side navigation) *!/*/}
+    //       {/*<Route path={ROUTES.Four} element={<PageFour />} />*/}
+    //
+    //       {/*/!* Default page *!/*/}
+    //       {/*<Route path="*" element={<PageOne />} />*/}
+    //     </Routes>
+        <>
           <DataSourceList onDelete={(id) => this.onDeleteDataSource(id)} dataSources={this.state.dataSources}/>
           </>
     );

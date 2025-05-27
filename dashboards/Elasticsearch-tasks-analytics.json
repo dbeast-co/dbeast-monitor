@@ -3653,15 +3653,25 @@
       {
         "current": {
         },
+        "label": "Cluster",
+        "name": "cluster_ds",
+        "options": [],
+        "query": "grafana-testdata-datasource",
+        "refresh": 1,
+        "regex": "/Elasticsearch: (.*)/",
+        "type": "datasource"
+      },
+      {
+        "current": {
+        },
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "Grafana-DS-API"
         },
         "definition": "$[*].name",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "label": "Cluster Name",
-        "multi": false,
         "name": "cluster_uid",
         "options": [],
         "query": {
@@ -3685,9 +3695,7 @@
           "urlPath": "/"
         },
         "refresh": 1,
-        "regex": "/^Elasticsearch-direct-prod--(?<text>.+?)--(?<value>.*)/",
-        "skipUrlSync": false,
-        "sort": 0,
+        "regex": "${cluster_ds}",
         "type": "query"
       },
       {

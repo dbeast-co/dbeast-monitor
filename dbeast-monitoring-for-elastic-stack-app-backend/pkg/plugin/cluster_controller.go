@@ -218,11 +218,24 @@ func UpdateGrafanaDataSourceTemplates(environmentConfig EnvironmentConfig, clust
 		case strings.HasPrefix(name, "elasticsearch_datasource"):
 			UpdateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
+		case strings.HasPrefix(name, "testdata_datasource"):
+			UpdateTestDataTemplateValues(clonedTemplates, clusterNameProd, uidProd)
+			break
 		default:
 		}
 		UpdatedTemplates[name] = clonedTemplates
 	}
 	return UpdatedTemplates
+}
+
+func UpdateTestDataTemplateValues(clonedTemplates interface{}, clusterName string, uid string) {
+	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
+
+		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
+
+		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + clusterName + "--" + uid
+		OneClonedTemplate["uid"] = uid
+	}
 }
 
 /*

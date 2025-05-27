@@ -263,9 +263,9 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       });
 
       for (const dataSource of dataSources) {
-        if (dataSource.uid.endsWith(this.state.cluster_uuid)) {
+        if (dataSource.name.endsWith(this.state.cluster_uuid)) {
           try {
-            await backendSrv.delete(`/api/datasources/uid/${dataSource.uid}`);
+            await backendSrv.delete(`/api/datasources/name/${dataSource.name}`);
           } catch (deleteError) {
             console.error('deleteError', deleteError);
           }

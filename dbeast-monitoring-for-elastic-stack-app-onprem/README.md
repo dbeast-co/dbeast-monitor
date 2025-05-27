@@ -1,3 +1,4 @@
+
 ### Grafana DBeast Monitoring for Elastic Stack application plugin
 
 1. Install dependencies
