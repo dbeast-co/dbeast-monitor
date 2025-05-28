@@ -3656,7 +3656,7 @@
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
-        "query": "grafana-testdata-datasource",
+        "query": "testdata",
         "refresh": 1,
         "regex": "/Elasticsearch: (.*)/",
         "type": "datasource"
