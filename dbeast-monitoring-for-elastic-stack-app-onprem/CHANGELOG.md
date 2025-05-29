@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 2.0.0
+
+- Features:
+  * [FEAT] Grafana 10+ support #219[#219](https://github.com/dbeast-co/dbeast-monitor/issues/219)
+
+- Updated dashboards
+  * All dashboards
+
 ## Version 1.0.3
 
 - Features:

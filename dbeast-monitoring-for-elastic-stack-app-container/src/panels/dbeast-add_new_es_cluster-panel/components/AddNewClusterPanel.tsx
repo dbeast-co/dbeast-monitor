@@ -6,9 +6,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
+import {CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider} from '@mui/material';
 
-import { Spinner, useTheme2 } from '@grafana/ui';
+import { Spinner,useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from '../models/connection-settings';
@@ -35,7 +35,6 @@ export const AddNewClusterPanel = () => {
   const backendSrv = getBackendSrv();
   const theme = useTheme2();
   const baseUrl = settings.SERVER_URL;
-  // let isSpinnerLoading = false;
 
   const [validHost, setValidHost] = useState(false);
   const [validKibanaHost, setValidKibanaHost] = useState(false);
@@ -128,7 +127,7 @@ export const AddNewClusterPanel = () => {
               try {
                 const isEqualDataSource = value1.find((item1: Datasource) => item1.name === item.name);
                 if (isEqualDataSource) {
-                  await backendSrv.put(`/api/datasources/name/${item.name}`, JSON.stringify(item));
+                  await backendSrv.put(`/api/datasources/uid/${item.uid}`, JSON.stringify(item));
                 } else {
                   await backendSrv.post('/api/datasources', JSON.stringify(item));
                 }
@@ -232,6 +231,8 @@ export const AddNewClusterPanel = () => {
           });
         });
     } catch (error: any) {
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -683,11 +684,11 @@ export const AddNewClusterPanel = () => {
             </button>
           </div>
 
-          {/*{isLoading && (*/}
-          {/*    <div className="spinner_overlay">*/}
-          {/*        <CircularProgress color="primary"/>*/}
-          {/*    </div>*/}
-          {/*)}*/}
+          {isLoading && (
+              <div className="spinner_overlay">
+                  <CircularProgress color="primary"/>
+              </div>
+          )}
         </section>
         {isLoading && <Spinner></Spinner>}
         <ToastContainer autoClose={3000} position="bottom-right" />
@@ -704,15 +705,6 @@ export const AddNewClusterPanel = () => {
           {cluster && cluster.logstash_configurations && (
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
           )}
-          {/*<div className="actions">*/}
-          {/*    <button*/}
-          {/*        disabled={isDisabled}*/}
-          {/*        onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}*/}
-          {/*        className="btn_save"*/}
-          {/*    >*/}
-          {/*        Download*/}
-          {/*    </button>*/}
-          {/*</div>*/}
         </div>
         <Divider></Divider>
         <h3 className="title">Logstash inject configurations</h3>

@@ -267,7 +267,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           try {
             await backendSrv.delete(`/api/datasources/name/${dataSource.name}`);
           } catch (deleteError) {
-            console.error('deleteError', deleteError);
+            console.error('Delete data sources error: ', deleteError);
+            this.loading = false;
           }
         }
       }
@@ -278,7 +279,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       this.loading = false;
       window.location.reload();
     } catch (getError) {
-      console.error('getError', getError);
+      console.error('Cluster delete error: ', getError);
+      this.loading = false;
     }
   };
 

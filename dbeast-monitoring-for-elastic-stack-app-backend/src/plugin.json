@@ -8,7 +8,11 @@
   "info": {
     "keywords": [
       "app",
-      "DBeast monitor"
+      "DBeast monitor",
+      "Elastic Stack",
+      "Elasticsearch",
+      "Logstash",
+      "monitoring"
     ],
     "description": "DBeast Monitor for Elastic Stack",
     "author": {
@@ -63,7 +67,7 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "1.0.3",
+    "version": "2.0.0",
     "updated": "%TODAY%"
   },
   "includes": [
@@ -212,7 +216,7 @@
     }
   ],
   "dependencies": {
-    "grafanaDependency": ">=9.4.0",
+    "grafanaDependency": ">=10.1.0",
     "plugins": []
   }
 }

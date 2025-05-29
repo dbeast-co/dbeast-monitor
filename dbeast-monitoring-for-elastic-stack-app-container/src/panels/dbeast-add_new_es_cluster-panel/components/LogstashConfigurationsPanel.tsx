@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import {CheckboxConfig} from '../models/cluster';
+import { CheckboxConfig } from '../models/cluster';
 import './AddNewClusterPanel.scss';
 import './LogstashConfigurationsPanel.scss';
 
 export const LogstashConfigurationsPanel = ({ files }: any) => {
   const [_, setIsChecked] = useState(false);
-
-
 
   const onChangeCheckbox = (index: number) => {
     let file = files[index];

@@ -72,7 +72,6 @@
       "name": "Clusters List",
       "path": "/a/dbeast-dbeastmonitor-app/clusters-list",
       "icon": "list-ul",
-      "component": "ClustersList",
       "addToNav": true,
       "defaultNav": false
     },
