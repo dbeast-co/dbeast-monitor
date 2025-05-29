@@ -62,7 +62,9 @@
     "from": "now-6h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "hidden": true
+  },
   "timezone": "",
   "title": "Add new cluster dashboard",
   "uid": "add-new-cluster-dashboard",
