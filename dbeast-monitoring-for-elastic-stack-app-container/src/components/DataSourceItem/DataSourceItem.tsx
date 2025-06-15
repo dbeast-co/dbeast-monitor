@@ -102,7 +102,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     switch (event.target.value as string) {
       case 'stack-monitoring':
         window.open(
-          `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
           '_blank'
         );
         this.setState({
@@ -111,7 +111,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
         break;
       case 'logstash-overview':
-        window.open(`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_uid=${uid}`, '_blank');
+        window.open(`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`, '_blank');
 
         this.setState({
           monitorName: '',
@@ -119,7 +119,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'index-overview':
         window.open(
-          `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
           '_blank'
         );
 
@@ -129,7 +129,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'shards-overview':
         window.open(
-          `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
           '_blank'
         );
 
@@ -139,7 +139,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'ingest-pipelines-overview':
         window.open(
-          `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
           '_blank'
         );
 
@@ -149,7 +149,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'tasks-analytics':
         window.open(
-          `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
+          `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
           '_blank'
         );
 
@@ -159,7 +159,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         break;
       case 'ml-jobs-analytics':
         window.open(
-          `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_uid=${uid}`,
+          `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${uid}`,
           '_blank'
         );
         this.setState({

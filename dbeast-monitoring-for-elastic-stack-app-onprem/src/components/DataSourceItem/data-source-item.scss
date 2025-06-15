@@ -223,10 +223,10 @@
       border-color: #222e46 !important;
     }
 
-    button {
-      min-height: 40px;
-      border-radius: 7px;
-      background-color: #00bcd4;
+    button.btn {
+      min-height: 40px !important;
+      border-radius: 7px !important;
+      background-color: #00bcd4 !important;
     }
 
     .MuiList-root {
@@ -253,5 +253,11 @@
       white-space: nowrap;
       overflow: auto;
     }
+}
+button.btn {
+  min-height: 40px !important;
+  border-radius: 7px !important;
+  background-color: #00bcd4 !important;
+  color: #000000 !important;
 }
 

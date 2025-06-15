@@ -646,7 +646,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index pattern",
-                        "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                        "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                       }
                     ]
                   },
@@ -989,7 +989,7 @@
                   {
                     "targetBlank": true,
                     "title": "",
-                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                   }
                 ]
               },

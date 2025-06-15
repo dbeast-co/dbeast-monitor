@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {Button, Legend, useStyles2} from '@grafana/ui';
 import {AppPluginMeta, GrafanaTheme2, PluginConfigPageProps, PluginMeta} from '@grafana/data';
 import {getBackendSrv} from '@grafana/runtime';

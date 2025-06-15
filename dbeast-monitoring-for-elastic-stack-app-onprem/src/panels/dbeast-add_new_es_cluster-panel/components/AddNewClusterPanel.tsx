@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import './AddNewClusterPanel.scss';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -391,6 +392,7 @@ export const AddNewClusterPanel = () => {
   useEffect(() => {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
       response.json().then((data: Cluster) => {
+        console.log('data', data);
         setCluster(data);
         const { status: prodStatus } = data.cluster_connection_settings.prod.elasticsearch;
 

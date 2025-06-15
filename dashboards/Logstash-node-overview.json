@@ -4276,7 +4276,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze pipeline",
-                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_uid:queryparam}"
+                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_ds:queryparam}"
                   }
                 ]
               },
@@ -4782,7 +4782,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze pipeline",
-                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_uid:queryparam}"
+                    "url": "/d/logstash-pipeline-analytics/logstash-pipeline-analytics?orgId=1&refresh=1m&${ls_host:queryparam}&var-pipeline_id=${__data.fields.Pipeline}&${cluster_ds:queryparam}"
                   }
                 ]
               },

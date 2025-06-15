@@ -2180,7 +2180,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -2567,7 +2567,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -2807,7 +2807,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -3046,7 +3046,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -3430,7 +3430,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -3669,7 +3669,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -4053,7 +4053,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -4306,7 +4306,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Logstash",
-                        "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
+                        "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -4339,7 +4339,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Logstash",
-                        "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_uid:queryparam}"
+                        "url": "/d/logstash-node-overview/logstash-node-overview?orgId=1&refresh=1m&var-ls_host=${__data.fields.Host}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -5375,7 +5375,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node\"]}&${cluster_uid:queryparam}"
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node\"]}&${cluster_ds:queryparam}"
                       }
                     ]
                   },
@@ -6310,7 +6310,7 @@
                       {
                         "targetBlank": true,
                         "title": "Index Stats",
-                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[Index]}"
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[Index]}"
                       }
                     ]
                   }

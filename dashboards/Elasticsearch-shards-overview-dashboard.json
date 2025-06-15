@@ -284,7 +284,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -442,7 +442,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -705,7 +705,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index pattern",
-                    "url": "d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
+                    "url": "d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                   }
                 ]
               }
@@ -1016,7 +1016,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
+                    "url": "d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\\\\Node name\"]}"
                   }
                 ]
               }
@@ -1191,7 +1191,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -1367,7 +1367,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }
@@ -1544,7 +1544,7 @@
                   {
                     "targetBlank": true,
                     "title": "Analyze index",
-                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_uid:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
+                    "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index \\\\ Node\"]}"
                   }
                 ]
               }

@@ -1,4 +1,5 @@
-import React, {FC,} from 'react';
+import * as React from 'react';
+import { FC } from 'react';
 import {DataSourceItem} from '../DataSourceItem/DataSourceItem';
 import './data-source-list.scss';
 import {useTheme2} from '@grafana/ui';

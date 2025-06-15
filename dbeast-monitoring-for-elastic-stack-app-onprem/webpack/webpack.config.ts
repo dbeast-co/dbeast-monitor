@@ -8,18 +8,17 @@
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import * as path from 'path';
+import path from 'path';
 import ReplaceInFileWebpackPlugin from 'replace-in-file-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { SubresourceIntegrityPlugin } from 'webpack-subresource-integrity';
-import * as webpack from 'webpack';
-import { type Configuration } from 'webpack';
+import webpack, { type Configuration } from 'webpack';
 import LiveReloadPlugin from 'webpack-livereload-plugin';
 import VirtualModulesPlugin from 'webpack-virtual-modules';
 
-import { BuildModeWebpackPlugin } from './BuildModeWebpackPlugin';
-import { DIST_DIR, SOURCE_DIR } from './constants';
-import { getCPConfigVersion, getEntries, getPackageJson, getPluginJson, hasReadme, isWSL } from './utils';
+import { BuildModeWebpackPlugin } from './BuildModeWebpackPlugin.ts';
+import { DIST_DIR, SOURCE_DIR } from './constants.ts';
+import { getCPConfigVersion, getEntries, getPackageJson, getPluginJson, hasReadme, isWSL } from './utils.ts';
 
 const pluginJson = getPluginJson();
 const cpVersion = getCPConfigVersion();
@@ -208,7 +207,7 @@ const config = async (env: Env): Promise<Configuration> => {
           { from: 'plugin.json', to: '.' },
           { from: '../LICENSE', to: '.' },
           { from: '../CHANGELOG.md', to: '.', force: true },
-          // { from: '**/*.json', to: '.' },
+          { from: '**/*.json', to: '.' },
           { from: '../../dashboards/*.json', to: './dist/dashboards', force: true  },
           { from: '**/*.svg', to: '.', noErrorOnMissing: true },
           { from: '**/*.png', to: '.', noErrorOnMissing: true },
