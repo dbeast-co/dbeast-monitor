@@ -392,7 +392,6 @@ export const AddNewClusterPanel = () => {
   useEffect(() => {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
       response.json().then((data: Cluster) => {
-        console.log('data', data);
         setCluster(data);
         const { status: prodStatus } = data.cluster_connection_settings.prod.elasticsearch;
 
@@ -488,7 +487,7 @@ export const AddNewClusterPanel = () => {
   useEffect(() => {
     const regex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
     const updatedState = connectionSettings;
-    console.log('updatedState', updatedState);
+    // console.log('updatedState', updatedState);
 
 
     const isProdElasticHostValid = regex.test(updatedState.prod.elasticsearch.host);

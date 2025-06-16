@@ -178,7 +178,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           )
           .then((dataSources: any) => {
             if (!dataSources ) {
-              console.log(
+              console.error(
                   "Error in the catch block:",
                   dataSources)
               throw new Error('No data sources found');
@@ -203,8 +203,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             });
           })
           .catch((e) => {
-            console.log("Error", e);
-            debugger;
+            console.error("Error", e);
             let regex = new RegExp(/Elasticsearch-direct-prod--(.*)--(.*)/g);
             const uid: string = this.props.dataSourceItem.name;
             const matches = regex.exec(uid);
@@ -228,7 +227,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           });
     }
     catch (e) {
-      console.log("Error", e);
+      console.error("Error", e);
     }
     if (this.state.status !== 'ERROR') {
       await getBackendSrv()

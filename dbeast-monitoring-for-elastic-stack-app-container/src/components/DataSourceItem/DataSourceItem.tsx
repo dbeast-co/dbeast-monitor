@@ -170,7 +170,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   };
 
   async componentDidMount() {
-    // console.log('Props: ', this.props.theme)
     await getBackendSrv()
       .get(
         `/api/datasources/proxy/uid/${this.props.dataSourceItem.uid}/_cluster/stats?filter_path=cluster_uuid,cluster_name,status,nodes.versions,indices.count,indices.shards.total,indices.docs.count,indices.store.size_in_bytes,nodes.fs.total_in_bytes,nodes.count.total,nodes.count.data,nodes.count.data_hot,nodes.count.data_warm,nodes.count.data_cold`
