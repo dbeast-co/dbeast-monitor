@@ -152,7 +152,7 @@ version: '3.7'
 services:
   grafana:
     extends:
-      file: .config/docker-compose-base.yaml
+      file: .config/docker-compose-onprem.yaml
       service: grafana
     build:
       args:

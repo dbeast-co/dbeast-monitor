@@ -1,0 +1,34 @@
+services:
+  grafana:
+    user: root
+    container_name: 'dbeast-dbeastmonitor-app'
+
+    build:
+      context: .
+      args:
+        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
+        grafana_version: ${GRAFANA_VERSION:-12.0.2}
+        development: ${DEVELOPMENT:-false}
+        anonymous_auth_enabled: ${ANONYMOUS_AUTH_ENABLED:-true}
+    ports:
+      - 3000:3000/tcp
+      - 2345:2345/tcp # delve
+    security_opt:
+      - 'apparmor:unconfined'
+      - 'seccomp:unconfined'
+    cap_add:
+      - SYS_PTRACE
+    volumes:
+      - ../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
+      - ../provisioning:/etc/grafana/provisioning
+      - ..:/root/dbeast-dbeastmonitor-app
+
+    environment:
+      NODE_ENV: development
+      GF_SERVER_HTTP_ADDR: 0.0.0.0
+      GF_LOG_FILTERS: plugin.dbeast-dbeastmonitor-app:info
+      GF_LOG_LEVEL: info
+      GF_DATAPROXY_LOGGING: 1
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: dbeast-dbeastmonitor-app
+      GF_INSTALL_PLUGINS: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
+      DBEAST_MONITOR_IS_CONTAINER_VERSION: "false"
