@@ -16,6 +16,57 @@ import (
 
 var LSConfigs = make(map[string]string)
 
+func (a *App) DeployLogstashConfigurations(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+
+	response.Header().Add("Content-Type", "application/zip")
+
+	var project Project
+
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": "Invalid request payload"})
+		return
+	}
+	ctxLogger.Debug("The project: ", project)
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+	defer request.Body.Close()
+
+	_, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+
+	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+		"### Configuration files for the cluster Id: ",
+		ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			log.DefaultLogger.Error("Error while write response: " + err.Error())
+			return
+		}
+	}
+	err = DeleteFolder(GrafanaLogstashConfDConfigurationsFolder, clusterId, ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			log.DefaultLogger.Error("Error while write response: " + err.Error())
+			return
+		}
+	}
+
+	err = SaveLogstashConfigurationFiles(project, ctxLogger)
+
+}
+
 func (a *App) DownloadElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	ctxLogger.Info("Got request for the Elasticsearch configuration files generation")

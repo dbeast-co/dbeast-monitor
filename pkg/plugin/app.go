@@ -25,6 +25,8 @@ type App struct {
 	backend.CallResourceHandler
 }
 
+var applicationVersion = os.Getenv("DBEAST_MONITOR_VERSION")
+
 // NewApp creates a new example *App instance.
 func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
 	var app App
@@ -37,19 +39,7 @@ func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemg
 	app.CallResourceHandler = httpadapter.New(mux)
 
 	ctxLogger := log.DefaultLogger
-	isContainerVersion := os.Getenv("DBEAST_MONITOR_IS_CONTAINER_VERSION")
-	ctxLogger.Warn("Loaded env var", "IS_CONTAINER_VERSION", isContainerVersion)
-
-	//isContainer := false
-	//if raw, ok := settings.JSONData["is_container_version"]; ok {
-	//	switch v := raw.(type) {
-	//	case bool:
-	//		isContainer = v
-	//	case string:
-	//		isContainer = strings.ToLower(v) == "true"
-	//	}
-	//}
-	//log.DefaultLogger.Info("is_container_version =", isContainer)
+	ctxLogger.Info(applicationVersion, " Version Installed")
 
 	return &app, nil
 }
@@ -58,6 +48,10 @@ func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemg
 // created.
 func (a *App) Dispose() {
 	// cleanup
+}
+
+func (a *App) IsContainerVersion() {
+
 }
 
 // CheckHealth handles health checks sent from Grafana to the plugin.

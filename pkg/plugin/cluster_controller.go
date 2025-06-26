@@ -60,17 +60,17 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 	ctxLogger.Info("Got request for the new cluster save")
 	response.Header().Add("Content-Type", "application/json")
 
-	var cluster Project
-	if err := json.NewDecoder(request.Body).Decode(&cluster); err != nil {
+	var project Project
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
 		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
 		response.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 		return
 	}
-	sanitizeEnvironmentConfig(&cluster.ClusterConnectionSettings)
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 	defer request.Body.Close()
 
-	clusterNameProd, clusterId, err := GetClusterInfo(cluster.ClusterConnectionSettings.Prod.Elasticsearch)
+	clusterNameProd, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
 	if err != nil {
 		log.DefaultLogger.Error("Error while receiving cluster info: " + err.Error())
 		response.WriteHeader(http.StatusInternalServerError)
@@ -78,9 +78,10 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		return
 	}
 
-	for _, injectType := range cluster.MonitoringClusterInjection {
+	//Send Data to Elasticsearch
+	for _, injectType := range project.MonitoringClusterInjection {
 		if injectType.Id == "ilm_policies_injection" && injectType.IsChecked {
-			err = SendILMToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			err = SendILMToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
 			if err != nil {
 				log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
 				response.WriteHeader(http.StatusInternalServerError)
@@ -90,14 +91,14 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		}
 
 		if injectType.Id == "templates_injection" && injectType.IsChecked {
-			err = SendComponentTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			err = SendComponentTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
 			if err != nil {
 				log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
 				response.WriteHeader(http.StatusInternalServerError)
 				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
 				return
 			}
-			err = SendIndexTemplatesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			err = SendIndexTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
 			if err != nil {
 				log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
 				response.WriteHeader(http.StatusInternalServerError)
@@ -107,7 +108,7 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		}
 
 		if injectType.Id == "create_first_indices" && injectType.IsChecked {
-			err = SendFirstIndicesToMonitoringCluster(cluster.ClusterConnectionSettings.Mon.Elasticsearch)
+			err = SendFirstIndicesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
 			if err != nil {
 				log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
 				response.WriteHeader(http.StatusInternalServerError)
@@ -117,34 +118,8 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		}
 	}
 
-	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
-		"### Configuration files for the cluster Id: ",
-		ctxLogger)
-
-	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		_, err := response.Write([]byte(err.Error()))
-		if err != nil {
-			log.DefaultLogger.Error("Error while write response: " + err.Error())
-			return
-		}
-	}
-	err = DeleteFolder(GrafanaLogstashConfDConfigurationsFolder, clusterId, ctxLogger)
-
-	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		_, err := response.Write([]byte(err.Error()))
-		if err != nil {
-			log.DefaultLogger.Error("Error while write response: " + err.Error())
-			return
-		}
-	}
-
-	err = SaveLogstashConfigurationFiles(cluster, ctxLogger)
-
-	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(cluster.ClusterConnectionSettings, clusterNameProd, clusterId)
-
 	//Update Grafana datasource templates with actual values and return them to the Frontend for the future ingest into Grafana
+	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
 		log.DefaultLogger.Error("Error while the updated templates parsing: " + err.Error())
