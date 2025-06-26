@@ -5,6 +5,12 @@
   "id": "dbeast-dbeastmonitor-app",
   "executable": "gpx_app-dbeast-dbeastmonitor-app",
   "backend": true,
+  "subPlugins": [
+    {
+      "type": "panel",
+      "path": "panel"
+    }
+  ],
   "info": {
     "keywords": [
       "app",

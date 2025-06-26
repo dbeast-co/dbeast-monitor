@@ -4,8 +4,10 @@ import (
 	"context"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
 	"net/http"
+	"os"
 )
 
 // Make sure App implements required interfaces. This is important to do
@@ -24,7 +26,7 @@ type App struct {
 }
 
 // NewApp creates a new example *App instance.
-func NewApp(_ context.Context, _ backend.AppInstanceSettings) (instancemgmt.Instance, error) {
+func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
 	var app App
 
 	// Use a httpadapter (provided by the SDK) for resource calls. This allows us
@@ -33,6 +35,21 @@ func NewApp(_ context.Context, _ backend.AppInstanceSettings) (instancemgmt.Inst
 	mux := http.NewServeMux()
 	app.registerRoutes(mux)
 	app.CallResourceHandler = httpadapter.New(mux)
+
+	ctxLogger := log.DefaultLogger
+	isContainerVersion := os.Getenv("DBEAST_MONITOR_IS_CONTAINER_VERSION")
+	ctxLogger.Warn("Loaded env var", "IS_CONTAINER_VERSION", isContainerVersion)
+
+	//isContainer := false
+	//if raw, ok := settings.JSONData["is_container_version"]; ok {
+	//	switch v := raw.(type) {
+	//	case bool:
+	//		isContainer = v
+	//	case string:
+	//		isContainer = strings.ToLower(v) == "true"
+	//	}
+	//}
+	//log.DefaultLogger.Info("is_container_version =", isContainer)
 
 	return &app, nil
 }

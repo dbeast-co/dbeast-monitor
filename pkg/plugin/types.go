@@ -24,12 +24,6 @@ type EnvironmentConfig struct {
 	} `json:"mon"`
 }
 
-//type MonitoringClusterInjectionSettings struct {
-//	TemplatesInjection   ConfigurationCheckbox `json:"templates_injection"`
-//	ILMPoliciesInjection ConfigurationCheckbox `json:"ilm_policies_injection"`
-//	CreateFirsIndices    ConfigurationCheckbox `json:"create_first_indices"`
-//}
-
 type LogstashHost struct {
 	ServerAddress      string `json:"server_address"`
 	LogstashApiHost    string `json:"logstash_api_host"`
