@@ -99,6 +99,11 @@
       "defaultNav": true
     },
     {
+      "type": "panel",
+      "name": "Add new cluster panel",
+      "path": "panel/plugin.json"
+    },
+    {
       "type": "dashboard",
       "name": "Add new cluster",
       "path": "dashboards/Add-new-cluster-dashboard.json",
