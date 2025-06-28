@@ -11,7 +11,7 @@ func (a *App) GetVersion(w http.ResponseWriter, req *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 
 	w.WriteHeader(http.StatusOK)
-	_, err := w.Write([]byte("{ \"version\": \"" + applicationVersion + "\""))
+	_, err := w.Write([]byte("{ \"version\": \"" + applicationVersion + "\" }"))
 	if err != nil {
 		return
 	}
