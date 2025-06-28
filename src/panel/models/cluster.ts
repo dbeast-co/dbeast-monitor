@@ -21,4 +21,11 @@ export interface Cluster {
       hosts: Host[];
     };
   };
+  monitoring_cluster_injection: MonitoringClusterInjection;
+}
+
+export interface MonitoringClusterInjection {
+  templates_injection: boolean;
+  ilm_policies_injection: boolean;
+  create_first_indices: boolean;
 }

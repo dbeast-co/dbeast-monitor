@@ -20,7 +20,7 @@ services:
       - ../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
       - ../provisioning:/etc/grafana/provisioning
       - ..:/root/dbeast-dbeastmonitor-app
-      - ./logstash-config:/opt/dbeast/logstash/config
+      - ../logstash-config:/opt/dbeast/logstash/config
 
     environment:
       NODE_ENV: development
@@ -40,5 +40,5 @@ services:
       - "5044:5044"
       - "9600:9600"  # Logstash monitoring API
     volumes:
-      - ./logstash-config:/usr/share/logstash/config
+      - ../logstash-config:/usr/share/logstash/config
 

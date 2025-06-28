@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './AddNewClusterPanel.scss';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -7,9 +6,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
+import {CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider} from '@mui/material';
 
-import {Spinner, useTheme2} from '@grafana/ui';
+import { Spinner,useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from '../models/connection-settings';
@@ -23,6 +22,7 @@ import { saveAs } from 'file-saver';
 import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
 import LogstashComponent, { Logstash } from './logstash';
 import { v4 as uuidv4 } from 'uuid';
+import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPanel';
 
 const settings = require('../config.ts');
 
@@ -94,13 +94,18 @@ export const AddNewClusterPanel = () => {
   const onSave = () => {
     setIsLoading(true);
     try {
-      const formToSave: ConnectionSettings = getCluster();
+      const formToSave = {
+        ...cluster,
+        cluster_connection_settings: getConnectionSettings(),
+      };
+
       if (
-        ((formToSave.prod.elasticsearch.status === 'GREEN' || formToSave.prod.elasticsearch.status === 'YELLOW') &&
-          formToSave.mon.elasticsearch.status === 'GREEN') ||
-        formToSave.mon.elasticsearch.status === 'YELLOW'
+        ((formToSave.cluster_connection_settings.prod.elasticsearch.status === 'GREEN' ||
+          formToSave.cluster_connection_settings.prod.elasticsearch.status === 'YELLOW') &&
+          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'GREEN') ||
+        formToSave.cluster_connection_settings.mon.elasticsearch.status === 'YELLOW'
       ) {
-        const promise2 = backendSrv.post(`${baseUrl}/save`, JSON.stringify(formToSave), {
+        const promise2 = backendSrv.post(`${baseUrl}/add_cluster`, JSON.stringify(formToSave), {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
@@ -120,13 +125,9 @@ export const AddNewClusterPanel = () => {
           for (const item of dataSourcesFromResponse) {
             if (!isErrorOccurred) {
               try {
-                let item1Result: Datasource | undefined = undefined;
-                const isEqualDataSource = value1.find((item1: Datasource) => {
-                  item1Result = item1 as Datasource;
-                  return item1.name === item.name;
-                });
+                const isEqualDataSource = value1.find((item1: Datasource) => item1.name === item.name);
                 if (isEqualDataSource) {
-                  await backendSrv.put(`/api/datasources/uid/${item1Result!.uid}`, JSON.stringify(item));
+                  await backendSrv.put(`/api/datasources/uid/${item.uid}`, JSON.stringify(item));
                 } else {
                   await backendSrv.post('/api/datasources', JSON.stringify(item));
                 }
@@ -170,7 +171,7 @@ export const AddNewClusterPanel = () => {
   const onTest = () => {
     setIsLoading(true);
     try {
-      const formToTest: ConnectionSettings = getCluster();
+      const formToTest: ConnectionSettings = getConnectionSettings();
       backendSrv
         .post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest), {
           headers: {
@@ -359,7 +360,7 @@ export const AddNewClusterPanel = () => {
     });
   };
 
-  const getCluster = () => {
+  const getConnectionSettings = () => {
     return {
       prod: {
         elasticsearch: {
@@ -408,7 +409,7 @@ export const AddNewClusterPanel = () => {
   }, []);
 
   const onDownload = (url: string) => {
-    const cluster_connection_settings = getCluster();
+    const cluster_connection_settings = getConnectionSettings();
 
     if (url === LogstashFileType.ES_MONITORING_CONFIGURATION_FILES) {
       const clusterToSend = {
@@ -487,8 +488,6 @@ export const AddNewClusterPanel = () => {
   useEffect(() => {
     const regex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
     const updatedState = connectionSettings;
-    // console.log('updatedState', updatedState);
-
 
     const isProdElasticHostValid = regex.test(updatedState.prod.elasticsearch.host);
     const isKibanaHostValid = regex.test(updatedState.prod.kibana.host);
@@ -681,43 +680,42 @@ export const AddNewClusterPanel = () => {
               Test
             </button>
             <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
-              Save
+              Add
             </button>
           </div>
 
           {isLoading && (
-            <div className="spinner_overlay">
-              <CircularProgress color="primary" />
-            </div>
+              <div className="spinner_overlay">
+                  <CircularProgress color="primary"/>
+              </div>
           )}
         </section>
         {isLoading && <Spinner></Spinner>}
         <ToastContainer autoClose={3000} position="bottom-right" />
       </div>
       <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
-        <h3 className="title">Cluster inject configuration</h3>
         <div className="wrapper">
+          <h3 className="title">Monitoring Cluster Injections</h3>
+          {cluster && cluster.monitoring_cluster_injection && (
+            <MonitoringClusterInjectionPanel monitoringClusterInjections={cluster.monitoring_cluster_injection} />
+          )}
+          <Divider></Divider>
+          <h3 className="title">Cluster inject configuration</h3>
+
           {cluster && cluster.logstash_configurations && (
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
           )}
-          <div className="actions">
-            <button
-              disabled={isDisabled}
-              onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
-              className="btn_save"
-            >
-              Download
-            </button>
-          </div>
         </div>
         <Divider></Divider>
         <h3 className="title">Logstash inject configurations</h3>
         <div className="wrapper">
           {cluster.logstash_configurations &&
             cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations && (
-              <LogstashConfigurationsPanel
-                files={cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations}
-              />
+              <div className="hide">
+                <LogstashConfigurationsPanel
+                  files={cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations}
+                />
+              </div>
             )}
 
           <div className="actions">
