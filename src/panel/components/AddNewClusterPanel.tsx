@@ -6,9 +6,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider} from '@mui/material';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-import { Spinner,useTheme2 } from '@grafana/ui';
+import { Spinner, useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from '../models/connection-settings';
@@ -90,6 +90,8 @@ export const AddNewClusterPanel = () => {
   const [isShowLogstash, setIsShowLogstash] = useState(false);
 
   const [logstashList, setLogstashList] = useState([] as Logstash[]);
+
+  const [version, setVersion] = useState('');
 
   const onSave = () => {
     setIsLoading(true);
@@ -391,6 +393,25 @@ export const AddNewClusterPanel = () => {
   };
 
   useEffect(() => {
+    fetch(`${SERVER_URL}/version`).then((response: Response) => {
+      console.log(response);
+      if (!response) {
+        return;
+      }
+
+      response
+        .json()
+        .then((data) => {
+          console.log('Fetched version data:', data);
+          setVersion(data.version);
+        })
+        .catch((error) => {
+          console.error('Error parsing the response JSON:', error);
+        });
+    });
+  }, []);
+
+  useEffect(() => {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
       response.json().then((data: Cluster) => {
         setCluster(data);
@@ -407,6 +428,48 @@ export const AddNewClusterPanel = () => {
       });
     });
   }, []);
+
+  const onLogstashFilesDeploy = (url: string) => {
+    const cluster_connection_settings = getConnectionSettings();
+    const clusterToSend = {
+      cluster_connection_settings,
+      logstash_configurations: cluster.logstash_configurations,
+    };
+    fetch(`${SERVER_URL}/deploy_logstash_configuration`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(clusterToSend),
+    }).then((response) => {
+      if (response) {
+        console.log(response.status);
+      } else {
+        console.log('Error in the logstash deployment');
+      }
+    });
+  };
+
+  const onTemplatesDeploy = (url: string) => {
+    const cluster_connection_settings = getConnectionSettings();
+    const clusterToSend = {
+      cluster_connection_settings,
+      monitoring_cluster_injection: cluster.monitoring_cluster_injection,
+    };
+    fetch(`${SERVER_URL}/deploy_elasticsearch_configuration`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(clusterToSend),
+    }).then((response) => {
+      if (response) {
+        console.log(response.status);
+      } else {
+        console.log('Error in the Elasticsearch templates deployment');
+      }
+    });
+  };
 
   const onDownload = (url: string) => {
     const cluster_connection_settings = getConnectionSettings();
@@ -685,9 +748,9 @@ export const AddNewClusterPanel = () => {
           </div>
 
           {isLoading && (
-              <div className="spinner_overlay">
-                  <CircularProgress color="primary"/>
-              </div>
+            <div className="spinner_overlay">
+              <CircularProgress color="primary" />
+            </div>
           )}
         </section>
         {isLoading && <Spinner></Spinner>}
@@ -699,12 +762,40 @@ export const AddNewClusterPanel = () => {
           {cluster && cluster.monitoring_cluster_injection && (
             <MonitoringClusterInjectionPanel monitoringClusterInjections={cluster.monitoring_cluster_injection} />
           )}
+          <div className="actions">
+            <button
+              disabled={isDisabled}
+              onClick={() => onTemplatesDeploy(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
+              className="btn_save"
+            >
+              Deploy
+            </button>
+          </div>
           <Divider></Divider>
           <h3 className="title">Cluster inject configuration</h3>
 
           {cluster && cluster.logstash_configurations && (
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
           )}
+          <div className="actions">
+            {version.includes('Container') ? (
+              <button
+                disabled={isDisabled}
+                onClick={() => onLogstashFilesDeploy(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
+                className="btn_save"
+              >
+                Deploy
+              </button>
+            ) : (
+              <button
+                disabled={isDisabled}
+                onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
+                className="btn_save"
+              >
+                Download
+              </button>
+            )}
+          </div>
         </div>
         <Divider></Divider>
         <h3 className="title">Logstash inject configurations</h3>

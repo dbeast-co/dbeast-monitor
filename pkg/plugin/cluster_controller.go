@@ -78,45 +78,45 @@ func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Requ
 		return
 	}
 
-	//Send Data to Elasticsearch
-	for _, injectType := range project.MonitoringClusterInjection {
-		if injectType.Id == "ilm_policies_injection" && injectType.IsChecked {
-			err = SendILMToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
-			if err != nil {
-				log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
-				response.WriteHeader(http.StatusInternalServerError)
-				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-				return
-			}
-		}
-
-		if injectType.Id == "templates_injection" && injectType.IsChecked {
-			err = SendComponentTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
-			if err != nil {
-				log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
-				response.WriteHeader(http.StatusInternalServerError)
-				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-				return
-			}
-			err = SendIndexTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
-			if err != nil {
-				log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
-				response.WriteHeader(http.StatusInternalServerError)
-				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-				return
-			}
-		}
-
-		if injectType.Id == "create_first_indices" && injectType.IsChecked {
-			err = SendFirstIndicesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
-			if err != nil {
-				log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
-				response.WriteHeader(http.StatusInternalServerError)
-				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-				return
-			}
-		}
-	}
+	////Send Data to Elasticsearch
+	//for _, injectType := range project.MonitoringClusterInjection {
+	//	if injectType.Id == "ilm_policies_injection" && injectType.IsChecked {
+	//		err = SendILMToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+	//		if err != nil {
+	//			log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
+	//			response.WriteHeader(http.StatusInternalServerError)
+	//			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+	//			return
+	//		}
+	//	}
+	//
+	//	if injectType.Id == "templates_injection" && injectType.IsChecked {
+	//		err = SendComponentTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+	//		if err != nil {
+	//			log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
+	//			response.WriteHeader(http.StatusInternalServerError)
+	//			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+	//			return
+	//		}
+	//		err = SendIndexTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+	//		if err != nil {
+	//			log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
+	//			response.WriteHeader(http.StatusInternalServerError)
+	//			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+	//			return
+	//		}
+	//	}
+	//
+	//	if injectType.Id == "create_first_indices" && injectType.IsChecked {
+	//		err = SendFirstIndicesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+	//		if err != nil {
+	//			log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
+	//			response.WriteHeader(http.StatusInternalServerError)
+	//			json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+	//			return
+	//		}
+	//	}
+	//}
 
 	//Update Grafana datasource templates with actual values and return them to the Frontend for the future ingest into Grafana
 	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
