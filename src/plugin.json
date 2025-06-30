@@ -8,7 +8,9 @@
   "info": {
     "keywords": [
       "app",
-      "DBeast monitor"
+      "DBeast monitor",
+      "Elastic Stack",
+      "Elasticsearch"
     ],
     "description": "DBeast Monitor for Elastic Stack",
     "author": {

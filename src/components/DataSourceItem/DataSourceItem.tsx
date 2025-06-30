@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { Button, ButtonVariant, Spinner, stylesFactory, useTheme } from '@grafana/ui';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 
 interface Props {
   dataSourceItem: any;
@@ -286,9 +287,25 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         }
       }
 
-      // this.props.onDelete(this.state.cluster_uuid)
-      // this.componentDidMount().then(() => {
-      // });
+      try {
+        await backendSrv.delete(`api/plugins/dbeast-dbeastmonitor-app/resources/delete_cluster/${this.state.cluster_uuid}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
+      } catch (error: any) {
+        console.error('Delete from backend error: ', error);
+        toast.error(`${error.message}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+          closeButton: true,
+          hideProgressBar: true,
+          draggable: false,
+        });
+        this.loading = false;
+      }
+
       this.loading = false;
       window.location.reload();
     } catch (getError) {
