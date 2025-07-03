@@ -19,7 +19,6 @@ type BasicAuthTransport struct {
 }
 
 func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
-
 	if credentials.Host == "" {
 		log.DefaultLogger.Error("Host is empty")
 		return nil, fmt.Errorf("host is empty")
@@ -52,20 +51,27 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 }
 
 func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+	log.DefaultLogger.Debug("Request path: " + requestURL)
+	log.DefaultLogger.Debug("Request host: " + credentials.Host)
+	log.DefaultLogger.Debug("Request method: GET")
+
 	client, err := CreateHTTPClient(credentials)
 	if err != nil {
+		log.DefaultLogger.Warn("Request path: " + requestURL)
 		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
 		return nil, err
 	}
 
 	req, err := http.NewRequest("GET", requestURL, nil)
 	if err != nil {
+		log.DefaultLogger.Warn("Request path: " + requestURL)
 		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
 		return nil, err
 	}
 
 	response, err := client.Do(req)
 	if err != nil {
+		log.DefaultLogger.Error("Request path: " + requestURL)
 		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
 		return response, err
 	}
@@ -89,12 +95,14 @@ func ProcessRequestWithBody(credentials Credentials, requestURL string, body str
 
 	client, err := CreateHTTPClient(credentials)
 	if err != nil {
+		log.DefaultLogger.Warn("Request path: " + requestURL)
 		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
 		return nil, err
 	}
 
 	req, err := http.NewRequest(method, requestURL, bytes.NewBuffer([]byte(body)))
 	if err != nil {
+		log.DefaultLogger.Warn("Request path: " + requestURL)
 		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
 		return nil, err
 	}
@@ -105,25 +113,30 @@ func ProcessRequestWithBody(credentials Credentials, requestURL string, body str
 
 	response, err := client.Do(req)
 	if err != nil {
+		log.DefaultLogger.Error("Request path: " + requestURL)
 		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
 		return response, err
 	} else {
 		body, err := io.ReadAll(response.Body)
 		err2 := response.Body.Close()
 		if err2 != nil {
+			log.DefaultLogger.Error("Request path: " + requestURL)
 			log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
 		}
 
 		result := map[string]interface{}{}
 		if err != nil {
+			log.DefaultLogger.Error("Request path: " + requestURL)
 			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
 		} else if len(body) > 0 {
 			err := json.Unmarshal(body, &result)
 			if err != nil {
+				log.DefaultLogger.Error("Request path: " + requestURL)
 				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
 			}
 		}
-		log.DefaultLogger.Info("Request path: " + requestURL + "\n" + "Response: " + string(body))
+		log.DefaultLogger.Info("Request path: " + requestURL)
+		log.DefaultLogger.Info("Response: " + string(body))
 	}
 
 	return response, nil

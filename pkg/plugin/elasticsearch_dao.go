@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io"
 	"net/http"
@@ -77,7 +78,15 @@ func GetClusterInformation(credentials Credentials) (*http.Response, error) {
 
 func SendILMToCluster(credentials Credentials, policyName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_ilm/policy/" + policyName
-	return ProcessPUTRequest(credentials, requestURL, templateContent)
+	exists, err := CheckIsILMExists(credentials, policyName)
+	if err != nil {
+		return nil, err
+	} else if exists {
+		log.DefaultLogger.Info("The ILM police: " + policyName + " already exists")
+		return nil, nil
+	} else {
+		return ProcessPUTRequest(credentials, requestURL, templateContent)
+	}
 }
 
 func SendComponentTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
@@ -95,8 +104,8 @@ func SendFirstIndexToCluster(credentials Credentials, templateName string, templ
 	return ProcessPUTRequest(credentials, requestURL, templateContent)
 }
 
-func CheckIsIndexExists(credentials Credentials, templateName string) (bool, error) {
-	requestUrl := credentials.Host + "/_cat/indices/" + templateName + "?format=json&h=index"
+func CheckIsIndexExists(credentials Credentials, indexName string) (bool, error) {
+	requestUrl := credentials.Host + "/_cat/indices/" + indexName + "?format=json&h=index"
 	response, err := ProcessGETRequest(credentials, requestUrl)
 
 	if err != nil {
@@ -120,16 +129,40 @@ func CheckIsIndexExists(credentials Credentials, templateName string) (bool, err
 		}
 
 		if len(result) > 0 {
-			log.DefaultLogger.Debug("Index: " + templateName + " exists")
+			log.DefaultLogger.Debug("Index: " + indexName + " exists")
 			return true, nil
 		} else {
-			log.DefaultLogger.Debug("Index: " + templateName + " does not exist")
+			log.DefaultLogger.Debug("Index: " + indexName + " does not exist")
 			return false, nil
 		}
 
 	} else {
-		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
+		log.DefaultLogger.Error("Failed to check is index name exists. HTTP status: " + response.Status)
 		return false, err
+	}
+}
+
+func CheckIsILMExists(credentials Credentials, policyName string) (bool, error) {
+	requestUrl := credentials.Host + "/_ilm/policy/" + policyName
+	response, err := ProcessGETRequest(credentials, requestUrl)
+
+	if err != nil {
+		log.DefaultLogger.Error("Failed to check if ILM policy exists: " + err.Error())
+		return false, err
+	}
+
+	if response.StatusCode == http.StatusOK {
+		log.DefaultLogger.Debug("ILM policy: " + policyName + " exists")
+		return true, nil
+	} else if response.StatusCode == http.StatusNotFound { // Policy not found
+		log.DefaultLogger.Debug("ILM policy: " + policyName + " does not exist")
+		return false, nil
+	} else {
+		// Log any other unexpected HTTP status
+		body, _ := io.ReadAll(response.Body) // Retain body if needed for debugging
+		response.Body.Close()
+		log.DefaultLogger.Error("Unexpected response while checking ILM policy. HTTP Status: " + response.Status + ", Body: " + string(body))
+		return false, fmt.Errorf("unexpected response status: %d, response: %s", response.StatusCode, string(body))
 	}
 }
 

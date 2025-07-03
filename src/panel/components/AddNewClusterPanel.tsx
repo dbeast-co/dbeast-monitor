@@ -801,7 +801,7 @@ export const AddNewClusterPanel = () => {
             </button>
           </div>
           <Divider></Divider>
-          <h3 className="title">Cluster inject configuration</h3>
+          <h3 className="title">Cluster monitoring configuration</h3>
 
           {cluster && cluster.logstash_configurations && (
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
@@ -827,7 +827,7 @@ export const AddNewClusterPanel = () => {
           </div>
         </div>
         <Divider></Divider>
-        <h3 className="title">Logstash inject configurations</h3>
+        <h3 className="title">Logstash monitoring configurations</h3>
         <div className="wrapper">
           {cluster.logstash_configurations &&
             cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations && (

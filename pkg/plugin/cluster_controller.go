@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -369,23 +368,24 @@ func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
 
 func SendFirstIndicesToMonitoringCluster(credentials Credentials) error {
 	log.DefaultLogger.Info("First indices ingest")
-	for templateName, templateContent := range ESFirstIndicesTemplatesMap {
-		log.DefaultLogger.Debug("Inject template: " + templateName + " To the cluster: " + credentials.Host)
+	for indexName, templateContent := range ESFirstIndicesTemplatesMap {
+		log.DefaultLogger.Debug("Inject template: " + indexName + " To the cluster: " + credentials.Host)
 		log.DefaultLogger.Debug("Template content: " + templateContent)
-		exists, err := CheckIsIndexExists(credentials, templateName)
+		isIndexExists, err := CheckIsIndexExists(credentials, indexName)
 		if err != nil {
 			return err
 		}
-		log.DefaultLogger.Info("Check is index " + templateName + " exists: " + strconv.FormatBool(exists))
-		if exists {
+		if isIndexExists {
+			log.DefaultLogger.Info("An index " + indexName + " already isIndexExists. Send rollover command")
 			rolloverAlias, _ := ExtractRolloverAlias(templateContent)
 			log.DefaultLogger.Info("Rollover alias: ", rolloverAlias)
-			_, err = SendRolloverCommand(credentials, templateName)
+			_, err = SendRolloverCommand(credentials, indexName)
 			if err != nil {
 				return err
 			}
 		} else {
-			_, err = SendFirstIndexToCluster(credentials, templateName, templateContent)
+			log.DefaultLogger.Info("An index " + indexName + " doesn't isIndexExists. Send create new index command")
+			_, err = SendFirstIndexToCluster(credentials, indexName, templateContent)
 			if err != nil {
 				return err
 			}
