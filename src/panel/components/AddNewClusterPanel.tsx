@@ -8,7 +8,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-import { Spinner, useTheme2 } from '@grafana/ui';
+import { useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from '../models/connection-settings';
@@ -170,71 +170,75 @@ export const AddNewClusterPanel = () => {
     setIsLoading(false);
     // isSpinnerLoading = false
   };
-  const onTest = () => {
-    setIsLoading(true);
+
+  const onTest = async () => {
+    setIsLoading(true); // Start the loader immediately.
+
     try {
       const formToTest: ConnectionSettings = getConnectionSettings();
-      backendSrv
-        .post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest), {
+
+      const result: BackendResponse = await backendSrv.post(
+        `${baseUrl}/test_cluster`,
+        JSON.stringify(formToTest),
+        {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-        })
+        }
+      );
 
-        .then((result: BackendResponse) => {
-          const { status: prodStatus } = result.prod.elasticsearch;
-          const { status: monStatus } = result.mon.elasticsearch;
+      const { status: prodStatus } = result.prod.elasticsearch;
+      const { status: monStatus } = result.mon.elasticsearch;
 
-          if (
-            (prodStatus.toLowerCase() === 'green' || prodStatus.toLowerCase() === 'yellow') &&
-            (monStatus.toLowerCase() === 'green' || monStatus.toLowerCase() === 'yellow')
-          ) {
-            setSaveDisabled(false);
-          } else {
-            setSaveDisabled(true);
-          }
-          setConnectionSettings({
-            prod: {
-              elasticsearch: {
-                ...connectionSettings.prod.elasticsearch,
-                status: result.prod.elasticsearch.status.toUpperCase(),
-              },
-              kibana: {
-                ...connectionSettings.prod.kibana,
-                status: result.prod.kibana.status.toUpperCase(),
-              },
-            },
-            mon: {
-              elasticsearch: {
-                ...connectionSettings.mon.elasticsearch,
-                status: result.mon.elasticsearch.status.toUpperCase(),
-              },
-            },
-          });
+      // Determine if the configuration is valid.
+      if (
+        (prodStatus.toLowerCase() === 'green' || prodStatus.toLowerCase() === 'yellow') &&
+        (monStatus.toLowerCase() === 'green' || monStatus.toLowerCase() === 'yellow')
+      ) {
+        setSaveDisabled(false);
+      } else {
+        setSaveDisabled(true);
+      }
 
-          if (result.prod.elasticsearch.error) {
-            showError(result.prod.elasticsearch.error);
-          }
-          if (result.mon.elasticsearch.error) {
-            showError(result.mon.elasticsearch.error);
-          }
+      // Update connection settings state.
+      setConnectionSettings({
+        prod: {
+          elasticsearch: {
+            ...connectionSettings.prod.elasticsearch,
+            status: result.prod.elasticsearch.status.toUpperCase(),
+          },
+          kibana: {
+            ...connectionSettings.prod.kibana,
+            status: result.prod.kibana.status.toUpperCase(),
+          },
+        },
+        mon: {
+          elasticsearch: {
+            ...connectionSettings.mon.elasticsearch,
+            status: result.mon.elasticsearch.status.toUpperCase(),
+          },
+        },
+      });
 
-          setIsLoading(false);
-        })
-        .catch((error: Error) => {
-          setIsLoading(false);
-          toast.error(`${error.message}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-            closeButton: true,
-            hideProgressBar: true,
-            draggable: false,
-          });
-        });
+      // Show errors if present.
+      if (result.prod.elasticsearch.error) {
+        showError(result.prod.elasticsearch.error);
+      }
+      if (result.mon.elasticsearch.error) {
+        showError(result.mon.elasticsearch.error);
+      }
     } catch (error: any) {
-      setIsLoading(false);
+      // Handle errors and show a toast notification.
+      toast.error(`${error.message}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+        closeButton: true,
+        hideProgressBar: true,
+        draggable: false,
+      });
     } finally {
+      // Stop the loader after completion, success or failure.
       setIsLoading(false);
     }
   };
@@ -248,6 +252,7 @@ export const AddNewClusterPanel = () => {
       draggable: false,
     });
   };
+
   const onCheckAuth = (event: any) => {
     setConnectionSettings({
       ...connectionSettings,
@@ -273,6 +278,7 @@ export const AddNewClusterPanel = () => {
       },
     });
   };
+
   const onUserPasswordInput = (event: any) => {
     setConnectionSettings({
       ...connectionSettings,
@@ -298,6 +304,7 @@ export const AddNewClusterPanel = () => {
       },
     });
   };
+
   const onInputMonitoringUsername = (event: any) => {
     setConnectionSettings({
       ...connectionSettings,
@@ -323,6 +330,7 @@ export const AddNewClusterPanel = () => {
       },
     });
   };
+
   const onInputHost = (event: any) => {
     setConnectionSettings({
       ...connectionSettings,
@@ -394,7 +402,7 @@ export const AddNewClusterPanel = () => {
 
   useEffect(() => {
     fetch(`${SERVER_URL}/version`).then((response: Response) => {
-      console.log(response);
+      // console.log(response);
       if (!response) {
         return;
       }
@@ -429,46 +437,67 @@ export const AddNewClusterPanel = () => {
     });
   }, []);
 
-  const onLogstashFilesDeploy = (url: string) => {
+  const onLogstashFilesDeploy = async (url: string) => {
     const cluster_connection_settings = getConnectionSettings();
     const clusterToSend = {
       cluster_connection_settings,
-      logstash_configurations: cluster.logstash_configurations,
+      logstash_configurations: cluster?.logstash_configurations || {},
     };
-    fetch(`${SERVER_URL}/deploy_logstash_configuration`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(clusterToSend),
-    }).then((response) => {
-      if (response) {
-        console.log(response.status);
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${SERVER_URL}/deploy_logstash_configuration`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clusterToSend),
+      });
+
+      if (response.ok) {
+        console.log(`Deployment successful. Status: ${response.status}`);
       } else {
-        console.log('Error in the logstash deployment');
+        console.error(`Deployment failed. Status: ${response.status}`);
       }
-    });
+    } catch (err) {
+      console.error('There was an error during the logstash deployment:', err);
+    } finally {
+      // Ensure loader stops after completing the fetch operation.
+      setIsLoading(false);
+    }
   };
 
-  const onTemplatesDeploy = (url: string) => {
+
+  const onTemplatesDeploy = async (url: string) => {
     const cluster_connection_settings = getConnectionSettings();
     const clusterToSend = {
       cluster_connection_settings,
-      monitoring_cluster_injection: cluster.monitoring_cluster_injection,
+      monitoring_cluster_injection: cluster?.monitoring_cluster_injection || {},
     };
-    fetch(`${SERVER_URL}/deploy_elasticsearch_configuration`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(clusterToSend),
-    }).then((response) => {
-      if (response) {
-        console.log(response.status);
+
+    setIsLoading(true); // Ensure loader starts before the fetch operation.
+
+    try {
+      const response = await fetch(`${SERVER_URL}/deploy_elasticsearch_configuration`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clusterToSend),
+      });
+
+      if (response.ok) {
+        console.log(`Templates deployment successful. Status: ${response.status}`);
       } else {
-        console.log('Error in the Elasticsearch templates deployment');
+        console.error(`Templates deployment failed. Status: ${response.status}`);
       }
-    });
+    } catch (err) {
+      console.error('There was an error during the Elasticsearch templates deployment:', err);
+    } finally {
+      // Ensure loader stops after completing the fetch operation.
+      setIsLoading(false);
+    }
   };
 
   const onDownload = (url: string) => {
@@ -753,7 +782,7 @@ export const AddNewClusterPanel = () => {
             </div>
           )}
         </section>
-        {isLoading && <Spinner></Spinner>}
+        {/*{isLoading && <Spinner></Spinner>}*/}
         <ToastContainer autoClose={3000} position="bottom-right" />
       </div>
       <div className={isShowLogstash ? 'config not-rounded' : 'config'}>

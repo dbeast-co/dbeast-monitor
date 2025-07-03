@@ -104,7 +104,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       case 'stack-monitoring':
         window.open(
           `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
-          // `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_uid=${uid}`,
           '_blank'
         );
         this.setState({
@@ -263,7 +262,9 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     this.setState({ isOpenDialog: true });
   };
   onTest = () => {
+    this.loading = true;
     this.componentDidMount().then(() => {});
+    this.loading = false  ;
   };
   onDeleteCluster = async () => {
     const backendSrv = getBackendSrv();
