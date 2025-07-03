@@ -18,13 +18,6 @@ type BasicAuthTransport struct {
 	Transport http.RoundTripper
 }
 
-func (bat *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.SetBasicAuth(bat.Username, bat.Password)
-	return bat.Transport.RoundTrip(req)
-}
-
-// CreateHTTPClient creates an HTTP client based on the provided credentials.
-// It takes a Credentials struct as input and returns an HTTP client.
 func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 
 	if credentials.Host == "" {
@@ -58,9 +51,6 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 	return client, nil
 }
 
-// ProcessGETRequest performs an HTTP GET request based on the provided credentials and request URL.
-// It uses CreateHTTPClient to create an HTTP client, constructs a GET request, adds basic authentication if enabled,
-// and returns the HTTP response.
 func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Response, error) {
 	client, err := CreateHTTPClient(credentials)
 	if err != nil {
@@ -83,17 +73,27 @@ func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Respon
 	return response, nil
 }
 
-// ProcessPUTRequest performs an HTTP GET request based on the provided credentials and request URL.
-// It uses CreateHTTPClient to create an HTTP client, constructs a GET request, adds basic authentication if enabled,
-// and returns the HTTP response.
+func ProcessPOSTRequest(credentials Credentials, requestURL string, body string) (*http.Response, error) {
+	return ProcessRequestWithBody(credentials, requestURL, body, "POST")
+}
+
 func ProcessPUTRequest(credentials Credentials, requestURL string, body string) (*http.Response, error) {
+	return ProcessRequestWithBody(credentials, requestURL, body, "PUT")
+}
+
+func ProcessRequestWithBody(credentials Credentials, requestURL string, body string, method string) (*http.Response, error) {
+	log.DefaultLogger.Debug("Request path: " + requestURL)
+	log.DefaultLogger.Debug("Request host: " + credentials.Host)
+	log.DefaultLogger.Debug("Request body: " + body)
+	log.DefaultLogger.Debug("Request method: " + method)
+
 	client, err := CreateHTTPClient(credentials)
 	if err != nil {
 		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", requestURL, bytes.NewBuffer([]byte(body)))
+	req, err := http.NewRequest(method, requestURL, bytes.NewBuffer([]byte(body)))
 	if err != nil {
 		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
 		return nil, err
@@ -123,30 +123,13 @@ func ProcessPUTRequest(credentials Credentials, requestURL string, body string) 
 				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
 			}
 		}
-		log.DefaultLogger.Info("Response from the Put operation: " + string(body))
+		log.DefaultLogger.Info("Request path: " + requestURL + "\n" + "Response: " + string(body))
 	}
 
 	return response, nil
 }
 
-func ProcessHEADRequest(credentials Credentials, requestURL string) (*http.Response, error) {
-	client, err := CreateHTTPClient(credentials)
-	if err != nil {
-		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
-		return nil, err
-	}
-
-	req, err := http.NewRequest("HEAD", requestURL, nil)
-	if err != nil {
-		log.DefaultLogger.Warn("Failed to create HTTP request: " + err.Error())
-		return nil, err
-	}
-
-	response, err := client.Do(req)
-	if err != nil {
-		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
-		return response, err
-	}
-
-	return response, nil
+func (bat *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.SetBasicAuth(bat.Username, bat.Password)
+	return bat.Transport.RoundTrip(req)
 }

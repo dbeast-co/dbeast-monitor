@@ -7,10 +7,6 @@ import (
 	"net/http"
 )
 
-/*
-GetClusterHealth makes an HTTP GET request to retrieve the cluster health status based on the provided credentials
-and returns the HTTP response.
-*/
 func GetClusterHealth(credentials Credentials) (*http.Response, error) {
 	requestURL := credentials.Host + "/_cluster/health"
 	log.DefaultLogger.Debug("Request path: ", requestURL)
@@ -24,10 +20,6 @@ func GetClusterHealth(credentials Credentials) (*http.Response, error) {
 	return response, err
 }
 
-/*
-GetClusterInfo retrieves cluster name and UID from Elasticsearch and returns them.
-It uses the provided credentials to make a request to Elasticsearch and extracts cluster name and UID from the response.
-*/
 func GetClusterInfo(credentials Credentials) (string, string, error) {
 	var clusterName, uid string
 
@@ -83,37 +75,24 @@ func GetClusterInformation(credentials Credentials) (*http.Response, error) {
 	return response, err
 }
 
-func SendILMToCluster(credentials Credentials, policyName string, policyContent string) (*http.Response, error) {
+func SendILMToCluster(credentials Credentials, policyName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_ilm/policy/" + policyName
-	return SendDataToCluster(credentials, requestURL, policyContent)
+	return ProcessPUTRequest(credentials, requestURL, templateContent)
 }
 
 func SendComponentTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_component_template/" + templateName
-	return SendDataToCluster(credentials, requestURL, templateContent)
+	return ProcessPUTRequest(credentials, requestURL, templateContent)
 }
 
 func SendIndexTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/_index_template/" + templateName
-	return SendDataToCluster(credentials, requestURL, templateContent)
+	return ProcessPUTRequest(credentials, requestURL, templateContent)
 }
 
 func SendFirstIndexToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
 	requestURL := credentials.Host + "/%3C" + templateName + "-%7Bnow%2Fd%7D-000001%3E"
-	return SendDataToCluster(credentials, requestURL, templateContent)
-}
-
-func SendDataToCluster(credentials Credentials, requestURL string, templateContent string) (*http.Response, error) {
-	log.DefaultLogger.Info("Request path: " + requestURL)
-	log.DefaultLogger.Debug("Request host: " + credentials.Host)
-	log.DefaultLogger.Debug("Request body: " + templateContent)
-	response, err := ProcessPUTRequest(credentials, requestURL, templateContent)
-
-	if err != nil {
-		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
-		return response, err
-	}
-	return response, err
+	return ProcessPUTRequest(credentials, requestURL, templateContent)
 }
 
 func CheckIsIndexExists(credentials Credentials, templateName string) (bool, error) {
@@ -152,4 +131,9 @@ func CheckIsIndexExists(credentials Credentials, templateName string) (bool, err
 		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
 		return false, err
 	}
+}
+
+func SendRolloverCommand(credentials Credentials, rolloverAlias string) (*http.Response, error) {
+	requestURL := credentials.Host + "/" + rolloverAlias + "/_rollover"
+	return ProcessPOSTRequest(credentials, requestURL, "")
 }

@@ -8,7 +8,7 @@ import (
 func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/new_cluster", a.NewClusterHandler)
 	mux.HandleFunc("/test_cluster", a.TestClusterHandler)
-	mux.HandleFunc("/add_cluster", a.AddClusterHandler)
+	mux.HandleFunc("/add_cluster", a.AddClusterHandlerToGrafana)
 	mux.HandleFunc("/delete_cluster/", a.DeleteClusterHandler)
 	mux.HandleFunc("/deploy_logstash_configuration", a.DeployLogstashConfigurations)
 	mux.HandleFunc("/deploy_elasticsearch_configuration", a.DeployElasticsearchConfigurations)

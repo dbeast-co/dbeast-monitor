@@ -7,12 +7,6 @@ import (
 	"net/http"
 )
 
-/*
-	TestClusterHandler handles HTTP requests to retrieve and update the status data based on the provided environment configuration.
-
-It takes a http.ResponseWriter and http.Request as input, decodes the request body to extract environment configuration,
-updates the status and sends the updated status data in JSON format as an HTTP response.
-*/
 func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	w.Header().Add("Content-Type", "application/json")
@@ -43,11 +37,6 @@ func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger.Info("Status data received")
 }
 
-/*
-UpdateStatus retrieves the status information for a given type.
-It uses the provided credentials to make a request to the corresponding status endpoint and extracts the status information from the response.
-If successful, it returns a Status struct containing the status information; otherwise, it returns an error message in the Status struct.
-*/
 func UpdateStatus(credentials *Credentials) Status {
 	var statusData = Status{}
 

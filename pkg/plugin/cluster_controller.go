@@ -2,8 +2,10 @@ package plugin
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -54,7 +56,114 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 	response.Write(updatedTemplatesJSON)
 }
 
-func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Request) {
+func (a *App) DeployLogstashConfigurations(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+
+	response.Header().Add("Content-Type", "application/zip")
+
+	var project Project
+
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": "Invalid request payload"})
+		return
+	}
+	ctxLogger.Debug("The project: ", project)
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+	defer request.Body.Close()
+
+	_, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+
+	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
+		"### Configuration files for the cluster Id: ",
+		ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			log.DefaultLogger.Error("Error while write response: " + err.Error())
+			return
+		}
+	}
+	err = DeleteFolder(GrafanaLogstashConfDConfigurationsFolder, clusterId, ctxLogger)
+
+	if err != nil {
+		response.WriteHeader(http.StatusInternalServerError)
+		_, err := response.Write([]byte(err.Error()))
+		if err != nil {
+			log.DefaultLogger.Error("Error while write response: " + err.Error())
+			return
+		}
+	}
+
+	err = SaveLogstashConfigurationFiles(project, ctxLogger)
+
+}
+
+func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the Elasticsearch components deployment")
+
+	response.Header().Add("Content-Type", "application/json")
+
+	var project Project
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+		return
+	}
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+	defer request.Body.Close()
+
+	for _, injectType := range project.MonitoringClusterInjection {
+		if injectType.Id == "ilm_policies_injection" && injectType.IsChecked {
+			err := SendILMToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the ILM policy injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
+		}
+
+		if injectType.Id == "templates_injection" && injectType.IsChecked {
+			err := SendComponentTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the Component template injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
+			err = SendIndexTemplatesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the Index template injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
+		}
+
+		if injectType.Id == "create_first_indices" && injectType.IsChecked {
+			err := SendFirstIndicesToMonitoringCluster(project.ClusterConnectionSettings.Mon.Elasticsearch)
+			if err != nil {
+				log.DefaultLogger.Error("Error while the First indices injection: " + err.Error())
+				response.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
+				return
+			}
+		}
+	}
+}
+
+func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
 	response.Header().Add("Content-Type", "application/json")
@@ -181,10 +290,6 @@ func UpdateTestDataTemplateValues(clonedTemplates interface{}, clusterName strin
 	}
 }
 
-/*
-UpdateJsonTemplateValues updates the provided JSON template (json_api_datasource) with information from credentials.
-It modifies the template name, UID, URL, basic authentication settings, and TLS skip verification based on the provided credentials.
-*/
 func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
@@ -209,10 +314,6 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentia
 	}
 }
 
-/*
-UpdateElasticsearchTemplateValues updates the provided JSON template (elasticsearch_datasource) with information from  credentials.
-It modifies the template name, UID, URL, basic authentication settings, and TLS skip verification based on the provided credentials.
-*/
 func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
@@ -269,14 +370,21 @@ func SendComponentTemplatesToMonitoringCluster(credentials Credentials) error {
 func SendFirstIndicesToMonitoringCluster(credentials Credentials) error {
 	log.DefaultLogger.Info("First indices ingest")
 	for templateName, templateContent := range ESFirstIndicesTemplatesMap {
-		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", credentials.Host)
-		log.DefaultLogger.Debug("Template content: ", templateContent)
+		log.DefaultLogger.Debug("Inject template: " + templateName + " To the cluster: " + credentials.Host)
+		log.DefaultLogger.Debug("Template content: " + templateContent)
 		exists, err := CheckIsIndexExists(credentials, templateName)
 		if err != nil {
 			return err
 		}
-		log.DefaultLogger.Info("Is index exists response: ", exists)
-		if !exists {
+		log.DefaultLogger.Info("Check is index " + templateName + " exists: " + strconv.FormatBool(exists))
+		if exists {
+			rolloverAlias, _ := ExtractRolloverAlias(templateContent)
+			log.DefaultLogger.Info("Rollover alias: ", rolloverAlias)
+			_, err = SendRolloverCommand(credentials, templateName)
+			if err != nil {
+				return err
+			}
+		} else {
 			_, err = SendFirstIndexToCluster(credentials, templateName, templateContent)
 			if err != nil {
 				return err
@@ -297,4 +405,22 @@ func SendIndexTemplatesToMonitoringCluster(credentials Credentials) error {
 		}
 	}
 	return nil
+}
+
+func ExtractRolloverAlias(jsonData string) (string, error) {
+	var firstIndexTemplate map[string]map[string]map[string]interface{}
+
+	err := json.Unmarshal([]byte(jsonData), &firstIndexTemplate)
+	if err != nil {
+		return "", err
+	}
+	aliasesMap, ok := firstIndexTemplate["aliases"]
+	if !ok {
+		return "", fmt.Errorf("key 'aliases' not found in JSON")
+	}
+
+	for aliasKey := range aliasesMap {
+		return aliasKey, nil
+	}
+	return "", fmt.Errorf("key 'aliases' not found in JSON")
 }
