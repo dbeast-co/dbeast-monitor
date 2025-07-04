@@ -20,8 +20,8 @@ services:
       - SYS_PTRACE
     volumes:
       - ../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
-      - ../provisioning:/etc/grafana/provisioning
       - ..:/root/dbeast-dbeastmonitor-app
+      - ./logs:/var/log
 
     environment:
       NODE_ENV: development
@@ -33,3 +33,14 @@ services:
       GF_INSTALL_PLUGINS: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
       GF_PLUGIN_DBEAST_DBEASTMONITOR_APP_ENABLED: "true"
       DBEAST_MONITOR_VERSION: "OnPrem"
+
+    entrypoint: /bin/sh -c
+    command: |
+      "echo 'apiVersion: 1
+      apps:
+        - type: dbeast-dbeastmonitor-app
+          org_id: 1
+          enabled: true
+          pinned: true
+      ' > /etc/grafana/provisioning/dbeast-dbeastmonitor-app.yaml && \
+      /run.sh"
