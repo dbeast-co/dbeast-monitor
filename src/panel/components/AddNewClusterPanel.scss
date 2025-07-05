@@ -174,7 +174,7 @@
   .spinner_overlay {
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     margin: 0 auto;
 
     .MuiCircularProgress-root {
@@ -314,6 +314,8 @@
       margin-block: 1rem;
       font-size: 18px;
       text-align: center;
+
+
     }
 
     .logstash-card {
@@ -391,7 +393,7 @@ svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
   background-color: transparent !important;
 }
 [data-testid='Spinner'] {
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent !important;
   inset: 0;
   z-index: 10000;
   display: flex;
@@ -402,4 +404,23 @@ svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
   .fa-spinner{
     font-size: 4rem;
   }
+}
+.source-connection-group{
+  margin-block-end: 4.5rem;
+}
+.monitoring-cluster-group{
+  margin-block-end: 4.1rem;
+}
+.MuiDivider-root.add-new-cluster-divider{
+  margin-block: 2.2rem !important;
+  border-width: 1px !important;
+  opacity: .5 !important;
+}
+.monitoring-cluster-title{
+  position: relative;
+  bottom: 20px;
+}
+.actions .deploy-btn{
+  position: relative;
+  bottom: 1rem;
 }

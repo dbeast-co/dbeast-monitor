@@ -621,17 +621,27 @@ export const AddNewClusterPanel = () => {
   }, [connectionSettings]);
 
   return (
+
+
+
     <section className="connectionsAndConfig">
+
+      {isLoading && (
+        <div className="spinner_overlay">
+          <CircularProgress color="primary" />
+        </div>
+      )}
       <div
         className={classNames({
           source_panel: true,
           isLight: theme.isLight,
         })}
       >
-        <h3 className="title">Source connection</h3>
+
 
         <section>
-          <div>
+          <div className="source-connection-group">
+            <h3 className="title">Source connection</h3>
             <div className="host_wrapper">
               <TextField
                 id="standard-basic-1"
@@ -704,21 +714,23 @@ export const AddNewClusterPanel = () => {
               />
             </div>
           </div>
+          <Divider className="add-new-cluster-divider"></Divider>
+          <div ><h3 className="title monitoring-cluster-title">Monitoring cluster</h3>
 
-          <div>
-            <div className="host_wrapper">
-              <TextField
-                id="standard-basic-5"
-                label="Monitoring Host"
-                variant="standard"
-                value={connectionSettings.mon.elasticsearch.host}
-                onChange={onInputMonitoringHost}
-              />
-              {!validMonitoringHost && connectionSettings.mon.elasticsearch.host && (
-                <span>Monitoring host format is invalid</span>
-              )}
+            <div className="monitoring-cluster-group">
+              <div className="host_wrapper">
+                <TextField
+                  id="standard-basic-5"
+                  label="Monitoring Host"
+                  variant="standard"
+                  value={connectionSettings.mon.elasticsearch.host}
+                  onChange={onInputMonitoringHost}
+                />
+                {!validMonitoringHost && connectionSettings.mon.elasticsearch.host && (
+                  <span>Monitoring host format is invalid</span>
+                )}
 
-              <div className="status">
+                <div className="status">
                 <span
                   className={
                     connectionSettings.mon.elasticsearch.status
@@ -730,50 +742,51 @@ export const AddNewClusterPanel = () => {
                     ? connectionSettings.mon.elasticsearch.status
                     : 'UNTESTED'}
                 </span>
+                </div>
+              </div>
+
+              <FormControlLabel
+                value="top"
+                control={
+                  <Checkbox
+                    id="checkbox2"
+                    checked={connectionSettings.mon.elasticsearch.authentication_enabled}
+                    onChange={onCheckMonitoringAuth}
+                  />
+                }
+                label="Use authentication"
+              />
+              <div className="auth_wrapper">
+                <TextField
+                  id="standard-basic-6 text_1"
+                  key="text_1"
+                  label="Username"
+                  variant="standard"
+                  value={connectionSettings.mon.elasticsearch.username}
+                  onChange={onInputMonitoringUsername}
+                  disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
+                />
+                <TextField
+                  id="standard-basic-7 text_2"
+                  type="password"
+                  key="text_2"
+                  label="Password"
+                  variant="standard"
+                  value={connectionSettings.mon.elasticsearch.password}
+                  onChange={onInputMonitoringPassword}
+                  disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
+                />
               </div>
             </div>
 
-            <FormControlLabel
-              value="top"
-              control={
-                <Checkbox
-                  id="checkbox2"
-                  checked={connectionSettings.mon.elasticsearch.authentication_enabled}
-                  onChange={onCheckMonitoringAuth}
-                />
-              }
-              label="Use authentication"
-            />
-            <div className="auth_wrapper">
-              <TextField
-                id="standard-basic-6 text_1"
-                key="text_1"
-                label="Username"
-                variant="standard"
-                value={connectionSettings.mon.elasticsearch.username}
-                onChange={onInputMonitoringUsername}
-                disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
-              />
-              <TextField
-                id="standard-basic-7 text_2"
-                type="password"
-                key="text_2"
-                label="Password"
-                variant="standard"
-                value={connectionSettings.mon.elasticsearch.password}
-                onChange={onInputMonitoringPassword}
-                disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
-              />
+            <div className="actions">
+              <button onClick={() => onTest()} className="btn_test" disabled={isTestDisabled}>
+                Test
+              </button>
+              <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
+                Add
+              </button>
             </div>
-          </div>
-
-          <div className="actions">
-            <button onClick={() => onTest()} className="btn_test" disabled={isTestDisabled}>
-              Test
-            </button>
-            <button onClick={() => onSave()} className="btn_save" disabled={isDisabled}>
-              Add
-            </button>
           </div>
 
           {isLoading && (
@@ -795,7 +808,7 @@ export const AddNewClusterPanel = () => {
             <button
               disabled={isDisabled}
               onClick={() => onTemplatesDeploy(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
-              className="btn_save"
+              className="btn_save deploy-btn"
             >
               Deploy
             </button>
@@ -811,7 +824,7 @@ export const AddNewClusterPanel = () => {
               <button
                 disabled={isDisabled}
                 onClick={() => onLogstashFilesDeploy(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
-                className="btn_save"
+                className="btn_save deploy-btn"
               >
                 Deploy
               </button>
@@ -819,7 +832,7 @@ export const AddNewClusterPanel = () => {
               <button
                 disabled={isDisabled}
                 onClick={() => onDownload(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
-                className="btn_save"
+                className="btn_save deploy-btn"
               >
                 Download
               </button>
