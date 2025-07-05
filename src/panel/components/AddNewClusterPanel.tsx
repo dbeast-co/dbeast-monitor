@@ -813,7 +813,7 @@ export const AddNewClusterPanel = () => {
               Deploy
             </button>
           </div>
-          <Divider></Divider>
+          <Divider className="add-new-cluster-divider-2"></Divider>
           <h3 className="title">Cluster monitoring configuration</h3>
 
           {cluster && cluster.logstash_configurations && (
@@ -839,7 +839,7 @@ export const AddNewClusterPanel = () => {
             )}
           </div>
         </div>
-        <Divider></Divider>
+        <Divider className="add-new-cluster-divider-2"></Divider>
         <h3 className="title">Logstash monitoring configurations</h3>
         <div className="wrapper">
           {cluster.logstash_configurations &&
