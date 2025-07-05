@@ -642,7 +642,7 @@ export const AddNewClusterPanel = () => {
         <section>
           <div className="source-connection-group">
             <h3 className="title">Source connection</h3>
-            <div className="host_wrapper">
+            <div className="host_wrapper form-wrapper">
               <TextField
                 id="standard-basic-1"
                 label="Elasticsearch Host"

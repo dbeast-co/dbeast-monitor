@@ -6,8 +6,6 @@
     font-size: 18px;
     text-align: center;
     margin-block: 1rem;
-    position: relative;
-    bottom: 20px;
   }
 
   .source_panel {
@@ -22,7 +20,6 @@
     border-radius: 4px 0 0 4px;
     background: #1e1d22;
     border-right: 1px solid #6b6a6a;
-    padding-block-start: 2rem;
 
     section {
       min-height: calc(100% - 62px);
@@ -127,7 +124,6 @@
       margin-block: 1rem;
       font-size: 18px;
       text-align: center;
-
     }
 
     .wrapper {
@@ -410,10 +406,10 @@ svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
   }
 }
 .source-connection-group{
-  margin-block-end: 3.3rem;
+  margin-block-end: 4.5rem;
 }
 .monitoring-cluster-group{
-  margin-block-end: 4.1rem;
+  margin-block-end: 2.1rem;
 }
 .MuiDivider-root.add-new-cluster-divider{
   margin-block: 2.2rem !important;
@@ -433,4 +429,7 @@ svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
 .actions .deploy-btn{
   position: relative;
   bottom: 1rem;
+}
+.form-wrapper{
+  margin-block-start: 3rem;
 }
