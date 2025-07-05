@@ -16,6 +16,7 @@ export interface ClusterStatsItemState {
   dataColdNodes: number;
   monitorName: string | null | undefined;
   isOpenDialog?: boolean;
+  isLoading?: boolean;
 }
 
 export interface MonitorState {

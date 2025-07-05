@@ -4,6 +4,7 @@ import { getBackendSrv } from '@grafana/runtime';
 import { ClusterStatsItemState, MonitorState } from '../../types/clusterStatsItemState';
 import './data-source-item.scss';
 import {
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -17,7 +18,7 @@ import {
   SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import { Button, ButtonVariant, Spinner, stylesFactory, useTheme } from '@grafana/ui';
+import { Button, ButtonVariant, stylesFactory, useTheme } from '@grafana/ui';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 
@@ -54,7 +55,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   monitorState: MonitorState = {
     monitorName: '',
   };
-  loading = false;
+
 
   state: ClusterStatsItemState = {
     cluster_name: '',
@@ -74,6 +75,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     dataColdNodes: 0,
     monitorName: '',
     isOpenDialog: false,
+    isLoading: false
   };
   outlined: ButtonVariant | undefined = 'destructive';
   listItem: HTMLElement | undefined = undefined;
@@ -262,13 +264,14 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     this.setState({ isOpenDialog: true });
   };
   onTest = () => {
-    this.loading = true;
-    this.componentDidMount().then(() => {});
-    this.loading = false  ;
+    this.setState({ isLoading: true })
+    this.componentDidMount().then(() => {
+      this.setState({ isLoading: false })
+    });
   };
   onDeleteCluster = async () => {
     const backendSrv = getBackendSrv();
-    this.loading = true;
+    this.setState({ isLoading: true })
     try {
       let dataSources: any = await backendSrv.get(`/api/datasources`, {
         headers: {
@@ -276,6 +279,9 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           Accept: 'application/json',
         },
       });
+      if (dataSources){
+        this.setState({ isLoading: false })
+      }
 
       for (const dataSource of dataSources) {
         if (dataSource.name.endsWith(this.state.cluster_uuid)) {
@@ -283,7 +289,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             await backendSrv.delete(`/api/datasources/name/${dataSource.name}`);
           } catch (deleteError) {
             console.error('Delete data sources error: ', deleteError);
-            this.loading = false;
+            this.setState({ isLoading: false })
           }
         }
       }
@@ -304,14 +310,14 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           hideProgressBar: true,
           draggable: false,
         });
-        this.loading = false;
+        this.setState({ isLoading: false })
       }
 
-      this.loading = false;
+      this.setState({ isLoading: false })
       window.location.reload();
     } catch (getError) {
       console.error('Cluster delete error: ', getError);
-      this.loading = false;
+      this.setState({ isLoading: false })
     }
   };
 
@@ -324,8 +330,12 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
   render() {
     return (
-      <>
-        {this.loading && <Spinner></Spinner>}
+      <div className="position-relative">
+        {this.state.isLoading && (
+          <div className="spinner_overlay">
+            <CircularProgress color="primary" />
+          </div>
+        )}
 
         <div
           className={classNames({
@@ -457,7 +467,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             </DialogActions>
           </Dialog>
         </div>
-      </>
+      </div>
     );
   }
 }
