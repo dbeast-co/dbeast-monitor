@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
-import { ClusterStatsItemState, MonitorState } from '../../types/clusterStatsItemState';
+import { ClusterStatsItemState } from '../../types/clusterStatsItemState';
 import './data-source-item.scss';
 import {
   CircularProgress,
@@ -18,7 +18,7 @@ import {
   SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import { Button, ButtonVariant, stylesFactory, useTheme } from '@grafana/ui';
+import { Button, stylesFactory, useTheme } from '@grafana/ui';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 
@@ -29,14 +29,12 @@ interface Props {
 }
 
 const MyComponent = (_: any) => {
-  // Get the current theme and its properties using the useTheme hook
   const theme = useTheme();
   const styles = getStyles(theme);
 
   return (
     <div style={styles.container}>
       <div>Hello, This is My Component!</div>
-      {/* Add more components and content as needed */}
     </div>
   );
 };
@@ -52,11 +50,6 @@ const getStyles = stylesFactory((theme) => ({
 }));
 
 export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> {
-  monitorState: MonitorState = {
-    monitorName: '',
-  };
-
-
   state: ClusterStatsItemState = {
     cluster_name: '',
     cluster_uuid: '',
@@ -77,10 +70,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     isOpenDialog: false,
     isLoading: false
   };
-  outlined: ButtonVariant | undefined = 'destructive';
-  listItem: HTMLElement | undefined = undefined;
   label = 'Monitor type';
-  clusterMonitoring: HTMLLIElement | undefined = undefined;
 
   formatBytes(bytes: number, decimals = 2) {
     if (bytes === 0) {
@@ -205,7 +195,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             });
           })
           .catch((e) => {
-            console.error("Error", e);
             let regex = new RegExp(/Elasticsearch-direct-prod--(.*)--(.*)/g);
             const uid: string = this.props.dataSourceItem.name;
             const matches = regex.exec(uid);
@@ -302,7 +291,6 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           },
         });
       } catch (error: any) {
-        console.error('Delete from backend error: ', error);
         toast.error(`${error.message}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: false,

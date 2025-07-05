@@ -8,8 +8,6 @@ import './LogstashConfigurationsPanel.scss';
 export const MonitoringClusterInjectionPanel = ({ monitoringClusterInjections }: any) => {
     const [_, setIsChecked] = useState(false);
 
-    // console.log(monitoringClusterInjections)
-
     const onChangeCheckbox = (index: number) => {
         let file = monitoringClusterInjections[index];
         file.is_checked = !file.is_checked;

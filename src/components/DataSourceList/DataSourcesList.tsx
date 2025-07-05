@@ -5,9 +5,6 @@ import './data-source-list.scss';
 import {useTheme2} from '@grafana/ui';
 import classNames from 'classnames';
 
-/**
- * Properties
- */
 interface Props {
   dataSources: any[];
   onDelete: (id: string) => void;
@@ -17,7 +14,6 @@ export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
   const theme = useTheme2();
 
   const onDeleteItem = (id: string) => {
-    // onDelete(id);
 
   };
 

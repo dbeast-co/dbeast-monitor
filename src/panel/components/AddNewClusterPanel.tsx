@@ -402,7 +402,6 @@ export const AddNewClusterPanel = () => {
 
   useEffect(() => {
     fetch(`${SERVER_URL}/version`).then((response: Response) => {
-      // console.log(response);
       if (!response) {
         return;
       }
@@ -463,7 +462,6 @@ export const AddNewClusterPanel = () => {
     } catch (err) {
       console.error('There was an error during the logstash deployment:', err);
     } finally {
-      // Ensure loader stops after completing the fetch operation.
       setIsLoading(false);
     }
   };
@@ -560,7 +558,7 @@ export const AddNewClusterPanel = () => {
     setIsShowLogstash(true);
     const existingIndex = logstashList.findIndex((l) => l.id === item.id);
     if (existingIndex > -1) {
-      // Easy method to replace an item at a specific index. This creates a new array for immutability.
+
       const updatedList = [...logstashList.slice(0, existingIndex), item, ...logstashList.slice(existingIndex + 1)];
       setLogstashList(updatedList);
     } else {
@@ -795,7 +793,6 @@ export const AddNewClusterPanel = () => {
             </div>
           )}
         </section>
-        {/*{isLoading && <Spinner></Spinner>}*/}
         <ToastContainer autoClose={3000} position="bottom-right" />
       </div>
       <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
