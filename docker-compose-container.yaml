@@ -1,9 +1,9 @@
 services:
   grafana:
     extends:
-      file: .config/docker-compose-container.yaml
+      file: .config/docker/docker-compose-container.yaml
       service: grafana
   logstash:
     extends:
-      file: .config/docker-compose-container.yaml
+      file: .config/docker/docker-compose-container.yaml
       service: logstash

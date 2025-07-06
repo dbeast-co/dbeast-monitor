@@ -1,6 +1,6 @@
 services:
   grafana:
     extends:
-      file: .config/docker-compose-onprem.yaml
+      file: .config/docker/docker-compose-onprem.yaml
       service: grafana
 
