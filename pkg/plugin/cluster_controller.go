@@ -376,9 +376,9 @@ func SendFirstIndicesToMonitoringCluster(credentials Credentials) error {
 			return err
 		}
 		if isIndexExists {
-			log.DefaultLogger.Info("An index " + indexName + " already isIndexExists. Send rollover command")
+			log.DefaultLogger.Info("An index " + indexName + " already exists. Send rollover command")
 			rolloverAlias, _ := ExtractRolloverAlias(templateContent)
-			log.DefaultLogger.Info("Rollover alias: ", rolloverAlias)
+			log.DefaultLogger.Info("Rollover alias: " + rolloverAlias)
 			_, err = SendRolloverCommand(credentials, indexName)
 			if err != nil {
 				return err
