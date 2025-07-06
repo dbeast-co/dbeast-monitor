@@ -37,15 +37,17 @@
   "liveNow": true,
   "panels": [
     {
-      "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
+      "id": 6,
+      "type": "table",
+      "title": "Cluster health",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "h": 4,
+        "w": 22
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "custom": {
             "align": "center",
             "cellOptions": {
@@ -72,6 +74,9 @@
                 "value": null
               }
             ]
+          },
+          "color": {
+            "mode": "thresholds"
           }
         },
         "overrides": [
@@ -326,27 +331,56 @@
           }
         ]
       },
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
         },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "9.5.10",
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Total heap": 4,
+              "active_shards": 7,
+              "cluster_name": 0,
+              "count": 5,
+              "deleted": 12,
+              "docs_count": 11,
+              "free_in_bytes": 14,
+              "initializing_shards": 10,
+              "number_of_data_nodes": 3,
+              "number_of_nodes": 2,
+              "relocating_shards": 9,
+              "size_in_bytes": 13,
+              "status": 1,
+              "total": 6,
+              "unassigned_shards": 8
+            },
+            "renameByName": {
+              "Total": "",
+              "Total heap": "Heap size",
+              "active_shards": "Active shards",
+              "cluster_name": "Cluster name",
+              "count": "Index number",
+              "deleted": "Docs deleted",
+              "docs_count": "Docs count",
+              "free_in_bytes": "Free store",
+              "initializing_shards": "Initializing shards",
+              "number_of_data_nodes": "Data nodes",
+              "number_of_nodes": "Nodes",
+              "relocating_shards": "Relocation shards",
+              "size_in_bytes": "Data",
+              "status": "Cluster status",
+              "total": "Total shards",
+              "unassigned_shards": "Unassigned shards",
+              "result1": "Undesired shards"
+            },
+            "includeByName": {}
+          }
+        }
+      ],
+      "pluginVersion": "12.0.1",
       "targets": [
         {
           "cacheDurationSeconds": 0,
@@ -397,7 +431,8 @@
           "method": "GET",
           "queryParams": "",
           "refId": "A",
-          "urlPath": "/_cluster/health"
+          "urlPath": "/_cluster/health",
+          "hide": false
         },
         {
           "cacheDurationSeconds": 0,
@@ -452,55 +487,95 @@
           "urlPath": "/_cluster/stats?filter_path=cluster_name,nodes.versions,nodes.jvm.mem.heap_max_in_bytes,fs.total_in_bytes,indices.docs.deleted,indices.docs.count,indices.store.size_in_bytes,indices.shards.total,indices.count,nodes.fs.free_in_bytes"
         }
       ],
-      "title": "Cluster health",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_prod}"
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
         },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {
-              "Total heap": 4,
-              "active_shards": 7,
-              "cluster_name": 0,
-              "count": 5,
-              "deleted": 12,
-              "docs_count": 11,
-              "free_in_bytes": 14,
-              "initializing_shards": 10,
-              "number_of_data_nodes": 3,
-              "number_of_nodes": 2,
-              "relocating_shards": 9,
-              "size_in_bytes": 13,
-              "status": 1,
-              "total": 6,
-              "unassigned_shards": 8
-            },
-            "renameByName": {
-              "Total": "",
-              "Total heap": "Heap size",
-              "active_shards": "Active shards",
-              "cluster_name": "Cluster name",
-              "count": "Index number",
-              "deleted": "Docs deleted",
-              "docs_count": "Docs count",
-              "free_in_bytes": "Free store",
-              "initializing_shards": "Initializing shards",
-              "number_of_data_nodes": "Data nodes",
-              "number_of_nodes": "Nodes",
-              "relocating_shards": "Relocation shards",
-              "size_in_bytes": "Data",
-              "status": "Cluster status",
-              "total": "Total shards",
-              "unassigned_shards": "Unassigned shards"
-            }
+        "sortBy": []
+      }
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "${es_direct_prod}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 22,
+        "y": 0
+      },
+      "id": 122,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "9.5.10",
+      "targets": [
+        {
+          "cacheDurationSeconds": 300,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.cluster_balance_stats.undesired_shard_allocation_count"
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/_internal/desired_balance?filter_path=cluster_balance_stats.undesired_shard_allocation_count"
         }
       ],
-      "type": "table"
+      "title": "Undesired shards",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1629,7 +1704,19 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "10000 <= 60000 ? Sum elasticsearch.index.total.indexing.index_rate : params.total/(10000/60000)"
+              "options": "10000 <= 60000 ? Sum elasticsearch.index.primaries.indexing.index_rate : params.primary/(10000/60000)"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Primary ingest rate"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*total.*/"
             },
             "properties": [
               {
@@ -1640,8 +1727,8 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "10000 <= 60000 ? Sum elasticsearch.index.primaries.indexing.index_rate : params.primary/(10000/60000)"
+              "id": "byRegexp",
+              "options": "/.*primaries.*/"
             },
             "properties": [
               {
@@ -1740,48 +1827,55 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_index_stats}"
-      },
+      "id": 37,
+      "type": "timeseries",
+      "title": "Cluster search rate (QPS)",
       "description": "QPS- Query Per Second",
+      "gridPos": {
+        "x": 12,
+        "y": 9,
+        "h": 7,
+        "w": 12
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
             "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "lineWidth": 1,
             "fillOpacity": 0,
             "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
+            "spanNulls": true,
+            "insertNulls": false,
+            "showPoints": "never",
             "pointSize": 5,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+            "axisCenteredZero": false,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
+          "color": {
+            "mode": "palette-classic"
+          },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1794,30 +1888,12 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "min": 0
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 9
-      },
-      "id": 37,
-      "maxDataPoints": 100,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
+      "pluginVersion": "12.0.1",
       "targets": [
         {
           "alias": "",
@@ -1839,7 +1915,21 @@
             {
               "field": "elasticsearch.index.total.search.query_rate",
               "id": "3",
-              "type": "sum"
+              "type": "sum",
+              "hide": true
+            },
+            {
+              "id": "4",
+              "type": "bucket_script",
+              "pipelineVariables": [
+                {
+                  "name": "total",
+                  "pipelineAgg": "3"
+                }
+              ],
+              "settings": {
+                "script": "${__interval_ms} <= 60000 ? params.total : params.total/(${__interval_ms}/60000)"
+              }
             }
           ],
           "query": "event.dataset: index_stats AND elasticsearch.cluster.id: $cluster_uid",
@@ -1847,8 +1937,24 @@
           "timeField": "@timestamp"
         }
       ],
-      "title": "Cluster search rate (QPS)",
-      "type": "timeseries"
+      "maxDataPoints": 100,
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      }
     },
     {
       "datasource": {
@@ -5261,9 +5367,10 @@
           "options": {
             "legend": {
               "calcs": [],
+              "showLegend": true,
               "displayMode": "list",
-              "placement": "right",
-              "showLegend": true
+              "placement": "bottom",
+              "calcs": []
             },
             "tooltip": {
               "mode": "single",
@@ -5312,7 +5419,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.rejected_rate:>1",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5564,10 +5671,10 @@
           "maxDataPoints": 100,
           "options": {
             "legend": {
-              "calcs": [],
+              "showLegend": true,
               "displayMode": "list",
-              "placement": "right",
-              "showLegend": true
+              "placement": "bottom",
+              "calcs": []
             },
             "tooltip": {
               "mode": "single",
@@ -5694,10 +5801,10 @@
           "maxDataPoints": 100,
           "options": {
             "legend": {
-              "calcs": [],
+              "showLegend": true,
               "displayMode": "list",
-              "placement": "right",
-              "showLegend": true
+              "placement": "bottom",
+              "calcs": []
             },
             "tooltip": {
               "mode": "single",
@@ -5824,10 +5931,10 @@
           "maxDataPoints": 100,
           "options": {
             "legend": {
-              "calcs": [],
+              "showLegend": true,
               "displayMode": "list",
-              "placement": "right",
-              "showLegend": true
+              "placement": "bottom",
+              "calcs": []
             },
             "tooltip": {
               "mode": "single",
@@ -5876,7 +5983,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5954,10 +6061,10 @@
           "maxDataPoints": 100,
           "options": {
             "legend": {
-              "calcs": [],
+              "showLegend": true,
               "displayMode": "list",
-              "placement": "right",
-              "showLegend": true
+              "placement": "bottom",
+              "calcs": []
             },
             "tooltip": {
               "mode": "single",
@@ -6006,7 +6113,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -6061,8 +6168,7 @@
                     "value": 80
                   }
                 ]
-              },
-              "unit": "s"
+              }
             },
             "overrides": [
               {
@@ -6134,6 +6240,10 @@
                   {
                     "id": "custom.width",
                     "value": 80
+                  },
+                  {
+                    "id": "unit",
+                    "value": "s"
                   }
                 ]
               }

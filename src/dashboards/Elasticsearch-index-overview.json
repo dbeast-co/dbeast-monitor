@@ -535,7 +535,7 @@
               "field": "elasticsearch.index.index_pattern",
               "id": "2",
               "settings": {
-                "min_doc_count": "0",
+                "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "1",
                 "size": "10"

@@ -488,7 +488,7 @@
               "type": "avg"
             }
           ],
-          "query": "host.hostname: $node_host AND event.dataset: system.cpu",
+          "query": "event.dataset: system.cpu AND (host.hostname: $node_host OR host.name: $node_name )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -584,7 +584,7 @@
               "type": "avg"
             }
           ],
-          "query": "host.hostname: $node_host AND event.dataset: system.memory",
+          "query": "event.dataset: system.memory AND (host.hostname: $node_host OR host.name: $node_name )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -681,7 +681,7 @@
               "type": "avg"
             }
           ],
-          "query": "host.hostname: $node_host AND event.dataset: system.memory",
+          "query": "event.dataset: system.memory AND (host.hostname: $node_host OR host.name: $node_name )",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -782,7 +782,7 @@
               "type": "max"
             }
           ],
-          "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+          "query": "(host.hostname: $node_host OR host.name: $node_name ) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -883,7 +883,7 @@
               "type": "max"
             }
           ],
-          "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+          "query": "(host.hostname: $node_host OR host.name: $node_name ) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -985,7 +985,7 @@
               "type": "max"
             }
           ],
-          "query": "host.hostname: $node_host AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+          "query": "(host.hostname: $node_host OR host.name: $node_name ) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1592,7 +1592,10 @@
               "field": "system.network.in.bytes",
               "hide": true,
               "id": "1",
-              "type": "max"
+              "type": "max",
+              "settings": {
+                "script": "_value/60"
+              }
             },
             {
               "field": "1",
@@ -1608,7 +1611,10 @@
               "field": "system.network.out.bytes",
               "hide": true,
               "id": "5",
-              "type": "max"
+              "type": "max",
+              "settings": {
+                "script": "_value/60"
+              }
             },
             {
               "field": "5",
