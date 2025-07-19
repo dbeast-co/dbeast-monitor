@@ -433,3 +433,13 @@ svg.MuiSvgIcon-root[data-testid='CheckBoxIcon'] {
 .form-wrapper{
   margin-block-start: 3rem;
 }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+
+  .title {
+    margin: 0;
+  }
+}

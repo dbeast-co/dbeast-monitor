@@ -7,6 +7,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
 
 import { useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
@@ -715,7 +717,8 @@ export const AddNewClusterPanel = () => {
             </div>
           </div>
           <Divider className="add-new-cluster-divider"></Divider>
-          <div ><h3 className="title monitoring-cluster-title">Monitoring cluster</h3>
+          <div >
+            <h3 className="title monitoring-cluster-title">Monitoring cluster</h3>
 
             <div className="monitoring-cluster-group">
               <div className="host_wrapper">
@@ -799,9 +802,11 @@ export const AddNewClusterPanel = () => {
       </div>
       <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
         <div className="wrapper">
-          <Tooltip title="This section displays monitoring data for cluster-level injections" arrow>
+          <div className="section-header">
             <h3 className="title">Monitoring Cluster Injections</h3>
-          </Tooltip>
+            <Tooltip title="This section displays the configuration files for monitoring cluster injections" arrow>
+              <HelpOutlineIcon fontSize="small" />
+            </Tooltip></div>
           {cluster && cluster.monitoring_cluster_injection && (
             <MonitoringClusterInjectionPanel monitoringClusterInjections={cluster.monitoring_cluster_injection} />
           )}
@@ -815,9 +820,12 @@ export const AddNewClusterPanel = () => {
             </button>
           </div>
           <Divider className="add-new-cluster-divider-2"></Divider>
-          <Tooltip title="This section displays the configuration files for Elasticsearch monitoring" arrow>
-            <h3 className="title">Elasticsearch monitoring configuration</h3>
-          </Tooltip>
+
+          <div className="section-header"><h3 className="title">Production cluster configuration</h3>
+            <Tooltip title="This section displays the configuration files for Elasticsearch monitoring configuration"
+                     arrow>
+              <HelpOutlineIcon fontSize="small" />
+            </Tooltip></div>
 
           {cluster && cluster.logstash_configurations && (
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
@@ -843,9 +851,12 @@ export const AddNewClusterPanel = () => {
           </div>
         </div>
         <Divider className="add-new-cluster-divider-2"></Divider>
-        <Tooltip title="This section displays the configuration files for Logstash monitoring" arrow>
-          <h3 className="title">Logstash monitoring configuration</h3>
-        </Tooltip>
+
+        <div className="section-header"><h3 className="title">Logstash monitoring </h3>
+          <Tooltip title="This section displays the configuration files for Logstash monitoring configuration" arrow>
+            <HelpOutlineIcon fontSize="small" />
+          </Tooltip></div>
+
         <div className="wrapper">
           {cluster.logstash_configurations &&
             cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations && (
