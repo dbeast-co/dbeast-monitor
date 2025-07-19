@@ -4816,7 +4816,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.name: $node_name",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -4915,7 +4915,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "right",
-              "showLegend": true
+              "showLegend": false
             },
             "tooltip": {
               "mode": "single",
@@ -4964,7 +4964,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.rejected_rate:>1",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.rejected_rate:>1 AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5046,7 +5046,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "right",
-              "showLegend": true
+              "showLegend": false
             },
             "tooltip": {
               "mode": "single",
@@ -5095,7 +5095,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5177,7 +5177,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "right",
-              "showLegend": true
+              "showLegend": false
             },
             "tooltip": {
               "mode": "single",
@@ -5226,7 +5226,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5308,7 +5308,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "right",
-              "showLegend": true
+              "showLegend": false
             },
             "tooltip": {
               "mode": "single",
@@ -5357,7 +5357,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5439,7 +5439,7 @@
               "calcs": [],
               "displayMode": "list",
               "placement": "right",
-              "showLegend": true
+              "showLegend": false
             },
             "tooltip": {
               "mode": "single",
@@ -5488,7 +5488,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
+              "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
