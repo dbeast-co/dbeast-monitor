@@ -3766,44 +3766,52 @@
           "maxDataPoints": 100
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
+          "id": 50,
+          "type": "timeseries",
+          "title": "GC rate",
+          "gridPos": {
+            "x": 16,
+            "y": 12,
+            "h": 6,
+            "w": 8
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
                 "drawStyle": "line",
+                "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "lineWidth": 1,
                 "fillOpacity": 0,
                 "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
+                "spanNulls": false,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
                 }
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
@@ -3824,48 +3832,30 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "((Derivative 1 / 60 / 60) > 0 ) ? (params.young / 60 ) : 0"
+                  "options": "Derivative Max elasticsearch.node.stats.jvm.gc.collectors.young.collection.count"
                 },
                 "properties": [
                   {
                     "id": "displayName",
-                    "value": "GC Young count/s"
+                    "value": "GC Young"
                   }
                 ]
               },
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "((Derivative 5 / 60) > 0 ) ? (params.duration / 60) : 0"
+                  "options": "Derivative Max elasticsearch.node.stats.jvm.gc.collectors.old.collection.count"
                 },
                 "properties": [
                   {
                     "id": "displayName",
-                    "value": "GC Old count/s"
+                    "value": "GC Old"
                   }
                 ]
               }
             ]
           },
-          "gridPos": {
-            "h": 6,
-            "w": 8,
-            "x": 16,
-            "y": 12
-          },
-          "id": 50,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.1",
           "targets": [
             {
               "alias": "",
@@ -3895,55 +3885,33 @@
                   "field": "elasticsearch.node.stats.jvm.gc.collectors.young.collection.count",
                   "hide": true,
                   "id": "1",
-                  "type": "max"
+                  "type": "max",
+                  "settings": {
+                    "script": "_value/10"
+                  }
                 },
                 {
                   "field": "1",
-                  "hide": true,
+                  "hide": false,
                   "id": "3",
                   "pipelineAgg": "1",
                   "type": "derivative"
                 },
                 {
-                  "hide": false,
-                  "id": "4",
-                  "pipelineVariables": [
-                    {
-                      "name": "young",
-                      "pipelineAgg": "3"
-                    }
-                  ],
-                  "settings": {
-                    "script": "((params.young / 60 / 60) > 0 ) ? (params.young / 60 ) : 0"
-                  },
-                  "type": "bucket_script"
-                },
-                {
                   "field": "elasticsearch.node.stats.jvm.gc.collectors.old.collection.count",
                   "hide": true,
                   "id": "5",
-                  "type": "max"
+                  "type": "max",
+                  "settings": {
+                    "script": "_value/10"
+                  }
                 },
                 {
                   "field": "5",
-                  "hide": true,
+                  "hide": false,
                   "id": "6",
                   "pipelineAgg": "5",
                   "type": "derivative"
-                },
-                {
-                  "hide": false,
-                  "id": "7",
-                  "pipelineVariables": [
-                    {
-                      "name": "duration",
-                      "pipelineAgg": "6"
-                    }
-                  ],
-                  "settings": {
-                    "script": "((params.duration / 60) > 0 ) ? (params.duration / 60) : 0"
-                  },
-                  "type": "bucket_script"
                 }
               ],
               "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.cluster.id: $cluster_uid AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
@@ -3953,10 +3921,24 @@
               "urlPath": ""
             }
           ],
-          "title": "GC count",
-          "transformations": [],
-          "type": "timeseries",
-          "maxDataPoints": 100
+          "maxDataPoints": 100,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": true,
+              "displayMode": "list",
+              "placement": "bottom",
+              "calcs": []
+            }
+          }
         },
         {
           "datasource": {
@@ -4211,44 +4193,52 @@
           "maxDataPoints": 100
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_metrics}"
+          "id": 51,
+          "type": "timeseries",
+          "title": "GC duration (ms)",
+          "gridPos": {
+            "x": 16,
+            "y": 18,
+            "h": 6,
+            "w": 8
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
                 "drawStyle": "line",
+                "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "lineWidth": 1,
                 "fillOpacity": 0,
                 "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
+                "spanNulls": false,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
                 }
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
@@ -4268,49 +4258,31 @@
             "overrides": [
               {
                 "matcher": {
-                  "id": "byName",
-                  "options": "Derivative 5 > 0 ? Derivative 7/ params.young_count: 0"
+                  "id": "byRegexp",
+                  "options": "/.*Derivative 7.*/"
                 },
                 "properties": [
                   {
                     "id": "displayName",
-                    "value": "GC Young duration"
+                    "value": "GC Young"
                   }
                 ]
               },
               {
                 "matcher": {
-                  "id": "byName",
-                  "options": "Derivative 6> 0 ? Derivative 5 / params.old_ms : 0"
+                  "id": "byRegexp",
+                  "options": "/.*Derivative 6.*/"
                 },
                 "properties": [
                   {
                     "id": "displayName",
-                    "value": "GC Old duration"
+                    "value": "GC Old"
                   }
                 ]
               }
             ]
           },
-          "gridPos": {
-            "h": 6,
-            "w": 8,
-            "x": 16,
-            "y": 18
-          },
-          "id": 51,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.1",
           "targets": [
             {
               "alias": "",
@@ -4337,18 +4309,6 @@
               "method": "GET",
               "metrics": [
                 {
-                  "field": "elasticsearch.node.stats.jvm.gc.collectors.old.collection.count",
-                  "hide": true,
-                  "id": "4",
-                  "type": "max"
-                },
-                {
-                  "field": "elasticsearch.node.stats.jvm.gc.collectors.young.collection.count",
-                  "hide": true,
-                  "id": "5",
-                  "type": "max"
-                },
-                {
                   "field": "elasticsearch.node.stats.jvm.gc.collectors.old.collection.ms",
                   "hide": true,
                   "id": "6",
@@ -4359,20 +4319,6 @@
                   "hide": true,
                   "id": "7",
                   "type": "max"
-                },
-                {
-                  "field": "4",
-                  "hide": true,
-                  "id": "8",
-                  "pipelineAgg": "4",
-                  "type": "derivative"
-                },
-                {
-                  "field": "5",
-                  "hide": true,
-                  "id": "9",
-                  "pipelineAgg": "5",
-                  "type": "derivative"
                 },
                 {
                   "field": "6",
@@ -4392,16 +4338,12 @@
                   "id": "12",
                   "pipelineVariables": [
                     {
-                      "name": "young_count",
-                      "pipelineAgg": "9"
-                    },
-                    {
                       "name": "young_ms",
                       "pipelineAgg": "11"
                     }
                   ],
                   "settings": {
-                    "script": "params.young_count > 0 ? params.young_ms/ params.young_count: 0"
+                    "script": "params.young_ms > 0 ? params.young_ms/ (${__interval_ms}/1000): 0"
                   },
                   "type": "bucket_script"
                 },
@@ -4409,16 +4351,12 @@
                   "id": "13",
                   "pipelineVariables": [
                     {
-                      "name": "old_count",
-                      "pipelineAgg": "9"
-                    },
-                    {
                       "name": "old_ms",
                       "pipelineAgg": "10"
                     }
                   ],
                   "settings": {
-                    "script": "params.old_ms> 0 ? params.old_count / params.old_ms : 0"
+                    "script": "params.old_ms> 0 ? params.old_ms/ (${__interval_ms}/1000): 0"
                   },
                   "type": "bucket_script"
                 }
@@ -4430,9 +4368,24 @@
               "urlPath": ""
             }
           ],
-          "title": "Avg GC duration (ms)",
-          "type": "timeseries",
-          "maxDataPoints": 100
+          "maxDataPoints": 100,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_metrics}"
+          },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": true,
+              "displayMode": "list",
+              "placement": "bottom",
+              "calcs": []
+            }
+          }
         },
         {
           "datasource": {
