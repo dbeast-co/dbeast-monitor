@@ -24,6 +24,8 @@ import LogstashComponent, { Logstash } from './logstash';
 import { v4 as uuidv4 } from 'uuid';
 import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPanel';
 
+import Tooltip from '@mui/material/Tooltip';
+
 const settings = require('../config.ts');
 
 export enum LogstashFileType {
@@ -797,7 +799,9 @@ export const AddNewClusterPanel = () => {
       </div>
       <div className={isShowLogstash ? 'config not-rounded' : 'config'}>
         <div className="wrapper">
-          <h3 className="title">Monitoring Cluster Injections</h3>
+          <Tooltip title="This section displays monitoring data for cluster-level injections" arrow>
+            <h3 className="title">Monitoring Cluster Injections</h3>
+          </Tooltip>
           {cluster && cluster.monitoring_cluster_injection && (
             <MonitoringClusterInjectionPanel monitoringClusterInjections={cluster.monitoring_cluster_injection} />
           )}
@@ -811,7 +815,9 @@ export const AddNewClusterPanel = () => {
             </button>
           </div>
           <Divider className="add-new-cluster-divider-2"></Divider>
-          <h3 className="title">Cluster monitoring configuration</h3>
+          <Tooltip title="This section displays the configuration files for Elasticsearch monitoring" arrow>
+            <h3 className="title">Elasticsearch monitoring configuration</h3>
+          </Tooltip>
 
           {cluster && cluster.logstash_configurations && (
             <LogstashConfigurationsPanel files={cluster.logstash_configurations.es_monitoring_configuration_files} />
@@ -837,7 +843,9 @@ export const AddNewClusterPanel = () => {
           </div>
         </div>
         <Divider className="add-new-cluster-divider-2"></Divider>
-        <h3 className="title">Logstash monitoring configurations</h3>
+        <Tooltip title="This section displays the configuration files for Logstash monitoring" arrow>
+          <h3 className="title">Logstash monitoring configuration</h3>
+        </Tooltip>
         <div className="wrapper">
           {cluster.logstash_configurations &&
             cluster.logstash_configurations.logstash_monitoring_configuration_files.configurations && (
