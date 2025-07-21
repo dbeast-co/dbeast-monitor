@@ -474,7 +474,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Exceptions rate",
+      "title": "Exceptions Count Over Time",
+      "description": "Number of exceptions per interval ( ${__interval} )",
       "type": "timeseries",
       "maxDataPoints": 100
     },
