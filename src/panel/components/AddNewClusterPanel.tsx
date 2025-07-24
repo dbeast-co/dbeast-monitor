@@ -804,7 +804,7 @@ export const AddNewClusterPanel = () => {
         <div className="wrapper">
           <div className="section-header">
             <h3 className="title">Monitoring Cluster Injections</h3>
-            <Tooltip title="This section displays the configuration files for monitoring cluster injections" arrow>
+            <Tooltip title="Select the configuration files to inject into the monitoring cluster. Choose all if this is your first setup, or deselect if they already exist. Existing objects will be overwritten." arrow>
               <HelpOutlineIcon fontSize="small" />
             </Tooltip></div>
           {cluster && cluster.monitoring_cluster_injection && (
@@ -822,7 +822,7 @@ export const AddNewClusterPanel = () => {
           <Divider className="add-new-cluster-divider-2"></Divider>
 
           <div className="section-header"><h3 className="title">Production cluster configuration</h3>
-            <Tooltip title="This section displays the configuration files for Elasticsearch monitoring configuration"
+            <Tooltip title="Select the data sources to ship from Elasticsearch. Unchecking some sources may result in incomplete dashboard data."
                      arrow>
               <HelpOutlineIcon fontSize="small" />
             </Tooltip></div>
@@ -853,7 +853,7 @@ export const AddNewClusterPanel = () => {
         <Divider className="add-new-cluster-divider-2"></Divider>
 
         <div className="section-header"><h3 className="title">Logstash monitoring </h3>
-          <Tooltip title="This section displays the configuration files for Logstash monitoring configuration" arrow>
+          <Tooltip title="This section is for Logstash monitoring. Add Logstash instance details and download the configuration files needed to enable monitoring." arrow>
             <HelpOutlineIcon fontSize="small" />
           </Tooltip></div>
 
