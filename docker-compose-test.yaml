@@ -1,0 +1,17 @@
+services:
+  grafana:
+    extends:
+      file: .config/docker/docker-compose-with-es-cluster.yaml
+      service: grafana
+  logstash:
+    extends:
+      file: .config/docker/docker-compose-with-es-cluster.yaml
+      service: logstash
+  elasticsearch:
+    extends:
+      file: .config/docker/docker-compose-with-es-cluster.yaml
+      service: elasticsearch
+  kibana:
+    extends:
+      file: .config/docker/docker-compose-with-es-cluster.yaml
+      service: kibana

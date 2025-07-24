@@ -11,9 +11,10 @@
       "DBeast monitor",
       "Elastic Stack",
       "Elasticsearch",
+      "ELK",
       "Monitoring"
     ],
-    "description": "DBeast Monitor for Elastic Stack",
+    "description": "DBeast Monitor is a Grafana plugin for monitoring, troubleshooting, and optimizing the Elastic Stack.",
     "author": {
       "name": "DBeast",
       "url": "https://dbeast.co"

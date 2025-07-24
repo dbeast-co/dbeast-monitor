@@ -1,8 +1,7 @@
 services:
   grafana:
     user: root
-    container_name: 'dbeast-dbeastmonitor-app'
-
+    container_name: grafana
     build:
       context: ..
       args:
@@ -21,6 +20,7 @@ services:
     volumes:
       - ../../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
       - ..:/root/dbeast-dbeastmonitor-app
+      - ./logstash-config:/opt/dbeast/logstash/config
 
     environment:
       NODE_ENV: development
@@ -31,7 +31,41 @@ services:
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: dbeast-dbeastmonitor-app
       GF_INSTALL_PLUGINS: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
       GF_PLUGIN_DBEAST_DBEASTMONITOR_APP_ENABLED: "true"
-      DBEAST_MONITOR_VERSION: "OnPrem"
+      DBEAST_MONITOR_VERSION: "Container"
       GF_SECURITY_ADMIN_USER: "admin"
       GF_SECURITY_ADMIN_PASSWORD: "admin"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.18.0
+    user: root
+    container_name: logstash
+    ports:
+      - "5044:5044"
+      - "9600:9600"  # Logstash monitoring API
+    volumes:
+      - ./logstash-config:/usr/share/logstash/config
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
+    container_name: elasticsearch
+    environment:
+      - cluster.name=test-monitoring-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.monitoring.collection.enabled=true
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"   # HTTP
+      - "9300:9300"   # Internal transport
+    volumes:
+      - ./esdata:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.18.1
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    ports:
+      - "5601:5601"
 
