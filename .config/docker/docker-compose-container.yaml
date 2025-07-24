@@ -20,7 +20,6 @@ services:
       - ../../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
       - ..:/root/dbeast-dbeastmonitor-app
       - ./logstash-config:/opt/dbeast/logstash/config
-      - ./entrypoint.sh:/entrypoint.sh
 
     environment:
       NODE_ENV: development
@@ -34,8 +33,6 @@ services:
       DBEAST_MONITOR_VERSION: "Container"
       GF_SECURITY_ADMIN_USER: "admin"
       GF_SECURITY_ADMIN_PASSWORD: "admin"
-
-    entrypoint: ["/entrypoint.sh"]
 
   logstash:
     image: docker.elastic.co/logstash/logstash:8.18.0
