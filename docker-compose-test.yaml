@@ -15,3 +15,13 @@ services:
     extends:
       file: .config/docker/docker-compose-with-es-cluster.yaml
       service: kibana
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:8.18.1
+    container_name: metricbeat
+    user: root
+    depends_on:
+      - elasticsearch
+    volumes:
+      - .config/docker/metricbeat.template.yml:/usr/share/metricbeat/metricbeat.template.yml
+      - .config/docker/metricbeat-entrypoint.sh:/usr/local/bin/metricbeat-entrypoint.sh
+    entrypoint: [ "/usr/local/bin/metricbeat-entrypoint.sh" ]

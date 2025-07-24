@@ -1,0 +1,49 @@
+metricbeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+metricbeat.modules:
+  - module: elasticsearch
+    metricsets: ["node", "node_stats", "cluster_stats"]
+    period: 10s
+    hosts: ["http://elasticsearch:9200"]
+
+  - module: system
+    period: 10s
+    metricsets:
+      - cpu
+      - memory
+      - network
+      - network_summary
+      - diskio
+      - filesystem
+      - fsstat
+      - load
+      - uptime
+      - process
+      - process_summary
+    processes: ['.*']  # match all
+    process.include_top_n:
+      by_cpu: 5        # top 5 by CPU
+      by_memory: 5     # top 5 by memory
+    cpu.metrics:  # include all CPU cores
+      - percentages
+      - normalized_percentages
+    filesystem.ignore_types: [nfs, smbfs, autofs, proc, sysfs, tmpfs, devtmpfs]
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+setup.kibana:
+  host: "http://kibana:5601"
+
+monitoring.enabled: true
+monitoring.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
+  - add_fields:
+      target: ''
+      fields:
+        cluster.id: "__CLUSTER_ID__"
