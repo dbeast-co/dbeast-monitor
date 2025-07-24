@@ -10,7 +10,8 @@
       "app",
       "DBeast monitor",
       "Elastic Stack",
-      "Elasticsearch"
+      "Elasticsearch",
+      "Monitoring"
     ],
     "description": "DBeast Monitor for Elastic Stack",
     "author": {
@@ -23,12 +24,24 @@
     },
     "links": [
       {
-        "name": "Playground site",
-        "url": "https://play.dbeast.co/"
+        "name": "Documentation",
+        "url": "https://github.com/dbeast-co/dbeast-monitor/wiki"
       },
       {
         "name": "GitHub",
         "url": "https://github.com/dbeast-co/dbeast-monitor"
+      },
+      {
+        "name": "Our products site",
+        "url": "https://dbeast.co/"
+      },
+      {
+        "name": "DBeast Monitor playground",
+        "url": "https://play.dbeast.co/"
+      },
+      {
+        "name": "sponsorship",
+        "url": "https://github.com/sponsors/dbeast-co"
       },
       {
         "name": "License",
@@ -228,6 +241,25 @@
   ],
   "dependencies": {
     "grafanaDependency": ">=10.1.0",
-    "plugins": []
+    "plugins": [
+      {
+        "id": "marcusolsson-json-datasource",
+        "name": "JSON API",
+        "type": "datasource",
+        "version": ">=1.3.20"
+      },
+      {
+        "id": "marcusolsson-dynamictext-panel",
+        "name": "Dynamic Text",
+        "type": "panel",
+        "version": ">=5.0.0"
+      },
+      {
+        "id": "volkovlabs-grapi-datasource",
+        "name": "GRAPI",
+        "type": "datasource",
+        "version": ">=3.0.0"
+      }
+    ]
   }
 }

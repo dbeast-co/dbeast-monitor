@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 2.0.0
+
+- **Grafana 10+ Support**: Added support for Grafana 10 and above.
+- **Minimum Grafana Version**: Updated the minimal required version to 10.1.
+- **Dashboards**: All dashboards have been updated to align with the new features and compatibility.
+
 ## Version 1.0.3
 
 - Features:

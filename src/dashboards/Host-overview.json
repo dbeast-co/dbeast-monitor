@@ -320,8 +320,8 @@
               "name": "Transport address"
             },
             {
-              "jsonPath": "$.nodes.*.indices.shard_stats.total_count",
-              "language": "jsonpath",
+              "jsonPath": "$.nodes.*.indices.($exists(shard_stats) ? shard_stats.total_count : 0)",
+              "language": "jsonata",
               "name": "Number of shards"
             },
             {

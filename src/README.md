@@ -38,5 +38,13 @@ options:
 
 - Grafana 10.1.0+
 - Logstash 8.1+
-- Elasticsearch 8+
+- Elasticsearch 8+ (Elasticsearch 7X - partial support)
 - Elasticsearch monitoring cluster 8.7+
+
+## Enterprise Support
+
+Looking for assistance with Elastic Stack architecture, tuning, monitoring, or any other Elastic Stack-related challenges?
+📩 Contact us: [support@dbeast.co](mailto:support@dbeast.co)
+
+
+&copy; 2022 - 2025 DBeast. All rights reserved
