@@ -6,7 +6,7 @@
 - **Minimum Grafana Version**: Updated the minimal required version to 10.1.
 - **Dashboards**: All dashboards have been updated to align with the new features and compatibility.
 
-## Version 1.0.3
+## Version 1.0.3 (2025-04-27)
 
 - Features:
   * [FEAT] Add Logstash health_report API data to the Logstash dashboards #216[#216](https://github.com/dbeast-co/dbeast-monitor/issues/216)
@@ -27,7 +27,7 @@
 - Updated dashboards
   * All dashboards
 
-## Version 1.0.2
+## Version 1.0.2  (2025-01-05)
 
 - Features:
   * [FEAT] Add Flow parameters to the Logstash Host Overview dashboard #185[#185](https://github.com/dbeast-co/dbeast-monitor/issues/185)
@@ -45,7 +45,7 @@
 - Updated dashboards
   * All dashboards
 
-## Version 1.0.1
+## Version 1.0.1 (2024-11-05)
 
 - Features:
   * [FEAT] In the "Cluster list" dashboard - redevelope monitors links to route even if the cluster not received the status #160[#160](https://github.com/dbeast-co/dbeast-monitor/issues/160)
@@ -62,7 +62,7 @@
   * Elasticsearch shards overview
   * Elasticsearch index pattern monitor
 
-## Version 1.0.0
+## Version 1.0.0 (2024-09-23)
 **We released the first version for Kubernetes with Helm charts! Now we have Kubernetes and on-prem versions!**
 
 - Features:
@@ -86,7 +86,7 @@
   * Logstash pipeline analytics
   * Elasticsearch index monitor
 
-## Version 0.8.1
+## Version 0.8.1 (2024-08-06)
 - Bug fixes
   * [BUG] Incorrect elasticsearch.tasks.running_time mapping in the Tasks mapping #109[#109](https://github.com/dbeast-co/dbeast-monitor/issues/109)
   * [BUG] Incorrect definition of the host.hostname in the Logstash logs pipeline #110[#110](https://github.com/dbeast-co/dbeast-monitor/issues/110)
