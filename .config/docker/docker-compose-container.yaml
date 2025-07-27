@@ -21,6 +21,8 @@ services:
       - ..:/root/dbeast-dbeastmonitor-app
       - ./logstash-config:/opt/dbeast/logstash/config
 
+    entrypoint: ["/entrypoint.sh"]
+
     environment:
       NODE_ENV: development
       GF_SERVER_HTTP_ADDR: 0.0.0.0
