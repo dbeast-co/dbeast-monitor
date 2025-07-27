@@ -83,7 +83,7 @@ No additional configuration is required after deploying using Helm.
    For unsigned (dev version) plugins, enable development mode or explicitly allow the plugins in the `grafana.ini` file, located in the configuration folder.
 
    Update the `grafana.ini` file as needed:
-   ![Change Grafana to Development Mode](./img/readme/GrafanaChangeToDev.jpg)
+   ![Change Grafana to Development Mode](./a/dbeast-dbeastmonitor-app/img/readme/GrafanaChangeToDev.jpg)
 
 3. **Restart Grafana**
 
@@ -108,7 +108,7 @@ No additional configuration is required after deploying using Helm.
 7. **Verify Plugin Installation**
     - Navigate to the Grafana Plugins page.
     - Enable the "DBeast Monitor" plugin:
-      ![Enable DBeast Plugins](./img/readme/GrafanaEnablePlugin.jpg)
+      ![Enable DBeast Plugins](https://github.com/dbeast-co/dbeast-monitor/img/readme/GrafanaEnablePlugin.jpg)
 
 
 ## Adding a New Cluster
@@ -119,7 +119,7 @@ Follow these steps to add and configure a cluster in the Grafana DBeast Monitor 
 ### 1. Navigate to "Add New Cluster"
 
 - In the Grafana application menu, click **"Add New Cluster"** to begin the configuration process.  
-  ![Navigate to Add New Cluster](./img/readme/AddNewCluster.jpg)
+  ![Navigate to Add New Cluster](https://github.com/dbeast-co/dbeast-monitor/img/readme/AddNewCluster.jpg)
 
 ---
 
@@ -127,7 +127,7 @@ Follow these steps to add and configure a cluster in the Grafana DBeast Monitor 
 
 - Enter all the required information in the provided fields.
 
-  ![Add New Cluster Page](./img/readme/AddNewClusterPage.jpg)
+  ![Add New Cluster Page](https://github.com/dbeast-co/dbeast-monitor/img/readme/AddNewClusterPage.jpg)
 
     - **Elasticsearch Host**: Provide the URL of one of your **PROD cluster** nodes.
     - **Kibana Host**: Enter the address of your Kibana instance, including the port (optional).
@@ -157,7 +157,7 @@ Follow these steps to add and configure a cluster in the Grafana DBeast Monitor 
 
 - Once the connection status is **GREEN** or **YELLOW**, the **Deploy** button becomes active.
 - Press the **Deploy** button to save the configurations directly into the **Helm-deployed Logstash** instance.  
-  ![Deploy with Helm Version](./img/readme/AddNewClusterPageAfterTest.jpg)
+  ![Deploy with Helm Version](https://github.com/dbeast-co/dbeast-monitor/img/readme/AddNewClusterPageAfterTest.jpg)
 
 ---
 
@@ -167,7 +167,7 @@ The OnPrem version contains only the DBeast application plugin. You must manuall
 
 1. **Download Configurations**  
    Once the connection status is **GREEN** or **YELLOW**, the **Download** button becomes active. Click it to download the Elasticsearch configurations.  
-   ![Download OnPrem Configurations](./img/readme/AddNewClusterPageAfterTestOnPrem.jpg)
+   ![Download OnPrem Configurations](https://github.com/dbeast-co/dbeast-monitor/img/readme/AddNewClusterPageAfterTestOnPrem.jpg)
 
 2. **Unpack the Configuration Files**
     - Extract **_ESConfigurationFiles.zip_** and copy the files to your monitoring cluster.
@@ -176,7 +176,7 @@ The OnPrem version contains only the DBeast application plugin. You must manuall
 3. **Update Pipelines Configuration**
     - Copy the contents of the **_pipelines.yml_** file into the `pipelines.yml` file in your Monitoring Logstash configuration folder.
     - Update the paths in the Logstash configuration to match your folder structure.  
-      ![Update Pipelines Configuration](./img/readme/ChangeConfigPathLS.png)
+      ![Update Pipelines Configuration](https://github.com/dbeast-co/dbeast-monitor/img/readme/ChangeConfigPathLS.png)
 
 4. **Restart Logstash (if needed)**
     - Restart Logstash if the `auto.reload` setting is not defined or enabled.
@@ -197,7 +197,7 @@ To monitor external Logstash instances, you need to add monitoring pipelines to 
 
 Define one or more Logstash instances in your setup.
 
-![Add New Logstash](./img/readme/AddNewLogstash.png)
+![Add New Logstash](https://github.com/dbeast-co/dbeast-monitor/img/readme/AddNewLogstash.png)
 
 - **Server Address**: Provide the unique host address of your Logstash server. This will be used as the folder name in the configuration files.
 - **Logstash API**: Specify the Logstash monitoring API address. The default is **localhost:9600**, unless changed in the Logstash configuration.
@@ -213,11 +213,11 @@ Once you have added one or more Logstash instances:
 2. Add the downloaded configuration files to each Logstash instance.
 3. Include the new configuration paths in the **pipelines.yml** file.
 
-![Download Logstash Configuration](./img/readme/DownloadLogstashConfig.png)
+![Download Logstash Configuration](https://github.com/dbeast-co/dbeast-monitor/img/readme/DownloadLogstashConfig.png)
 
 Next, update the folder path to the Logstash configuration files in the **pipelines.yml** file:
 
-![Update Pipelines Configuration Path](./img/readme/ChangeConfigPathLS.png)
+![Update Pipelines Configuration Path](https://github.com/dbeast-co/dbeast-monitor/img/readme/ChangeConfigPathLS.png)
 
 ---
 
