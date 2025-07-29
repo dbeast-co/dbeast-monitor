@@ -5288,52 +5288,61 @@
           "type": "table"
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_thread_pools}"
+          "id": 114,
+          "type": "timeseries",
+          "title": " Rejects per interval ( ${__interval} )",
+          "gridPos": {
+            "x": 6,
+            "y": 13,
+            "h": 7,
+            "w": 12
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
+                "drawStyle": "bars",
                 "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "lineWidth": 1,
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "spanNulls": true,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5344,27 +5353,7 @@
             },
             "overrides": []
           },
-          "gridPos": {
-            "h": 7,
-            "w": 12,
-            "x": 6,
-            "y": 9
-          },
-          "id": 114,
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "showLegend": true,
-              "displayMode": "list",
-              "placement": "bottom",
-              "calcs": []
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.2",
           "targets": [
             {
               "alias": "",
@@ -5414,9 +5403,24 @@
               "urlPath": ""
             }
           ],
-          "title": "Rejects",
-          "transformations": [],
-          "type": "timeseries"
+          "maxDataPoints": 100,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": true,
+              "displayMode": "list",
+              "placement": "bottom",
+              "calcs": []
+            }
+          }
         },
         {
           "datasource": {
@@ -5708,7 +5712,10 @@
                 {
                   "field": "elasticsearch.node.stats.thread_pool.completed_rate",
                   "id": "1",
-                  "type": "max"
+                  "type": "avg",
+                  "settings": {
+                    "script": "_value > 0 ? _value : 0"
+                  }
                 }
               ],
               "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write",
@@ -5838,7 +5845,10 @@
                 {
                   "field": "elasticsearch.node.stats.thread_pool.completed_rate",
                   "id": "1",
-                  "type": "max"
+                  "type": "avg",
+                  "settings": {
+                    "script": "_value > 0 ? _value : 0"
+                  }
                 }
               ],
               "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search",
@@ -5853,52 +5863,61 @@
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_thread_pools}"
+          "id": 113,
+          "type": "timeseries",
+          "title": " Rejected Write requests per interval (add interval) Rejected Search requests per interval ( ${__interval} )",
+          "gridPos": {
+            "x": 6,
+            "y": 26,
+            "h": 6,
+            "w": 6
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
+                "drawStyle": "bars",
                 "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "lineWidth": 1,
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "spanNulls": true,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -5909,26 +5928,7 @@
             },
             "overrides": []
           },
-          "gridPos": {
-            "h": 6,
-            "w": 6,
-            "x": 6,
-            "y": 22
-          },
-          "id": 113,
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "showLegend": true,
-              "displayMode": "list",
-              "placement": "bottom",
-              "calcs": []
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.2",
           "targets": [
             {
               "alias": "",
@@ -5978,57 +5978,81 @@
               "urlPath": ""
             }
           ],
-          "title": "Rejected Write requests rate",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
+          "maxDataPoints": 100,
           "datasource": {
             "type": "elasticsearch",
             "uid": "${es_thread_pools}"
           },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": true,
+              "displayMode": "list",
+              "placement": "bottom",
+              "calcs": []
+            }
+          }
+        },
+        {
+          "id": 116,
+          "type": "timeseries",
+          "title": " Rejected Search requests per interval ( ${__interval} )",
+          "gridPos": {
+            "x": 12,
+            "y": 26,
+            "h": 6,
+            "w": 6
+          },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
+                "drawStyle": "bars",
                 "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "lineWidth": 1,
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "spanNulls": true,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -6039,26 +6063,7 @@
             },
             "overrides": []
           },
-          "gridPos": {
-            "h": 6,
-            "w": 6,
-            "x": 12,
-            "y": 22
-          },
-          "id": 116,
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "showLegend": true,
-              "displayMode": "list",
-              "placement": "bottom",
-              "calcs": []
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.2",
           "targets": [
             {
               "alias": "",
@@ -6108,9 +6113,24 @@
               "urlPath": ""
             }
           ],
-          "title": "Rejected Search requests rate",
-          "transformations": [],
-          "type": "timeseries"
+          "maxDataPoints": 100,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": true,
+              "displayMode": "list",
+              "placement": "bottom",
+              "calcs": []
+            }
+          }
         }
       ],
       "title": "Thread pools overview",

@@ -4,28 +4,3 @@
 
 
 
-
-
-### Configuration files for the cluster Id: GGOl1ZZDTa-_8HcY1gApBg, cluster name: test-monitoring-cluster
-- pipeline.id: dbeast-mon-es-index-stats-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-index-stats.conf"
-
-- pipeline.id: dbeast-mon-es-indices-summary-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-indices-summary.conf"
-
-- pipeline.id: dbeast-mon-es-shards-stats-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-shards-stats.conf"
-
-- pipeline.id: dbeast-mon-es-tasks-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-tasks.conf"
-
-- pipeline.id: dbeast-mon-es-ingest_pipelines-metrics-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-ingest_pipelines-metrics.conf"
-
-- pipeline.id: dbeast-mon-es-enrich_queue-metrics-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-enrich_queue-metrics.conf"
-
-- pipeline.id: dbeast-mon-es-thread_pools-test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg
-  path.config: "/usr/share/logstash/config/conf.d/test-monitoring-cluster-GGOl1ZZDTa-_8HcY1gApBg/dbeast-mon-es-thread_pools.conf"
-
-

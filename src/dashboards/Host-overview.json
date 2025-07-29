@@ -488,7 +488,7 @@
               "type": "avg"
             }
           ],
-          "query": "event.dataset: system.cpu AND (host.hostname: $node_host OR host.name: $node_name )",
+          "query": "event.dataset: system.cpu AND ( host.hostname: $node_host OR host.name: $node_host)",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -584,7 +584,7 @@
               "type": "avg"
             }
           ],
-          "query": "event.dataset: system.memory AND (host.hostname: $node_host OR host.name: $node_name )",
+          "query": "event.dataset: system.memory AND ( host.hostname: $node_host OR host.name: $node_host)",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -681,7 +681,7 @@
               "type": "avg"
             }
           ],
-          "query": "event.dataset: system.memory AND (host.hostname: $node_host OR host.name: $node_name )",
+          "query": "event.dataset: system.memory AND ( host.hostname: $node_host OR host.name: $node_host)",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -782,7 +782,7 @@
               "type": "max"
             }
           ],
-          "query": "(host.hostname: $node_host OR host.name: $node_name ) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+          "query": "( host.hostname: $node_host OR host.name: $node_host) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -883,7 +883,7 @@
               "type": "max"
             }
           ],
-          "query": "(host.hostname: $node_host OR host.name: $node_name ) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+          "query": "( host.hostname: $node_host OR host.name: $node_host) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -985,7 +985,7 @@
               "type": "max"
             }
           ],
-          "query": "(host.hostname: $node_host OR host.name: $node_name ) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
+          "query": "( host.hostname: $node_host OR host.name: $node_host) AND -system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1829,7 +1829,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "system.diskio.name :* AND (host.hostname: $node_host OR host.name: $node_name )",
+          "query": "system.diskio.name :* AND ( host.hostname: $node_host OR host.name: $node_host)",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -2447,7 +2447,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "system.diskio.name :* AND (host.hostname: $node_host OR host.name: $node_name )",
+          "query": "system.diskio.name :* AND ( host.hostname: $node_host OR host.name: $node_host)",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -3015,7 +3015,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "system.diskio.name :* AND (host.hostname: $node_host OR host.name: $node_name )",
+          "query": "system.diskio.name :* AND ( host.hostname: $node_host OR host.name: $node_host)",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4798,45 +4798,53 @@
           "type": "table"
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_thread_pools}"
+          "id": 114,
+          "type": "timeseries",
+          "title": " Rejected per interval ( ${__interval} )",
+          "gridPos": {
+            "x": 6,
+            "y": 7,
+            "h": 7,
+            "w": 18
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
+                "drawStyle": "bars",
                 "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "lineWidth": 1,
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "spanNulls": true,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
@@ -4855,26 +4863,7 @@
             },
             "overrides": []
           },
-          "gridPos": {
-            "h": 7,
-            "w": 18,
-            "x": 6,
-            "y": 30
-          },
-          "id": 114,
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "right",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.2",
           "targets": [
             {
               "alias": "",
@@ -4924,9 +4913,24 @@
               "urlPath": ""
             }
           ],
-          "title": "Rejects",
-          "transformations": [],
-          "type": "timeseries"
+          "maxDataPoints": 100,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false,
+              "displayMode": "list",
+              "placement": "right",
+              "calcs": []
+            }
+          }
         },
         {
           "datasource": {
@@ -5045,7 +5049,10 @@
                 {
                   "field": "elasticsearch.node.stats.thread_pool.completed_rate",
                   "id": "1",
-                  "type": "max"
+                  "type": "avg",
+                  "settings": {
+                    "script": "_value > 0 ? _value : 0"
+                  }
                 }
               ],
               "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
@@ -5176,7 +5183,10 @@
                 {
                   "field": "elasticsearch.node.stats.thread_pool.completed_rate",
                   "id": "1",
-                  "type": "max"
+                  "type": "avg",
+                  "settings": {
+                    "script": "_value > 0 ? _value : 0"
+                  }
                 }
               ],
               "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
@@ -5191,45 +5201,53 @@
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "elasticsearch",
-            "uid": "${es_thread_pools}"
+          "id": 113,
+          "type": "timeseries",
+          "title": " Rejected Write requests per interval ( ${__interval} )",
+          "gridPos": {
+            "x": 6,
+            "y": 20,
+            "h": 6,
+            "w": 9
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
+                "drawStyle": "bars",
                 "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "lineWidth": 1,
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "spanNulls": true,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
@@ -5248,26 +5266,7 @@
             },
             "overrides": []
           },
-          "gridPos": {
-            "h": 6,
-            "w": 9,
-            "x": 6,
-            "y": 43
-          },
-          "id": 113,
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "right",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.2",
           "targets": [
             {
               "alias": "",
@@ -5317,50 +5316,73 @@
               "urlPath": ""
             }
           ],
-          "title": "Rejected Write requests rate",
-          "transformations": [],
-          "type": "timeseries"
-        },
-        {
+          "maxDataPoints": 100,
           "datasource": {
             "type": "elasticsearch",
             "uid": "${es_thread_pools}"
           },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false,
+              "displayMode": "list",
+              "placement": "right",
+              "calcs": []
+            }
+          }
+        },
+        {
+          "id": 116,
+          "type": "timeseries",
+          "title": " Rejected Search requests per interval ( ${__interval} )",
+          "gridPos": {
+            "x": 15,
+            "y": 20,
+            "h": 6,
+            "w": 9
+          },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
               "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
+                "drawStyle": "bars",
                 "lineInterpolation": "smooth",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "lineWidth": 1,
+                "fillOpacity": 100,
+                "gradientMode": "none",
+                "spanNulls": true,
+                "insertNulls": false,
+                "showPoints": "never",
                 "pointSize": 5,
+                "stacking": {
+                  "mode": "none",
+                  "group": "A"
+                },
+                "axisPlacement": "auto",
+                "axisLabel": "",
+                "axisColorMode": "text",
+                "axisBorderShow": false,
                 "scaleDistribution": {
                   "type": "linear"
                 },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
+                "axisCenteredZero": false,
+                "hideFrom": {
+                  "tooltip": false,
+                  "viz": false,
+                  "legend": false
                 },
                 "thresholdsStyle": {
                   "mode": "off"
-                }
+                },
+                "axisSoftMin": 0
+              },
+              "color": {
+                "mode": "palette-classic"
               },
               "mappings": [],
               "thresholds": {
@@ -5379,26 +5401,7 @@
             },
             "overrides": []
           },
-          "gridPos": {
-            "h": 6,
-            "w": 9,
-            "x": 15,
-            "y": 43
-          },
-          "id": 116,
-          "maxDataPoints": 100,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "right",
-              "showLegend": false
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
+          "pluginVersion": "12.0.2",
           "targets": [
             {
               "alias": "",
@@ -5448,9 +5451,24 @@
               "urlPath": ""
             }
           ],
-          "title": "Rejected Search requests rate",
-          "transformations": [],
-          "type": "timeseries"
+          "maxDataPoints": 100,
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_thread_pools}"
+          },
+          "options": {
+            "tooltip": {
+              "mode": "single",
+              "sort": "none",
+              "hideZeros": false
+            },
+            "legend": {
+              "showLegend": false,
+              "displayMode": "list",
+              "placement": "right",
+              "calcs": []
+            }
+          }
         }
       ],
       "title": "Thread pools stats",
