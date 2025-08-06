@@ -267,6 +267,10 @@
               {
                 "id": "custom.width",
                 "value": 120
+              },
+              {
+                "id": "unit",
+                "value": "short"
               }
             ]
           }
@@ -710,7 +714,7 @@
                 "min_doc_count": "1",
                 "order": "desc",
                 "orderBy": "_term",
-                "size": "10"
+                "size": "1000"
               },
               "type": "terms"
             },
