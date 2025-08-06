@@ -23,6 +23,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+      - name: List contents
+        run: ls -al
 
       - name: Install dependencies
         run: npm ci
