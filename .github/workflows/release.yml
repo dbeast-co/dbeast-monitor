@@ -42,6 +42,11 @@ jobs:
       - name: Build backend
         run: mage -v build:linux
 
+      - name: Sign plugin with Grafana CLI
+        run: npx --yes @grafana/sign-plugin@latest
+        env:
+          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+
       - name: Package plugin
         run: |
           mkdir -p dist
@@ -52,6 +57,7 @@ jobs:
         run: |
           RAW_VERSION="${GITHUB_REF_NAME#v}"
           CLEAN_VERSION="${RAW_VERSION//./}"
+          echo "clean_number=$CLEAN_VERSION" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
