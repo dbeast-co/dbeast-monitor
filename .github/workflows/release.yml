@@ -39,7 +39,7 @@ jobs:
         run: npm run build
 
       - name: Build backend
-        run: mage -v build:all
+        run: mage -v build
 #
 #      - name: Sign plugin with Grafana CLI
 #        run: npx @grafana/sign-plugin@latest
