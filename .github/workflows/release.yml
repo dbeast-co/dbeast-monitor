@@ -43,7 +43,7 @@ jobs:
         run: mage -v build:linux
 
       - name: Sign plugin with Grafana CLI
-        run: npx --yes @grafana/sign-plugin@latest
+        run: npx @grafana/sign-plugin --root-url public/plugins/dbeast-dbeastmonitor-app/
         env:
           GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
