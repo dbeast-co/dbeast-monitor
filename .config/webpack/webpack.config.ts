@@ -118,19 +118,13 @@ const config = async (env: Env): Promise<Configuration> => {
           exclude: /(node_modules)/,
           test: /\.[tj]sx?$/,
           use: {
-            loader: 'swc-loader',
+            loader: 'babel-loader',
             options: {
-              jsc: {
-                baseUrl: path.resolve(process.cwd(), SOURCE_DIR),
-                target: 'es2015',
-                loose: false,
-                parser: {
-                  syntax: 'typescript',
-                  tsx: true,
-                  decorators: false,
-                  dynamicImport: true,
-                },
-              },
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-typescript',
+                '@babel/preset-react',
+              ],
             },
           },
         },
