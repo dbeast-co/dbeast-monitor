@@ -31,17 +31,17 @@ jobs:
           go install github.com/magefile/mage@latest
           echo "$HOME/go/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install dependencies (no postinstall)
+        run: npm install --ignore-scripts
 
-      - name: Rebuild SWC (fix native bindings)
-        run: npm rebuild @swc/core --force
-
-      - name: Build backend
-        run: mage -v build:linux
+      - name: Manually rebuild SWC
+        run: npm rebuild @swc/core @esbuild/darwin-arm64 @esbuild/linux-x64 --force
 
       - name: Build frontend
         run: npm run build
+
+      - name: Build backend
+        run: mage -v build:linux
 
       - name: Package plugin
         run: |
