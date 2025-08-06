@@ -47,16 +47,11 @@ jobs:
           mkdir -p dist
           zip -r dist/dbeast-monitor-plugin.zip dist/
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Extract clean version
         id: clean_version
         run: |
           RAW_VERSION="${GITHUB_REF_NAME#v}"
           CLEAN_VERSION="${RAW_VERSION//./}"
-          echo "clean_version=v$CLEAN_VERSION" >> $GITHUB_ENV
-          echo "clean_number=$CLEAN_VERSION" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
