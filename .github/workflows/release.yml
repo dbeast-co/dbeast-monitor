@@ -26,8 +26,6 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: List contents
-        run: ls -al
 
       - name: Install Mage
         run: |
@@ -36,6 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
       - name: Build frontend
         run: npm run build
 
@@ -43,7 +42,7 @@ jobs:
         run: mage -v build:linux
 
       - name: Sign plugin with Grafana CLI
-        run: npx @grafana/sign-plugin --root-url public/plugins/dbeast-dbeastmonitor-app/
+        run: npx @grafana/sign-plugin@2.3.0
         env:
           GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
