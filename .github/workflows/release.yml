@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Build frontend
-        run: npm run build
+        run: npm run build:all
 
       - name: Build backend
         run: mage -v build:linux
