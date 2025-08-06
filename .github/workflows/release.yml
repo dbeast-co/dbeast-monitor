@@ -40,16 +40,16 @@ jobs:
 
       - name: Build backend
         run: mage -v build:linux
-
-      - name: Sign plugin with Grafana CLI
-        run: npx @grafana/sign-plugin@2.3.0
-        env:
-          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+#
+#      - name: Sign plugin with Grafana CLI
+#        run: npx @grafana/sign-plugin@latest
+#        env:
+#          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
       - name: Package plugin
         run: |
-          mkdir -p dist
-          zip -r dist/dbeast-monitor-plugin.zip dist/
+          cd dist
+          zip -r ../dbeast-dbeastmonitor-app.zip ./*
 
       - name: Extract clean version
         id: clean_version
@@ -61,7 +61,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/dbeast-monitor-plugin.zip
+          files: dbeast-dbeastmonitor-app.zip
           generate_release_notes: true
           name: "DBeast Monitor v${{ env.clean_version }} Released!"
           body: |
