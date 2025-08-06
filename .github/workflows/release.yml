@@ -1,0 +1,46 @@
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - 'V*'
+
+jobs:
+  build-and-release:
+    name: Build & Release Plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build backend
+        run: mage -v build:linux
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Package plugin
+        run: |
+          mkdir -p dist
+          zip -r dist/dbeast-monitor-plugin.zip dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/dbeast-monitor-plugin.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
