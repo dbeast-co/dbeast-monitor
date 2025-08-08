@@ -133,7 +133,7 @@ export const AddNewClusterPanel = () => {
               try {
                 const isEqualDataSource = value1.find((item1: Datasource) => item1.name === item.name);
                 if (isEqualDataSource) {
-                  await backendSrv.put(`/api/datasources/uid/${item.uid}`, JSON.stringify(item));
+                  await backendSrv.put(`/api/datasources/uid/${isEqualDataSource.uid}`, JSON.stringify(item));
                 } else {
                   await backendSrv.post('/api/datasources', JSON.stringify(item));
                 }
