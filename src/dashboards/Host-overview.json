@@ -4715,7 +4715,7 @@
             "h": 19,
             "w": 6,
             "x": 0,
-            "y": 30
+            "y": 31
           },
           "id": 118,
           "options": {
@@ -4802,10 +4802,10 @@
           "type": "timeseries",
           "title": " Rejected per interval ( ${__interval} )",
           "gridPos": {
-            "x": 6,
-            "y": 7,
             "h": 7,
-            "w": 18
+            "w": 18,
+            "x": 6,
+            "y": 31
           },
           "fieldConfig": {
             "defaults": {
@@ -4994,7 +4994,7 @@
             "h": 6,
             "w": 9,
             "x": 6,
-            "y": 37
+            "y": 38
           },
           "id": 111,
           "maxDataPoints": 100,
@@ -5128,7 +5128,7 @@
             "h": 6,
             "w": 9,
             "x": 15,
-            "y": 37
+            "y": 38
           },
           "id": 112,
           "maxDataPoints": 100,
@@ -5205,10 +5205,10 @@
           "type": "timeseries",
           "title": " Rejected Write requests per interval ( ${__interval} )",
           "gridPos": {
-            "x": 6,
-            "y": 20,
             "h": 6,
-            "w": 9
+            "w": 9,
+            "x": 6,
+            "y": 44
           },
           "fieldConfig": {
             "defaults": {
@@ -5340,10 +5340,10 @@
           "type": "timeseries",
           "title": " Rejected Search requests per interval ( ${__interval} )",
           "gridPos": {
-            "x": 15,
-            "y": 20,
             "h": 6,
-            "w": 9
+            "w": 9,
+            "x": 15,
+            "y": 44
           },
           "fieldConfig": {
             "defaults": {
