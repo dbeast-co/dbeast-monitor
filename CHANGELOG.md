@@ -1,10 +1,15 @@
 # Changelog
 
-## Version 2.0.0
+## Version 2.0.0 (2025-08-09)
 
-- **Grafana 10+ Support**: Added support for Grafana 10 and above.
-- **Minimum Grafana Version**: Updated the minimal required version to 10.1.
-- **Dashboards**: All dashboards have been updated to align with the new features and compatibility.
+### **Important! This version is not backward compatible. Minimum Grafana Version updated to the 10.1**
+
+- Features:
+  * [FEAT] Grafana 10+ support #219[#219](https://github.com/dbeast-co/dbeast-monitor/issues/219)
+  * [FEAT] Add queue panels to the thread pools blocks #206[#206](https://github.com/dbeast-co/dbeast-monitor/issues/206)
+
+- Updated dashboards
+  * All dashboards have been updated to align with the new features and compatibility.
 
 ## Version 1.0.3 (2025-04-27)
 
