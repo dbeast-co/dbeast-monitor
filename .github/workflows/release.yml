@@ -48,7 +48,7 @@ jobs:
 
       - name: Package plugin
         run: |
-          mv dist/ beast-dbeastmonitor-app
+          mv dist dbeast-dbeastmonitor-app
           zip -r dbeast-dbeastmonitor-app.zip dbeast-dbeastmonitor-app
 
       - name: Extract clean version
