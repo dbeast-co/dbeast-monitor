@@ -1,6 +1,4 @@
-# "DBeast monitor" toolkit for Elastic Stack
-
-----
+# "DBeast monitor" for Elastic Stack
 
 [![version: 2.0.0](https://img.shields.io/badge/version-2.0.0-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
