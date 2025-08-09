@@ -5,8 +5,8 @@
 ### **Important! This version is not backward compatible. Minimum Grafana Version updated to the 10.1**
 
 - Features:
-  * [FEAT] Grafana 10+ support #219[#219](https://github.com/dbeast-co/dbeast-monitor/issues/219)
-  * [FEAT] Add queue panels to the thread pools blocks #206[#206](https://github.com/dbeast-co/dbeast-monitor/issues/206)
+  * [FEAT] Grafana 10+ support [#219](https://github.com/dbeast-co/dbeast-monitor/issues/219)
+  * [FEAT] Add queue panels to the thread pools blocks [#206](https://github.com/dbeast-co/dbeast-monitor/issues/206)
 
 - Updated dashboards
   * All dashboards have been updated to align with the new features and compatibility.
@@ -14,20 +14,20 @@
 ## Version 1.0.3 (2025-04-27)
 
 - Features:
-  * [FEAT] Add Logstash health_report API data to the Logstash dashboards #216[#216](https://github.com/dbeast-co/dbeast-monitor/issues/216)
-  * [FEAT] In the Index pattern overview Add ingest rate without index name #211[#211](https://github.com/dbeast-co/dbeast-monitor/issues/211)
-  * [FEAT] "Host overview" dashboard - server level changes #209[#209](https://github.com/dbeast-co/dbeast-monitor/issues/209)
-  * [FEAT] Change the query date in the tasks dashboard #198[#198](https://github.com/dbeast-co/dbeast-monitor/issues/198)
-  * [FEAT] "Elastic Stack Monitoring" in the "Nodes stats" block add available storage size in Bytes #45[#45](https://github.com/dbeast-co/dbeast-monitor/issues/45)
-  * [FEAT] "Elastic Stack Monitoring" dashboard upgrades list #21[#21](https://github.com/dbeast-co/dbeast-monitor/issues/21)
+  * [FEAT] Add Logstash health_report API data to the Logstash dashboards [#216](https://github.com/dbeast-co/dbeast-monitor/issues/216)
+  * [FEAT] In the Index pattern overview Add ingest rate without index name [#211](https://github.com/dbeast-co/dbeast-monitor/issues/211)
+  * [FEAT] "Host overview" dashboard - server level changes [#209](https://github.com/dbeast-co/dbeast-monitor/issues/209)
+  * [FEAT] Change the query date in the tasks dashboard [#198](https://github.com/dbeast-co/dbeast-monitor/issues/198)
+  * [FEAT] "Elastic Stack Monitoring" in the "Nodes stats" block add available storage size in Bytes [#45](https://github.com/dbeast-co/dbeast-monitor/issues/45)
+  * [FEAT] "Elastic Stack Monitoring" dashboard upgrades list [#21](https://github.com/dbeast-co/dbeast-monitor/issues/21)
 
 - Bug fixes
-  * [BUG] Incorrect filter definition in the "Host overview" need to add cluster id #195[#195](https://github.com/dbeast-co/dbeast-monitor/issues/195)
-  * [BUG] Fix time units in the "Tasks analytics" dashboard #207[#207](https://github.com/dbeast-co/dbeast-monitor/issues/207)
-  * [BUG] Incorrect legend in the "Ingest rate" panel in the "Stack monitor" dashboard #208[#208](https://github.com/dbeast-co/dbeast-monitor/issues/208)
-  * [BUG] Incorrect status visualization in case of the Elastic Cloud usage #212[#212](https://github.com/dbeast-co/dbeast-monitor/issues/212)
-  * [BUG] In the "Logstash overview" and "Logstash node overview" dashboards replace logstash.elasticsearch.cluster.id #215[#215](https://github.com/dbeast-co/dbeast-monitor/issues/215)
-  * [BUG] In the "Shards overview" remove limitations from the heatmaps #214[#214](https://github.com/dbeast-co/dbeast-monitor/issues/214)
+  * [BUG] Incorrect filter definition in the "Host overview" need to add cluster id [#195](https://github.com/dbeast-co/dbeast-monitor/issues/195)
+  * [BUG] Fix time units in the "Tasks analytics" dashboard [#207](https://github.com/dbeast-co/dbeast-monitor/issues/207)
+  * [BUG] Incorrect legend in the "Ingest rate" panel in the "Stack monitor" dashboard [#208](https://github.com/dbeast-co/dbeast-monitor/issues/208)
+  * [BUG] Incorrect status visualization in case of the Elastic Cloud usage [#212](https://github.com/dbeast-co/dbeast-monitor/issues/212)
+  * [BUG] In the "Logstash overview" and "Logstash node overview" dashboards replace logstash.elasticsearch.cluster.id [#215](https://github.com/dbeast-co/dbeast-monitor/issues/215)
+  * [BUG] In the "Shards overview" remove limitations from the heatmaps [#214](https://github.com/dbeast-co/dbeast-monitor/issues/214)
 
 - Updated dashboards
   * All dashboards
@@ -35,17 +35,17 @@
 ## Version 1.0.2  (2025-01-05)
 
 - Features:
-  * [FEAT] Add Flow parameters to the Logstash Host Overview dashboard #185[#185](https://github.com/dbeast-co/dbeast-monitor/issues/185)
-  * [FEAT] Define all Date histogram graphs "Max data points" #68[#186](https://github.com/dbeast-co/dbeast-monitor/issues/186)
-  * [FEAT] Update CPU utilization in the "Host overview" dashboard #203[#203](https://github.com/dbeast-co/dbeast-monitor/issues/203)
-  * [FEAT] Change ingest rate fields in the "Stack monitoring" dashboard  #199[#199](https://github.com/dbeast-co/dbeast-monitor/issues/199)
-  * [FEAT] "Index monitor" dashboard upgrades list #36[#36](https://github.com/dbeast-co/dbeast-monitor/issues/36)
-  * [FEAT] "Host overview" dashboard upgrades list #25[#25](https://github.com/dbeast-co/dbeast-monitor/issues/25)
-  * [FEAT] Add the version number into the ES templates and logstash pipelines #205[#205](https://github.com/dbeast-co/dbeast-monitor/issues/205)
+  * [FEAT] Add Flow parameters to the Logstash Host Overview dashboard [#185](https://github.com/dbeast-co/dbeast-monitor/issues/185)
+  * [FEAT] Define all Date histogram graphs "Max data points" [#186](https://github.com/dbeast-co/dbeast-monitor/issues/186)
+  * [FEAT] Update CPU utilization in the "Host overview" dashboard [#203](https://github.com/dbeast-co/dbeast-monitor/issues/203)
+  * [FEAT] Change ingest rate fields in the "Stack monitoring" dashboard  [#199](https://github.com/dbeast-co/dbeast-monitor/issues/199)
+  * [FEAT] "Index monitor" dashboard upgrades list [#36](https://github.com/dbeast-co/dbeast-monitor/issues/36)
+  * [FEAT] "Host overview" dashboard upgrades list [#25](https://github.com/dbeast-co/dbeast-monitor/issues/25)
+  * [FEAT] Add the version number into the ES templates and logstash pipelines [#205](https://github.com/dbeast-co/dbeast-monitor/issues/205)
 
 - Bug fixes
-  * [BUG] Incorrect Network visualization #203[#203](https://github.com/dbeast-co/dbeast-monitor/issues/203)
-  * [BUG] Incorrect Logstash ports visualization in case of the pipeline doesn't exists #201[#201](https://github.com/dbeast-co/dbeast-monitor/issues/201)
+  * [BUG] Incorrect Network visualization [#203](https://github.com/dbeast-co/dbeast-monitor/issues/203)
+  * [BUG] Incorrect Logstash ports visualization in case of the pipeline doesn't exist [#201](https://github.com/dbeast-co/dbeast-monitor/issues/201)
 
 - Updated dashboards
   * All dashboards
@@ -53,13 +53,13 @@
 ## Version 1.0.1 (2024-11-05)
 
 - Features:
-  * [FEAT] In the "Cluster list" dashboard - redevelope monitors links to route even if the cluster not received the status #160[#160](https://github.com/dbeast-co/dbeast-monitor/issues/160)
-  * [FEAT] Add node roles to the "Host overview" dashboard #68[#68](https://github.com/dbeast-co/dbeast-monitor/issues/68)
-  * [FEAT] Remove data from the "Tier stats" in case of the tier doesn't exists #156[#156](https://github.com/dbeast-co/dbeast-monitor/issues/156)
+  * [FEAT] In the "Cluster list" dashboard - redevelope monitors links to route even if the cluster not received the status [#160](https://github.com/dbeast-co/dbeast-monitor/issues/160)
+  * [FEAT] Add node roles to the "Host overview" dashboard [#68](https://github.com/dbeast-co/dbeast-monitor/issues/68)
+  * [FEAT] Remove data from the "Tier stats" in case of the tier doesn't exist [#156](https://github.com/dbeast-co/dbeast-monitor/issues/156)
 
 - Bug fixes
-  * [BUG] There is no docs.deleted mapping in the on-prem version #167[#167](https://github.com/dbeast-co/dbeast-monitor/issues/167)
-  * [BUG] In the "Stack monitor" dashboard "Tier" panels, there is an error in case of the flat architecture #166[#166](https://github.com/dbeast-co/dbeast-monitor/issues/166)
+  * [BUG] There is no docs.deleted mapping in the on-prem version [#167](https://github.com/dbeast-co/dbeast-monitor/issues/167)
+  * [BUG] In the "Stack monitor" dashboard "Tier" panels, there is an error in case of the flat architecture [#166](https://github.com/dbeast-co/dbeast-monitor/issues/166)
 
 - Updated dashboards
   * Elastic stack monitor
@@ -71,18 +71,18 @@
 **We released the first version for Kubernetes with Helm charts! Now we have Kubernetes and on-prem versions!**
 
 - Features:
-  * [FEAT] Kubernetes image development #44[#44](https://github.com/dbeast-co/dbeast-monitor/issues/44)
-  * [FEAT] Add storage and memory per tier status in the "Stack monitoring" dashboard #65[#65](https://github.com/dbeast-co/dbeast-monitor/issues/65)
-  * [FEAT] Add deleted docs in the "Index status" #148[#148](https://github.com/dbeast-co/dbeast-monitor/issues/148)
-  * [FEAT] Logstash index stats pipeline - add docs.deleted rates #133[#133](https://github.com/dbeast-co/dbeast-monitor/issues/133)
-  * [FEAT] Logstash logs pipeline optimization #46[#46](https://github.com/dbeast-co/dbeast-monitor/issues/46)
-  * [FEAT] Add storage and memory per tier status in the "Stack monitoring" dashboard #65[#65](https://github.com/dbeast-co/dbeast-monitor/issues/65)
+  * [FEAT] Kubernetes image development [#44](https://github.com/dbeast-co/dbeast-monitor/issues/44)
+  * [FEAT] Add storage and memory per tier status in the "Stack monitoring" dashboard [#65](https://github.com/dbeast-co/dbeast-monitor/issues/65)
+  * [FEAT] Add deleted docs in the "Index status" [#148](https://github.com/dbeast-co/dbeast-monitor/issues/148)
+  * [FEAT] Logstash index stats pipeline - add docs.deleted rates [#133](https://github.com/dbeast-co/dbeast-monitor/issues/133)
+  * [FEAT] Logstash logs pipeline optimization [#46](https://github.com/dbeast-co/dbeast-monitor/issues/46)
+  * [FEAT] Add storage and memory per tier status in the "Stack monitoring" dashboard [#65](https://github.com/dbeast-co/dbeast-monitor/issues/65)
 
 - Bug fixes
-  * [BUG] Incorrect avg shard size in the "Index pattern monitor" dashboard #147[#147](https://github.com/dbeast-co/dbeast-monitor/issues/147)
-  * [BUG] In the index summary there is no ingest rate data in case of the index closed #144[#144](https://github.com/dbeast-co/dbeast-monitor/issues/144)
-  * [BUG] In the Thread pools mapping change fields type from the integer to the long #138[#138](https://github.com/dbeast-co/dbeast-monitor/issues/138)
-  * [BUG] Incorrect rollover alias in the new index definition #137[#137](https://github.com/dbeast-co/dbeast-monitor/issues/137)
+  * [BUG] Incorrect avg shard size in the "Index pattern monitor" dashboard [#147](https://github.com/dbeast-co/dbeast-monitor/issues/147)
+  * [BUG] In the index summary there is no ingest rate data in case of the index closed [#144](https://github.com/dbeast-co/dbeast-monitor/issues/144)
+  * [BUG] In the Thread pools mapping change fields type from the integer to the long [#138](https://github.com/dbeast-co/dbeast-monitor/issues/138)
+  * [BUG] Incorrect rollover alias in the new index definition [#137](https://github.com/dbeast-co/dbeast-monitor/issues/137)
 
 - Updated dashboards
   * Elastic stack monitor
@@ -93,12 +93,12 @@
 
 ## Version 0.8.1 (2024-08-06)
 - Bug fixes
-  * [BUG] Incorrect elasticsearch.tasks.running_time mapping in the Tasks mapping #109[#109](https://github.com/dbeast-co/dbeast-monitor/issues/109)
-  * [BUG] Incorrect definition of the host.hostname in the Logstash logs pipeline #110[#110](https://github.com/dbeast-co/dbeast-monitor/issues/110)
-  * [BUG] In the "Add new cluster" panel The logstash "Download" button don't work in case of the two or more Logstashes #111[#37](https://github.com/dbeast-co/dbeast-monitor/issues/111)
+  * [BUG] Incorrect elasticsearch.tasks.running_time mapping in the Tasks mapping [#109](https://github.com/dbeast-co/dbeast-monitor/issues/109)
+  * [BUG] Incorrect definition of the host.hostname in the Logstash logs pipeline [#110](https://github.com/dbeast-co/dbeast-monitor/issues/110)
+  * [BUG] In the "Add new cluster" panel The logstash "Download" button don't work in case of the two or more Logstashes [#37](https://github.com/dbeast-co/dbeast-monitor/issues/111)
 
 - Features:
-  * [FEAT] Add corrupted data index for the TSDS Logstash configurations #112[#112](https://github.com/dbeast-co/dbeast-monitor/issues/112)
+  * [FEAT] Add corrupted data index for the TSDS Logstash configurations [#112](https://github.com/dbeast-co/dbeast-monitor/issues/112)
 
 ## Version 0.8.0
 * All data sources have been updated to use aliases, directing them to Data Streams, TSDS, or Indexes.
