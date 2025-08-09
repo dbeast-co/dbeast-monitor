@@ -20,7 +20,7 @@ type App struct {
 	backend.CallResourceHandler
 }
 
-var applicationVersion = os.Getenv("DBEAST_MONITOR_VERSION")
+var applicationVersion = os.Getenv("GF_DBEAST_MONITOR_VERSION")
 
 func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
 	var app App
