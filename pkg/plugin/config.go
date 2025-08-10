@@ -2,7 +2,7 @@ package plugin
 
 import "path/filepath"
 
-const DataFolder = "data"
+const DataFolder = "public/data"
 
 var (
 	NewClusterFile                           = filepath.Join(DataFolder, "new_cluster.json")

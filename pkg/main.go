@@ -1,20 +1,19 @@
 package main
 
 import (
-	"os"
-	"strings"
-
 	"github.com/dbeast/dbeastmonitor/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/app"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
+	"os"
 )
 
 func main() {
 
 	ctxLogger := log.DefaultLogger
 	ctxLogger.Info("The app path: " + os.Args[0])
-	lastIndex := strings.LastIndex(os.Args[0], "gpx_app-dbeast-dbeastmonitor-app")
-	applicationFolder := os.Args[0][:lastIndex]
+	//lastIndex := strings.LastIndex(os.Args[0], "gpx_app-dbeast-dbeastmonitor-app")
+	//applicationFolder := os.Args[0][:lastIndex]
+	applicationFolder := ""
 
 	err := plugin.LoadInitData(applicationFolder)
 	if err != nil {

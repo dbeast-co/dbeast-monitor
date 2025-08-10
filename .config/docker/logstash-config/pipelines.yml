@@ -1,4 +1,3 @@
 # This defaults to one pipeline with ID 'main' using config from /usr/share/logstash/pipeline
 - pipeline.id: main
   path.config: "/usr/share/logstash/pipeline"
-
