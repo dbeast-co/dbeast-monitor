@@ -18,10 +18,6 @@ func (a *App) GetVersion(w http.ResponseWriter, req *http.Request) {
 	return
 }
 
-/*
-CloneObject creates a deep copy of the provided JSON template.
-It marshals the template into JSON and then unmarshal it into a new interface{} to create a clone.
-*/
 func CloneObject(data interface{}) interface{} {
 	dataBytes, err := json.Marshal(data)
 	if err != nil {

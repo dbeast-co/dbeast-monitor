@@ -7,8 +7,6 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
 	"net/http"
-	"os"
-	"strings"
 )
 
 var (
@@ -21,17 +19,10 @@ type App struct {
 	backend.CallResourceHandler
 }
 
-var applicationVersion string
-var exists bool
+const applicationVersion string = "OnPrem"
 
 func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
 	var app App
-	applicationVersion, exists = os.LookupEnv("GF_PLUGIN_VERSION")
-	if !exists || len(applicationVersion) == 0 {
-		applicationVersion = "onprem"
-	} else {
-		applicationVersion = strings.ToLower(applicationVersion)
-	}
 
 	mux := http.NewServeMux()
 	app.registerRoutes(mux)

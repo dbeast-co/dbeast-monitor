@@ -85,13 +85,6 @@ func LoadNewClusterFile(filePath string) error {
 	return err
 }
 
-/*
-LoadGrafanaDataSources loads JSON templates from the specified folder and updates the global GrafanaDataSourcesMap.
-It takes a folderPath string as input, reads the content of the folder, and parses each JSON file into the GrafanaDataSourcesMap.
-If successful, it returns nil; otherwise, it returns an error.
-The GrafanaDataSourcesMap is a global variable that represents a mapping of template names to their corresponding JSON data.
-This map is expected to be used elsewhere in the application after the templates are loaded.
-*/
 func LoadGrafanaDataSources(folderPath string) error {
 	log.DefaultLogger.Info("The templates folder path: " + folderPath)
 

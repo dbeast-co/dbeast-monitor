@@ -55,57 +55,6 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 	response.Write(updatedTemplatesJSON)
 }
 
-func (a *App) DeployLogstashConfigurations(response http.ResponseWriter, request *http.Request) {
-	ctxLogger := log.DefaultLogger.FromContext(request.Context())
-
-	response.Header().Add("Content-Type", "application/zip")
-
-	var project Project
-
-	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
-		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
-		response.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(response).Encode(map[string]interface{}{"error": "Invalid request payload"})
-		return
-	}
-	ctxLogger.Debug("The project: ", project)
-	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
-	defer request.Body.Close()
-
-	_, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
-	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(response).Encode(map[string]interface{}{"error": err.Error()})
-		return
-	}
-
-	err = DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
-		"### Configuration files for the cluster Id: ",
-		ctxLogger)
-
-	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		_, err := response.Write([]byte(err.Error()))
-		if err != nil {
-			log.DefaultLogger.Error("Error while write response: " + err.Error())
-			return
-		}
-	}
-	err = DeleteFolder(GrafanaLogstashConfDConfigurationsFolder, clusterId, ctxLogger)
-
-	if err != nil {
-		response.WriteHeader(http.StatusInternalServerError)
-		_, err := response.Write([]byte(err.Error()))
-		if err != nil {
-			log.DefaultLogger.Error("Error while write response: " + err.Error())
-			return
-		}
-	}
-
-	err = SaveLogstashConfigurationFiles(project, ctxLogger)
-
-}
-
 func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the Elasticsearch components deployment")
@@ -205,50 +154,13 @@ func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *
 
 func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
-	if applicationVersion == "OnPrem" {
-		response.WriteHeader(http.StatusOK)
-		_, err := response.Write([]byte(`{"status":"ok"}`))
-		if err != nil {
-			response.WriteHeader(http.StatusInternalServerError)
-			ctxLogger.Error("Can't write to the response: " + err.Error())
-		}
-		return
-	}
-
 	clusterId := request.URL.Path[len("/delete_cluster/"):]
 	ctxLogger.Info("Got request for the cluster delete. Cluster ID: " + clusterId)
-
-	err := DeleteTextBlockInFile(GrafanaLogstashConfigurationsFolder+"/pipelines.yml", "### Configuration files for the cluster Id: "+clusterId,
-		"### Configuration files for the cluster Id: ",
-		ctxLogger)
-
+	response.WriteHeader(http.StatusOK)
+	_, err := response.Write([]byte(`{"status":"ok"}`))
 	if err != nil {
-		ctxLogger.Error("Error while clean pipeline.yml file: " + err.Error())
 		response.WriteHeader(http.StatusInternalServerError)
-		_, err := response.Write([]byte(err.Error()))
-		if err != nil {
-			response.WriteHeader(http.StatusInternalServerError)
-			ctxLogger.Error("Can't write to the response: " + err.Error())
-		}
-	}
-	err = DeleteFolder(GrafanaLogstashConfDConfigurationsFolder, clusterId, ctxLogger)
-
-	if err != nil {
-		ctxLogger.Error("Error while delete folder: " + err.Error())
-		response.WriteHeader(http.StatusInternalServerError)
-		_, err := response.Write([]byte(err.Error()))
-		if err != nil {
-			response.WriteHeader(http.StatusInternalServerError)
-			ctxLogger.Error("Can't write to the response: " + err.Error())
-		}
-	} else {
-		ctxLogger.Info("We delete all files for the cluster")
-		response.WriteHeader(http.StatusOK)
-		_, err := response.Write([]byte(`{"status":"ok"}`))
-		if err != nil {
-			response.WriteHeader(http.StatusInternalServerError)
-			ctxLogger.Error("Can't write to the response: " + err.Error())
-		}
+		ctxLogger.Error("Can't write to the response: " + err.Error())
 	}
 }
 
