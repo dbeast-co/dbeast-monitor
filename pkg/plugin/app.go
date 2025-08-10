@@ -8,6 +8,7 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
 	"net/http"
 	"os"
+	"strings"
 )
 
 var (
@@ -20,12 +21,16 @@ type App struct {
 	backend.CallResourceHandler
 }
 
-var applicationVersion = os.Getenv("GF_DBEAST_MONITOR_VERSION")
+var applicationVersion string
+var exists bool
 
 func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
 	var app App
-	if len(applicationVersion) == 0 {
-		applicationVersion = "OnPrem"
+	applicationVersion, exists = os.LookupEnv("GF_PLUGIN_VERSION")
+	if !exists || len(applicationVersion) == 0 {
+		applicationVersion = "onprem"
+	} else {
+		applicationVersion = strings.ToLower(applicationVersion)
 	}
 
 	mux := http.NewServeMux()
