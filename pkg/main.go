@@ -13,9 +13,8 @@ func main() {
 	ctxLogger.Info("The app path: " + os.Args[0])
 	//lastIndex := strings.LastIndex(os.Args[0], "gpx_app-dbeast-dbeastmonitor-app")
 	//applicationFolder := os.Args[0][:lastIndex]
-	applicationFolder := ""
 
-	err := plugin.LoadInitData(applicationFolder)
+	err := plugin.LoadInitData()
 	if err != nil {
 		ctxLogger.Info("Error in the init data loading. Please fix the init files ")
 		os.Exit(1)
