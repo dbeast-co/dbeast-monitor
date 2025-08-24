@@ -3,6 +3,10 @@ services:
     extends:
       file: .config/docker/docker-compose-with-es-cluster.yaml
       service: grafana
+  logstash-init:
+    extends:
+      file: .config/docker/docker-compose-with-es-cluster.yaml
+      service: logstash-init
   logstash:
     extends:
       file: .config/docker/docker-compose-with-es-cluster.yaml
