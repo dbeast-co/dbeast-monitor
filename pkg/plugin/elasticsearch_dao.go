@@ -36,7 +36,7 @@ func GetClusterInfo(credentials Credentials) (string, string, error) {
 			body, err := io.ReadAll(response.Body)
 			err2 := response.Body.Close()
 			if err2 != nil {
-				log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
+				log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
 				return "ERROR", "ERROR", err2
 			}
 
@@ -117,7 +117,7 @@ func CheckIsIndexExists(credentials Credentials, indexName string) (bool, error)
 		body, err := io.ReadAll(response.Body)
 		err2 := response.Body.Close()
 		if err2 != nil {
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
+			log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
 			return false, err2
 		}
 

@@ -55,52 +55,6 @@ func LoadInitData() error {
 	}
 
 	return parseData(folderMaps)
-
-	//log.DefaultLogger.Info("Loading the Grafana data sources")
-	//err := LoadGrafanaDataSources(filepath.Join(applicationFolder, DataSourceTemplatesFolder))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the Grafana data source loading")
-	//	return err
-	//}
-	//
-	//log.DefaultLogger.Info("Loading the Logstash config files")
-	//err = LoadLogstashConfigFiles(filepath.Join(applicationFolder, LogstashTemplatesFolder))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the Grafana data source loading")
-	//	return err
-	//}
-	//log.DefaultLogger.Info("Loading the Elasticsearch component templates")
-	//err = LoadESComponentTemplates(filepath.Join(applicationFolder, EsIndexComponentsTemplatesFolder))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the ES Component templates loading")
-	//	return err
-	//}
-	//log.DefaultLogger.Info("Loading the Elasticsearch index templates")
-	//err = LoadESIndexTemplates(filepath.Join(applicationFolder, EsIndexTemplatesTemplatesFolder))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the ES ILM templates loading")
-	//	return err
-	//}
-	//log.DefaultLogger.Info("Loading the ILM policies")
-	//err = LoadESILMTemplates(filepath.Join(applicationFolder, EsILMTemplatesFolder))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the ES ILM templates loading")
-	//	return err
-	//}
-	//log.DefaultLogger.Info("Loading the First indices")
-	//err = LoadESFirstIndices(filepath.Join(applicationFolder, EsIndexFirstIndicesTemplatesFolder))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the ES first indices loading")
-	//	return err
-	//}
-	//log.DefaultLogger.Info("Loading New cluster definition file")
-	//err := LoadNewClusterFile(NewClusterFile)
-	////err := LoadNewClusterFile(filepath.Join(applicationFolder, NewClusterFile))
-	//if err != nil {
-	//	log.DefaultLogger.Error("Error in the New cluster object loading")
-	//	return err
-	//}
-
 }
 
 func parseData(folderMaps map[string]map[string][]byte) error {
@@ -142,12 +96,12 @@ func parseData(folderMaps map[string]map[string][]byte) error {
 	return nil
 }
 
-func LoadNewClusterFile(file string, content []byte) error {
-	log.DefaultLogger.Debug("New cluster configuration file path: " + file)
+func LoadNewClusterFile(fileName string, content []byte) error {
+	log.DefaultLogger.Debug("New cluster configuration file path: " + fileName)
 
 	err := json.Unmarshal(content, &NewCluster)
 	if err != nil {
-		log.DefaultLogger.Error("Error parsing new cluster file: " + file + " " + err.Error())
+		log.DefaultLogger.Error("Error parsing new cluster file: " + fileName + " " + err.Error())
 		return err
 	}
 	return err
