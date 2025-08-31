@@ -280,7 +280,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -796,7 +796,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -926,7 +926,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1056,7 +1056,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1185,7 +1185,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1315,7 +1315,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1444,7 +1444,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1532,7 +1532,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.index_pattern: $index_pattern AND elasticsearch.index.total.search.fetch_rate: [1 TO 1000000",
+          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: index_stats AND elasticsearch.index.index_pattern: $index_pattern AND elasticsearch.index.total.search.fetch_rate: [1 TO 1000000]",
           "queryParams": "",
           "refId": "Primaries",
           "timeField": "@timestamp",
