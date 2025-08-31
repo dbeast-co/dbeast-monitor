@@ -63,30 +63,30 @@ func parseData(folderMaps map[string]map[string][]byte) error {
 			log.DefaultLogger.Info("Folder for ingest: " + folder + ": " + fileName)
 			switch folder {
 			case NewClusterFolder:
-				log.DefaultLogger.Info("Loading New cluster definition file")
+				log.DefaultLogger.Info("Loading New cluster definition file: " + fileName)
 				err := LoadNewClusterFile(fileName, content)
 				if err != nil {
 					log.DefaultLogger.Error("Error in the New cluster object loading")
 					return err
 				}
 			case DataSourceTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Grafana data sources")
+				log.DefaultLogger.Info("Loading the Grafana data sources: " + fileName)
 				err := LoadGrafanaDataSources(fileName, content)
 				if err != nil {
 					log.DefaultLogger.Error("Error in the Grafana data source loading")
 					return err
 				}
 			case EsIndexComponentsTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Elasticsearch component templates")
+				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
 				ESComponentTemplatesMap[fileName] = string(content)
 			case EsIndexTemplatesTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Elasticsearch component templates")
+				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
 				ESIndexTemplatesMap[fileName] = string(content)
 			case EsILMTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Elasticsearch component templates")
+				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
 				ESILMTemplatesMap[fileName] = string(content)
 			case EsIndexFirstIndicesTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Elasticsearch component templates")
+				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
 				ESFirstIndicesTemplatesMap[fileName] = string(content)
 			case LogstashTemplatesFolder:
 				LSConfigs[fileName] = string(content)
