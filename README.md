@@ -1,4 +1,6 @@
-# "DBeast monitor" for Elastic Stack
+# "DBeast monitor" toolkit for Elastic Stack
+
+----
 
 [![version: 2.0.0](https://img.shields.io/badge/version-2.0.0-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
@@ -17,17 +19,18 @@ Elasticsearch, Logstash, and Kibana.
 
 1. Multi-cluster support – monitor and manage multiple Elasticsearch clusters from a single application.
 2. Comprehensive dashboards providing monitoring and analytics for:
-    - **Elastic Stack** overview
-    - **Elasticsearch hosts** performance and health
-    - **Elasticsearch Indices / index patterns** usage and metrics
-    - **Elasticsearch shards** distribution and allocation
-    - **Elasticsearch ingest pipelines** activity and throughput
-    - **Elasticsearch tasks** progress and status
-    - **Elasticsearch machine learning jobs** performance and status
-    - **Logstash instances** performance and health
-    - **Logstash pipelines** throughput and errors
+   - **Elastic Stack** overview
+   - **Elasticsearch hosts** performance and health
+   - **Elasticsearch Indices / index patterns** usage and metrics
+   - **Elasticsearch shards** distribution and allocation
+   - **Elasticsearch ingest pipelines** activity and throughput
+   - **Elasticsearch tasks** progress and status
+   - **Elasticsearch machine learning jobs** performance and status
+   - **Logstash instances** performance and health
+   - **Logstash pipelines** throughput and errors
 3. Helm versions
-    - The Helm charts can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
+   - Currently, there is no Helm charts for the versions 2+
+   - The Helm charts for the previews versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
 
 ## Documentation
 
@@ -35,16 +38,10 @@ The project documentation is available on our [wiki](https://github.com/dbeast-c
 
 # Getting started
 
-There are two plugin versions available (both are the same plugin but differ based on the environment variable
-`DBEAST_MONITOR_VERSION`: either "Container" or "OnPrem" (default: OnPrem):
-
 1. Regular (OnPrem) installation:  
    The OnPrem version includes only the application plugin. You will need to install and define Logstash separately for data
    shipment. The complete installation guid can be found in our [OnPrem installation instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions).
-2. Helm installation (Container version):  
-   The Container version includes Grafana with pre-installed plugins and Logstash for data shipment.
-   The complete installation guid can be found in our [Container installation instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions-Container-Version).
-3. The user guid for the adding new cluster can be found in the [OnPrem Add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster) and [Container add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewClusterContainerVersion).
+2. The user guid for the adding new cluster can be found in the [OnPrem Add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster).
 
 ## Requirements
 

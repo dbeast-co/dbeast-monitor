@@ -7,6 +7,7 @@
 - Features:
   * [FEAT] Grafana 10+ support [#219](https://github.com/dbeast-co/dbeast-monitor/issues/219)
   * [FEAT] Add queue panels to the thread pools blocks [#206](https://github.com/dbeast-co/dbeast-monitor/issues/206)
+  * Container version and Helm charts have been temporarily removed
 
 - Updated dashboards
   * All dashboards have been updated to align with the new features and compatibility.

@@ -29,7 +29,8 @@ Elasticsearch, Logstash, and Kibana.
    - **Logstash instances** performance and health
    - **Logstash pipelines** throughput and errors
 3. Helm versions
-   - The Helm charts can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
+   - Currently, there is no Helm charts for the versions 2+
+   - The Helm charts for the previews versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
 
 ## Documentation
 
@@ -37,16 +38,10 @@ The project documentation is available on our [wiki](https://github.com/dbeast-c
 
 # Getting started
 
-There are two plugin versions available (both are the same plugin but differ based on the environment variable
-`DBEAST_MONITOR_VERSION`: either "Container" or "OnPrem" (default: OnPrem):
-
 1. Regular (OnPrem) installation:  
    The OnPrem version includes only the application plugin. You will need to install and define Logstash separately for data
    shipment. The complete installation guid can be found in our [OnPrem installation instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions).
-2. Helm installation (Container version):  
-   The Container version includes Grafana with pre-installed plugins and Logstash for data shipment.
-   The complete installation guid can be found in our [Container installation instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions-Container-Version).
-3. The user guid for the adding new cluster can be found in the [OnPrem Add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster) and [Container add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewClusterContainerVersion).
+2. The user guid for the adding new cluster can be found in the [OnPrem Add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster).
 
 ## Requirements
 
