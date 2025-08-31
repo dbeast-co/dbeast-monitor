@@ -51,6 +51,10 @@ jobs:
           mv dist dbeast-dbeastmonitor-app
           zip -r dbeast-dbeastmonitor-app.zip dbeast-dbeastmonitor-app
 
+      - name: Generate SHA1 checksum
+        run: |
+          sha1sum dbeast-dbeastmonitor-app.zip > dbeast-dbeastmonitor-app.zip.sha1
+
       - name: Extract clean version
         id: clean_version
         run: |
@@ -61,7 +65,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dbeast-dbeastmonitor-app.zip
+          files: |
+            dbeast-dbeastmonitor-app.zip
+            dbeast-dbeastmonitor-app-.zip.sha1
           generate_release_notes: true
           name: "DBeast Monitor ${{ github.ref_name }} Released!"
           body: |
