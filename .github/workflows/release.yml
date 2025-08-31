@@ -67,7 +67,7 @@ jobs:
         with:
           files: |
             dbeast-dbeastmonitor-app.zip
-            dbeast-dbeastmonitor-app-.zip.sha1
+            dbeast-dbeastmonitor-app.zip.sha1
           generate_release_notes: true
           name: "DBeast Monitor ${{ github.ref_name }} Released!"
           body: |
