@@ -7,14 +7,16 @@ services:
     extends:
       file: .config/docker/docker-compose-with-es-cluster.yaml
       service: logstash-init
-  logstash:
-    extends:
-      file: .config/docker/docker-compose-with-es-cluster.yaml
-      service: logstash
   elasticsearch:
     extends:
       file: .config/docker/docker-compose-with-es-cluster.yaml
       service: elasticsearch
+  logstash:
+    extends:
+      file: .config/docker/docker-compose-with-es-cluster.yaml
+      service: logstash
+    depends_on:
+      - logstash-init
   kibana:
     extends:
       file: .config/docker/docker-compose-with-es-cluster.yaml

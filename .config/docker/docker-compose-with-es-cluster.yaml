@@ -63,6 +63,7 @@ services:
       - "9600:9600"  # Logstash monitoring API
     volumes:
       - ./logstash-config:/usr/share/logstash/config
+      - ./logstash-config:/etc/logstash
       - ./logstash-config/conf.d:/usr/share/logstash/config/conf.d
     environment:
       - LS_SETTINGS_CONFIG_RELOAD_AUTOMATIC=true

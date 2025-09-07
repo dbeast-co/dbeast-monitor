@@ -74,6 +74,7 @@ jobs:
             Dbeast monitor ${{ github.ref_name }} Released!
             Installation Instructions: https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions
             Upgrade instructions: https://github.com/dbeast-co/dbeast-monitor/wiki/Upgrade-Instructions#version-${{ env.clean_number }}
+             
             Full Changelog: https://github.com/dbeast-co/dbeast-monitor/wiki/Release-Notes#version-${{ env.clean_number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
