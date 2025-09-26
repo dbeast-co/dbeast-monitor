@@ -85,6 +85,10 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
   }
 
+  get uid() {
+    return this.props.dataSourceItem.name.split('--').slice(2).join('--');
+  }
+
   handleChange = (event: SelectChangeEvent) => {
     const inputString = this.props.dataSourceItem.name;
     const uid = inputString.split('--').slice(2).join('--');
@@ -94,67 +98,67 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     });
     switch (event.target.value as string) {
       case 'stack-monitoring':
-        window.open(
-          `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
-          '_blank'
-        );
+        // window.open(
+        //   `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
+        //   '_blank'
+        // );
         this.setState({
           monitorName: '',
         });
 
         break;
       case 'logstash-overview':
-        window.open(`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`, '_blank');
-
-        this.setState({
-          monitorName: '',
-        });
+        // window.open(`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`, '_blank');
+        //
+        // this.setState({
+        //   monitorName: '',
+        // });
         break;
       case 'index-overview':
-        window.open(
-          `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
-          '_blank'
-        );
+        // window.open(
+        //   `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
+        //   '_blank'
+        // );
 
         this.setState({
           monitorName: '',
         });
         break;
       case 'shards-overview':
-        window.open(
-          `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
-          '_blank'
-        );
+        // window.open(
+        //   `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
+        //   '_blank'
+        // );
 
         this.setState({
           monitorName: '',
         });
         break;
       case 'ingest-pipelines-overview':
-        window.open(
-          `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
-          '_blank'
-        );
+        // window.open(
+        //   `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
+        //   '_blank'
+        // );
 
         this.setState({
           monitorName: '',
         });
         break;
       case 'tasks-analytics':
-        window.open(
-          `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
-          '_blank'
-        );
+        // window.open(
+        //   `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${uid}`,
+        //   '_blank'
+        // );
 
         this.setState({
           monitorName: '',
         });
         break;
       case 'ml-jobs-analytics':
-        window.open(
-          `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${uid}`,
-          '_blank'
-        );
+        // window.open(
+        //   `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${uid}`,
+        //   '_blank'
+        // );
         this.setState({
           monitorName: '',
         });
@@ -418,20 +422,83 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
-                  onChange={this.handleChange}
                   renderValue={(value) => {
                     let text = value.split('-').join(' ');
                     text = text.charAt(0).toUpperCase() + text.slice(1);
                     return text ?? 'Monitor type';
                   }}
                 >
-                  <MenuItem value={'stack-monitoring'}>Elastic Stack monitoring</MenuItem>
-                  <MenuItem value={'index-overview'}>Elasticsearch Index overview</MenuItem>
-                  <MenuItem value={'shards-overview'}>Elasticsearch Shards overview</MenuItem>
-                  <MenuItem value={'ingest-pipelines-overview'}>Elasticsearch ingest pipelines overview</MenuItem>
-                  <MenuItem value={'logstash-overview'}>Logstash overview</MenuItem>
-                  <MenuItem value={'tasks-analytics'}>Tasks analytics</MenuItem>
-                  <MenuItem value={'ml-jobs-analytics'}>Elasticsearch ML Jobs Analytics</MenuItem>
+                  <MenuItem value={'stack-monitoring'}>
+                    <a
+                      href={`/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Elastic Stack monitoring
+                    </a>
+                  </MenuItem>
+                  <MenuItem value={'index-overview'}>
+                    <a
+                      href={`/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Elasticsearch Index overview
+                    </a>
+                  </MenuItem>
+                  <MenuItem value={'shards-overview'}>
+                    <a
+                      href={`/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Elasticsearch Shards overview
+                    </a>
+                  </MenuItem>
+                  <MenuItem value={'ingest-pipelines-overview'}>
+                    <a
+                      href={`/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Elasticsearch ingest pipelines overview
+                    </a>
+                  </MenuItem>
+                  <MenuItem value={'logstash-overview'}>
+                    <a
+                      href={`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Logstash overview
+                    </a>
+                  </MenuItem>
+                  <MenuItem value={'tasks-analytics'}>
+                    <a
+                      href={`/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Tasks analytics
+                    </a>
+                  </MenuItem>
+                  <MenuItem value={'ml-jobs-analytics'}>
+                    <a
+                      href={`/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      Elasticsearch ML Jobs Analytics
+                    </a>
+                  </MenuItem>
+
                 </Select>
               </FormControl>
             </Stack>
