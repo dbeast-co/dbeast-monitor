@@ -3,9 +3,10 @@ package plugin
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
 	"strings"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Request) {
@@ -156,6 +157,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	clusterId := request.URL.Path[len("/delete_cluster/"):]
 	ctxLogger.Info("Got request for the cluster delete. Cluster ID: " + clusterId)
+
 	response.WriteHeader(http.StatusOK)
 	_, err := response.Write([]byte(`{"status":"ok"}`))
 	if err != nil {

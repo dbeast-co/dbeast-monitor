@@ -22,6 +22,10 @@ type EnvironmentConfig struct {
 	Mon struct {
 		Elasticsearch Credentials `json:"elasticsearch"`
 	} `json:"mon"`
+	LogstashMon struct {
+		EnableMonitoringLogstash ConfigurationCheckbox `json:"enable_monitoring_logstash"`
+		LogstashHost             string                `json:"logstash_host"`
+	} `json:"logstash_mon"`
 }
 
 type LogstashHost struct {

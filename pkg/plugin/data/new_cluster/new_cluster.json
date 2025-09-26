@@ -24,6 +24,14 @@
         "password": "",
         "status": "UNTESTED"
       }
+    },
+    "logstash_mon": {
+      "enable_monitoring_logstash": {
+        "label": "Enable Logstash pipelines ingest",
+        "id": "enable_monitoring_logstash",
+        "is_checked": false
+      },
+      "logstash_host": ""
     }
   },
   "monitoring_cluster_injection": [
