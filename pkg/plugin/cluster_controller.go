@@ -3,9 +3,10 @@ package plugin
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
 	"strings"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Request) {

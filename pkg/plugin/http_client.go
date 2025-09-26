@@ -5,11 +5,12 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 type BasicAuthTransport struct {

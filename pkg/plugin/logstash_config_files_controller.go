@@ -5,10 +5,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
 	"path/filepath"
 	"strings"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 var LSConfigs = make(map[string]string)

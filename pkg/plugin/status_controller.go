@@ -2,14 +2,24 @@ package plugin
 
 import (
 	"encoding/json"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io"
 	"net/http"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(req.Context())
 	w.Header().Add("Content-Type", "application/json")
+
+	defer func() {
+		if err := req.Body.Close(); err != nil {
+			log.DefaultLogger.Warn("Failed to close request body. The error: " + err.Error())
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+			return
+		}
+	}()
 
 	var environmentConfig EnvironmentConfig
 	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
@@ -19,7 +29,6 @@ func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
-	defer req.Body.Close()
 
 	var statusData StatusData
 

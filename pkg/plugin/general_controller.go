@@ -2,9 +2,10 @@ package plugin
 
 import (
 	"encoding/json"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
 	"strings"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func (a *App) GetVersion(w http.ResponseWriter, req *http.Request) {

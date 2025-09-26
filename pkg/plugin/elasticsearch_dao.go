@@ -3,9 +3,10 @@ package plugin
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io"
 	"net/http"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func GetClusterHealth(credentials Credentials) (*http.Response, error) {
