@@ -90,8 +90,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   }
 
   handleChange = (event: SelectChangeEvent) => {
-    const inputString = this.props.dataSourceItem.name;
-    const uid = inputString.split('--').slice(2).join('--');
+    // const inputString = this.props.dataSourceItem.name;
+    // const uid = inputString.split('--').slice(2).join('--');
 
     this.setState({
       monitorName: event.target.value as string,
