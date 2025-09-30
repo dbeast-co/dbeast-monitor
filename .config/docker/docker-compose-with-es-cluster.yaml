@@ -46,7 +46,7 @@ services:
         set -euo pipefail;
         mkdir -p /out;
         echo 'Copying entire config directory...';
-        cp -r /usr/share/logstash/config/* /out/;
+        cp -r -n /usr/share/logstash/config/* /out/;
         grep -q '^config\.reload\.automatic:' /out/logstash.yml || echo 'config.reload.automatic: true' >> /out/logstash.yml;
 
         ls -l /out

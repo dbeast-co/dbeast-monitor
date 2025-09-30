@@ -136,7 +136,7 @@ func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *
 	}
 	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
-	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Elasticsearch)
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
 		return
