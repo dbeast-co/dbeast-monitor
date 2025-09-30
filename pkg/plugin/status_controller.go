@@ -8,49 +8,54 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
-func (a *App) TestClusterHandler(w http.ResponseWriter, req *http.Request) {
-	ctxLogger := log.DefaultLogger.FromContext(req.Context())
-	w.Header().Add("Content-Type", "application/json")
+func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	response.Header().Add("Content-Type", "application/json")
 
-	defer func() {
-		if err := req.Body.Close(); err != nil {
-			log.DefaultLogger.Warn("Failed to close request body. The error: " + err.Error())
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
-			return
-		}
-	}()
+	DeferHandler(response, request, ctxLogger)
 
 	var environmentConfig EnvironmentConfig
-	if err := json.NewDecoder(req.Body).Decode(&environmentConfig); err != nil {
-		log.DefaultLogger.Warn("Failed to decode JSON data: " + err.Error())
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for test cluster request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
 
+	clientProd, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating HTTP client for test cluster request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+	clientMon, err := CreateHTTPClient(environmentConfig.Mon.Elasticsearch)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating HTTP client for test cluster request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
 	var statusData StatusData
 
-	statusData.Prod.Elasticsearch = UpdateStatus(&environmentConfig.Prod.Elasticsearch)
-	statusData.Mon.Elasticsearch = UpdateStatus(&environmentConfig.Mon.Elasticsearch)
+	statusData.Prod.Elasticsearch = UpdateStatus(clientProd, environmentConfig.Prod.Elasticsearch.Host)
+	statusData.Mon.Elasticsearch = UpdateStatus(clientMon, environmentConfig.Mon.Elasticsearch.Host)
 
 	statusDataJSON, err := json.MarshalIndent(statusData, "", "")
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Failed to marshal status data"})
+		HTTPErrorGenerator(response, err, "Error while templates update, for cluster save request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	w.Write(statusDataJSON)
-	ctxLogger.Info("Status data received")
+
+	response.WriteHeader(http.StatusOK)
+	_, err = response.Write(statusDataJSON)
+	if err != nil {
+		log.DefaultLogger.Error("Can't write to the response: " + err.Error())
+		return
+	}
 }
 
-func UpdateStatus(credentials *Credentials) Status {
+func UpdateStatus(client *http.Client, host string) Status {
 	var statusData = Status{}
 
-	if credentials.Host != "" {
-		response, err := GetClusterHealth(*credentials)
+	if host != "" {
+		response, err := GetClusterHealth(client, host)
 
 		if err != nil {
 			GenerateStatusError(&statusData, err.Error(), "Failed to get status information: ")

@@ -9,11 +9,10 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
-func GetClusterHealth(credentials Credentials) (*http.Response, error) {
-	requestURL := credentials.Host + "/_cluster/health"
+func GetClusterHealth(client *http.Client, host string) (*http.Response, error) {
+	requestURL := host + "/_cluster/health"
 	log.DefaultLogger.Debug("Request path: ", requestURL)
-	log.DefaultLogger.Debug("Request host: ", credentials.Host)
-	response, err := ProcessGETRequest(credentials, requestURL)
+	response, err := ProcessGETRequest(client, requestURL)
 
 	if err != nil {
 		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
@@ -22,53 +21,51 @@ func GetClusterHealth(credentials Credentials) (*http.Response, error) {
 	return response, err
 }
 
-func GetClusterInfo(credentials Credentials) (string, string, error) {
+func GetClusterInfo(client *http.Client, host string) (string, string, error) {
 	var clusterName, uid string
 
-	if credentials.Host != "" {
-		response, err := GetClusterInformation(credentials)
+	response, err := GetClusterInformation(client, host)
+
+	if err != nil {
+		log.DefaultLogger.Error("Failed to get cluster name and UID: " + err.Error())
+		return "ERROR", "ERROR", err
+	}
+
+	if response.StatusCode == http.StatusOK {
+		body, err := io.ReadAll(response.Body)
+		err2 := response.Body.Close()
+		if err2 != nil {
+			log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
+			return "ERROR", "ERROR", err2
+		}
 
 		if err != nil {
-			log.DefaultLogger.Error("Failed to get cluster name and UID: " + err.Error())
+			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
 			return "ERROR", "ERROR", err
-		}
-
-		if response.StatusCode == http.StatusOK {
-			body, err := io.ReadAll(response.Body)
-			err2 := response.Body.Close()
-			if err2 != nil {
-				log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
-				return "ERROR", "ERROR", err2
-			}
-
+		} else if len(body) > 0 {
+			result := map[string]interface{}{}
+			err := json.Unmarshal([]byte(body), &result)
 			if err != nil {
-				log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
+				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
 				return "ERROR", "ERROR", err
-			} else if len(body) > 0 {
-				result := map[string]interface{}{}
-				err := json.Unmarshal([]byte(body), &result)
-				if err != nil {
-					log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
-					return "ERROR", "ERROR", err
-				}
-				if name, ok := result["cluster_name"].(string); ok {
-					clusterName = name
-				}
-				if uidVal, ok := result["cluster_uuid"].(string); ok {
-					uid = uidVal
-				}
 			}
-		} else {
-			log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
-			return "ERROR", "ERROR", err
+			if name, ok := result["cluster_name"].(string); ok {
+				clusterName = name
+			}
+			if uidVal, ok := result["cluster_uuid"].(string); ok {
+				uid = uidVal
+			}
 		}
+	} else {
+		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
+		return "ERROR", "ERROR", err
 	}
 	return clusterName, uid, nil
 }
 
-func GetClusterInformation(credentials Credentials) (*http.Response, error) {
-	requestURL := credentials.Host + "/"
-	response, err := ProcessGETRequest(credentials, requestURL)
+func GetClusterInformation(client *http.Client, host string) (*http.Response, error) {
+	requestURL := host + "/"
+	response, err := ProcessGETRequest(client, requestURL)
 
 	if err != nil {
 		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
@@ -77,37 +74,37 @@ func GetClusterInformation(credentials Credentials) (*http.Response, error) {
 	return response, err
 }
 
-func SendILMToCluster(credentials Credentials, policyName string, templateContent string) (*http.Response, error) {
-	requestURL := credentials.Host + "/_ilm/policy/" + policyName
-	exists, err := CheckIsILMExists(credentials, policyName)
+func SendILMToCluster(client *http.Client, host string, policyName string, templateContent string) (*http.Response, error) {
+	requestURL := host + "/_ilm/policy/" + policyName
+	exists, err := CheckIsILMExists(client, host, policyName)
 	if err != nil {
 		return nil, err
 	} else if exists {
 		log.DefaultLogger.Info("The ILM police: " + policyName + " already exists")
 		return nil, nil
 	} else {
-		return ProcessPUTRequest(credentials, requestURL, templateContent)
+		return ProcessPUTRequest(client, requestURL, templateContent)
 	}
 }
 
-func SendComponentTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
-	requestURL := credentials.Host + "/_component_template/" + templateName
-	return ProcessPUTRequest(credentials, requestURL, templateContent)
+func SendComponentTemplateToCluster(client *http.Client, host string, templateName string, templateContent string) (*http.Response, error) {
+	requestURL := host + "/_component_template/" + templateName
+	return ProcessPUTRequest(client, requestURL, templateContent)
 }
 
-func SendIndexTemplateToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
-	requestURL := credentials.Host + "/_index_template/" + templateName
-	return ProcessPUTRequest(credentials, requestURL, templateContent)
+func SendIndexTemplateToCluster(client *http.Client, host string, templateName string, templateContent string) (*http.Response, error) {
+	requestURL := host + "/_index_template/" + templateName
+	return ProcessPUTRequest(client, requestURL, templateContent)
 }
 
-func SendFirstIndexToCluster(credentials Credentials, templateName string, templateContent string) (*http.Response, error) {
-	requestURL := credentials.Host + "/%3C" + templateName + "-%7Bnow%2Fd%7D-000001%3E"
-	return ProcessPUTRequest(credentials, requestURL, templateContent)
+func SendFirstIndexToCluster(client *http.Client, host string, templateName string, templateContent string) (*http.Response, error) {
+	requestURL := host + "/%3C" + templateName + "-%7Bnow%2Fd%7D-000001%3E"
+	return ProcessPUTRequest(client, requestURL, templateContent)
 }
 
-func CheckIsIndexExists(credentials Credentials, indexName string) (bool, error) {
-	requestUrl := credentials.Host + "/_cat/indices/" + indexName + "?format=json&h=index"
-	response, err := ProcessGETRequest(credentials, requestUrl)
+func CheckIsIndexExists(client *http.Client, host string, indexName string) (bool, error) {
+	requestUrl := host + "/_cat/indices/" + indexName + "?format=json&h=index"
+	response, err := ProcessGETRequest(client, requestUrl)
 
 	if err != nil {
 		log.DefaultLogger.Error("Failed to check is index exists: " + err.Error())
@@ -143,10 +140,10 @@ func CheckIsIndexExists(credentials Credentials, indexName string) (bool, error)
 	}
 }
 
-func CheckIsILMExists(credentials Credentials, policyName string) (bool, error) {
-	requestUrl := credentials.Host + "/_ilm/policy/" + policyName
-	response, err := ProcessGETRequest(credentials, requestUrl)
+func CheckIsILMExists(client *http.Client, host string, policyName string) (bool, error) {
+	requestUrl := host + "/_ilm/policy/" + policyName
 
+	response, err := ProcessGETRequest(client, requestUrl)
 	if err != nil {
 		log.DefaultLogger.Error("Failed to check if ILM policy exists: " + err.Error())
 		return false, err
@@ -160,14 +157,19 @@ func CheckIsILMExists(credentials Credentials, policyName string) (bool, error) 
 		return false, nil
 	} else {
 		// Log any other unexpected HTTP status
-		body, _ := io.ReadAll(response.Body) // Retain body if needed for debugging
-		response.Body.Close()
+		err = response.Body.Close()
+		if err != nil {
+			body, _ := io.ReadAll(response.Body)
+			log.DefaultLogger.Error("Failed to close response body: " + string(body) + err.Error())
+			return false, err
+		}
+		body, _ := io.ReadAll(response.Body)
 		log.DefaultLogger.Error("Unexpected response while checking ILM policy. HTTP Status: " + response.Status + ", Body: " + string(body))
 		return false, fmt.Errorf("unexpected response status: %d, response: %s", response.StatusCode, string(body))
 	}
 }
 
-func SendRolloverCommand(credentials Credentials, rolloverAlias string) (*http.Response, error) {
-	requestURL := credentials.Host + "/" + rolloverAlias + "/_rollover"
-	return ProcessPOSTRequest(credentials, requestURL, "")
+func SendRolloverCommand(client *http.Client, host string, rolloverAlias string) (*http.Response, error) {
+	requestURL := host + "/" + rolloverAlias + "/_rollover"
+	return ProcessPOSTRequest(client, requestURL, "")
 }

@@ -14,65 +14,70 @@ import (
 
 var LSConfigs = make(map[string]string)
 
-func (a *App) DownloadElasticsearchMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
-	ctxLogger := log.DefaultLogger.FromContext(req.Context())
-	ctxLogger.Info("Got request for the Elasticsearch configuration files generation")
+func (a *App) DownloadElasticsearchMonitoringConfigurationFilesHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the Elasticsearch configuration files download")
 
-	GenerateLogstashConfigurationFiles(w, req, false, "ESConfigurationFiles.zip")
+	GenerateLogstashConfigurationFiles(response, request, false, "ESConfigurationFiles.zip")
 }
 
-func (a *App) DownloadLogstashMonitoringConfigurationFilesHandler(w http.ResponseWriter, req *http.Request) {
-	ctxLogger := log.DefaultLogger.FromContext(req.Context())
-	ctxLogger.Info("Got request for the Logstash configuration files generation")
+func (a *App) DownloadLogstashMonitoringConfigurationFilesHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the Logstash configuration files download")
 
-	GenerateLogstashConfigurationFiles(w, req, true, "LogstashConfigurationFiles.zip")
+	GenerateLogstashConfigurationFiles(response, request, true, "LogstashConfigurationFiles.zip")
 }
 
-func GenerateLogstashConfigurationFiles(w http.ResponseWriter, req *http.Request, isLogstash bool, resultZipFileName string) {
-	ctxLogger := log.DefaultLogger.FromContext(req.Context())
+func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *http.Request, isLogstash bool, resultZipFileName string) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 
-	w.Header().Add("Content-Disposition", "attachment; filename=\""+resultZipFileName+"\"")
-	w.Header().Add("Content-Type", "application/zip")
+	response.Header().Add("Content-Disposition", "attachment; filename=\""+resultZipFileName+"\"")
+	response.Header().Add("Content-Type", "application/zip")
+
+	DeferHandler(response, request, ctxLogger)
 
 	var project Project
 
-	if err := json.NewDecoder(req.Body).Decode(&project); err != nil {
-		log.DefaultLogger.Error("Failed to decode JSON data: " + err.Error())
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": "Invalid request payload"})
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for generate Logstash configuration files request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
-	ctxLogger.Debug("The project: ", project)
-	defer req.Body.Close()
+
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating HTTP client for Logstash configuration files request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
 
 	buf := new(bytes.Buffer)
-
 	zipWriter := zip.NewWriter(buf)
 
-	clusterName, clusterId, err := GetClusterInfo(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	clusterName, clusterId, err := GetClusterInfo(client, project.ClusterConnectionSettings.Prod.Elasticsearch.Host)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": err.Error()})
+		HTTPErrorGenerator(response, err, "Error while receiving cluster info for Logstash configuration files request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
 
 	if isLogstash {
-		GenerateLSLogstashConfigurationFiles(project, clusterId, zipWriter, ctxLogger)
+		GenerateLSLogstashConfigurationFiles(project, clusterId, zipWriter)
 	} else {
-		GenerateESLogstashConfigurationFiles(project, clusterId, clusterName, zipWriter, ctxLogger)
+		GenerateESLogstashConfigurationFiles(project, clusterId, clusterName, zipWriter)
 	}
 	err = zipWriter.Close()
 	if err != nil {
-		log.DefaultLogger.Error("Error closing ZIP: ", err.Error())
+		HTTPErrorGenerator(response, err, "Error while the ZIP file creation for Logstash configuration files request: ", http.StatusInternalServerError, ctxLogger)
+		return
 	}
 
-	_, err = w.Write(buf.Bytes())
+	response.WriteHeader(http.StatusOK)
+	_, err = response.Write(buf.Bytes())
 	if err != nil {
-		log.DefaultLogger.Error("Error writing response: ", err.Error())
+		log.DefaultLogger.Error("Can't write to the response: " + err.Error())
+		return
 	}
 }
 
-func GenerateESLogstashConfigurationFiles(project Project, clusterId string, clusterName string, zipWriter *zip.Writer, logger log.Logger) {
+func GenerateESLogstashConfigurationFiles(project Project, clusterId string, clusterName string, zipWriter *zip.Writer) {
 	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
@@ -94,7 +99,7 @@ func GenerateESLogstashConfigurationFiles(project Project, clusterId string, clu
 	WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
 }
 
-func GenerateLSLogstashConfigurationFiles(project Project, clusterId string, zipWriter *zip.Writer, logger log.Logger) {
+func GenerateLSLogstashConfigurationFiles(project Project, clusterId string, zipWriter *zip.Writer) {
 	for _, logstashHost := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Hosts {
 		pipelineFile := "### Configuration files for the Logstash monitoring\n"
 		for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
