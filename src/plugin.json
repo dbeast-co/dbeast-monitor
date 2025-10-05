@@ -117,7 +117,7 @@
       "type": "dashboard",
       "name": "Add new cluster",
       "path": "dashboards/Add-new-cluster-dashboard.json",
-      "role": "Viewer",
+      "role": "Admin",
       "addToNav": true,
       "uid": "add-new-cluster-dashboard",
       "defaultNav": false
