@@ -3,10 +3,11 @@ package plugin
 import (
 	"embed"
 	"encoding/json"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io/fs"
 	"path/filepath"
 	"strings"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 //go:embed data/*

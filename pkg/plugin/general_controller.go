@@ -2,9 +2,10 @@ package plugin
 
 import (
 	"encoding/json"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"net/http"
 	"strings"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func (a *App) GetVersion(w http.ResponseWriter, req *http.Request) {
@@ -44,4 +45,11 @@ func sanitizeEnvironmentConfig(config *EnvironmentConfig) {
 	sanitizeHost(&config.Prod.Elasticsearch.Host)
 	sanitizeHost(&config.Prod.Kibana.Host)
 	sanitizeHost(&config.Mon.Elasticsearch.Host)
+}
+
+func DeferHandler(response http.ResponseWriter, request *http.Request, logger log.Logger) {
+	if err := request.Body.Close(); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to close the body: ", http.StatusInternalServerError, logger)
+		return
+	}
 }

@@ -5,11 +5,12 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"io"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 type BasicAuthTransport struct {
@@ -50,17 +51,9 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 	return client, nil
 }
 
-func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Response, error) {
+func ProcessGETRequest(client *http.Client, requestURL string) (*http.Response, error) {
 	log.DefaultLogger.Debug("Request path: " + requestURL)
-	log.DefaultLogger.Debug("Request host: " + credentials.Host)
 	log.DefaultLogger.Debug("Request method: GET")
-
-	client, err := CreateHTTPClient(credentials)
-	if err != nil {
-		log.DefaultLogger.Warn("Request path: " + requestURL)
-		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
-		return nil, err
-	}
 
 	req, err := http.NewRequest("GET", requestURL, nil)
 	if err != nil {
@@ -79,26 +72,18 @@ func ProcessGETRequest(credentials Credentials, requestURL string) (*http.Respon
 	return response, nil
 }
 
-func ProcessPOSTRequest(credentials Credentials, requestURL string, body string) (*http.Response, error) {
-	return ProcessRequestWithBody(credentials, requestURL, body, "POST")
+func ProcessPOSTRequest(client *http.Client, requestURL string, body string) (*http.Response, error) {
+	return ProcessRequestWithBody(client, requestURL, body, "POST")
 }
 
-func ProcessPUTRequest(credentials Credentials, requestURL string, body string) (*http.Response, error) {
-	return ProcessRequestWithBody(credentials, requestURL, body, "PUT")
+func ProcessPUTRequest(client *http.Client, requestURL string, body string) (*http.Response, error) {
+	return ProcessRequestWithBody(client, requestURL, body, "PUT")
 }
 
-func ProcessRequestWithBody(credentials Credentials, requestURL string, body string, method string) (*http.Response, error) {
+func ProcessRequestWithBody(client *http.Client, requestURL string, body string, method string) (*http.Response, error) {
 	log.DefaultLogger.Debug("Request path: " + requestURL)
-	log.DefaultLogger.Debug("Request host: " + credentials.Host)
 	log.DefaultLogger.Debug("Request body: " + body)
 	log.DefaultLogger.Debug("Request method: " + method)
-
-	client, err := CreateHTTPClient(credentials)
-	if err != nil {
-		log.DefaultLogger.Warn("Request path: " + requestURL)
-		log.DefaultLogger.Warn("Failed to create HTTP client: " + err.Error())
-		return nil, err
-	}
 
 	req, err := http.NewRequest(method, requestURL, bytes.NewBuffer([]byte(body)))
 	if err != nil {
