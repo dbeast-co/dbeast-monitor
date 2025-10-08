@@ -25,11 +25,12 @@ func GetClusterInfo(client *http.Client, host string) (string, string, error) {
 	var clusterName, uid string
 
 	response, err := GetClusterInformation(client, host)
-
 	if err != nil {
 		log.DefaultLogger.Error("Failed to get cluster name and UID: " + err.Error())
 		return "ERROR", "ERROR", err
 	}
+
+	defer DeferInternalHandler(response, log.DefaultLogger)
 
 	if response.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(response.Body)
@@ -59,12 +60,13 @@ func GetClusterInfo(client *http.Client, host string) (string, string, error) {
 
 func GetClusterInformation(client *http.Client, host string) (*http.Response, error) {
 	requestURL := host + "/"
-	response, err := ProcessGETRequest(client, requestURL)
 
+	response, err := ProcessGETRequest(client, requestURL)
 	if err != nil {
 		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
 		return nil, err
 	}
+
 	return response, err
 }
 
@@ -104,6 +106,8 @@ func CheckIsIndexExists(client *http.Client, host string, indexName string) (boo
 		return false, err
 	}
 
+	defer DeferInternalHandler(response, log.DefaultLogger)
+
 	if response.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(response.Body)
 
@@ -137,10 +141,12 @@ func CheckIsILMExists(client *http.Client, host string, policyName string) (bool
 		return false, err
 	}
 
+	defer DeferInternalHandler(response, log.DefaultLogger)
+
 	if response.StatusCode == http.StatusOK {
 		log.DefaultLogger.Debug("ILM policy: " + policyName + " exists")
 		return true, nil
-	} else if response.StatusCode == http.StatusNotFound { // Policy not found
+	} else if response.StatusCode == http.StatusNotFound {
 		log.DefaultLogger.Debug("ILM policy: " + policyName + " does not exist")
 		return false, nil
 	} else {

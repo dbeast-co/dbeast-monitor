@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -68,7 +67,7 @@ func ProcessGETRequest(client *http.Client, requestURL string) (*http.Response, 
 		return response, err
 	}
 
-	return response, DeferInternalHandler(response, log.DefaultLogger)
+	return response, nil
 }
 
 func ProcessPOSTRequest(client *http.Client, requestURL string, body string) (*http.Response, error) {
@@ -102,22 +101,10 @@ func ProcessRequestWithBody(client *http.Client, requestURL string, body string,
 		return response, err
 	}
 
-	return response, DeferInternalHandler(response, log.DefaultLogger)
+	return response, nil
 }
 
 func (bat *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.SetBasicAuth(bat.Username, bat.Password)
 	return bat.Transport.RoundTrip(req)
-}
-
-func DeferInternalHandler(response *http.Response, logger log.Logger) error {
-	if response == nil || response.Body == nil {
-		return nil
-	}
-	_, _ = io.Copy(io.Discard, response.Body)
-	if err := response.Body.Close(); err != nil && logger != nil {
-		log.DefaultLogger.Warn("Failed to close response body: " + err.Error())
-		return err
-	}
-	return nil
 }

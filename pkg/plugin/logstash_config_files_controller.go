@@ -34,7 +34,7 @@ func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *h
 	response.Header().Add("Content-Disposition", "attachment; filename=\""+resultZipFileName+"\"")
 	response.Header().Add("Content-Type", "application/zip")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
 
 	var project Project
 

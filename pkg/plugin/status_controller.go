@@ -10,9 +10,10 @@ import (
 
 func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
-	response.Header().Add("Content-Type", "application/json")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
 
 	var environmentConfig EnvironmentConfig
 	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
@@ -56,6 +57,8 @@ func UpdateStatus(client *http.Client, host string) Status {
 
 	if host != "" {
 		response, err := GetClusterHealth(client, host)
+
+		defer DeferInternalHandler(response, log.DefaultLogger)
 
 		if err != nil {
 			GenerateStatusError(&statusData, err.Error(), "Failed to get status information: ")

@@ -30,13 +30,14 @@ func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Requ
 func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
-	response.Header().Add("Content-Type", "application/json")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
 
 	var environmentConfig EnvironmentConfig
 	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
-		HTTPErrorGenerator(response, err, "Failed to decode JSON data for cluster save request: ", http.StatusInternalServerError, ctxLogger)
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for cluster save request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
@@ -73,9 +74,9 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the Elasticsearch components deployment")
 
-	response.Header().Add("Content-Type", "application/json")
+	defer DeferHandler(request, ctxLogger)
 
-	DeferHandler(response, request, ctxLogger)
+	response.Header().Add("Content-Type", "application/json")
 
 	var project Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
@@ -125,9 +126,10 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
-	response.Header().Add("Content-Type", "application/json")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
 
 	var project Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
