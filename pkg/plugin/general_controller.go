@@ -50,6 +50,5 @@ func sanitizeEnvironmentConfig(config *EnvironmentConfig) {
 func DeferHandler(response http.ResponseWriter, request *http.Request, logger log.Logger) {
 	if err := request.Body.Close(); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to close the body: ", http.StatusInternalServerError, logger)
-		return
 	}
 }

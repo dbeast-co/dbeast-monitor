@@ -3,7 +3,6 @@ package plugin
 import (
 	"bytes"
 	"crypto/tls"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -69,7 +68,7 @@ func ProcessGETRequest(client *http.Client, requestURL string) (*http.Response, 
 		return response, err
 	}
 
-	return response, nil
+	return response, DeferInternalHandler(response, log.DefaultLogger)
 }
 
 func ProcessPOSTRequest(client *http.Client, requestURL string, body string) (*http.Response, error) {
@@ -101,33 +100,24 @@ func ProcessRequestWithBody(client *http.Client, requestURL string, body string,
 		log.DefaultLogger.Error("Request path: " + requestURL)
 		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
 		return response, err
-	} else {
-		body, err := io.ReadAll(response.Body)
-		err2 := response.Body.Close()
-		if err2 != nil {
-			log.DefaultLogger.Error("Request path: " + requestURL)
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
-		}
-
-		result := map[string]interface{}{}
-		if err != nil {
-			log.DefaultLogger.Error("Request path: " + requestURL)
-			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
-		} else if len(body) > 0 {
-			err := json.Unmarshal(body, &result)
-			if err != nil {
-				log.DefaultLogger.Error("Request path: " + requestURL)
-				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
-			}
-		}
-		log.DefaultLogger.Info("Request path: " + requestURL)
-		log.DefaultLogger.Info("Response: " + string(body))
 	}
 
-	return response, nil
+	return response, DeferInternalHandler(response, log.DefaultLogger)
 }
 
 func (bat *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.SetBasicAuth(bat.Username, bat.Password)
 	return bat.Transport.RoundTrip(req)
+}
+
+func DeferInternalHandler(response *http.Response, logger log.Logger) error {
+	if response == nil || response.Body == nil {
+		return nil
+	}
+	_, _ = io.Copy(io.Discard, response.Body)
+	if err := response.Body.Close(); err != nil && logger != nil {
+		log.DefaultLogger.Warn("Failed to close response body: " + err.Error())
+		return err
+	}
+	return nil
 }

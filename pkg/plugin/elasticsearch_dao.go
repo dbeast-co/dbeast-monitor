@@ -33,12 +33,6 @@ func GetClusterInfo(client *http.Client, host string) (string, string, error) {
 
 	if response.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(response.Body)
-		err2 := response.Body.Close()
-		if err2 != nil {
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
-			return "ERROR", "ERROR", err2
-		}
-
 		if err != nil {
 			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
 			return "ERROR", "ERROR", err
@@ -105,7 +99,6 @@ func SendFirstIndexToCluster(client *http.Client, host string, templateName stri
 func CheckIsIndexExists(client *http.Client, host string, indexName string) (bool, error) {
 	requestUrl := host + "/_cat/indices/" + indexName + "?format=json&h=index"
 	response, err := ProcessGETRequest(client, requestUrl)
-
 	if err != nil {
 		log.DefaultLogger.Error("Failed to check is index exists: " + err.Error())
 		return false, err
@@ -113,11 +106,6 @@ func CheckIsIndexExists(client *http.Client, host string, indexName string) (boo
 
 	if response.StatusCode == http.StatusOK {
 		body, err := io.ReadAll(response.Body)
-		err2 := response.Body.Close()
-		if err2 != nil {
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
-			return false, err2
-		}
 
 		var result []map[string]interface{}
 		err = json.Unmarshal([]byte(body), &result)
@@ -156,13 +144,6 @@ func CheckIsILMExists(client *http.Client, host string, policyName string) (bool
 		log.DefaultLogger.Debug("ILM policy: " + policyName + " does not exist")
 		return false, nil
 	} else {
-		// Log any other unexpected HTTP status
-		err = response.Body.Close()
-		if err != nil {
-			body, _ := io.ReadAll(response.Body)
-			log.DefaultLogger.Error("Failed to close response body: " + string(body) + err.Error())
-			return false, err
-		}
 		body, _ := io.ReadAll(response.Body)
 		log.DefaultLogger.Error("Unexpected response while checking ILM policy. HTTP Status: " + response.Status + ", Body: " + string(body))
 		return false, fmt.Errorf("unexpected response status: %d, response: %s", response.StatusCode, string(body))
