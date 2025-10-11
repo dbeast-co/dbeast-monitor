@@ -13,12 +13,12 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useTheme2 } from '@grafana/ui';
 import classNames from 'classnames';
 import { getBackendSrv } from '@grafana/runtime';
-import { ConnectionSettings } from '../models/connection-settings';
-import { Datasource } from '../models/datasource';
-import { GrafanaDatasource } from '../models/grafana-datasource';
-import { BackendResponse } from '../models/backend-response';
-import { SERVER_URL } from '../config';
-import { Cluster, Host } from '../models/cluster';
+import { ConnectionSettings } from './models/connection-settings';
+import { Datasource } from './models/datasource';
+import { GrafanaDatasource } from './models/grafana-datasource';
+import { BackendResponse } from './models/backend-response';
+import { SERVER_URL } from './config';
+import { Cluster, Host } from './models/cluster';
 import { saveAs } from 'file-saver';
 
 import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
@@ -28,14 +28,14 @@ import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPan
 
 import Tooltip from '@mui/material/Tooltip';
 
-const settings = require('../config.ts');
+const settings = require('./config.ts');
 
 export enum LogstashFileType {
   ES_MONITORING_CONFIGURATION_FILES = 'download_es_monitoring_configuration_files',
   LOGSTASH_MONITORING_CONFIGURATION_FILES = 'download_logstash_monitoring_configuration_files',
 }
 
-export const AddNewClusterPanel = () => {
+export function AddNewClusterPanel() {
   const backendSrv = getBackendSrv();
   const theme = useTheme2();
   const baseUrl = settings.SERVER_URL;
@@ -623,11 +623,7 @@ export const AddNewClusterPanel = () => {
   }, [connectionSettings]);
 
   return (
-
-
-
     <section className="connectionsAndConfig">
-
       {isLoading && (
         <div className="spinner_overlay">
           <CircularProgress color="primary" />
@@ -639,8 +635,6 @@ export const AddNewClusterPanel = () => {
           isLight: theme.isLight,
         })}
       >
-
-
         <section>
           <div className="source-connection-group">
             <h3 className="title">Source connection</h3>
@@ -932,4 +926,4 @@ export const AddNewClusterPanel = () => {
       )}
     </section>
   );
-};
+}

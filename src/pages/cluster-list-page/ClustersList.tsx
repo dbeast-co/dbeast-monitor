@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DataSourceList} from "../components/DataSourceList/DataSourcesList";
+import {DataSourceList} from "../../components/DataSourceList/DataSourcesList";
 import {getBackendSrv} from "@grafana/runtime";
 
 function ClustersList(props: any) {

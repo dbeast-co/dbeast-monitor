@@ -86,7 +86,15 @@
     {
       "type": "page",
       "name": "Clusters List",
-      "path": "/a/dbeast-dbeastmonitor-app/clusters-list",
+      "path": "/a/dbeast-dbeastmonitor-app/cluster-list-page/clusters-list",
+      "icon": "list-ul",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Add new cluster",
+      "path": "/a/dbeast-dbeastmonitor-app/add-new-cluster-page/add-new-cluster-panel",
       "icon": "list-ul",
       "addToNav": true,
       "defaultNav": false
@@ -107,20 +115,6 @@
       "uid": "clusters-list",
       "addToNav": true,
       "defaultNav": true
-    },
-    {
-      "type": "panel",
-      "name": "Add new cluster panel",
-      "path": "panel/plugin.json"
-    },
-    {
-      "type": "dashboard",
-      "name": "Add new cluster",
-      "path": "dashboards/Add-new-cluster-dashboard.json",
-      "role": "Admin",
-      "addToNav": true,
-      "uid": "add-new-cluster-dashboard",
-      "defaultNav": false
     },
     {
       "type": "dashboard",
