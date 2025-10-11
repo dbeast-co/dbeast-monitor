@@ -55,11 +55,18 @@ export class App extends PureComponent<Props, State> {
       );
     }
 
-    // Route to the correct page based on the path
     if (path?.includes('add-new-cluster-page')) {
       return (
         <>
           <AddNewClusterPanel />
+        </>
+      );
+    }
+
+    if (path?.includes('cluster-list-page')) {
+      return (
+        <>
+          <ClustersList />
         </>
       );
     }
