@@ -1,7 +1,8 @@
-import React, {PureComponent} from 'react';
-import {getBackendSrv} from '@grafana/runtime';
-import {Alert} from '@grafana/ui';
-import {DataSourceList} from "../DataSourceList/DataSourcesList";
+import React, { PureComponent } from 'react';
+import { getBackendSrv } from '@grafana/runtime';
+import { Alert } from '@grafana/ui';
+import ClustersList from '../../pages/cluster-list-page/ClustersList';
+import AddNewClusterPanel from '../../pages/add-new-cluster-page/AddNewClusterPanel';
 import './app.scss';
 
 /**
@@ -9,11 +10,13 @@ import './app.scss';
  */
 interface Props {
   dataSources: any[];
+  path?: string;
+  query?: Record<string, any>;
+  meta?: any;
 }
 
 interface State {
   dataSources: any[];
-
   loading: boolean;
 }
 
@@ -22,11 +25,8 @@ export class App extends PureComponent<Props, State> {
     loading: true,
     dataSources: [],
   };
-  onDeleteDataSource = (id: string) => {
-  };
 
-
-
+  onDeleteDataSource = (id: string) => {};
 
   async componentDidMount() {
     const dataSources = await getBackendSrv()
@@ -45,6 +45,7 @@ export class App extends PureComponent<Props, State> {
   }
 
   render() {
+    const { path } = this.props;
 
     if (this.state.loading) {
       return (
@@ -53,10 +54,21 @@ export class App extends PureComponent<Props, State> {
         </Alert>
       );
     }
-    return (
+
+    // Route to the correct page based on the path
+    if (path?.includes('add-new-cluster-page')) {
+      return (
         <>
-          <DataSourceList onDelete={(id) => this.onDeleteDataSource(id)} dataSources={this.state.dataSources}/>
-          </>
+          <AddNewClusterPanel />
+        </>
+      );
+    }
+
+    // Default to ClustersList
+    return (
+      <>
+        <ClustersList />
+      </>
     );
   }
 }

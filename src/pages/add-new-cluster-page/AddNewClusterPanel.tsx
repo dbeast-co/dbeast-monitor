@@ -35,7 +35,7 @@ export enum LogstashFileType {
   LOGSTASH_MONITORING_CONFIGURATION_FILES = 'download_logstash_monitoring_configuration_files',
 }
 
-export function AddNewClusterPanel() {
+function AddNewClusterPanel() {
   const backendSrv = getBackendSrv();
   const theme = useTheme2();
   const baseUrl = settings.SERVER_URL;
@@ -927,3 +927,5 @@ export function AddNewClusterPanel() {
     </section>
   );
 }
+
+export default AddNewClusterPanel;
