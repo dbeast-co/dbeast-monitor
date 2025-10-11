@@ -9,10 +9,5 @@ export const plugin = new AppPlugin<{}>().setRootPage(App).addConfigPage({
     body: AppConfig,
     id: 'configuration',
   });
-    // .addConfigPage({
-    //     title: 'Clusters List', // Title for the Clusters List page
-    //     icon: 'list-ul', // Icon to represent this page
-    //     body: ClustersList, // Pass the ClustersList component
-    //     id: 'clusters-list', // Unique ID for this page
-    // });
+
 

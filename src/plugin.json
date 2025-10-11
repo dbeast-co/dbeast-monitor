@@ -87,6 +87,7 @@
       "type": "page",
       "name": "Clusters List",
       "path": "/a/dbeast-dbeastmonitor-app/cluster-list-page/clusters-list",
+      "role": "Viewer",
       "icon": "list-ul",
       "addToNav": true,
       "defaultNav": false
@@ -95,6 +96,7 @@
       "type": "page",
       "name": "Add new cluster",
       "path": "/a/dbeast-dbeastmonitor-app/add-new-cluster-page/add-new-cluster-panel",
+      "role": "Admin",
       "icon": "list-ul",
       "addToNav": true,
       "defaultNav": false
