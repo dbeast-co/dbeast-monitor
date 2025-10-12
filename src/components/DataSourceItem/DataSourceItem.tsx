@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
 import { ClusterStatsItemState } from '../../types/clusterStatsItemState';
-import './data-source-item.scss';
+import { getDataSourceItemStyles } from './DataSourceItem.styles';
 import {
   CircularProgress,
   Dialog,
@@ -17,8 +17,7 @@ import {
   Select,
   Stack,
 } from '@mui/material';
-import { Button, stylesFactory, useTheme } from '@grafana/ui';
-import classNames from 'classnames';
+import { Button, useTheme2 } from '@grafana/ui';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -26,27 +25,6 @@ interface Props {
   theme: any;
   onDelete: (uid: string) => void;
 }
-
-const MyComponent = (_: any) => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
-
-  return (
-    <div style={styles.container}>
-      <div>Hello, This is My Component!</div>
-    </div>
-  );
-};
-export default MyComponent;
-
-const getStyles = stylesFactory((theme) => ({
-  container: {
-    backgroundColor: theme.colors.bg1,
-    color: theme.colors.text,
-    fontSize: 18,
-    padding: 10,
-  },
-}));
 
 export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> {
   state: ClusterStatsItemState = {
@@ -243,206 +221,221 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
   }
 
   render() {
+    const theme = this.props.theme;
+    const styles = getDataSourceItemStyles(theme);
+
     return (
-      <div className="position-relative">
+      <div className={styles.positionRelative}>
         {this.state.isLoading && (
-          <div className="spinner_overlay">
+          <div className={styles.spinnerOverlay}>
             <CircularProgress color="primary" />
           </div>
         )}
 
-        <div
-          className={classNames({
-            form_group: true,
-            isLight: this.props.theme.isLight,
-          })}
-        >
+        <div className={styles.formGroup}>
           <header>
-            <div className="col header-cluster">
+            <div className={`col ${styles.headerCluster}`}>
               <h3>{this.state.cluster_name}</h3>
               <p>{this.state.cluster_uuid}</p>
             </div>
-            <div className="actions col">
+            <div className={`actions col ${styles.actions}`}>
               <span className={this.state.status.toUpperCase()}>{this.state.status.toUpperCase()}</span>
             </div>
           </header>
 
-          <Divider light />
+          <div className={styles.divider}>
+            <Divider light />
+          </div>
 
           <div className="grid-container">
             <div className="col">
-              <List>
-                <ListItem>
-                  {this.state.versions ? (
+              <div className={styles.listItem}>
+                <List>
+                  <ListItem>
+                    {this.state.versions ? (
+                      <div>
+                        <span className="label">Version</span>
+                        <ListItemText primary={this.state.versions ?? '0'} />
+                      </div>
+                    ) : null}
+
                     <div>
-                      <span className="label">Version</span>
-                      <ListItemText primary={this.state.versions ?? '0'} />
+                      <span className="label">Used storage</span>
+                      <ListItemText primary={this.state.usedStorage ?? '0'} />
                     </div>
-                  ) : null}
+                    <div>
+                      <span className="label">Total storage</span>
+                      <ListItemText primary={this.state.totalStorage ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label">Docs count</span>
+                      <ListItemText primary={this.state.docsCount ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label">Total nodes</span>
+                      <ListItemText primary={this.state.totalNodes ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label">Data nodes</span>
+                      <ListItemText primary={this.state.dataNodes ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label"> Hot nodes</span>
+                      <ListItemText primary={this.state.dataHotNodes ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label"> Warm nodes</span>
+                      <ListItemText primary={this.state.dataWarmNodes ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label"> Cold nodes</span>
+                      <ListItemText primary={this.state.dataColdNodes ?? '0'} />
+                    </div>
 
-                  <div>
-                    <span className="label">Used storage</span>
-                    <ListItemText primary={this.state.usedStorage ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Total storage</span>
-                    <ListItemText primary={this.state.totalStorage ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Docs count</span>
-                    <ListItemText primary={this.state.docsCount ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Total nodes</span>
-                    <ListItemText primary={this.state.totalNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Data nodes</span>
-                    <ListItemText primary={this.state.dataNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label"> Hot nodes</span>
-                    <ListItemText primary={this.state.dataHotNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label"> Warm nodes</span>
-                    <ListItemText primary={this.state.dataWarmNodes ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label"> Cold nodes</span>
-                    <ListItemText primary={this.state.dataColdNodes ?? '0'} />
-                  </div>
-
-                  <div>
-                    <span className="label">Indices</span>
-                    <ListItemText primary={this.state.numberOfIndices ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Total shards</span>
-                    <ListItemText primary={this.state.numberOfShards ?? '0'} />
-                  </div>
-                  <div>
-                    <span className="label">Unassigned shards</span>
-                    <ListItemText primary={this.state.numberOfUnassignedShards ?? '0'} />
-                  </div>
-                </ListItem>
-              </List>
+                    <div>
+                      <span className="label">Indices</span>
+                      <ListItemText primary={this.state.numberOfIndices ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label">Total shards</span>
+                      <ListItemText primary={this.state.numberOfShards ?? '0'} />
+                    </div>
+                    <div>
+                      <span className="label">Unassigned shards</span>
+                      <ListItemText primary={this.state.numberOfUnassignedShards ?? '0'} />
+                    </div>
+                  </ListItem>
+                </List>
+              </div>
             </div>
             <div className="col"></div>
           </div>
-          <Divider light />
-          <footer>
-            <Stack spacing={2} direction="row">
-              <Button variant="secondary" className="btn" onClick={this.onDelete}>
-                Delete
-              </Button>
-              <Button variant="secondary" className="btn" onClick={() => this.onTest()}>
-                Test
-              </Button>
-              <FormControl fullWidth id="select">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
-                  renderValue={(value) => {
-                    let text = value.split('-').join(' ');
-                    text = text.charAt(0).toUpperCase() + text.slice(1);
-                    return text ?? 'Monitor type';
-                  }}
-                >
-                  <MenuItem value={'stack-monitoring'}>
-                    <a
-                      href={`/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Elastic Stack monitoring
-                    </a>
-                  </MenuItem>
-                  <MenuItem value={'index-overview'}>
-                    <a
-                      href={`/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Elasticsearch Index overview
-                    </a>
-                  </MenuItem>
-                  <MenuItem value={'shards-overview'}>
-                    <a
-                      href={`/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Elasticsearch Shards overview
-                    </a>
-                  </MenuItem>
-                  <MenuItem value={'ingest-pipelines-overview'}>
-                    <a
-                      href={`/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Elasticsearch ingest pipelines overview
-                    </a>
-                  </MenuItem>
-                  <MenuItem value={'logstash-overview'}>
-                    <a
-                      href={`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Logstash overview
-                    </a>
-                  </MenuItem>
-                  <MenuItem value={'tasks-analytics'}>
-                    <a
-                      href={`/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Tasks analytics
-                    </a>
-                  </MenuItem>
-                  <MenuItem value={'ml-jobs-analytics'}>
-                    <a
-                      href={`/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      Elasticsearch ML Jobs Analytics
-                    </a>
-                  </MenuItem>
 
-                </Select>
-              </FormControl>
-            </Stack>
+          <div className={styles.divider}>
+            <Divider light />
+          </div>
+
+          <footer>
+            <div className={styles.stack}>
+              <Stack spacing={2} direction="row">
+                <div className={styles.buttons}>
+                  <Button variant="secondary" className="btn" onClick={this.onDelete}>
+                    Delete
+                  </Button>
+                  <Button variant="secondary" className="btn" onClick={() => this.onTest()}>
+                    Test
+                  </Button>
+                </div>
+                <div className={styles.select}>
+                  <FormControl fullWidth id="select">
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
+                      renderValue={(value) => {
+                        let text = value.split('-').join(' ');
+                        text = text.charAt(0).toUpperCase() + text.slice(1);
+                        return text ?? 'Monitor type';
+                      }}
+                    >
+                      <div className={styles.menuItem}>
+                        <MenuItem value={'stack-monitoring'}>
+                          <a
+                            href={`/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Elastic Stack monitoring
+                          </a>
+                        </MenuItem>
+                        <MenuItem value={'index-overview'}>
+                          <a
+                            href={`/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Elasticsearch Index overview
+                          </a>
+                        </MenuItem>
+                        <MenuItem value={'shards-overview'}>
+                          <a
+                            href={`/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Elasticsearch Shards overview
+                          </a>
+                        </MenuItem>
+                        <MenuItem value={'ingest-pipelines-overview'}>
+                          <a
+                            href={`/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Elasticsearch ingest pipelines overview
+                          </a>
+                        </MenuItem>
+                        <MenuItem value={'logstash-overview'}>
+                          <a
+                            href={`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Logstash overview
+                          </a>
+                        </MenuItem>
+                        <MenuItem value={'tasks-analytics'}>
+                          <a
+                            href={`/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Tasks analytics
+                          </a>
+                        </MenuItem>
+                        <MenuItem value={'ml-jobs-analytics'}>
+                          <a
+                            href={`/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            Elasticsearch ML Jobs Analytics
+                          </a>
+                        </MenuItem>
+                      </div>
+                    </Select>
+                  </FormControl>
+                </div>
+              </Stack>
+            </div>
           </footer>
 
-          <Dialog
-            open={this.state?.isOpenDialog!}
-            onClose={() => this.handleDelete(true)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
+          <div className={styles.dialog}>
+            <Dialog
+              open={this.state?.isOpenDialog!}
+              onClose={() => this.handleDelete(true)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
 
-            <DialogActions>
-              <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
-                No
-              </Button>
-              <Button variant="primary" onClick={() => this.handleDelete(true)} autoFocus>
-                Yes
-              </Button>
-            </DialogActions>
-          </Dialog>
+              <DialogActions>
+                <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
+                  No
+                </Button>
+                <Button variant="primary" onClick={() => this.handleDelete(true)} autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
       </div>
     );

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { CheckboxConfig } from './models/cluster';
-import './AddNewClusterPanel.scss';
-import './LogstashConfigurationsPanel.scss';
+import { getLogstashConfigurationsPanelStyles } from './LogstashConfigurationsPanel.styles';
+import { useTheme2 } from '@grafana/ui';
 
 export const LogstashConfigurationsPanel = ({ files }: any) => {
+  const theme = useTheme2();
+  const styles = getLogstashConfigurationsPanelStyles(theme);
   const [_, setIsChecked] = useState(false);
 
   const onChangeCheckbox = (index: number) => {
@@ -15,11 +17,11 @@ export const LogstashConfigurationsPanel = ({ files }: any) => {
   };
 
   return (
-    <div className="logstashConfigurationsPanel">
+    <div className={styles.logstashConfigurationsPanel}>
       {files &&
         files.map((config: CheckboxConfig, index: number) => {
           return (
-            <div key={config.id}>
+            <div key={config.id} className={styles.configItem}>
               <FormControlLabel
                 value={config.label}
                 control={

@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
-import { Alert } from '@grafana/ui';
+import { Alert, useTheme2 } from '@grafana/ui';
 import ClustersList from '../../pages/cluster-list-page/ClustersList';
 import AddNewClusterPanel from '../../pages/add-new-cluster-page/AddNewClusterPanel';
-import './app.scss';
+import { getAppStyles } from './App.styles';
 
 /**
  * Properties
@@ -15,67 +15,65 @@ interface Props {
   meta?: any;
 }
 
-interface State {
-  dataSources: any[];
-  loading: boolean;
-}
+export const App: React.FC<Props> = ({ path }) => {
+  const theme = useTheme2();
+  const styles = getAppStyles(theme);
 
-export class App extends PureComponent<Props, State> {
-  state: State = {
+  const [state, setState] = useState({
     loading: true,
     dataSources: [],
-  };
+  });
 
-  onDeleteDataSource = (id: string) => {};
-
-  async componentDidMount() {
-    const dataSources = await getBackendSrv()
-      .get('/api/datasources')
-      .then((dataSources: any[]) => {
-        const regex = new RegExp(/Elasticsearch-direct-prod-.*/g);
-        return dataSources.filter((dataSource: any) => {
-          return dataSource.name.match(regex);
+  useEffect(() => {
+    const fetchDataSources = async () => {
+      const dataSources = await getBackendSrv()
+        .get('/api/datasources')
+        .then((dataSources: any[]) => {
+          const regex = new RegExp(/Elasticsearch-direct-prod-.*/g);
+          return dataSources.filter((dataSource: any) => {
+            return dataSource.name.match(regex);
+          });
         });
+
+      setState({
+        dataSources,
+        loading: false,
       });
+    };
 
-    this.setState({
-      dataSources,
-      loading: false,
-    });
-  }
+    fetchDataSources();
+  }, []);
 
-  render() {
-    const { path } = this.props;
-
-    if (this.state.loading) {
-      return (
+  if (state.loading) {
+    return (
+      <div className={styles.container}>
         <Alert title="Loading..." severity="info">
           <p>Loading time depends on the number of configured data sources.</p>
         </Alert>
-      );
-    }
-
-    if (path?.includes('add-new-cluster-page')) {
-      return (
-        <>
-          <AddNewClusterPanel />
-        </>
-      );
-    }
-
-    if (path?.includes('cluster-list-page')) {
-      return (
-        <>
-          <ClustersList />
-        </>
-      );
-    }
-
-    // Default to ClustersList
-    return (
-      <>
-        <ClustersList />
-      </>
+      </div>
     );
   }
-}
+
+  if (path?.includes('add-new-cluster-page')) {
+    return (
+      <div className={styles.container}>
+        <AddNewClusterPanel />
+      </div>
+    );
+  }
+
+  if (path?.includes('cluster-list-page')) {
+    return (
+      <div className={styles.container}>
+        <ClustersList />
+      </div>
+    );
+  }
+
+  // Default to ClustersList
+  return (
+    <div className={styles.container}>
+      <ClustersList />
+    </div>
+  );
+};

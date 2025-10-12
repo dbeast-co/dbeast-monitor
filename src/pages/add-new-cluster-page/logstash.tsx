@@ -1,6 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
-import './logstash.scss';
+import { getLogstashStyles } from './logstash.styles';
+import { useTheme2 } from '@grafana/ui';
 
 export interface Props {
   logstash: Logstash;
@@ -16,6 +17,9 @@ export interface Logstash {
 }
 
 const LogstashComponent = (state: Props) => {
+  const theme = useTheme2();
+  const styles = getLogstashStyles(theme);
+
   const [logstash, setLogstash] = React.useState<Logstash>({
     id: state.logstash.id,
     serverAddress: state.logstash.serverAddress,
@@ -50,34 +54,39 @@ const LogstashComponent = (state: Props) => {
   }
 
   return (
-    <div className="source_panel">
-      <TextField
-        id="standard-basic"
-        label="Server address"
-        variant="standard"
-        value={logstash.serverAddress ?? ''}
-        onChange={onInputServerAddress}
-      />
-      <TextField
-        id="standard-basic"
-        label="Logstash Api Host"
-        variant="standard"
-        value={logstash.logstashApiHost ?? ''}
-        onChange={onInputHost}
-      />
-      <TextField
-        id="standard-basic"
-        label="Logstash Logs Folder"
-        variant="standard"
-        value={logstash.logstashLogsFolder ?? ''}
-        onChange={onInputFolder}
-      />
-      <div className="actions">
-        <button className="cancel_btn save_btn" onClick={() => onCancel()}>
+    <div className={styles.sourcePanel}>
+      <div className={styles.textField}>
+        <TextField
+          id="standard-basic-1"
+          label="Server address"
+          variant="standard"
+          value={logstash.serverAddress ?? ''}
+          onChange={onInputServerAddress}
+        />
+      </div>
+      <div className={styles.textField}>
+        <TextField
+          id="standard-basic-2"
+          label="Logstash Api Host"
+          variant="standard"
+          value={logstash.logstashApiHost ?? ''}
+          onChange={onInputHost}
+        />
+      </div>
+      <div className={styles.textField}>
+        <TextField
+          id="standard-basic-3"
+          label="Logstash Logs Folder"
+          variant="standard"
+          value={logstash.logstashLogsFolder ?? ''}
+          onChange={onInputFolder}
+        />
+      </div>
+      <div className={styles.actions}>
+        <button className="cancel-btn" onClick={() => onCancel()}>
           Cancel
         </button>
         <button
-          className="save_btn"
           disabled={
             !logstash.serverAddress.length || !logstash.logstashApiHost.length || !logstash.logstashLogsFolder.length
           }

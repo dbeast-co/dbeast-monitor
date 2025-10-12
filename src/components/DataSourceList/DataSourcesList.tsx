@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
-import {DataSourceItem} from '../DataSourceItem/DataSourceItem';
-import './data-source-list.scss';
-import {useTheme2} from '@grafana/ui';
-import classNames from 'classnames';
+import { DataSourceItem } from '../DataSourceItem/DataSourceItem';
+import { getDataSourceListStyles } from './DataSourcesList.styles';
+import { useTheme2 } from '@grafana/ui';
 
 interface Props {
   dataSources: any[];
@@ -12,27 +11,23 @@ interface Props {
 
 export const DataSourceList: FC<Props> = ({ dataSources, onDelete }) => {
   const theme = useTheme2();
+  const styles = getDataSourceListStyles(theme);
 
   const onDeleteItem = (id: string) => {
-
+    onDelete(id);
   };
 
 
   return (
-    <div
-      className={classNames({
-        container: true,
-        isLight: theme.isLight,
-      })}
-    >
-      <header className="header">
+    <div className={styles.container}>
+      <header className={styles.header}>
         <h1>Clusters list</h1>
       </header>
-      <section className="card-section card-list-layout-list">
-        <ul className="card-list" data-col={dataSources.length}>
+      <section className={styles.cardSection}>
+        <ul className={styles.cardList} data-col={dataSources.length}>
           {dataSources.map((item, index) => {
             return (
-              <li className="card-item-wrapper" key={index} aria-label="check-card">
+              <li className={styles.cardItemWrapper} key={index} aria-label="check-card">
                 <DataSourceItem onDelete={(id) => onDeleteItem(id)} dataSourceItem={item} theme={theme} />
               </li>
             );

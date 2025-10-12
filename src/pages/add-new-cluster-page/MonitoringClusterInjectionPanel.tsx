@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import {CheckboxConfig} from './models/cluster';
-import './AddNewClusterPanel.scss';
-import './LogstashConfigurationsPanel.scss';
+import { CheckboxConfig } from './models/cluster';
+import { getMonitoringClusterInjectionPanelStyles } from './MonitoringClusterInjectionPanel.styles';
+import { useTheme2 } from '@grafana/ui';
 
 export const MonitoringClusterInjectionPanel = ({ monitoringClusterInjections }: any) => {
+    const theme = useTheme2();
+    const styles = getMonitoringClusterInjectionPanelStyles(theme);
     const [_, setIsChecked] = useState(false);
 
     const onChangeCheckbox = (index: number) => {
@@ -15,11 +17,11 @@ export const MonitoringClusterInjectionPanel = ({ monitoringClusterInjections }:
     };
 
     return (
-        <div className="monitoringClusterInjectionPanel">
+        <div className={styles.monitoringClusterInjectionPanel}>
             {monitoringClusterInjections &&
                 monitoringClusterInjections.map((config: CheckboxConfig, index: number) => {
                     return (
-                        <div key={config.id}>
+                        <div key={config.id} className={styles.configItem}>
                             <FormControlLabel
                                 value={config.label}
                                 control={
