@@ -318,7 +318,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
       opacity: 1 !important;  // Back to original SCSS (no opacity)
 
       &.add-new-cluster-divider {
-        margin-block: 5.3rem !important;
+        margin-block: 5.1rem !important;
         border-width: 1px !important;
         opacity: 1 !important;
         position: relative;

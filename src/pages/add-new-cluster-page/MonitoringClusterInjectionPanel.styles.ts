@@ -43,7 +43,7 @@ export const getMonitoringClusterInjectionPanelStyles = (theme: GrafanaTheme2) =
     `,
 
     configItem: css`
-      margin-bottom: 8px;
+      margin-bottom: 4px !important;
       
       &:last-child {
         margin-bottom: 0;
