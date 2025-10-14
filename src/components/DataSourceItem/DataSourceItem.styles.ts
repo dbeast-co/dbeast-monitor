@@ -168,12 +168,16 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     stack: css`
       .MuiStack-root {
         display: flex;
+        justify-content: space-between;
       }
     `,
 
     select: css`
       .MuiInputBase-root {
         max-width: 100%;
+      }
+      :global(.MuiList-root) {
+        background-color: ${theme.colors.background.secondary} !important;
       }
 
       :global(.MuiMenu-list) {
@@ -293,11 +297,11 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
       .MuiMenuItem-root {
         color: ${theme.colors.text.primary} !important;
         background-color: ${theme.colors.background.secondary} !important;
-
-        &:hover {
-          background-color: ${theme.colors.action.hover} !important;
-          color: ${theme.colors.text.primary} !important;
-        }
+       
+        // &:hover {
+        //   background-color: ${theme.colors.action.hover} !important;
+        //   color: ${theme.colors.text.primary} !important;
+        // }
 
         a {
           color: inherit;

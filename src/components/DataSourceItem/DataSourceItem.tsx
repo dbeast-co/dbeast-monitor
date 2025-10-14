@@ -17,8 +17,9 @@ import {
   Select,
   Stack,
 } from '@mui/material';
-import { Button, useTheme2 } from '@grafana/ui';
+import { Button } from '@grafana/ui';
 import { toast } from 'react-toastify';
+import { config } from '@grafana/runtime';
 
 interface Props {
   dataSourceItem: any;
@@ -27,6 +28,13 @@ interface Props {
 }
 
 export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> {
+  user = config.bootData?.user;
+   isServerAdmin = !!this.user?.isGrafanaAdmin;       // Grafana server admin
+   isOrgAdmin = this.user?.orgRole === 'Admin';       // Org admin (Admin/Editor/Viewer)
+
+
+  // hide page, show “no permission”, etc.
+
   state: ClusterStatsItemState = {
     cluster_name: '',
     cluster_uuid: '',
@@ -45,7 +53,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
     dataColdNodes: 0,
     monitorName: '',
     isOpenDialog: false,
-    isLoading: false
+    isLoading: false,
+    isServerAdmin: this.isServerAdmin,
   };
   label = 'Monitor type';
 
@@ -319,9 +328,13 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             <div className={styles.stack}>
               <Stack spacing={2} direction="row">
                 <div className={styles.buttons}>
+
+                  {this.state.isServerAdmin && (
                   <Button variant="secondary" className="btn" onClick={this.onDelete}>
                     Delete
                   </Button>
+                  )}
+
                   <Button variant="secondary" className="btn" onClick={() => this.onTest()}>
                     Test
                   </Button>
@@ -331,11 +344,30 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={this.state.monitorName! ? this.state.monitorName : 'Monitor type'}
+                      value={this.state.monitorName ? this.state.monitorName : ''}
+                      displayEmpty
+                      sx={{
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#00b4cd',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#008fa3',
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#005f6b',
+                        },
+                        // Ensure text color for selected value
+                        '& .MuiSelect-select': {
+                          color:  '#00b4cd',
+                        },
+                      }}
                       renderValue={(value) => {
+                        if (!value) {
+                          return <span style={{ color: '#00b4cd' }}>Monitor type</span>;
+                        }
                         let text = value.split('-').join(' ');
                         text = text.charAt(0).toUpperCase() + text.slice(1);
-                        return text ?? 'Monitor type';
+                        return text;
                       }}
                     >
                       <div className={styles.menuItem} >

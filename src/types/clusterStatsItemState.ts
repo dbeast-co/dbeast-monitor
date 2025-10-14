@@ -17,6 +17,7 @@ export interface ClusterStatsItemState {
   monitorName: string | null | undefined;
   isOpenDialog?: boolean;
   isLoading?: boolean;
+  isServerAdmin: boolean;
 }
 
 export interface MonitorState {

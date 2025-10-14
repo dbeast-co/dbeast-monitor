@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
-import { Alert, Global, css, useTheme2 } from '@grafana/ui';
 import ClustersList from '../../pages/cluster-list-page/ClustersList';
 import AddNewClusterPanel from '../../pages/add-new-cluster-page/AddNewClusterPanel';
 import { getAppStyles } from './App.styles';
+import { Global, css } from '@emotion/react';
+
+import { useTheme2, Alert } from '@grafana/ui';
 
 /**
  * Properties
@@ -54,26 +56,45 @@ export const App: React.FC<Props> = ({ path }) => {
     );
   }
 
-  if (path?.includes('add-new-cluster-page')) {
-    return (
-      <div className={styles.container}>
-        <AddNewClusterPanel />
-      </div>
-    );
-  }
-
-  if (path?.includes('cluster-list-page')) {
-    return (
-      <div className={styles.container}>
-        <ClustersList />
-      </div>
-    );
-  }
-
-  // Default to ClustersList
   return (
-    <div className={styles.container}>
-      <ClustersList />
-    </div>
+    <>
+      <Global
+        styles={css`
+          .MuiMenu-paper,
+          .MuiPaper-root {
+            background: #232733 !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            margin-top: 0 !important;
+            padding: 0 !important;
+          }
+          ul.MuiMenu-list {
+            padding: 0 !important;
+            background: #232733 !important;
+          }
+          ul.MuiMenu-list li {
+            padding: 10px !important;
+            
+            &:hover {
+              background: #2c3042 !important;
+              color: ${theme.colors.text.primary} !important;
+            }
+          }
+        `}
+      />
+      {path?.includes('add-new-cluster-page') ? (
+        <div className={styles.container}>
+          <AddNewClusterPanel />
+        </div>
+      ) : path?.includes('cluster-list-page') ? (
+        <div className={styles.container}>
+          <ClustersList />
+        </div>
+      ) : (
+        <div className={styles.container}>
+          <ClustersList />
+        </div>
+      )}
+    </>
   );
 };
