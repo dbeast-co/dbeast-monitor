@@ -224,14 +224,10 @@ export const getStyles = (theme: GrafanaTheme2) => {
       }
 
       .deploy-btn {
-        background: ${theme.colors.success.main};
-        color: ${theme.colors.success.contrastText};
+        background: ${theme.colors.primary.main};
+        color: ${theme.colors.primary.contrastText};
         position: relative;
         bottom: 1rem;
-
-        &:hover {
-          background: ${theme.colors.success.shade};
-        }
       }
     `,
 
@@ -318,7 +314,8 @@ export const getStyles = (theme: GrafanaTheme2) => {
       opacity: 1 !important;  // Back to original SCSS (no opacity)
 
       &.add-new-cluster-divider {
-        margin-block: 4.8rem !important;
+        margin-block-start: 2rem !important;
+        margin-block-end: 5.1rem !important;
         border-width: 1px !important;
         opacity: 1 !important;
         position: relative;
@@ -336,7 +333,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
 
     monitoringClusterGroup: css`
-      margin-block-end: 2.1rem;
+      margin-block-end: 4.5rem;
     `,
 
     monitoringClusterTitle: css`
