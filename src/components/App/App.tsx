@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
-import { Alert, useTheme2 } from '@grafana/ui';
+import { Alert, Global, css, useTheme2 } from '@grafana/ui';
 import ClustersList from '../../pages/cluster-list-page/ClustersList';
 import AddNewClusterPanel from '../../pages/add-new-cluster-page/AddNewClusterPanel';
 import { getAppStyles } from './App.styles';

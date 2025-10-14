@@ -112,6 +112,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     `,
 
     listItem: css`
+    
       .MuiListItem-root {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -139,8 +140,11 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     `,
 
     buttons: css`
-      .css-b2ba3d-button,
-      .MuiLink-root,
+    
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    
       button.btn {
         border: 1px solid ${theme.colors.border.medium};
         border-radius: 5px;
@@ -164,13 +168,17 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     stack: css`
       .MuiStack-root {
         display: flex;
-        justify-content: flex-end;
       }
     `,
 
     select: css`
       .MuiInputBase-root {
-        max-width: 50%;
+        max-width: 100%;
+      }
+
+      :global(.MuiMenu-list) {
+        background: red !important;
+        // Add other overrides here as needed
       }
 
       .MuiSelect-select {
@@ -209,6 +217,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
       .MuiOutlinedInput-notchedOutline {
         border-color: ${theme.colors.primary.main};
       }
+
     `,
 
     dialog: css`
@@ -287,6 +296,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
 
         &:hover {
           background-color: ${theme.colors.action.hover} !important;
+          color: ${theme.colors.text.primary} !important;
         }
 
         a {

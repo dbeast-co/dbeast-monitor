@@ -326,8 +326,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                     Test
                   </Button>
                 </div>
-                <div className={styles.select}>
-                  <FormControl fullWidth id="select">
+                <div className={styles.select} >
+                  <FormControl fullWidth id="select" >
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -338,7 +338,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                         return text ?? 'Monitor type';
                       }}
                     >
-                      <div className={styles.menuItem}>
+                      <div className={styles.menuItem} >
                         <MenuItem value={'stack-monitoring'}>
                           <a
                             href={`/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
