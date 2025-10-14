@@ -29,7 +29,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     title: css`
       font-size: 18px;  // Back to original SCSS size
       text-align: center;
-      margin-block: 1rem;
+      margin-block: 0.4rem;
       color: ${theme.colors.text.primary};
     `,
 
@@ -318,7 +318,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
       opacity: 1 !important;  // Back to original SCSS (no opacity)
 
       &.add-new-cluster-divider {
-        margin-block: 6.1rem !important;
+        margin-block: 5.3rem !important;
         border-width: 1px !important;
         opacity: 1 !important;
         position: relative;
