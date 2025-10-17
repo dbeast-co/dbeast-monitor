@@ -413,6 +413,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
       .Toastify__toast-container--bottom-right {
         bottom: 6em !important;
         right: 1em !important;
+        width: 100% !important;
       }
     `,
 
