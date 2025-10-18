@@ -264,8 +264,9 @@ export const getStyles = (theme: GrafanaTheme2) => {
       min-height: 475px;
 
       .cards-wrapper {
-        overflow: auto;
-        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 730px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 10px;
