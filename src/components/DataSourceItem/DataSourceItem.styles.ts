@@ -8,16 +8,15 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     `,
 
     formGroup: css`
-      border: 1px solid ${theme.colors.border.weak};
+      border: 1px solid ${theme.colors.border.strong};
       display: flex;
       flex-direction: column;
       max-width: 500px;
-      padding: 10px 20px;
+      padding: 20px;
       position: relative;
       min-height: 300px;
       min-width: 500px;
       border-radius: 10px;
-      box-shadow: 5px 5px 10px ${theme.colors.action.hover};
       background: ${theme.colors.background.primary};
 
       header {
@@ -169,6 +168,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
       .MuiStack-root {
         display: flex;
         justify-content: space-between;
+        height: 36px;
       }
     `,
 
