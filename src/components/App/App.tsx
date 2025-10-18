@@ -60,9 +60,15 @@ export const App: React.FC<Props> = ({ path }) => {
     <>
       <Global
         styles={css`
-          .MuiMenu-paper,
-          .MuiPaper-root {
-            background: #232733 !important;
+          
+          .MuiPaper-root{
+            background: ${theme.colors.background.primary} !important;
+            color: ${theme.colors.text.primary} !important;
+          }
+          
+          .MuiMenu-paper
+          {
+            background: #232733;
             box-shadow: none !important;
             border-radius: 0 !important;
             margin-top: 0 !important;

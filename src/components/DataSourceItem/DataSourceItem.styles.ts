@@ -226,7 +226,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
 
     dialog: css`
       .MuiPaper-root {
-        background-color: ${theme.colors.background.primary} !important;
+        background-color: ${theme.colors.background.secondary} !important;
         border: 1.5px solid ${theme.colors.border.medium};
         border-radius: 7px;
 
