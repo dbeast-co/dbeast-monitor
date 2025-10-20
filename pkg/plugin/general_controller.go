@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"strings"
 
@@ -47,9 +48,19 @@ func sanitizeEnvironmentConfig(config *EnvironmentConfig) {
 	sanitizeHost(&config.Mon.Elasticsearch.Host)
 }
 
-func DeferHandler(response http.ResponseWriter, request *http.Request, logger log.Logger) {
-	if err := request.Body.Close(); err != nil {
-		HTTPErrorGenerator(response, err, "Failed to close the body: ", http.StatusInternalServerError, logger)
-		return
+func DeferHandler(request *http.Request, logger log.Logger) {
+	if request != nil && request.Body != nil {
+		_, _ = io.Copy(io.Discard, request.Body)
+		if err := request.Body.Close(); err != nil {
+			logger.Error("Failed to close the body: " + err.Error())
+		}
+	}
+}
+func DeferInternalHandler(response *http.Response, logger log.Logger) {
+	if response != nil && response.Body != nil {
+		_, _ = io.Copy(io.Discard, response.Body)
+		if err := response.Body.Close(); err != nil {
+			logger.Error("Failed to close the body: " + err.Error())
+		}
 	}
 }

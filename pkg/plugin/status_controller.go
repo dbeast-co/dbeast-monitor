@@ -10,9 +10,10 @@ import (
 
 func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
-	response.Header().Add("Content-Type", "application/json")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
 
 	var environmentConfig EnvironmentConfig
 	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
@@ -57,6 +58,8 @@ func UpdateStatus(client *http.Client, host string) Status {
 	if host != "" {
 		response, err := GetClusterHealth(client, host)
 
+		defer DeferInternalHandler(response, log.DefaultLogger)
+
 		if err != nil {
 			GenerateStatusError(&statusData, err.Error(), "Failed to get status information: ")
 			return statusData
@@ -70,10 +73,6 @@ func UpdateStatus(client *http.Client, host string) Status {
 
 		if response.StatusCode == http.StatusOK {
 			if len(body) > 0 {
-				err := response.Body.Close()
-				if err != nil {
-					return Status{}
-				}
 				result := map[string]interface{}{}
 				err = json.Unmarshal([]byte(body), &result)
 				if err != nil {
@@ -86,10 +85,6 @@ func UpdateStatus(client *http.Client, host string) Status {
 			}
 		} else {
 			if len(body) > 0 {
-				err := response.Body.Close()
-				if err != nil {
-					return Status{}
-				}
 				GenerateStatusError(&statusData, string(body), "Status fetch error: ")
 			} else {
 				GenerateStatusError(&statusData, response.Status, "HTTP request failed with status: ")
