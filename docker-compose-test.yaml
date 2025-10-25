@@ -1,25 +1,25 @@
 services:
   grafana:
     extends:
-      file: .config/docker/docker-compose-with-es-cluster.yaml
+      file: docker/docker-compose-with-es-cluster.yaml
       service: grafana
   logstash-init:
     extends:
-      file: .config/docker/docker-compose-with-es-cluster.yaml
+      file: docker/docker-compose-with-es-cluster.yaml
       service: logstash-init
   elasticsearch:
     extends:
-      file: .config/docker/docker-compose-with-es-cluster.yaml
+      file: docker/docker-compose-with-es-cluster.yaml
       service: elasticsearch
   logstash:
     extends:
-      file: .config/docker/docker-compose-with-es-cluster.yaml
+      file: docker/docker-compose-with-es-cluster.yaml
       service: logstash
     depends_on:
       - logstash-init
   kibana:
     extends:
-      file: .config/docker/docker-compose-with-es-cluster.yaml
+      file: docker/docker-compose-with-es-cluster.yaml
       service: kibana
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:8.18.1

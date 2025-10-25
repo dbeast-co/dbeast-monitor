@@ -3,7 +3,7 @@ services:
     user: root
     container_name: grafana
     build:
-      context: ..
+      context: ../.config
       args:
         grafana_image: ${GRAFANA_IMAGE:-grafana}
         grafana_version: ${GRAFANA_VERSION:-12.1.0}

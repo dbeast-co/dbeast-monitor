@@ -4,7 +4,7 @@ services:
     container_name: 'dbeast-dbeastmonitor-app'
 
     build:
-      context: ..
+      context: ../.config
       args:
         grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
         grafana_version: ${GRAFANA_VERSION:-12.0.2}

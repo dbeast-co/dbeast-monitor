@@ -81,7 +81,7 @@ const updatePluginAndReload = async (pluginId: string, data: Partial<PluginMeta>
         await updatePlugin(pluginId, data);
         window.location.reload();
     } catch (e) {
-        console.error('Error while updating the plugin', e);
+        console.debug('Error while updating the plugin', e);
     }
 };
 
