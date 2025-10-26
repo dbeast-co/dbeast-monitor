@@ -28,6 +28,6 @@ services:
     depends_on:
       - elasticsearch
     volumes:
-      - .config/docker/metricbeat.template.yml:/usr/share/metricbeat/metricbeat.template.yml
-      - .config/docker/metricbeat-entrypoint.sh:/usr/local/bin/metricbeat-entrypoint.sh
+      - ./docker/metricbeat.template.yml:/usr/share/metricbeat/metricbeat.template.yml
+      - ./docker/metricbeat-entrypoint.sh:/usr/local/bin/metricbeat-entrypoint.sh
     entrypoint: [ "/usr/local/bin/metricbeat-entrypoint.sh" ]
