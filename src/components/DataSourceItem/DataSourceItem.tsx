@@ -4,7 +4,7 @@ import { ClusterStatsItemState } from '../../types/clusterStatsItemState';
 import { getDataSourceItemStyles } from './DataSourceItem.styles';
 import { Button, HorizontalGroup, Spinner, ConfirmModal, Select, VerticalGroup } from '@grafana/ui';
 import { toast } from 'react-toastify';
-import type { SelectableValue } from '@grafana/runtime';
+import type { SelectableValue } from '@grafana/data';
 import { config, getBackendSrv } from '@grafana/runtime';
 
 interface Props {
@@ -103,8 +103,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         )
         .then((dataSources: any) => {
           if (!dataSources) {
-            console.debug('Error in the catch block:', dataSources);
-            throw new Error('No data sources found');
+            throw new Error('No data sources found', dataSources);
           }
           this.setState({
             cluster_uuid: dataSources.cluster_uuid,
@@ -147,6 +146,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           });
         });
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.debug('Error', e);
     }
     if (this.state.status !== 'ERROR') {
@@ -208,6 +208,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           try {
             await backendSrv.delete(`/api/datasources/name/${dataSource.name}`);
           } catch (deleteError) {
+            // eslint-disable-next-line no-console
             console.debug('Delete data sources error: ', deleteError);
             this.setState({ isLoading: false });
           }
@@ -238,6 +239,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       this.setState({ isLoading: false });
       window.location.reload();
     } catch (getError) {
+      // eslint-disable-next-line no-console
       console.debug('Cluster delete error: ', getError);
       this.setState({ isLoading: false });
     }
@@ -307,7 +309,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
 
           <VerticalGroup spacing="md">
             <div className={styles.statsGrid}>
-              {this.state.versions && this.renderStatItem('Version', this.state.versions)}
+              {this.state.versions && this.renderStatItem('Version', this.state.versions.join(', '))}
               {this.renderStatItem('Used storage', this.state.usedStorage)}
               {this.renderStatItem('Total storage', this.state.totalStorage)}
               {this.renderStatItem('Docs count', this.state.docsCount)}
@@ -349,7 +351,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           </footer>
 
           <ConfirmModal
-            isOpen={this.state.isOpenDialog}
+            isOpen={!!this.state.isOpenDialog}
             title="Delete Cluster"
             body="Are you sure you want to delete this cluster?"
             confirmText="Yes"

@@ -17,11 +17,18 @@ interface Props {
   meta?: any;
 }
 
+interface AppState {
+  loading: boolean;
+  dataSources: any[];
+}
+
+
 export const App: React.FC<Props> = ({ path }) => {
   const theme = useTheme2();
   const styles = getAppStyles(theme);
 
-  const [state, setState] = useState({
+  const [state, setState] = useState<AppState>
+  ({
     loading: true,
     dataSources: [],
   });
