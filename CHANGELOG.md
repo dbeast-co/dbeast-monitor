@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 2.0.4 (2025-10-28)
+
+### First release with Grafana **signed** plugin
+
+- Features:
+  * Update plugin dependency @playwright/test to v1.56.1 due to a reported vulnerability issue
+
+
 ## Version 2.0.3 (2025-10-26)
 
 ### **Important! This version is not backward compatible. Minimum Grafana Version updated to the 10.1**

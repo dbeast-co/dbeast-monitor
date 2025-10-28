@@ -2,7 +2,7 @@
 
 ----
 
-[![version: 2.0.3](https://img.shields.io/badge/version-2.0.3-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
+[![version: 2.0.4](https://img.shields.io/badge/version-2.0.4-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
 
 [![elastic stack support](https://img.shields.io/badge/contact%20us-support@dbeast.co-blue?style=plastic)](mailto:support@dbeast.co?subject=Elastic%20Stack%20Support%20Request)
