@@ -1,0 +1,116 @@
+name: Build & Validate Grafana Plugin
+
+on:
+  push:
+    branches:
+      - 'release/V*'
+
+permissions:
+  contents: read
+
+jobs:
+  build-plugin:
+    name: Build (Mage + Frontend) & Validate
+    runs-on: ubuntu-latest
+
+    env:
+      GRAFANA_VERSION: "12.1.0"
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Node.js (for frontend build)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          check-latest: true
+          cache: 'npm'
+
+      # 3. Set up Go (for Mage backend build)
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          check-latest: true
+          cache: true
+
+      # 4. Install Mage
+      - name: Install Mage
+        run: |
+          go install github.com/magefile/mage@latest
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+          mage --version
+
+      # 5. Install frontend dependencies
+      - name: Install frontend dependencies
+        run: |
+          if [ -f "yarn.lock" ]; then
+            corepack enable
+            yarn install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      # 6. Build backend via Mage
+      - name: Build backend
+        run: mage build
+
+      # 7. Build frontend
+      - name: Build frontend
+        run: |
+          if [ -f "yarn.lock" ]; then
+            yarn build
+          else
+            npm run build
+          fi
+
+      # 8. Package plugin into <plugin-id>.zip for validation
+      # Validator expects a ZIP whose root folder name == plugin ID
+      # (basically copy dist/ -> <plugin-id>/ and zip that)
+      - name: Create validator-ready zip
+        run: |
+          set -e
+
+          PLUGIN_ID=$(jq -r '.id' plugin.json)
+
+          # clean old artifacts
+          rm -rf release "${PLUGIN_ID}" || true
+          mkdir -p release
+
+          # copy dist/ into a directory named exactly as plugin ID
+          cp -r dist "${PLUGIN_ID}"
+
+          # zip that directory -> release/<plugin-id>.zip
+          zip -qr "release/${PLUGIN_ID}.zip" "${PLUGIN_ID}"
+
+          echo "PLUGIN_ID=${PLUGIN_ID}" >> $GITHUB_ENV
+          echo "Created release/${PLUGIN_ID}.zip"
+
+      # 9. Run Grafana plugin validator (plugin-validator-cli) in Docker
+      # We mount:
+      #   - the built ZIP as /archive.zip
+      #   - the repo source as /source_code
+      # Then we call validator with:
+      #   grafana/plugin-validator-cli -sourceCodeUri file:///source_code /archive.zip
+      - name: Validate plugin with Grafana plugin-validator-cli
+        run: |
+          set -e
+          ZIP_ABS="$(pwd)/release/${PLUGIN_ID}.zip"
+          SRC_ABS="$(pwd)"
+
+          docker run --pull=always \
+            -v "${ZIP_ABS}:/archive.zip" \
+            -v "${SRC_ABS}:/source_code" \
+            grafana/plugin-validator-cli \
+            -sourceCodeUri file:///source_code /archive.zip
+
+      # 10. Upload built artifacts (ZIP is what you'll submit/sign)
+      - name: Upload built plugin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: grafana-plugin-package
+          path: release/
+          if-no-files-found: error

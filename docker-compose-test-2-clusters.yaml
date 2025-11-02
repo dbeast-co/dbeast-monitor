@@ -1,0 +1,47 @@
+services:
+  grafana:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: grafana
+
+  logstash-init:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: logstash-init
+
+  elasticsearch-prod:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: elasticsearch-prod
+
+  kibana-prod:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: kibana-prod
+
+  elasticsearch-mon:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: elasticsearch-mon
+
+  kibana-mon:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: kibana-mon
+
+  logstash:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: logstash
+    depends_on:
+      - logstash-init
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:8.18.1
+    container_name: metricbeat
+    user: root
+    depends_on:
+      - elasticsearch-prod
+    volumes:
+      - ./docker/metricbeat.template.yml:/usr/share/metricbeat/metricbeat.template.yml
+      - ./docker/metricbeat-entrypoint.sh:/usr/local/bin/metricbeat-entrypoint.sh
+    entrypoint: [ "/usr/local/bin/metricbeat-entrypoint.sh" ]

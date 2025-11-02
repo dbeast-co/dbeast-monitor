@@ -61,7 +61,7 @@ services:
     container_name: logstash
     ports:
       - "5044:5044"
-      - "9600:9600"  # Logstash monitoring API
+      - "9600:9600"
     volumes:
       - ./logstash-config:/usr/share/logstash/config
       - ./logstash-config:/etc/logstash
@@ -69,11 +69,11 @@ services:
     environment:
       - LS_SETTINGS_CONFIG_RELOAD_AUTOMATIC=true
 
-  elasticsearch:
+  elasticsearch-prod:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
-    container_name: elasticsearch
+    container_name: elasticsearch-prod
     environment:
-      - cluster.name=test-monitoring-cluster
+      - cluster.name=production-cluster
       - discovery.type=single-node
       - xpack.security.enabled=false
       - xpack.monitoring.collection.enabled=true
@@ -82,15 +82,38 @@ services:
       - "9200:9200"   # HTTP
       - "9300:9300"   # Internal transport
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - ./esdata-prod:/usr/share/elasticsearch/data
 
-  kibana:
+  kibana-prod:
     image: docker.elastic.co/kibana/kibana:8.18.1
-    container_name: kibana
+    container_name: kibana-prod
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-prod:9200
       - xpack.security.enabled=false
     ports:
       - "5601:5601"
 
+  elasticsearch-mon:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
+    container_name: elasticsearch-mon
+    environment:
+      - cluster.name=monitoring-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.monitoring.collection.enabled=true
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9201:9200"   # HTTP
+      - "9301:9300"   # Internal transport
+    volumes:
+      - ./esdata-mon:/usr/share/elasticsearch/data
 
+
+  kibana-mon:
+    image: docker.elastic.co/kibana/kibana:8.18.1
+    container_name: kibana-mon
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-mon:9200
+      - xpack.security.enabled=false
+    ports:
+      - "5602:5601"
