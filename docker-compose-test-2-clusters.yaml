@@ -42,6 +42,6 @@ services:
     depends_on:
       - elasticsearch-prod
     volumes:
-      - ./docker/metricbeat.template.yml:/usr/share/metricbeat/metricbeat.template.yml
-      - ./docker/metricbeat-entrypoint.sh:/usr/local/bin/metricbeat-entrypoint.sh
-    entrypoint: [ "/usr/local/bin/metricbeat-entrypoint.sh" ]
+      - ./docker/metricbeat.template-mon.yml:/usr/share/metricbeat/metricbeat.template-mon.yml
+      - ./docker/metricbeat-entrypoint-mon.sh:/usr/local/bin/metricbeat-entrypoint-mon.sh
+    entrypoint: [ "/usr/local/bin/metricbeat-entrypoint-mon.sh" ]
