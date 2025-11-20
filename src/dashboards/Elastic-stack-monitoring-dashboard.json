@@ -6602,6 +6602,22 @@
             {
               "id": "merge",
               "options": {}
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "fieldName": "Index",
+                    "config": {
+                      "id": "isNull",
+                      "options": {}
+                    }
+                  }
+                ],
+                "type": "exclude",
+                "match": "any"
+              }
             }
           ],
           "type": "table"
