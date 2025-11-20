@@ -2451,7 +2451,7 @@
           "type": "table"
         }
       ],
-      "title": "Tier stats",
+      "title": "Tier level stats",
       "type": "row"
     },
     {
@@ -3051,7 +3051,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 20
       },
       "id": 28,
       "panels": [
@@ -3071,6 +3071,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -3080,7 +3083,7 @@
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -3205,7 +3208,7 @@
                       "steps": [
                         {
                           "color": "red",
-                          "value": null
+                          "value": 0
                         },
                         {
                           "color": "transparent",
@@ -3267,7 +3270,7 @@
                       "steps": [
                         {
                           "color": "red",
-                          "value": null
+                          "value": 0
                         },
                         {
                           "color": "yellow",
@@ -3301,19 +3304,11 @@
             "h": 12,
             "w": 14,
             "x": 0,
-            "y": 17
+            "y": 21
           },
           "id": 20,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -3322,7 +3317,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -3458,6 +3453,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -3467,7 +3465,257 @@
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 5,
+            "x": 14,
+            "y": 21
+          },
+          "id": 130,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.[*].roles.[*]",
+                  "language": "jsonpath",
+                  "name": "Roles"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/ingest:true,master:true,ml:true/stats/os,jvm,fs?filter_path=nodes.*.roles,nodes.*.name"
+            }
+          ],
+          "title": "Data nodes count",
+          "transformations": [
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Roles": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Roles": "Role",
+                  "Roles (count)": "Nodes count"
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "regex",
+                      "options": {
+                        "value": "data*"
+                      }
+                    },
+                    "fieldName": "Role"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 5,
+            "x": 19,
+            "y": 21
+          },
+          "id": 54,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.[*].roles.[*]",
+                  "language": "jsonpath",
+                  "name": "Roles"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/ingest:true,master:true,ml:true/stats/os,jvm,fs?filter_path=nodes.*.roles,nodes.*.name"
+            }
+          ],
+          "title": "Not data nodes count",
+          "transformations": [
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Roles": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Roles": "Role",
+                  "Roles (count)": "Nodes count"
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "regex",
+                      "options": {
+                        "value": "data*"
+                      }
+                    },
+                    "fieldName": "Role"
+                  }
+                ],
+                "match": "any",
+                "type": "exclude"
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -3573,19 +3821,11 @@
             "h": 6,
             "w": 10,
             "x": 14,
-            "y": 17
+            "y": 27
           },
-          "id": 54,
+          "id": 128,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -3594,7 +3834,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -3698,6 +3938,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -3707,246 +3950,7 @@
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Node name"
-                },
-                "properties": [
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "custom.align",
-                    "value": "left"
-                  },
-                  {
-                    "id": "custom.filterable",
-                    "value": true
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CPU"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 159
-                  },
-                  {
-                    "id": "unit",
-                    "value": "percent"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "lcd",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Heap used"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 159
-                  },
-                  {
-                    "id": "unit",
-                    "value": "percent"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "lcd",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-GrYlRd"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Version"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 91
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 10,
-            "x": 14,
-            "y": 23
-          },
-          "id": 49,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": false,
-                "displayName": "Node name"
-              }
-            ]
-          },
-          "pluginVersion": "9.5.10",
-          "targets": [
-            {
-              "cacheDurationSeconds": 0,
-              "datasource": {
-                "type": "marcusolsson-json-datasource",
-                "uid": "${es_direct_prod}"
-              },
-              "fields": [
-                {
-                  "jsonPath": "$.nodes.*.name",
-                  "name": "Node name"
-                },
-                {
-                  "jsonPath": "$.nodes.*.os.cpu.percent",
-                  "language": "jsonpath",
-                  "name": "CPU",
-                  "type": "number"
-                },
-                {
-                  "jsonPath": "$.nodes.*.jvm.mem.heap_used_percent",
-                  "language": "jsonpath",
-                  "name": "Heap used",
-                  "type": "number"
-                }
-              ],
-              "method": "GET",
-              "queryParams": "",
-              "refId": "A",
-              "urlPath": "/_nodes/ingest:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
-            },
-            {
-              "cacheDurationSeconds": 0,
-              "datasource": {
-                "type": "marcusolsson-json-datasource",
-                "uid": "${es_direct_prod}"
-              },
-              "fields": [
-                {
-                  "jsonPath": "$.nodes.*.name",
-                  "name": "Node name"
-                },
-                {
-                  "jsonPath": "$.nodes.*.version",
-                  "language": "jsonpath",
-                  "name": "Version"
-                }
-              ],
-              "hide": false,
-              "method": "GET",
-              "queryParams": "",
-              "refId": "B",
-              "urlPath": "/_nodes/ingest:true?filter_path=nodes.*.version,nodes.*.name"
-            }
-          ],
-          "title": "Ingest nodes status",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {}
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Available storage": false,
-                  "Heap used": false,
-                  "Storage available": false,
-                  "Storage total": false,
-                  "Total Storage": true
-                },
-                "indexByName": {
-                  "Available storage": 5,
-                  "CPU": 2,
-                  "Heap used": 3,
-                  "Node name": 0,
-                  "Number of shards": 1,
-                  "Total Storage": 4,
-                  "Version": 6
-                },
-                "renameByName": {
-                  "Total Storage": ""
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "custom": {
-                "align": "center",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "inspect": false
-              },
-              "mappings": [],
-              "max": 100,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -4070,7 +4074,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "transparent",
@@ -4131,7 +4136,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "yellow",
@@ -4165,19 +4171,11 @@
             "h": 6,
             "w": 14,
             "x": 0,
-            "y": 29
+            "y": 33
           },
           "id": 51,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -4186,7 +4184,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -4322,6 +4320,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -4330,7 +4331,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -4436,19 +4438,11 @@
             "h": 6,
             "w": 10,
             "x": 14,
-            "y": 29
+            "y": 33
           },
-          "id": 53,
+          "id": 49,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -4457,7 +4451,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -4486,7 +4480,7 @@
               "method": "GET",
               "queryParams": "",
               "refId": "A",
-              "urlPath": "/_nodes/master:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+              "urlPath": "/_nodes/ingest:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
             },
             {
               "cacheDurationSeconds": 0,
@@ -4509,10 +4503,10 @@
               "method": "GET",
               "queryParams": "",
               "refId": "B",
-              "urlPath": "/_nodes/master:true?filter_path=nodes.*.version,nodes.*.name"
+              "urlPath": "/_nodes/ingest:true?filter_path=nodes.*.version,nodes.*.name"
             }
           ],
-          "title": "Master nodes status",
+          "title": "Ingest nodes status",
           "transformations": [
             {
               "id": "merge",
@@ -4561,6 +4555,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -4569,7 +4566,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -4693,7 +4691,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "transparent",
@@ -4754,7 +4753,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "yellow",
@@ -4788,19 +4788,11 @@
             "h": 6,
             "w": 14,
             "x": 0,
-            "y": 35
+            "y": 39
           },
           "id": 52,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -4809,7 +4801,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -4945,6 +4937,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -4953,7 +4948,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -5059,19 +5055,11 @@
             "h": 6,
             "w": 10,
             "x": 14,
-            "y": 35
+            "y": 39
           },
-          "id": 55,
+          "id": 53,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -5080,7 +5068,624 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.os.cpu.percent",
+                  "language": "jsonpath",
+                  "name": "CPU",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.jvm.mem.heap_used_percent",
+                  "language": "jsonpath",
+                  "name": "Heap used",
+                  "type": "number"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/master:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+            },
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.version",
+                  "language": "jsonpath",
+                  "name": "Version"
+                }
+              ],
+              "hide": false,
+              "method": "GET",
+              "queryParams": "",
+              "refId": "B",
+              "urlPath": "/_nodes/master:true?filter_path=nodes.*.version,nodes.*.name"
+            }
+          ],
+          "title": "Master nodes status",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Available storage": false,
+                  "Heap used": false,
+                  "Storage available": false,
+                  "Storage total": false,
+                  "Total Storage": true
+                },
+                "indexByName": {
+                  "Available storage": 5,
+                  "CPU": 2,
+                  "Heap used": 3,
+                  "Node name": 0,
+                  "Number of shards": 1,
+                  "Total Storage": 4,
+                  "Version": 6
+                },
+                "renameByName": {
+                  "Total Storage": ""
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node name"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Heap used"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Available storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 149
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": 0
+                        },
+                        {
+                          "color": "transparent",
+                          "value": 0.1
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "color"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 77
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Version"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 70
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Available storage %"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": 0
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 0.15
+                        },
+                        {
+                          "color": "transparent",
+                          "value": 0.2
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "color"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 14,
+            "x": 0,
+            "y": 45
+          },
+          "id": 129,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.indices.shard_stats.total_count",
+                  "language": "jsonpath",
+                  "name": "Shards"
+                },
+                {
+                  "jsonPath": "$.nodes.*.os.cpu.percent",
+                  "language": "jsonpath",
+                  "name": "CPU",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.jvm.mem.heap_used_percent",
+                  "language": "jsonpath",
+                  "name": "Heap used",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.fs.total.total_in_bytes",
+                  "language": "jsonpath",
+                  "name": "Total Storage",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.fs.total.available_in_bytes",
+                  "language": "jsonpath",
+                  "name": "Available storage",
+                  "type": "number"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/data_frozen:true/stats/os,jvm,fs,indices?filter_path=nodes.*.indices.shard_stats.total_count,nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.version"
+            },
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.version",
+                  "language": "jsonpath",
+                  "name": "Version"
+                }
+              ],
+              "hide": false,
+              "method": "GET",
+              "queryParams": "",
+              "refId": "B",
+              "urlPath": "/_nodes/data_cold:true?filter_path=nodes.*.version,nodes.*.name"
+            }
+          ],
+          "title": "Data Frozen nodes status",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Available storage %",
+                "binary": {
+                  "left": "A Available storage",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "A Total Storage"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Heap used": false,
+                  "Storage available": false,
+                  "Storage total": false
+                },
+                "indexByName": {
+                  "Available storage": 5,
+                  "Available storage %": 6,
+                  "CPU": 2,
+                  "Heap used": 3,
+                  "Node name": 0,
+                  "Shards": 1,
+                  "Total Storage": 4,
+                  "Version": 7
+                },
+                "renameByName": {
+                  "Total Storage": ""
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node name"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 159
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Heap used"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 159
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Version"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 91
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 14,
+            "y": 45
+          },
+          "id": 55,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
