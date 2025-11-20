@@ -1697,7 +1697,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": [
           {
@@ -1876,7 +1877,8 @@
               }
             ]
           },
-          "min": 0
+          "min": 0,
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1997,7 +1999,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2135,7 +2138,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
