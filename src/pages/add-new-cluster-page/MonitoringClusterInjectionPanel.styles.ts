@@ -44,6 +44,10 @@ export const getMonitoringClusterInjectionPanelStyles = (theme: GrafanaTheme2) =
 
     configItem: css`
       margin-bottom: 2px !important;
+
+      .css-1n4u71h-Label{
+         font-size: 16px !important;
+      }
       
       &:last-child {
         margin-bottom: 0;

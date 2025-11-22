@@ -112,11 +112,12 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
 
     listItem: css`
     
-      .MuiListItem-root {
+      div {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
         grid-row-gap: 20px;
         grid-column-gap: 9px;
+        max-width:97%;
 
         div {
           .label {
@@ -130,10 +131,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
             display: inline-block;
             margin-bottom: 4px;
           }
-
-          .MuiListItemText-primary {
-            color: ${theme.colors.text.primary};
-          }
+          
         }
       }
     `,
@@ -175,6 +173,10 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     select: css`
       .MuiInputBase-root {
         max-width: 100%;
+      }
+
+      .css-1q0c0d5-grafana-select-value-container {
+        padding: 0.7rem !important
       }
       :global(.MuiList-root) {
         background-color: ${theme.colors.background.secondary} !important;

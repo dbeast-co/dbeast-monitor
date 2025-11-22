@@ -3,23 +3,10 @@ import { PureComponent } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
 import { ClusterStatsItemState } from '../../types/clusterStatsItemState';
 import { getDataSourceItemStyles } from './DataSourceItem.styles';
-import {
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Divider,
-  FormControl,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Select,
-  Stack,
-} from '@mui/material';
-import { Button } from '@grafana/ui';
+import { Button, Spinner, Modal, HorizontalGroup, Select as GrafanaSelect } from '@grafana/ui';
 import { toast } from 'react-toastify';
 import { config } from '@grafana/runtime';
+import { SelectableValue } from '@grafana/data';
 
 interface Props {
   dataSourceItem: any;
@@ -237,7 +224,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       <div className={styles.positionRelative}>
         {this.state.isLoading && (
           <div className={styles.spinnerOverlay}>
-            <CircularProgress color="primary" />
+            <Spinner />
           </div>
         )}
 
@@ -253,80 +240,80 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           </header>
 
           <div className={styles.divider}>
-            <Divider light />
+            <div style={{ borderTop: '1px solid rgba(204, 204, 220, 0.12)', margin: '8px 0' }} />
           </div>
 
           <div className="grid-container">
             <div className="col">
               <div className={styles.listItem}>
-                <List>
-                  <ListItem>
+                <div className='grid'>
+                  <div>
                     {this.state.versions ? (
                       <div>
                         <span className="label">Version</span>
-                        <ListItemText primary={this.state.versions ?? '0'} />
+                        <div>{this.state.versions ?? '0'}</div>
                       </div>
                     ) : null}
 
                     <div>
                       <span className="label">Used storage</span>
-                      <ListItemText primary={this.state.usedStorage ?? '0'} />
+                      <div>{this.state.usedStorage ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label">Total storage</span>
-                      <ListItemText primary={this.state.totalStorage ?? '0'} />
+                      <div>{this.state.totalStorage ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label">Docs count</span>
-                      <ListItemText primary={this.state.docsCount ?? '0'} />
+                      <div>{this.state.docsCount ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label">Total nodes</span>
-                      <ListItemText primary={this.state.totalNodes ?? '0'} />
+                      <div>{this.state.totalNodes ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label">Data nodes</span>
-                      <ListItemText primary={this.state.dataNodes ?? '0'} />
+                      <div>{this.state.dataNodes ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label"> Hot nodes</span>
-                      <ListItemText primary={this.state.dataHotNodes ?? '0'} />
+                      <div>{this.state.dataHotNodes ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label"> Warm nodes</span>
-                      <ListItemText primary={this.state.dataWarmNodes ?? '0'} />
+                      <div>{this.state.dataWarmNodes ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label"> Cold nodes</span>
-                      <ListItemText primary={this.state.dataColdNodes ?? '0'} />
+                      <div>{this.state.dataColdNodes ?? '0'}</div>
                     </div>
 
                     <div>
                       <span className="label">Indices</span>
-                      <ListItemText primary={this.state.numberOfIndices ?? '0'} />
+                      <div>{this.state.numberOfIndices ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label">Total shards</span>
-                      <ListItemText primary={this.state.numberOfShards ?? '0'} />
+                      <div>{this.state.numberOfShards ?? '0'}</div>
                     </div>
                     <div>
                       <span className="label">Unassigned shards</span>
-                      <ListItemText primary={this.state.numberOfUnassignedShards ?? '0'} />
+                      <div>{this.state.numberOfUnassignedShards ?? '0'}</div>
                     </div>
-                  </ListItem>
-                </List>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="col"></div>
           </div>
 
           <div className={styles.divider}>
-            <Divider light />
+            <div style={{ borderTop: '1px solid rgba(204, 204, 220, 0.12)', margin: '8px 0' }} />
           </div>
 
           <footer>
             <div className={styles.stack}>
-              <Stack spacing={2} direction="row">
+              <HorizontalGroup spacing="sm">
                 <div className={styles.buttons}>
 
                   {this.state.isServerAdmin && (
@@ -340,133 +327,44 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                   </Button>
                 </div>
                 <div className={styles.select} >
-                  <FormControl fullWidth id="select" >
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={this.state.monitorName ? this.state.monitorName : ''}
-                      displayEmpty
-                      sx={{
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#00b4cd',
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#008fa3',
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#005f6b',
-                        },
-                        // Ensure text color for selected value
-                        '& .MuiSelect-select': {
-                          color:  '#00b4cd',
-                        },
-                      }}
-                      renderValue={(value) => {
-                        if (!value) {
-                          return <span style={{ color: '#00b4cd' }}>Monitor type</span>;
-                        }
-                        let text = value.split('-').join(' ');
-                        text = text.charAt(0).toUpperCase() + text.slice(1);
-                        return text;
-                      }}
-                    >
-                      <div className={styles.menuItem} >
-                        <MenuItem value={'stack-monitoring'}>
-                          <a
-                            href={`/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Elastic Stack monitoring
-                          </a>
-                        </MenuItem>
-                        <MenuItem value={'index-overview'}>
-                          <a
-                            href={`/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Elasticsearch Index overview
-                          </a>
-                        </MenuItem>
-                        <MenuItem value={'shards-overview'}>
-                          <a
-                            href={`/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Elasticsearch Shards overview
-                          </a>
-                        </MenuItem>
-                        <MenuItem value={'ingest-pipelines-overview'}>
-                          <a
-                            href={`/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Elasticsearch ingest pipelines overview
-                          </a>
-                        </MenuItem>
-                        <MenuItem value={'logstash-overview'}>
-                          <a
-                            href={`/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Logstash overview
-                          </a>
-                        </MenuItem>
-                        <MenuItem value={'tasks-analytics'}>
-                          <a
-                            href={`/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Tasks analytics
-                          </a>
-                        </MenuItem>
-                        <MenuItem value={'ml-jobs-analytics'}>
-                          <a
-                            href={`/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            Elasticsearch ML Jobs Analytics
-                          </a>
-                        </MenuItem>
-                      </div>
-                    </Select>
-                  </FormControl>
+                  <GrafanaSelect
+                    options={[
+                      { label: 'Elastic Stack monitoring', value: 'stack-monitoring', href: `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
+                      { label: 'Elasticsearch Index overview', value: 'index-overview', href: `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
+                      { label: 'Elasticsearch Shards overview', value: 'shards-overview', href: `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
+                      { label: 'Elasticsearch ingest pipelines overview', value: 'ingest-pipelines-overview', href: `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
+                      { label: 'Logstash overview', value: 'logstash-overview', href: `/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
+                      { label: 'Tasks analytics', value: 'tasks-analytics', href: `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
+                      { label: 'Elasticsearch ML Jobs Analytics', value: 'ml-jobs-analytics', href: `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}` },
+                    ]}
+                    value={this.state.monitorName ? { label: this.state.monitorName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '), value: this.state.monitorName } : null}
+                    placeholder="Monitor type"
+                    onChange={(option: SelectableValue) => {
+                      if (option?.href) {
+                        window.open(option.href, '_blank');
+                      }
+                    }}
+                  />
                 </div>
-              </Stack>
+              </HorizontalGroup>
             </div>
           </footer>
 
           <div className={styles.dialog}>
-            <Dialog
-              open={this.state?.isOpenDialog!}
-              onClose={() => this.handleDelete(true)}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
+            <Modal
+              isOpen={this.state?.isOpenDialog!}
+              title="Are you sure you want to delete this cluster?"
+              onDismiss={() => this.handleDelete(false)}
             >
-              <DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this cluster?'}</DialogTitle>
-
-              <DialogActions>
-                <Button variant="destructive" onClick={() => this.handleDelete(false)} className="btn-error">
+              <Modal.ButtonRow>
+                <Button variant="secondary" onClick={() => this.handleDelete(false)} className="btn-error">
                   No
                 </Button>
-                <Button variant="primary" onClick={() => this.handleDelete(true)} autoFocus>
+                <Button variant="destructive" onClick={() => this.handleDelete(true)}>
                   Yes
                 </Button>
-              </DialogActions>
-            </Dialog>
+              </Modal.ButtonRow>
+            </Modal>
           </div>
         </div>
       </div>
