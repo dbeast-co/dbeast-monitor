@@ -3,9 +3,7 @@ package plugin
 import (
 	"bytes"
 	"crypto/tls"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -101,27 +99,6 @@ func ProcessRequestWithBody(client *http.Client, requestURL string, body string,
 		log.DefaultLogger.Error("Request path: " + requestURL)
 		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
 		return response, err
-	} else {
-		body, err := io.ReadAll(response.Body)
-		err2 := response.Body.Close()
-		if err2 != nil {
-			log.DefaultLogger.Error("Request path: " + requestURL)
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err.Error())
-		}
-
-		result := map[string]interface{}{}
-		if err != nil {
-			log.DefaultLogger.Error("Request path: " + requestURL)
-			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
-		} else if len(body) > 0 {
-			err := json.Unmarshal(body, &result)
-			if err != nil {
-				log.DefaultLogger.Error("Request path: " + requestURL)
-				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
-			}
-		}
-		log.DefaultLogger.Info("Request path: " + requestURL)
-		log.DefaultLogger.Info("Response: " + string(body))
 	}
 
 	return response, nil

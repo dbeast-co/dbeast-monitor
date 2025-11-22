@@ -290,7 +290,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     `,
 
     headerCluster: css`
-      max-width: 80%;
+      max-width: 90%;
       white-space: nowrap;
       overflow: auto;
     `,

@@ -40,11 +40,11 @@ jobs:
 
       - name: Build backend
         run: mage -v build
-#
-#      - name: Sign plugin with Grafana CLI
-#        run: npx @grafana/sign-plugin@latest
-#        env:
-#          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+
+      - name: Sign plugin with Grafana CLI
+        run: npx @grafana/sign-plugin@latest
+        env:
+          GRAFANA_ACCESS_POLICY_TOKEN: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
 
       - name: Package plugin
         run: |

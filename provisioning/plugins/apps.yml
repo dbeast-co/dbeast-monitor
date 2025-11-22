@@ -1,0 +1,7 @@
+apiVersion: 1
+
+apps:
+  - type: 'dbeast-dbeastmonitor-app'
+    org_id: 1
+    org_name: 'myorg'
+    disabled: false

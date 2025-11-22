@@ -4,7 +4,8 @@ services:
     container_name: 'dbeast-dbeastmonitor-app'
 
     build:
-      context: ..
+      context: .
+      dockerfile: ./Dockerfile
       args:
         grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
         grafana_version: ${GRAFANA_VERSION:-12.0.2}
@@ -19,8 +20,9 @@ services:
     cap_add:
       - SYS_PTRACE
     volumes:
-      - ../../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
-      - ..:/root/dbeast-dbeastmonitor-app
+      - ../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
+      - .:/root/dbeast-dbeastmonitor-app
+      - ../provisioning:/etc/grafana/provisioning
 
     environment:
       NODE_ENV: development

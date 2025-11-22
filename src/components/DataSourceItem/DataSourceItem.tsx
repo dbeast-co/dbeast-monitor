@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { getBackendSrv } from '@grafana/runtime';
+import { config, getBackendSrv } from '@grafana/runtime';
 import { ClusterStatsItemState } from '../../types/clusterStatsItemState';
 import { getDataSourceItemStyles } from './DataSourceItem.styles';
 import { Button, Spinner, Modal, HorizontalGroup, Select as GrafanaSelect } from '@grafana/ui';
@@ -70,7 +70,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           )
           .then((dataSources: any) => {
             if (!dataSources ) {
-              console.error(
+              console.debug(
                   "Error in the catch block:",
                   dataSources)
               throw new Error('No data sources found');
@@ -118,7 +118,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           });
     }
     catch (e) {
-      console.error("Error", e);
+      console.debug("Error", e);
     }
     if (this.state.status !== 'ERROR') {
       await getBackendSrv()
@@ -177,7 +177,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           try {
             await backendSrv.delete(`/api/datasources/name/${dataSource.name}`);
           } catch (deleteError) {
-            console.error('Delete data sources error: ', deleteError);
+            console.debug('Delete data sources error: ', deleteError);
             this.setState({ isLoading: false })
           }
         }
@@ -204,7 +204,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
       this.setState({ isLoading: false })
       window.location.reload();
     } catch (getError) {
-      console.error('Cluster delete error: ', getError);
+      console.debug('Cluster delete error: ', getError);
       this.setState({ isLoading: false })
     }
   };

@@ -405,11 +405,11 @@ function AddNewClusterPanel() {
       response
         .json()
         .then((data) => {
-          console.log('Fetched version data:', data);
+          console.debug('Fetched version data:', data);
           setVersion(data.version);
         })
         .catch((error) => {
-          console.error('Error parsing the response JSON:', error);
+          console.debug('Error parsing the response JSON:', error);
         });
     });
   }, []);
@@ -451,12 +451,12 @@ function AddNewClusterPanel() {
       });
 
       if (response.ok) {
-        console.log(`Deployment successful. Status: ${response.status}`);
+        console.debug(`Deployment successful. Status: ${response.status}`);
       } else {
-        console.error(`Deployment failed. Status: ${response.status}`);
+        console.debug(`Deployment failed. Status: ${response.status}`);
       }
     } catch (err) {
-      console.error('There was an error during the logstash deployment:', err);
+      console.debug('There was an error during the logstash deployment:', err);
     } finally {
       setIsLoading(false);
     }
@@ -482,12 +482,12 @@ function AddNewClusterPanel() {
       });
 
       if (response.ok) {
-        console.log(`Templates deployment successful. Status: ${response.status}`);
+        console.debug(`Templates deployment successful. Status: ${response.status}`);
       } else {
-        console.error(`Templates deployment failed. Status: ${response.status}`);
+        console.debug(`Templates deployment failed. Status: ${response.status}`);
       }
     } catch (err) {
-      console.error('There was an error during the Elasticsearch templates deployment:', err);
+      console.debug('There was an error during the Elasticsearch templates deployment:', err);
     } finally {
       // Ensure loader stops after completing the fetch operation.
       setIsLoading(false);

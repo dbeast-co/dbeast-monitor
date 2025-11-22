@@ -30,13 +30,14 @@ func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Requ
 func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
-	response.Header().Add("Content-Type", "application/json")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
 
 	var environmentConfig EnvironmentConfig
 	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
-		HTTPErrorGenerator(response, err, "Failed to decode JSON data for cluster save request: ", http.StatusInternalServerError, ctxLogger)
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for cluster save request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
@@ -73,9 +74,9 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the Elasticsearch components deployment")
 
-	response.Header().Add("Content-Type", "application/json")
+	defer DeferHandler(request, ctxLogger)
 
-	DeferHandler(response, request, ctxLogger)
+	response.Header().Add("Content-Type", "application/json")
 
 	var project Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
@@ -125,9 +126,10 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
-	response.Header().Add("Content-Type", "application/json")
 
-	DeferHandler(response, request, ctxLogger)
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
 
 	var project Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
@@ -181,7 +183,10 @@ func SendILMToMonitoringCluster(client *http.Client, host string) error {
 	for templateName, templateContent := range ESILMTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
-		_, err := SendILMToCluster(client, host, templateName, templateContent)
+		resp, err := SendILMToCluster(client, host, templateName, templateContent)
+		if resp != nil {
+			DeferInternalHandler(resp, log.DefaultLogger)
+		}
 		if err != nil {
 			return err
 		}
@@ -194,7 +199,10 @@ func SendComponentTemplatesToMonitoringCluster(client *http.Client, host string)
 	for templateName, templateContent := range ESComponentTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
-		_, err := SendComponentTemplateToCluster(client, host, templateName, templateContent)
+		resp, err := SendComponentTemplateToCluster(client, host, templateName, templateContent)
+		if resp != nil {
+			DeferInternalHandler(resp, log.DefaultLogger)
+		}
 		if err != nil {
 			return err
 		}
@@ -215,13 +223,19 @@ func SendFirstIndicesToMonitoringCluster(client *http.Client, host string) error
 			log.DefaultLogger.Info("An index " + indexName + " already exists. Send rollover command")
 			rolloverAlias, _ := ExtractRolloverAlias(templateContent)
 			log.DefaultLogger.Info("Rollover alias: " + rolloverAlias)
-			_, err = SendRolloverCommand(client, host, indexName)
+			resp, err := SendRolloverCommand(client, host, rolloverAlias)
+			if resp != nil {
+				DeferInternalHandler(resp, log.DefaultLogger)
+			}
 			if err != nil {
 				return err
 			}
 		} else {
-			log.DefaultLogger.Info("An index " + indexName + " doesn't isIndexExists. Send create new index command")
-			_, err = SendFirstIndexToCluster(client, host, indexName, templateContent)
+			log.DefaultLogger.Info("Index " + indexName + " does not exist. Creating the first index.")
+			resp, err := SendFirstIndexToCluster(client, host, indexName, templateContent)
+			if resp != nil {
+				DeferInternalHandler(resp, log.DefaultLogger)
+			}
 			if err != nil {
 				return err
 			}
@@ -235,7 +249,10 @@ func SendIndexTemplatesToMonitoringCluster(client *http.Client, host string) err
 	for templateName, templateContent := range ESIndexTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
-		_, err := SendIndexTemplateToCluster(client, host, templateName, templateContent)
+		resp, err := SendIndexTemplateToCluster(client, host, templateName, templateContent)
+		if resp != nil {
+			DeferInternalHandler(resp, log.DefaultLogger)
+		}
 		if err != nil {
 			return err
 		}
@@ -277,14 +294,18 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentia
 		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
 		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + clusterName + "--" + uid
-		//OneClonedTemplate["uid"] = OneClonedTemplate["uid"].(string) + clusterName + "--" + uid
 
 		OneClonedTemplate["url"] = credentials.Host
 		OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled
 
 		if OneClonedTemplate["basicAuth"] == true {
 			OneClonedTemplate["basicAuthUser"] = credentials.Username
-			OneClonedTemplate["secureJsonData"].(map[string]interface{})["basicAuthPassword"] = credentials.Password
+			sec, ok := OneClonedTemplate["secureJsonData"].(map[string]interface{})
+			if !ok || sec == nil {
+				sec = make(map[string]interface{})
+				OneClonedTemplate["secureJsonData"] = sec
+			}
+			sec["basicAuthPassword"] = credentials.Password
 		}
 
 		if url, ok := OneClonedTemplate["url"].(string); ok {

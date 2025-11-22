@@ -22,56 +22,34 @@ func GetClusterHealth(client *http.Client, host string) (*http.Response, error) 
 }
 
 func GetClusterInfo(client *http.Client, host string) (string, string, error) {
-	var clusterName, uid string
-
-	response, err := GetClusterInformation(client, host)
-
-	if err != nil {
-		log.DefaultLogger.Error("Failed to get cluster name and UID: " + err.Error())
-		return "ERROR", "ERROR", err
-	}
-
-	if response.StatusCode == http.StatusOK {
-		body, err := io.ReadAll(response.Body)
-		err2 := response.Body.Close()
-		if err2 != nil {
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
-			return "ERROR", "ERROR", err2
-		}
-
-		if err != nil {
-			log.DefaultLogger.Error("Failed to read response body" + string(body) + err.Error())
-			return "ERROR", "ERROR", err
-		} else if len(body) > 0 {
-			result := map[string]interface{}{}
-			err := json.Unmarshal([]byte(body), &result)
-			if err != nil {
-				log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
-				return "ERROR", "ERROR", err
-			}
-			if name, ok := result["cluster_name"].(string); ok {
-				clusterName = name
-			}
-			if uidVal, ok := result["cluster_uuid"].(string); ok {
-				uid = uidVal
-			}
-		}
-	} else {
-		log.DefaultLogger.Error("Failed to get cluster name and UID. HTTP status: " + response.Status)
-		return "ERROR", "ERROR", err
-	}
-	return clusterName, uid, nil
-}
-
-func GetClusterInformation(client *http.Client, host string) (*http.Response, error) {
 	requestURL := host + "/"
-	response, err := ProcessGETRequest(client, requestURL)
+	log.DefaultLogger.Debug("Request path: ", requestURL)
 
+	response, err := ProcessGETRequest(client, requestURL)
 	if err != nil {
-		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
-		return nil, err
+		log.DefaultLogger.Error("Request path: " + requestURL)
+		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
+		return "ERROR", "ERROR", err
 	}
-	return response, err
+	defer DeferInternalHandler(response, log.DefaultLogger)
+
+	if response.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(response.Body)
+		return "ERROR", "ERROR", fmt.Errorf("get cluster info: HTTP %s, body: %s",
+			response.Status, string(body))
+	}
+
+	var resp struct {
+		ClusterName string `json:"cluster_name"`
+		ClusterUUID string `json:"cluster_uuid"`
+	}
+	if err := json.NewDecoder(response.Body).Decode(&resp); err != nil {
+		return "ERROR", "ERROR", fmt.Errorf("decode cluster info: %w", err)
+	}
+	if resp.ClusterName == "" || resp.ClusterUUID == "" {
+		return "ERROR", "ERROR", fmt.Errorf("cluster info missing fields")
+	}
+	return resp.ClusterName, resp.ClusterUUID, nil
 }
 
 func SendILMToCluster(client *http.Client, host string, policyName string, templateContent string) (*http.Response, error) {
@@ -102,41 +80,31 @@ func SendFirstIndexToCluster(client *http.Client, host string, templateName stri
 	return ProcessPUTRequest(client, requestURL, templateContent)
 }
 
-func CheckIsIndexExists(client *http.Client, host string, indexName string) (bool, error) {
-	requestUrl := host + "/_cat/indices/" + indexName + "?format=json&h=index"
-	response, err := ProcessGETRequest(client, requestUrl)
+func CheckIsIndexExists(client *http.Client, host, index string) (bool, error) {
+	requestURL := host + "/" + index
+	log.DefaultLogger.Debug("Request path: ", requestURL)
 
+	response, err := ProcessGETRequest(client, requestURL)
 	if err != nil {
-		log.DefaultLogger.Error("Failed to check is index exists: " + err.Error())
+		log.DefaultLogger.Error("Request path: " + requestURL)
+		log.DefaultLogger.Error("HTTP request failed: " + err.Error())
 		return false, err
 	}
+	defer DeferInternalHandler(response, log.DefaultLogger)
 
-	if response.StatusCode == http.StatusOK {
-		body, err := io.ReadAll(response.Body)
-		err2 := response.Body.Close()
-		if err2 != nil {
-			log.DefaultLogger.Error("Failed to close response body" + string(body) + err2.Error())
-			return false, err2
+	switch response.StatusCode {
+	case http.StatusOK:
+		return true, nil
+	case http.StatusNotFound:
+		return false, nil
+	default:
+		body, readErr := io.ReadAll(response.Body)
+		if readErr != nil {
+			return false, fmt.Errorf("check index exists: HTTP %s, read body: %w",
+				response.Status, readErr)
 		}
-
-		var result []map[string]interface{}
-		err = json.Unmarshal([]byte(body), &result)
-		if err != nil {
-			log.DefaultLogger.Error("Failed to unmarshal response body: " + string(body) + err.Error())
-			return false, err
-		}
-
-		if len(result) > 0 {
-			log.DefaultLogger.Debug("Index: " + indexName + " exists")
-			return true, nil
-		} else {
-			log.DefaultLogger.Debug("Index: " + indexName + " does not exist")
-			return false, nil
-		}
-
-	} else {
-		log.DefaultLogger.Error("Failed to check is index name exists. HTTP status: " + response.Status)
-		return false, err
+		return false, fmt.Errorf("check index exists: HTTP %s, body: %s",
+			response.Status, string(body))
 	}
 }
 
@@ -149,20 +117,15 @@ func CheckIsILMExists(client *http.Client, host string, policyName string) (bool
 		return false, err
 	}
 
+	defer DeferInternalHandler(response, log.DefaultLogger)
+
 	if response.StatusCode == http.StatusOK {
 		log.DefaultLogger.Debug("ILM policy: " + policyName + " exists")
 		return true, nil
-	} else if response.StatusCode == http.StatusNotFound { // Policy not found
+	} else if response.StatusCode == http.StatusNotFound {
 		log.DefaultLogger.Debug("ILM policy: " + policyName + " does not exist")
 		return false, nil
 	} else {
-		// Log any other unexpected HTTP status
-		err = response.Body.Close()
-		if err != nil {
-			body, _ := io.ReadAll(response.Body)
-			log.DefaultLogger.Error("Failed to close response body: " + string(body) + err.Error())
-			return false, err
-		}
 		body, _ := io.ReadAll(response.Body)
 		log.DefaultLogger.Error("Unexpected response while checking ILM policy. HTTP Status: " + response.Status + ", Body: " + string(body))
 		return false, fmt.Errorf("unexpected response status: %d, response: %s", response.StatusCode, string(body))

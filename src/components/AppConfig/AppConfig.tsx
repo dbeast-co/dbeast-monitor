@@ -81,7 +81,8 @@ const updatePluginAndReload = async (pluginId: string, data: Partial<PluginMeta>
         await updatePlugin(pluginId, data);
         window.location.reload();
     } catch (e) {
-        console.error('Error while updating the plugin', e);
+      // eslint-disable-next-line no-console
+      console.debug('Error while updating the plugin', e);
     }
 };
 
@@ -91,5 +92,5 @@ export const updatePlugin = async (pluginId: string, data: Partial<PluginMeta>) 
         method: 'POST',
         data,
     });
-    return lastValueFrom(response);
+    return lastValueFrom(response as any);
 };
