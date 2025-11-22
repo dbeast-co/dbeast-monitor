@@ -673,7 +673,7 @@ function AddNewClusterPanel() {
                 <Checkbox
                   id="checkbox1"
                   onChange={onCheckAuth}
-                  value={connectionSettings.prod.elasticsearch.authentication_enabled}
+                  checked={connectionSettings.prod.elasticsearch.authentication_enabled}
                   label='Use authentication'
                 />
               </Field>
@@ -734,7 +734,7 @@ function AddNewClusterPanel() {
                 <Field>
                   <Checkbox
                     id="checkbox2"
-                    value={connectionSettings.mon.elasticsearch.authentication_enabled}
+                    checked={connectionSettings.mon.elasticsearch.authentication_enabled}
                     onChange={onCheckMonitoringAuth}
                     label='Use authentication'
                   />
