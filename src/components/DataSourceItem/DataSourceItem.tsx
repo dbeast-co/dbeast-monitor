@@ -5,7 +5,6 @@ import { ClusterStatsItemState } from '../../types/clusterStatsItemState';
 import { getDataSourceItemStyles } from './DataSourceItem.styles';
 import { Button, Spinner, Modal, HorizontalGroup, Select as GrafanaSelect } from '@grafana/ui';
 import { toast } from 'react-toastify';
-import { config } from '@grafana/runtime';
 import { SelectableValue } from '@grafana/data';
 
 interface Props {
