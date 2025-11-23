@@ -713,7 +713,7 @@ function AddNewClusterPanel() {
                     />
                   </Field>
                   {!validMonitoringHost && connectionSettings.mon.elasticsearch.host && (
-                    <span>Monitoring host format is invalid</span>
+                    <span className="invalid">Monitoring host format is invalid</span>
                   )}
 
                   <div className={styles.status}>

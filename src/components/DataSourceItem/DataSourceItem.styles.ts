@@ -18,7 +18,6 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
       min-width: 500px;
       border-radius: 10px;
       background: ${theme.colors.background.primary};
-      max-height: 470px;
 
       header {
         display: grid;
