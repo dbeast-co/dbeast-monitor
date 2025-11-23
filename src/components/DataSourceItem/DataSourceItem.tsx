@@ -245,8 +245,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           <div className="grid-container">
             <div className="col">
               <div className={styles.listItem}>
-                <div className='grid'>
-                  <div>
+                <div >
+                  <div className='grid'>
                     {this.state.versions ? (
                       <div>
                         <span className="label">Version</span>
