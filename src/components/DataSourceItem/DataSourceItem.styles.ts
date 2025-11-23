@@ -25,6 +25,10 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
         width: 100%;
         grid-template-columns: 1fr 0.2fr;
         height: 60px;
+
+        .col {
+          overflow: hidden;
+        }
       }
 
       footer {
@@ -41,7 +45,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
           &.header-cluster {
             max-width: 95%;
             width: 100%;
-            overflow: auto;
+            overflow: hidden;
           }
         }
       }
