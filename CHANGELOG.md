@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 2.0.5 (2025-11-02)
+
+- Features:
+  * [FEAT] Add Disk read latency in the host overview [#221](https://github.com/dbeast-co/dbeast-monitor/issues/221)
+  * [FEAT] Fix input URL in the "Index stats" ingest pipeline [#227](https://github.com/dbeast-co/dbeast-monitor/issues/227)
+  * [FEAT] Add units to the "Cluster level stats" block in the "stack monitoring" [#229](https://github.com/dbeast-co/dbeast-monitor/issues/229)
+  * [FEAT] Add the "Frozen tier" to the Stack monitoring dashboard[#223](https://github.com/dbeast-co/dbeast-monitor/issues/223)
+  * [FEAT] Replace MUI library with the grafana/ui  [#225](https://github.com/dbeast-co/dbeast-monitor/issues/225)
+  
+- Bug fixes
+  * [BUG] Empty rows in the "Indices with Unassigned shard" [#230](https://github.com/dbeast-co/dbeast-monitor/issues/230)
+  * [BUG] Incorrect visualization in the "Index monitor" dashboard [#228](https://github.com/dbeast-co/dbeast-monitor/issues/228)
+
 ## Version 2.0.4 (2025-10-28)
 
 ### First release with Grafana **signed** plugin
