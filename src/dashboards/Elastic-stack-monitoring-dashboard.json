@@ -577,1057 +577,1882 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG CPU usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "lcd",
-                  "type": "gauge",
-                  "valueDisplayMode": "text"
-                }
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "custom.width",
-                "value": 130
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Nodes"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "custom.width",
-                "value": 64
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Heap"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 92
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total RAM"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 87
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total storage"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 105
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Free storage"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 105
-              }
-            ]
-          }
-        ]
-      },
+      "collapsed": true,
       "gridPos": {
-        "h": 4,
-        "w": 8,
+        "h": 1,
+        "w": 24,
         "x": 0,
         "y": 4
       },
-      "id": 117,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "9.5.10",
-      "targets": [
+      "id": 124,
+      "panels": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
-          "fields": [
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
-              "language": "jsonata",
-              "name": "CPU"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
-              "language": "jsonata",
-              "name": "Heap"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
-              "language": "jsonata",
-              "name": "RAM"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
-              "language": "jsonata",
-              "name": "FS Total"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
-              "language": "jsonata",
-              "name": "FS Free"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
-              "language": "jsonata",
-              "name": "host"
-            }
-          ],
-          "method": "GET",
-          "queryParams": "",
-          "refId": "A",
-          "urlPath": "/_nodes/data_hot:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
-        }
-      ],
-      "title": "Hot tier stats",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "GroupByField",
-            "binary": {
-              "left": "CPU",
-              "operator": "*",
-              "reducer": "sum",
-              "right": "0"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "?(@ == 'data_hot')": {
-                "aggregations": [],
-                "operation": "groupby"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
               },
-              "CPU": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "FS Free": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "FS Total": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "GroupByField": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Heap": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "RAM": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "Roles": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "available_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "heap_max_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "host": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "aggregate"
-              },
-              "percent": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "role": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "total_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              }
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "GroupByField": true,
-              "Roles": true,
-              "role": true
-            },
-            "indexByName": {
-              "CPU (mean)": 6,
-              "FS Free (sum)": 5,
-              "FS Total (sum)": 4,
-              "Heap (sum)": 2,
-              "RAM (sum)": 3,
-              "Roles": 0,
-              "host (count)": 1
-            },
-            "renameByName": {
-              "CPU (mean)": "AVG CPU usage",
-              "FS Free (sum)": "Free storage",
-              "FS Total (sum)": "Total storage",
-              "Heap (sum)": "Total Heap",
-              "RAM (sum)": "Total RAM",
-              "available_in_bytes (sum)": "Free storage",
-              "heap_max_in_bytes (sum)": "Total Heap",
-              "host (count)": "Nodes",
-              "percent (mean)": "AVG CPU usage",
-              "total_in_bytes (sum)": "Total storage"
-            }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
-                  }
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
                 },
-                "fieldName": "Nodes"
-              }
-            ],
-            "match": "any",
-            "type": "include"
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
             },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+            "overrides": [
               {
-                "color": "green",
-                "value": null
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG CPU usage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge",
+                      "valueDisplayMode": "text"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 100
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
               },
               {
-                "color": "red",
-                "value": 80
+                "matcher": {
+                  "id": "byName",
+                  "options": "Nodes"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "none"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 64
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Heap"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 92
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total RAM"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 87
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Free storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FS Total (median)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 165
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG free storage(%)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": null
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 0.15
+                        },
+                        {
+                          "value": 0.2,
+                          "color": "green"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG Free storage "
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
               }
             ]
           },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG CPU usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 0,
+            "y": 5
+          },
+          "id": 117,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
               },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "lcd",
-                  "type": "gauge",
-                  "valueDisplayMode": "text"
+              "fields": [
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
+                  "language": "jsonata",
+                  "name": "CPU"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "Heap"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "RAM"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Total"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Free"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
+                  "language": "jsonata",
+                  "name": "host"
                 }
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "custom.width",
-                "value": 130
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Nodes"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "custom.width",
-                "value": 64
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Heap"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 92
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total RAM"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 87
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total storage"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 105
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Free storage"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 105
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 8,
-        "x": 8,
-        "y": 4
-      },
-      "id": 118,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "9.5.10",
-      "targets": [
-        {
-          "cacheDurationSeconds": 0,
-          "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
-          },
-          "fields": [
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
-              "language": "jsonata",
-              "name": "CPU"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
-              "language": "jsonata",
-              "name": "Heap"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
-              "language": "jsonata",
-              "name": "RAM"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
-              "language": "jsonata",
-              "name": "FS Total"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
-              "language": "jsonata",
-              "name": "FS Free"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
-              "language": "jsonata",
-              "name": "host"
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/data_hot:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
             }
           ],
-          "method": "GET",
-          "queryParams": "",
-          "refId": "A",
-          "urlPath": "/_nodes/data_warm:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
-        }
-      ],
-      "title": "Warm tier stats",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "GroupByField",
-            "binary": {
-              "left": "CPU",
-              "operator": "*",
-              "reducer": "sum",
-              "right": "0"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "?(@ == 'data_hot')": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "CPU": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "FS Free": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "FS Total": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "GroupByField": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Heap": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "RAM": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "Roles": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "available_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "heap_max_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "host": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "aggregate"
-              },
-              "percent": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "role": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "total_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              }
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "GroupByField": true,
-              "Roles": true,
-              "role": true
-            },
-            "indexByName": {
-              "CPU (mean)": 6,
-              "FS Free (sum)": 5,
-              "FS Total (sum)": 4,
-              "Heap (sum)": 2,
-              "RAM (sum)": 3,
-              "Roles": 0,
-              "host (count)": 1
-            },
-            "renameByName": {
-              "CPU (mean)": "AVG CPU usage",
-              "FS Free (sum)": "Free storage",
-              "FS Total (sum)": "Total storage",
-              "Heap (sum)": "Total Heap",
-              "RAM (sum)": "Total RAM",
-              "available_in_bytes (sum)": "Free storage",
-              "heap_max_in_bytes (sum)": "Total Heap",
-              "host (count)": "Nodes",
-              "percent (mean)": "AVG CPU usage",
-              "total_in_bytes (sum)": "Total storage"
-            }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
+          "title": "Hot tier stats",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "GroupByField",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU"
+                    }
+                  },
+                  "operator": "*",
+                  "right": {
+                    "fixed": "0"
                   }
                 },
-                "fieldName": "Nodes"
-              }
-            ],
-            "match": "any",
-            "type": "include"
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "marcusolsson-json-datasource",
-        "uid": "${es_direct_prod}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AVG CPU usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "lcd",
-                  "type": "gauge",
-                  "valueDisplayMode": "text"
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
                 }
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "custom.width",
-                "value": 130
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Nodes"
             },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "none"
-              },
-              {
-                "id": "custom.width",
-                "value": 64
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "greater",
+                      "options": {
+                        "value": "-1"
+                      }
+                    },
+                    "fieldName": "CPU"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Heap"
             },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 92
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "?(@ == 'data_hot')": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "AVG Free node storage": {
+                    "aggregations": [
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "CPU": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Free": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Total": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "GroupByField": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Heap": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "RAM": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Roles": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "available_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "heap_max_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "host": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "percent": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "role": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "total_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  }
+                }
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total RAM"
             },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 87
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "AVG free storage(%)",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Free (median)"
+                    }
+                  },
+                  "operator": "/",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Total (median)"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "window": {
+                  "reducer": "mean",
+                  "windowAlignment": "trailing",
+                  "windowSize": 0.1,
+                  "windowSizeMode": "percentage"
+                }
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total storage"
             },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 105
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "FS Free (median)": false,
+                  "FS Total (median)": true,
+                  "GroupByField": true,
+                  "Roles": true,
+                  "role": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "AVG free storage(%)": 6,
+                  "CPU (mean)": 7,
+                  "FS Free (median)": 5,
+                  "FS Free (sum)": 4,
+                  "FS Total (median)": 9,
+                  "FS Total (sum)": 3,
+                  "GroupByField": 8,
+                  "Heap (sum)": 1,
+                  "RAM (sum)": 2,
+                  "host (count)": 0
+                },
+                "renameByName": {
+                  "AVG free space (%)": "",
+                  "AVG free storage(%)": "AVG free storage (%)",
+                  "CPU (mean)": "AVG CPU usage",
+                  "FS Free (median)": "AVG Free storage ",
+                  "FS Free (sum)": "Free storage",
+                  "FS Total (sum)": "Total storage",
+                  "Heap (sum)": "Total Heap",
+                  "RAM (sum)": "Total RAM",
+                  "available_in_bytes (sum)": "Free storage",
+                  "heap_max_in_bytes (sum)": "Total Heap",
+                  "host (count)": "Nodes",
+                  "percent (mean)": "AVG CPU usage",
+                  "total_in_bytes (sum)": "Total storage"
+                }
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Free storage"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 105
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 8,
-        "x": 16,
-        "y": 4
-      },
-      "id": 119,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
+            }
           ],
-          "show": false
+          "type": "table"
         },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "9.5.10",
-      "targets": [
         {
-          "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
             "uid": "${es_direct_prod}"
           },
-          "fields": [
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
-              "language": "jsonata",
-              "name": "CPU"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
             },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG CPU usage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge",
+                      "valueDisplayMode": "text"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 100
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Nodes"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "none"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 64
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Heap"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 92
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total RAM"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 87
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Free storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FS Total (median)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 165
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG free storage(%)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": null
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 0.15
+                        },
+                        {
+                          "value": 0.2,
+                          "color": "green"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG Free storage "
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 12,
+            "y": 5
+          },
+          "id": 125,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
             {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
-              "language": "jsonata",
-              "name": "Heap"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
-              "language": "jsonata",
-              "name": "RAM"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
-              "language": "jsonata",
-              "name": "FS Total"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
-              "language": "jsonata",
-              "name": "FS Free"
-            },
-            {
-              "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
-              "language": "jsonata",
-              "name": "host"
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
+                  "language": "jsonata",
+                  "name": "CPU"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "Heap"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "RAM"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Total"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Free"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
+                  "language": "jsonata",
+                  "name": "host"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/data_warm:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
             }
           ],
-          "method": "GET",
-          "queryParams": "",
-          "refId": "A",
-          "urlPath": "/_nodes/data_cold:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
-        }
-      ],
-      "title": "Cold tier stats",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "GroupByField",
-            "binary": {
-              "left": "CPU",
-              "operator": "*",
-              "reducer": "sum",
-              "right": "0"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "?(@ == 'data_hot')": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "CPU": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "FS Free": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "FS Total": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "GroupByField": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Heap": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "RAM": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "Roles": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "available_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "heap_max_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              },
-              "host": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "aggregate"
-              },
-              "percent": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "role": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "total_in_bytes": {
-                "aggregations": [
-                  "sum"
-                ],
-                "operation": "aggregate"
-              }
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "GroupByField": true,
-              "Roles": true,
-              "role": true
-            },
-            "indexByName": {
-              "CPU (mean)": 6,
-              "FS Free (sum)": 5,
-              "FS Total (sum)": 4,
-              "Heap (sum)": 2,
-              "RAM (sum)": 3,
-              "Roles": 0,
-              "host (count)": 1
-            },
-            "renameByName": {
-              "CPU (mean)": "AVG CPU usage",
-              "FS Free (sum)": "Free storage",
-              "FS Total (sum)": "Total storage",
-              "Heap (sum)": "Total Heap",
-              "RAM (sum)": "Total RAM",
-              "available_in_bytes (sum)": "Free storage",
-              "heap_max_in_bytes (sum)": "Total Heap",
-              "host (count)": "Nodes",
-              "percent (mean)": "AVG CPU usage",
-              "total_in_bytes (sum)": "Total storage"
-            }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "greater",
-                  "options": {
-                    "value": 0
+          "title": "Warm tier stats",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "GroupByField",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU"
+                    }
+                  },
+                  "operator": "*",
+                  "right": {
+                    "fixed": "0"
                   }
                 },
-                "fieldName": "Nodes"
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
               }
-            ],
-            "match": "any",
-            "type": "include"
-          }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "greater",
+                      "options": {
+                        "value": "-1"
+                      }
+                    },
+                    "fieldName": "CPU"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "?(@ == 'data_hot')": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "AVG Free node storage": {
+                    "aggregations": [
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "CPU": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Free": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Total": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "GroupByField": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Heap": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "RAM": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Roles": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "available_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "heap_max_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "host": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "percent": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "role": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "total_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  }
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "AVG free storage(%)",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Free (median)"
+                    }
+                  },
+                  "operator": "/",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Total (median)"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "window": {
+                  "reducer": "mean",
+                  "windowAlignment": "trailing",
+                  "windowSize": 0.1,
+                  "windowSizeMode": "percentage"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "FS Free (median)": false,
+                  "FS Total (median)": true,
+                  "GroupByField": true,
+                  "Roles": true,
+                  "role": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "AVG free storage(%)": 6,
+                  "CPU (mean)": 7,
+                  "FS Free (median)": 5,
+                  "FS Free (sum)": 4,
+                  "FS Total (median)": 9,
+                  "FS Total (sum)": 3,
+                  "GroupByField": 8,
+                  "Heap (sum)": 1,
+                  "RAM (sum)": 2,
+                  "host (count)": 0
+                },
+                "renameByName": {
+                  "AVG free space (%)": "",
+                  "AVG free storage(%)": "AVG free storage (%)",
+                  "CPU (mean)": "AVG CPU usage",
+                  "FS Free (median)": "AVG Free storage ",
+                  "FS Free (sum)": "Free storage",
+                  "FS Total (sum)": "Total storage",
+                  "Heap (sum)": "Total Heap",
+                  "RAM (sum)": "Total RAM",
+                  "available_in_bytes (sum)": "Free storage",
+                  "heap_max_in_bytes (sum)": "Total Heap",
+                  "host (count)": "Nodes",
+                  "percent (mean)": "AVG CPU usage",
+                  "total_in_bytes (sum)": "Total storage"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG CPU usage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge",
+                      "valueDisplayMode": "text"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 100
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Nodes"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "none"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 64
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Heap"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 92
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total RAM"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 87
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Free storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FS Total (median)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 165
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG free storage(%)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": null
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 0.15
+                        },
+                        {
+                          "value": 0.2,
+                          "color": "green"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG Free storage "
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 0,
+            "y": 9
+          },
+          "id": 126,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
+                  "language": "jsonata",
+                  "name": "CPU"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "Heap"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "RAM"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Total"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Free"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
+                  "language": "jsonata",
+                  "name": "host"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/data_cold:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
+            }
+          ],
+          "title": "Cold tier stats",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "GroupByField",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU"
+                    }
+                  },
+                  "operator": "*",
+                  "right": {
+                    "fixed": "0"
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "greater",
+                      "options": {
+                        "value": "-1"
+                      }
+                    },
+                    "fieldName": "CPU"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "?(@ == 'data_hot')": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "AVG Free node storage": {
+                    "aggregations": [
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "CPU": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Free": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Total": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "GroupByField": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Heap": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "RAM": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Roles": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "available_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "heap_max_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "host": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "percent": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "role": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "total_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  }
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "AVG free storage(%)",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Free (median)"
+                    }
+                  },
+                  "operator": "/",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Total (median)"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "window": {
+                  "reducer": "mean",
+                  "windowAlignment": "trailing",
+                  "windowSize": 0.1,
+                  "windowSizeMode": "percentage"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "FS Free (median)": false,
+                  "FS Total (median)": true,
+                  "GroupByField": true,
+                  "Roles": true,
+                  "role": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "AVG free storage(%)": 6,
+                  "CPU (mean)": 7,
+                  "FS Free (median)": 5,
+                  "FS Free (sum)": 4,
+                  "FS Total (median)": 9,
+                  "FS Total (sum)": 3,
+                  "GroupByField": 8,
+                  "Heap (sum)": 1,
+                  "RAM (sum)": 2,
+                  "host (count)": 0
+                },
+                "renameByName": {
+                  "AVG free space (%)": "",
+                  "AVG free storage(%)": "AVG free storage (%)",
+                  "CPU (mean)": "AVG CPU usage",
+                  "FS Free (median)": "AVG Free storage ",
+                  "FS Free (sum)": "Free storage",
+                  "FS Total (sum)": "Total storage",
+                  "Heap (sum)": "Total Heap",
+                  "RAM (sum)": "Total RAM",
+                  "available_in_bytes (sum)": "Free storage",
+                  "heap_max_in_bytes (sum)": "Total Heap",
+                  "host (count)": "Nodes",
+                  "percent (mean)": "AVG CPU usage",
+                  "total_in_bytes (sum)": "Total storage"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "bytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG CPU usage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge",
+                      "valueDisplayMode": "text"
+                    }
+                  },
+                  {
+                    "id": "max",
+                    "value": 100
+                  },
+                  {
+                    "id": "min",
+                    "value": 0
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 130
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Nodes"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "none"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 64
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Heap"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 92
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total RAM"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 87
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Free storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 105
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "FS Total (median)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 165
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG free storage(%)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": null
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 0.15
+                        },
+                        {
+                          "value": 0.2,
+                          "color": "green"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "AVG Free storage "
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 160
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 12,
+            "x": 12,
+            "y": 9
+          },
+          "id": 127,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.cpu.percent : null)",
+                  "language": "jsonata",
+                  "name": "CPU"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].jvm.mem.heap_max_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "Heap"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].os.mem.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "RAM"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.total_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Total"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].fs.total.available_in_bytes : null)",
+                  "language": "jsonata",
+                  "name": "FS Free"
+                },
+                {
+                  "jsonPath": "$.($exists(\"nodes\") ? nodes.[*].host : null)",
+                  "language": "jsonata",
+                  "name": "host"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/data_frozen:true/stats/jvm,fs,os?filter_path=nodes.*.roles,nodes.*.host,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.fs.total.total_in_bytes,nodes.*.os.cpu.percent,nodes.*.os.mem.total_in_bytes,nodes.*.os.mem.total_in_bytes"
+            }
+          ],
+          "title": "Frozen tier stats",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "GroupByField",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU"
+                    }
+                  },
+                  "operator": "*",
+                  "right": {
+                    "fixed": "0"
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "greater",
+                      "options": {
+                        "value": "-1"
+                      }
+                    },
+                    "fieldName": "CPU"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "?(@ == 'data_hot')": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "AVG Free node storage": {
+                    "aggregations": [
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "CPU": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Free": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "FS Total": {
+                    "aggregations": [
+                      "sum",
+                      "median"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "GroupByField": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "Heap": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "RAM": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Roles": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "available_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "heap_max_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "host": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "percent": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "role": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  },
+                  "total_in_bytes": {
+                    "aggregations": [
+                      "sum"
+                    ],
+                    "operation": "aggregate"
+                  }
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "AVG free storage(%)",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Free (median)"
+                    }
+                  },
+                  "operator": "/",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "FS Total (median)"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "window": {
+                  "reducer": "mean",
+                  "windowAlignment": "trailing",
+                  "windowSize": 0.1,
+                  "windowSizeMode": "percentage"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "FS Free (median)": false,
+                  "FS Total (median)": true,
+                  "GroupByField": true,
+                  "Roles": true,
+                  "role": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "AVG free storage(%)": 6,
+                  "CPU (mean)": 7,
+                  "FS Free (median)": 5,
+                  "FS Free (sum)": 4,
+                  "FS Total (median)": 9,
+                  "FS Total (sum)": 3,
+                  "GroupByField": 8,
+                  "Heap (sum)": 1,
+                  "RAM (sum)": 2,
+                  "host (count)": 0
+                },
+                "renameByName": {
+                  "AVG free space (%)": "",
+                  "AVG free storage(%)": "AVG free storage (%)",
+                  "CPU (mean)": "AVG CPU usage",
+                  "FS Free (median)": "AVG Free storage ",
+                  "FS Free (sum)": "Free storage",
+                  "FS Total (sum)": "Total storage",
+                  "Heap (sum)": "Total Heap",
+                  "RAM (sum)": "Total RAM",
+                  "available_in_bytes (sum)": "Free storage",
+                  "heap_max_in_bytes (sum)": "Total Heap",
+                  "host (count)": "Nodes",
+                  "percent (mean)": "AVG CPU usage",
+                  "total_in_bytes (sum)": "Total storage"
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
-      "type": "table"
+      "title": "Tier level stats",
+      "type": "row"
     },
     {
       "collapsed": false,
@@ -1635,7 +2460,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 5
       },
       "id": 39,
       "panels": [],
@@ -1697,7 +2522,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": [
           {
@@ -1730,7 +2556,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 6
       },
       "id": 36,
       "maxDataPoints": 100,
@@ -1819,10 +2645,10 @@
       "title": "Cluster search rate (QPS)",
       "description": "QPS- Query Per Second",
       "gridPos": {
-        "x": 12,
-        "y": 9,
         "h": 7,
-        "w": 12
+        "w": 12,
+        "x": 12,
+        "y": 6
       },
       "fieldConfig": {
         "defaults": {
@@ -1876,7 +2702,8 @@
               }
             ]
           },
-          "min": 0
+          "min": 0,
+          "unit": "short"
         },
         "overrides": []
       },
@@ -1997,7 +2824,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2005,7 +2833,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 13
       },
       "id": 120,
       "maxDataPoints": 100,
@@ -2135,7 +2963,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
@@ -2143,7 +2972,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 13
       },
       "id": 121,
       "maxDataPoints": 100,
@@ -2222,7 +3051,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 20
       },
       "id": 28,
       "panels": [
@@ -2242,6 +3071,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -2251,7 +3083,7 @@
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -2376,7 +3208,7 @@
                       "steps": [
                         {
                           "color": "red",
-                          "value": null
+                          "value": 0
                         },
                         {
                           "color": "transparent",
@@ -2438,7 +3270,7 @@
                       "steps": [
                         {
                           "color": "red",
-                          "value": null
+                          "value": 0
                         },
                         {
                           "color": "yellow",
@@ -2472,19 +3304,11 @@
             "h": 12,
             "w": 14,
             "x": 0,
-            "y": 17
+            "y": 21
           },
           "id": 20,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -2493,7 +3317,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -2629,6 +3453,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -2638,7 +3465,257 @@
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 5,
+            "x": 14,
+            "y": 21
+          },
+          "id": 130,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.[*].roles.[*]",
+                  "language": "jsonpath",
+                  "name": "Roles"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/ingest:true,master:true,ml:true/stats/os,jvm,fs?filter_path=nodes.*.roles,nodes.*.name"
+            }
+          ],
+          "title": "Data nodes count",
+          "transformations": [
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Roles": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Roles": "Role",
+                  "Roles (count)": "Nodes count"
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "regex",
+                      "options": {
+                        "value": "data*"
+                      }
+                    },
+                    "fieldName": "Role"
+                  }
+                ],
+                "match": "any",
+                "type": "include"
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 5,
+            "x": 19,
+            "y": 21
+          },
+          "id": 54,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.[*].roles.[*]",
+                  "language": "jsonpath",
+                  "name": "Roles"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/ingest:true,master:true,ml:true/stats/os,jvm,fs?filter_path=nodes.*.roles,nodes.*.name"
+            }
+          ],
+          "title": "Not data nodes count",
+          "transformations": [
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Roles": {
+                    "aggregations": [
+                      "count"
+                    ],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "Roles": "Role",
+                  "Roles (count)": "Nodes count"
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "regex",
+                      "options": {
+                        "value": "data*"
+                      }
+                    },
+                    "fieldName": "Role"
+                  }
+                ],
+                "match": "any",
+                "type": "exclude"
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -2744,19 +3821,11 @@
             "h": 6,
             "w": 10,
             "x": 14,
-            "y": 17
+            "y": 27
           },
-          "id": 54,
+          "id": 128,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -2765,7 +3834,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -2869,6 +3938,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -2878,246 +3950,7 @@
                 "steps": [
                   {
                     "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Node name"
-                },
-                "properties": [
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "Analyze Node",
-                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "custom.align",
-                    "value": "left"
-                  },
-                  {
-                    "id": "custom.filterable",
-                    "value": true
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "CPU"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 159
-                  },
-                  {
-                    "id": "unit",
-                    "value": "percent"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "lcd",
-                      "type": "gauge"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Heap used"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 159
-                  },
-                  {
-                    "id": "unit",
-                    "value": "percent"
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "lcd",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-GrYlRd"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Version"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 91
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 10,
-            "x": 14,
-            "y": 23
-          },
-          "id": 49,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": false,
-                "displayName": "Node name"
-              }
-            ]
-          },
-          "pluginVersion": "9.5.10",
-          "targets": [
-            {
-              "cacheDurationSeconds": 0,
-              "datasource": {
-                "type": "marcusolsson-json-datasource",
-                "uid": "${es_direct_prod}"
-              },
-              "fields": [
-                {
-                  "jsonPath": "$.nodes.*.name",
-                  "name": "Node name"
-                },
-                {
-                  "jsonPath": "$.nodes.*.os.cpu.percent",
-                  "language": "jsonpath",
-                  "name": "CPU",
-                  "type": "number"
-                },
-                {
-                  "jsonPath": "$.nodes.*.jvm.mem.heap_used_percent",
-                  "language": "jsonpath",
-                  "name": "Heap used",
-                  "type": "number"
-                }
-              ],
-              "method": "GET",
-              "queryParams": "",
-              "refId": "A",
-              "urlPath": "/_nodes/ingest:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
-            },
-            {
-              "cacheDurationSeconds": 0,
-              "datasource": {
-                "type": "marcusolsson-json-datasource",
-                "uid": "${es_direct_prod}"
-              },
-              "fields": [
-                {
-                  "jsonPath": "$.nodes.*.name",
-                  "name": "Node name"
-                },
-                {
-                  "jsonPath": "$.nodes.*.version",
-                  "language": "jsonpath",
-                  "name": "Version"
-                }
-              ],
-              "hide": false,
-              "method": "GET",
-              "queryParams": "",
-              "refId": "B",
-              "urlPath": "/_nodes/ingest:true?filter_path=nodes.*.version,nodes.*.name"
-            }
-          ],
-          "title": "Ingest nodes status",
-          "transformations": [
-            {
-              "id": "merge",
-              "options": {}
-            },
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Available storage": false,
-                  "Heap used": false,
-                  "Storage available": false,
-                  "Storage total": false,
-                  "Total Storage": true
-                },
-                "indexByName": {
-                  "Available storage": 5,
-                  "CPU": 2,
-                  "Heap used": 3,
-                  "Node name": 0,
-                  "Number of shards": 1,
-                  "Total Storage": 4,
-                  "Version": 6
-                },
-                "renameByName": {
-                  "Total Storage": ""
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "marcusolsson-json-datasource",
-            "uid": "${es_direct_prod}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "custom": {
-                "align": "center",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "inspect": false
-              },
-              "mappings": [],
-              "max": 100,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -3241,7 +4074,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "transparent",
@@ -3302,7 +4136,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "yellow",
@@ -3336,19 +4171,11 @@
             "h": 6,
             "w": 14,
             "x": 0,
-            "y": 29
+            "y": 33
           },
           "id": 51,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -3357,7 +4184,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -3493,6 +4320,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -3501,7 +4331,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -3607,19 +4438,11 @@
             "h": 6,
             "w": 10,
             "x": 14,
-            "y": 29
+            "y": 33
           },
-          "id": 53,
+          "id": 49,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -3628,7 +4451,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -3657,7 +4480,7 @@
               "method": "GET",
               "queryParams": "",
               "refId": "A",
-              "urlPath": "/_nodes/master:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+              "urlPath": "/_nodes/ingest:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
             },
             {
               "cacheDurationSeconds": 0,
@@ -3680,10 +4503,10 @@
               "method": "GET",
               "queryParams": "",
               "refId": "B",
-              "urlPath": "/_nodes/master:true?filter_path=nodes.*.version,nodes.*.name"
+              "urlPath": "/_nodes/ingest:true?filter_path=nodes.*.version,nodes.*.name"
             }
           ],
-          "title": "Master nodes status",
+          "title": "Ingest nodes status",
           "transformations": [
             {
               "id": "merge",
@@ -3732,6 +4555,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -3740,7 +4566,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -3864,7 +4691,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "transparent",
@@ -3925,7 +4753,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "red"
+                          "color": "red",
+                          "value": 0
                         },
                         {
                           "color": "yellow",
@@ -3959,19 +4788,11 @@
             "h": 6,
             "w": 14,
             "x": 0,
-            "y": 35
+            "y": 39
           },
           "id": 52,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -3980,7 +4801,7 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -4116,6 +4937,9 @@
                 "cellOptions": {
                   "type": "auto"
                 },
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -4124,7 +4948,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -4230,19 +5055,11 @@
             "h": 6,
             "w": 10,
             "x": 14,
-            "y": 35
+            "y": 39
           },
-          "id": 55,
+          "id": 53,
           "options": {
             "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
             "showHeader": true,
             "sortBy": [
               {
@@ -4251,7 +5068,624 @@
               }
             ]
           },
-          "pluginVersion": "9.5.10",
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.os.cpu.percent",
+                  "language": "jsonpath",
+                  "name": "CPU",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.jvm.mem.heap_used_percent",
+                  "language": "jsonpath",
+                  "name": "Heap used",
+                  "type": "number"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/master:true/stats/os,jvm,fs?filter_path=nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes"
+            },
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.version",
+                  "language": "jsonpath",
+                  "name": "Version"
+                }
+              ],
+              "hide": false,
+              "method": "GET",
+              "queryParams": "",
+              "refId": "B",
+              "urlPath": "/_nodes/master:true?filter_path=nodes.*.version,nodes.*.name"
+            }
+          ],
+          "title": "Master nodes status",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Available storage": false,
+                  "Heap used": false,
+                  "Storage available": false,
+                  "Storage total": false,
+                  "Total Storage": true
+                },
+                "indexByName": {
+                  "Available storage": 5,
+                  "CPU": 2,
+                  "Heap used": 3,
+                  "Node name": 0,
+                  "Number of shards": 1,
+                  "Total Storage": 4,
+                  "Version": 6
+                },
+                "renameByName": {
+                  "Total Storage": ""
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node name"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Heap used"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Available storage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 149
+                  },
+                  {
+                    "id": "unit",
+                    "value": "bytes"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": 0
+                        },
+                        {
+                          "color": "transparent",
+                          "value": 0.1
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "color"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "gradient",
+                      "type": "color-background"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 77
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Version"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 70
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Available storage %"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "red",
+                          "value": 0
+                        },
+                        {
+                          "color": "yellow",
+                          "value": 0.15
+                        },
+                        {
+                          "color": "transparent",
+                          "value": 0.2
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "color"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 14,
+            "x": 0,
+            "y": 45
+          },
+          "id": 129,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.indices.shard_stats.total_count",
+                  "language": "jsonpath",
+                  "name": "Shards"
+                },
+                {
+                  "jsonPath": "$.nodes.*.os.cpu.percent",
+                  "language": "jsonpath",
+                  "name": "CPU",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.jvm.mem.heap_used_percent",
+                  "language": "jsonpath",
+                  "name": "Heap used",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.fs.total.total_in_bytes",
+                  "language": "jsonpath",
+                  "name": "Total Storage",
+                  "type": "number"
+                },
+                {
+                  "jsonPath": "$.nodes.*.fs.total.available_in_bytes",
+                  "language": "jsonpath",
+                  "name": "Available storage",
+                  "type": "number"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_nodes/data_frozen:true/stats/os,jvm,fs,indices?filter_path=nodes.*.indices.shard_stats.total_count,nodes.*.name,nodes.*.os.cpu.percent,nodes.*.jvm.mem.heap_used_percent,nodes.*.fs.total.total_in_bytes,nodes.*.fs.total.available_in_bytes,nodes.*.version"
+            },
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.nodes.*.name",
+                  "name": "Node name"
+                },
+                {
+                  "jsonPath": "$.nodes.*.version",
+                  "language": "jsonpath",
+                  "name": "Version"
+                }
+              ],
+              "hide": false,
+              "method": "GET",
+              "queryParams": "",
+              "refId": "B",
+              "urlPath": "/_nodes/data_cold:true?filter_path=nodes.*.version,nodes.*.name"
+            }
+          ],
+          "title": "Data Frozen nodes status",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Available storage %",
+                "binary": {
+                  "left": "A Available storage",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "A Total Storage"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Heap used": false,
+                  "Storage available": false,
+                  "Storage total": false
+                },
+                "indexByName": {
+                  "Available storage": 5,
+                  "Available storage %": 6,
+                  "CPU": 2,
+                  "Heap used": 3,
+                  "Node name": 0,
+                  "Shards": 1,
+                  "Total Storage": 4,
+                  "Version": 7
+                },
+                "renameByName": {
+                  "Total Storage": ""
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Node name"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Analyze Node",
+                        "url": "/d/host-overview/host-overview?orgId=1&refresh=1m&var-node_name=${__data.fields[\"Node name\"]}&${cluster_ds:queryparam}"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 159
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Heap used"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 159
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percent"
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "mode": "lcd",
+                      "type": "gauge"
+                    }
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Version"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 91
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 10,
+            "x": 14,
+            "y": 45
+          },
+          "id": 55,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "Node name"
+              }
+            ]
+          },
+          "pluginVersion": "12.2.0",
           "targets": [
             {
               "cacheDurationSeconds": 0,
@@ -6598,6 +8032,22 @@
             {
               "id": "merge",
               "options": {}
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "fieldName": "Index",
+                    "config": {
+                      "id": "isNull",
+                      "options": {}
+                    }
+                  }
+                ],
+                "type": "exclude",
+                "match": "any"
+              }
             }
           ],
           "type": "table"

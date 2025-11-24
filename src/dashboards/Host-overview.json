@@ -1351,7 +1351,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average system.memory.actual.used.bytes != null && Average system.memory.used.bytes != null ? params.used - params.actual : null"
+              "options": "Average system.memory.actual.used.bytes != null && Average system.memory.used.bytes != null ? Average system.memory.used.bytes - Average system.memory.actual.used.bytes : null"
             },
             "properties": [
               {
@@ -1667,47 +1667,55 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "elasticsearch",
-        "uid": "${es_metrics}"
+      "id": 42,
+      "type": "timeseries",
+      "title": "Disk Write/Read Latency (ms)",
+      "description": "- Write latency: positive trend\n- Read latency: negative trend",
+      "gridPos": {
+        "x": 18,
+        "y": 9,
+        "h": 11,
+        "w": 6
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 3,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
             "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "lineWidth": 1,
+            "fillOpacity": 7,
+            "gradientMode": "none",
+            "spanNulls": false,
+            "insertNulls": false,
+            "showPoints": "never",
             "pointSize": 5,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
+            "axisCenteredZero": true,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
+          "color": {
+            "mode": "palette-classic"
+          },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1725,26 +1733,7 @@
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 18,
-        "y": 9
-      },
-      "id": 42,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "9.5.10",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "alias": "",
@@ -1827,6 +1816,51 @@
                 "script": "params.time/params.count"
               },
               "type": "bucket_script"
+            },
+            {
+              "id": "9",
+              "type": "avg",
+              "field": "system.diskio.read.count",
+              "settings": {},
+              "hide": true
+            },
+            {
+              "id": "10",
+              "type": "derivative",
+              "field": "9",
+              "pipelineAgg": "9",
+              "hide": true
+            },
+            {
+              "id": "11",
+              "type": "avg",
+              "field": "system.diskio.read.time",
+              "settings": {},
+              "hide": true
+            },
+            {
+              "id": "12",
+              "type": "derivative",
+              "field": "11",
+              "pipelineAgg": "11",
+              "hide": true
+            },
+            {
+              "id": "13",
+              "type": "bucket_script",
+              "pipelineVariables": [
+                {
+                  "name": "read_count",
+                  "pipelineAgg": "10"
+                },
+                {
+                  "name": "read_time",
+                  "pipelineAgg": "12"
+                }
+              ],
+              "settings": {
+                "script": "params.read_count/params.read_count * -1"
+              }
             }
           ],
           "query": "system.diskio.name :* AND ( host.hostname: $node_host OR host.name: $node_host)",
@@ -1836,8 +1870,23 @@
           "urlPath": ""
         }
       ],
-      "title": "Disk Write Latency (ms)",
-      "type": "timeseries"
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_metrics}"
+      },
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      }
     },
     {
       "datasource": {
@@ -2334,10 +2383,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 6,
         "x": 18,
-        "y": 16
+        "y": 20,
+        "h": 5,
+        "w": 6
       },
       "id": 83,
       "options": {
@@ -2902,10 +2951,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 6,
         "x": 18,
-        "y": 23
+        "y": 25,
+        "h": 5,
+        "w": 6
       },
       "id": 43,
       "options": {
