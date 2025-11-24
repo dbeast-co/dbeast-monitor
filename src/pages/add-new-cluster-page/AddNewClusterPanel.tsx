@@ -622,7 +622,7 @@ function AddNewClusterPanel() {
         </div>
       )}
       <header className={styles.header}>
-        <h1>Add new cluster panel</h1>
+        <h1>Add new cluster</h1>
       </header>
       <div className={styles.header}>
         <div className={styles.sourcePanel}>
