@@ -1859,7 +1859,7 @@
                 }
               ],
               "settings": {
-                "script": "params.read_count/params.read_count * -1"
+                "script": "params.read_time/params.read_count * -1"
               }
             }
           ],

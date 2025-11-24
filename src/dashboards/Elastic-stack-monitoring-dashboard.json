@@ -3511,7 +3511,7 @@
               "method": "GET",
               "queryParams": "",
               "refId": "A",
-              "urlPath": "/_nodes/ingest:true,master:true,ml:true/stats/os,jvm,fs?filter_path=nodes.*.roles,nodes.*.name"
+              "urlPath": "/_nodes/data:true/stats/os,jvm,fs?filter_path=nodes.*.roles,nodes.*.name"
             }
           ],
           "title": "Data nodes count",
@@ -5487,7 +5487,7 @@
               "method": "GET",
               "queryParams": "",
               "refId": "B",
-              "urlPath": "/_nodes/data_cold:true?filter_path=nodes.*.version,nodes.*.name"
+              "urlPath": "/_nodes/data_frozen:true?filter_path=nodes.*.version,nodes.*.name"
             }
           ],
           "title": "Data Frozen nodes status",
