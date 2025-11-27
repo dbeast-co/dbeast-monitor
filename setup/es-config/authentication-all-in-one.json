@@ -24,7 +24,8 @@ PUT /_security/role/dbeast-mon-role
 PUT /_security/role/dbeast-prod-role
 {
   "cluster": [
-    "monitor"
+    "monitor",
+    "manage"
   ],
   "indices": [
     {
