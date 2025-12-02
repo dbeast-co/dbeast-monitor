@@ -1,0 +1,103 @@
+services:
+  grafana:
+    user: root
+    container_name: grafana
+
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
+        grafana_version: ${GRAFANA_VERSION:-12.0.2}
+        development: ${DEVELOPMENT:-false}
+        anonymous_auth_enabled: ${ANONYMOUS_AUTH_ENABLED:-true}
+    ports:
+      - 3000:3000/tcp
+      - 2345:2345/tcp # delve
+    security_opt:
+      - 'apparmor:unconfined'
+      - 'seccomp:unconfined'
+    cap_add:
+      - SYS_PTRACE
+    volumes:
+      - ../dist:/var/lib/grafana/plugins/dbeast-dbeastmonitor-app
+      - .:/root/dbeast-dbeastmonitor-app
+      - ../provisioning:/etc/grafana/provisioning
+
+    environment:
+      NODE_ENV: development
+      GF_SERVER_HTTP_ADDR: 0.0.0.0
+      GF_LOG_FILTERS: plugin.dbeast-dbeastmonitor-app:info
+      GF_LOG_LEVEL: info
+      GF_DATAPROXY_LOGGING: 1
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: dbeast-dbeastmonitor-app
+      GF_INSTALL_PLUGINS: "marcusolsson-json-datasource,marcusolsson-dynamictext-panel,volkovlabs-grapi-datasource"
+      GF_DBEAST_MONITOR_VERSION: "OnPrem"
+      GF_SECURITY_ADMIN_USER: "admin"
+      GF_SECURITY_ADMIN_PASSWORD: "admin"
+
+    entrypoint: ["/entrypoint.sh"]
+
+  logstash-init:
+    image: docker.elastic.co/logstash/logstash:8.18.0
+    entrypoint: /bin/bash
+    command:
+      - -lc
+      - >
+        set -euo pipefail;
+        mkdir -p /out;
+        echo 'Copying entire config directory...';
+        cp -r -n /usr/share/logstash/config/* /out/;
+        grep -q '^config\.reload\.automatic:' /out/logstash.yml || echo 'config.reload.automatic: true' >> /out/logstash.yml;
+
+        ls -l /out
+
+    volumes:
+      - ./logstash-config:/out
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.18.0
+    user: root
+    container_name: logstash
+    ports:
+      - "5044:5044"
+      - "9600:9600"  # Logstash monitoring API
+    volumes:
+      - ./logstash-config:/usr/share/logstash/config
+      - ./logstash-config:/etc/logstash
+      - ./logstash-config/conf.d:/usr/share/logstash/config/conf.d
+    environment:
+      - LS_SETTINGS_CONFIG_RELOAD_AUTOMATIC=true
+
+  es-base:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
+    environment:
+      - cluster.name=es-docker
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+
+      # Security ON
+      - xpack.security.enabled=false
+
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elk
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.18.1
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge
+
