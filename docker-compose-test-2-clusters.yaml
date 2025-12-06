@@ -1,0 +1,67 @@
+networks:
+  elk:
+    driver: bridge
+services:
+  grafana:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: grafana
+    networks:
+      - elk
+
+  logstash-init:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: logstash-init
+    networks:
+      - elk
+
+  elasticsearch-prod:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: elasticsearch-prod
+    networks:
+      - elk
+
+  kibana-prod:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: kibana-prod
+    networks:
+      - elk
+
+  elasticsearch-mon:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: elasticsearch-mon
+    networks:
+      - elk
+
+  kibana-mon:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: kibana-mon
+    networks:
+      - elk
+
+  logstash:
+    extends:
+      file: docker/docker-compose-with-es-2-cluster.yaml
+      service: logstash
+    depends_on:
+      - logstash-init
+    networks:
+      - elk
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:8.18.1
+    container_name: metricbeat
+    user: root
+    depends_on:
+      - elasticsearch-prod
+    volumes:
+      - ./docker/metricbeat.template-mon.yml:/usr/share/metricbeat/metricbeat.template-mon.yml
+      - ./docker/metricbeat-entrypoint-mon.sh:/usr/local/bin/metricbeat-entrypoint-mon.sh
+    entrypoint: [ "/usr/local/bin/metricbeat-entrypoint-mon.sh" ]
+    networks:
+      - elk

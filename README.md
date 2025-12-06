@@ -4,6 +4,7 @@
 
 [![version: 2.0.5](https://img.shields.io/badge/version-2.0.5-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
+&nbsp;&nbsp;&nbsp; ![Downloads](https://img.shields.io/badge/dynamic/json?url=https://grafana.com/api/plugins/dbeast-dbeastmonitor-app/versions&label=downloads&query=$.items[0].downloads&color=red)
 
 [![elastic stack support](https://img.shields.io/badge/contact%20us-support@dbeast.co-blue?style=plastic)](mailto:support@dbeast.co?subject=Elastic%20Stack%20Support%20Request)
 &nbsp;&nbsp;&nbsp; [![sponsorship](https://img.shields.io/badge/sposorship-red?style=plastic)](https://github.com/sponsors/dbeast-co?frequency=recurring&sponsor=dbeast-co)

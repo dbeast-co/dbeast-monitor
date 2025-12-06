@@ -1,0 +1,11 @@
+services:
+  elasticsearch:
+    extends:
+      file: docker/docker-compose-elastic-stack.yaml
+      service: elasticsearch
+  kibana:
+    extends:
+      file: docker/docker-compose-elastic-stack.yaml
+      service: kibana
+    depends_on:
+      - elasticsearch

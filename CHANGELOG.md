@@ -12,6 +12,8 @@
 - Bug fixes
   * [BUG] Empty rows in the "Indices with Unassigned shard" [#230](https://github.com/dbeast-co/dbeast-monitor/issues/230)
   * [BUG] Incorrect visualization in the "Index monitor" dashboard [#228](https://github.com/dbeast-co/dbeast-monitor/issues/228)
+  * [BUG] Incorrect verification mode definition for the Logstash 9+ [#231](https://github.com/dbeast-co/dbeast-monitor/issues/231)
+
 
 ## Version 2.0.4 (2025-10-28)
 

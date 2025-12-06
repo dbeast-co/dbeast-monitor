@@ -1,0 +1,130 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
+    container_name: elasticsearch
+    environment:
+      - cluster.name=test-secure-cluster
+      - discovery.type=single-node
+
+      # 🔐 turn on security but keep it simple (no TLS for local use)
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+
+      - xpack.monitoring.collection.enabled=true
+
+      # bootstrap password for built-in superuser "elastic"
+      # you'll use this to log into Kibana UI
+      - ELASTIC_PASSWORD=elasticpass
+
+      # JVM heap
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      # shared volume for passing token/password to Kibana
+      - estokens:/run/es-secrets
+
+  #
+  # This is the "init job".
+  # It waits for Elasticsearch to come up, then:
+  #   1. sets a password for kibana_system
+  #   2. creates a Kibana service account token
+  #   3. writes that token to /run/es-secrets/token
+  #
+  # After it finishes, it exits successfully.
+  #
+  kibana-bootstrap:
+    image: curlimages/curl:8.10.1
+    container_name: kibana-bootstrap
+    depends_on:
+      - elasticsearch
+    environment:
+      # must match ELASTIC_PASSWORD in elasticsearch service
+      - ELASTIC_PASSWORD=elasticpass
+    volumes:
+      - estokens:/run/es-secrets
+    entrypoint: >
+      sh -c '
+        echo "[bootstrap] waiting for Elasticsearch...";
+        # wait until ES responds on 9200 with HTTP 200
+        until curl -s -o /dev/null -w "%{http_code}" -u elastic:${ELASTIC_PASSWORD} http://elasticsearch:9200 | grep -q "200"; do
+          sleep 2;
+        done
+
+        echo "[bootstrap] Elasticsearch is up, configuring security...";
+
+        # 1) set password for kibana_system user so it can be used if needed
+        # (Kibana historically uses kibana_system internally; we set it here.
+        #  This is still useful for debugging / fallback.)
+        curl -s -X POST \
+          -u elastic:${ELASTIC_PASSWORD} \
+          -H "Content-Type: application/json" \
+          http://elasticsearch:9200/_security/user/kibana_system/_password \
+          -d "{\"password\":\"kibana_internal\"}" >/dev/null
+
+        # 2) create Kibana service account token (preferred in 8.x)
+        # Kibana supports ELASTICSEARCH_SERVICEACCOUNTTOKEN so we won't hit
+        # the "elastic is forbidden" error. :contentReference[oaicite:2]{index=2}
+        TOKEN_JSON=$(curl -s -X POST \
+          -u elastic:${ELASTIC_PASSWORD} \
+          "http://elasticsearch:9200/_security/service/elastic/kibana/credential/token/kibana-docker")
+
+        # extract the "value" field from JSON and save to a file in the shared volume
+        TOKEN_VALUE=$(echo "$TOKEN_JSON" | sed -n "s/.*\"value\"[[:space:]]*:[[:space:]]*\"\([^\"]*\)\".*/\1/p")
+
+        echo "$TOKEN_VALUE" > /run/es-secrets/token
+        echo "[bootstrap] wrote Kibana service token to shared volume."
+
+        # we are done, exit 0 so compose treats this container as completed
+        exit 0
+      '
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.18.1
+    container_name: kibana
+    # Kibana must not start until kibana-bootstrap finished writing the token
+    depends_on:
+      - kibana-bootstrap
+    ports:
+      - "5601:5601"
+    volumes:
+      # same shared volume so Kibana can read the token
+      - estokens:/run/es-secrets
+    environment:
+      # point Kibana at Elasticsearch
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
+      # We will set ELASTICSEARCH_SERVICEACCOUNTTOKEN dynamically from the file
+      # using a tiny wrapper entrypoint below.
+      #
+      # Kibana will use this token internally instead of trying to log in as "elastic",
+      # which is forbidden. :contentReference[oaicite:3]{index=3}
+
+      # Kibana requires encryption keys when security is on
+      - XPACK_SECURITY_ENABLED=true
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=please_change_me_at_least_32_chars_long_1
+      - XPACK_REPORTING_ENCRYPTIONKEY=please_change_me_at_least_32_chars_long_2
+      - XPACK_SECURITY_ENCRYPTIONKEY=please_change_me_at_least_32_chars_long_3
+
+      # dev mode: no TLS on Kibana
+      - SERVER_SSL_ENABLED=false
+    entrypoint: >
+      sh -c '
+        # read the token that kibana-bootstrap generated
+        export ELASTICSEARCH_SERVICEACCOUNTTOKEN=$(cat /run/es-secrets/token)
+        echo "[kibana] got service account token, starting Kibana..."
+        exec /usr/local/bin/kibana-docker
+      '
+
+volumes:
+  esdata:
+  estokens:

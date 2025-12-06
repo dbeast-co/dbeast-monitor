@@ -2,12 +2,13 @@ services:
   grafana:
     user: root
     container_name: grafana
+
     build:
       context: .
       dockerfile: ./Dockerfile
       args:
-        grafana_image: ${GRAFANA_IMAGE:-grafana}
-        grafana_version: ${GRAFANA_VERSION:-12.1.0}
+        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
+        grafana_version: ${GRAFANA_VERSION:-12.0.2}
         development: ${DEVELOPMENT:-false}
         anonymous_auth_enabled: ${ANONYMOUS_AUTH_ENABLED:-true}
     ports:
@@ -68,20 +69,22 @@ services:
     environment:
       - LS_SETTINGS_CONFIG_RELOAD_AUTOMATIC=true
 
-  elasticsearch:
+  es-base:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
-    container_name: elasticsearch
     environment:
-      - cluster.name=test-monitoring-cluster
-      - discovery.type=single-node
+      - cluster.name=es-docker
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+
+      # Security ON
       - xpack.security.enabled=false
-      - xpack.monitoring.collection.enabled=true
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
-    ports:
-      - "9200:9200"   # HTTP
-      - "9300:9300"   # Internal transport
-    volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elk
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.18.1
@@ -91,5 +94,10 @@ services:
       - xpack.security.enabled=false
     ports:
       - "5601:5601"
+    networks:
+      - elk
 
+networks:
+  elk:
+    driver: bridge
 

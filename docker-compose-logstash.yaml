@@ -1,0 +1,9 @@
+services:
+  logstash-init:
+    extends:
+      file: docker/docker-compose-with-es-cluster.yaml
+      service: logstash-init
+  logstash:
+    extends:
+      file: docker/docker-compose-with-es-cluster.yaml
+      service: logstash

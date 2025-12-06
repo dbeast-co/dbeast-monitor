@@ -1,7 +1,8 @@
 PUT /_security/role/dbeast-prod-role
 {
   "cluster": [
-    "monitor"
+    "monitor",
+    "manage"
   ],
   "indices": [
     {
