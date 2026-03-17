@@ -1,0 +1,22 @@
+{
+  "orgId": 1,
+  "name": "Elasticsearch-infinity-prod--",
+  "type": "yesoreyeram-infinity-datasource",
+  "typeLogoUrl": "public/plugins/yesoreyeram-infinity-datasource/img/icon.svg",
+  "access": "proxy",
+  "url": "",
+  "basicAuth": false,
+  "basicAuthUser": "",
+  "withCredentials": false,
+  "jsonData": {
+    "auth_method": "basicAuth",
+    "global_queries": [],
+    "oauthPassThru": false,
+    "pdcInjected": false,
+    "tlsSkipVerify": true
+  },
+  "secureJsonFields": {
+    "basicAuthPassword": true
+  },
+  "readOnly": false
+}

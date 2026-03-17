@@ -356,6 +356,15 @@ func UpdateGrafanaDataSourceTemplates(environmentConfig EnvironmentConfig, clust
 		case strings.HasPrefix(name, "json_api_datasource_kibana"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameProd, uidProd)
 			break
+		case strings.HasPrefix(name, "infinity_datasource_elasticsearch_mon"):
+			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
+			break
+		case strings.HasPrefix(name, "infinity_datasource_elasticsearch_prod"):
+			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Elasticsearch, clusterNameProd, uidProd)
+			break
+		case strings.HasPrefix(name, "infinity_datasource_kibana"):
+			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameProd, uidProd)
+			break
 		case strings.HasPrefix(name, "elasticsearch_datasource"):
 			UpdateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
