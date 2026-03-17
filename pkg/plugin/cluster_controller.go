@@ -123,7 +123,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 	}
 }
 
-func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *http.Request) {
+func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the new cluster save")
 
@@ -131,27 +131,10 @@ func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *
 
 	response.Header().Add("Content-Type", "application/json")
 
-	var project Project
-	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
-		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
-		return
-	}
-	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
-
-	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	UpdatedTemplates, err := a.prepareClusterTemplates(response, request, ctxLogger)
 	if err != nil {
-		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
-
-	clusterNameProd, clusterId, err := GetClusterInfo(client, project.ClusterConnectionSettings.Prod.Elasticsearch.Host)
-	if err != nil {
-		HTTPErrorGenerator(response, err, "Error while receiving cluster info for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
-		return
-	}
-
-	//Update Grafana datasource templates with actual values and return them to the Frontend for the future ingesting into Grafana
-	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
 	updatedTemplatesJSON, err := json.MarshalIndent(UpdatedTemplates, "", "")
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while the updated templates parsing for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
@@ -164,6 +147,93 @@ func (a *App) AddClusterHandlerToGrafana(response http.ResponseWriter, request *
 		log.DefaultLogger.Error("Can't write to the response for add new cluster to Grafana request: " + err.Error())
 		return
 	}
+}
+
+func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the new cluster add via API")
+
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
+
+	var project Project
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
+		return
+	}
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+
+	elasticsearchClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	clusterNameProd, clusterId, err := GetClusterInfo(elasticsearchClient, project.ClusterConnectionSettings.Prod.Elasticsearch.Host)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while receiving cluster info for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
+
+	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating Grafana HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	err = DeleteDataSourcesByClusterID(grafanaClient, project.ClusterConnectionSettings.Mon.Grafana.Host, clusterId)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while deleting data sources for the Grafana cluster: "+clusterId, http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	for templateName, ds := range UpdatedTemplates {
+		ctxLogger.Debug("Adding new datasource: " + templateName)
+		err := AddDataSource(grafanaClient, project.ClusterConnectionSettings.Mon.Grafana.Host, ds, templateName)
+
+		if err != nil {
+			HTTPErrorGenerator(response, err, "Error while data source ingest. Data source: "+templateName, http.StatusInternalServerError, ctxLogger)
+			return
+		}
+		ctxLogger.Debug("Successfully ingest datasource:" + templateName)
+	}
+
+	ctxLogger.Info("Completed processing datasources.")
+
+	response.WriteHeader(http.StatusOK)
+	_, err = response.Write([]byte("Ok"))
+	if err != nil {
+		ctxLogger.Error("Can't write to the response for add/update datasources request: " + err.Error())
+		return
+	}
+}
+
+func (a *App) prepareClusterTemplates(response http.ResponseWriter, request *http.Request, ctxLogger log.Logger) (map[string]interface{}, error) {
+	var project Project
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
+		return nil, err
+	}
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return nil, err
+	}
+
+	clusterNameProd, clusterId, err := GetClusterInfo(client, project.ClusterConnectionSettings.Prod.Elasticsearch.Host)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while receiving cluster info for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return nil, err
+	}
+
+	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
+
+	return UpdatedTemplates, nil
 }
 
 func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
