@@ -32,50 +32,7 @@ type GrafanaDataSource struct {
 	WithCredentials bool                   `json:"withCredentials,omitempty"`
 }
 
-// dataSourceExists checks if a datasource with the specified name exists
-// Returns true if datasource exists, false otherwise
-func dataSourceExists(client *http.Client, grafanaURL string, name string) (bool, error) {
-	requestURL := grafanaURL + "/api/datasources/name/" + name
-	log.DefaultLogger.Debug("Request path: ", requestURL)
-
-	req, err := http.NewRequest("GET", requestURL, nil)
-	if err != nil {
-		log.DefaultLogger.Error("Error creating HTTP request: " + err.Error())
-		return false, fmt.Errorf("create request: %w", err)
-	}
-
-	response, err := client.Do(req)
-	if err != nil {
-		log.DefaultLogger.Error("Error making HTTP request: " + err.Error())
-		return false, fmt.Errorf("http request failed: %w", err)
-	}
-	defer DeferInternalHandler(response, log.DefaultLogger)
-
-	if response.StatusCode == http.StatusOK {
-		log.DefaultLogger.Debug("Datasource exists: " + name)
-		return true, nil
-	} else if response.StatusCode == http.StatusNotFound {
-		log.DefaultLogger.Debug("Datasource not found: " + name)
-		return false, nil
-	}
-
-	body, _ := io.ReadAll(response.Body)
-	return false, fmt.Errorf("check datasource: HTTP %s, body: %s",
-		response.Status, string(body))
-}
-
 func AddDataSource(client *http.Client, grafanaURL string, dataSource interface{}, dsName string) error {
-	// Check if datasource already exists
-	exists, err := dataSourceExists(client, grafanaURL, dsName)
-	if err != nil {
-		log.DefaultLogger.Error("Error checking if datasource exists: " + err.Error())
-		return fmt.Errorf("datasource existence check: %w", err)
-	}
-	if exists {
-		log.DefaultLogger.Info("Datasource already exists, skipping creation: " + dsName)
-		return nil
-	}
-
 	requestURL := grafanaURL + "/api/datasources"
 	log.DefaultLogger.Debug("Request path: ", requestURL)
 

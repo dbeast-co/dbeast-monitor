@@ -190,15 +190,42 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 		return
 	}
 
-	for templateName, ds := range UpdatedTemplates {
-		ctxLogger.Debug("Adding new datasource: " + templateName)
-		err := AddDataSource(grafanaClient, project.ClusterConnectionSettings.Mon.Grafana.Host, ds, templateName)
+	// Get all existing data sources upfront
+	existingDataSources, err := GetDataSources(grafanaClient, project.ClusterConnectionSettings.Mon.Grafana.Host)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while retrieving existing data sources: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	// Build a map of existing data source names for efficient lookup
+	existingDataSourceNames := make(map[string]bool)
+	for _, ds := range existingDataSources {
+		existingDataSourceNames[ds.Name] = true
+	}
+
+	// Add data sources only if they don't already exist
+	for _, ds := range UpdatedTemplates {
+		// Extract the actual data source name from the template object
+		var dsName string
+		if dsMap, ok := ds.(map[string]interface{}); ok {
+			if name, ok := dsMap["name"].(string); ok {
+				dsName = name
+			}
+		}
+
+		if existingDataSourceNames[dsName] {
+			ctxLogger.Debug("Data source already exists, skipping: " + dsName)
+			continue
+		}
+
+		ctxLogger.Debug("Adding new datasource: " + dsName)
+		err := AddDataSource(grafanaClient, project.ClusterConnectionSettings.Mon.Grafana.Host, ds, dsName)
 
 		if err != nil {
-			HTTPErrorGenerator(response, err, "Error while data source ingest. Data source: "+templateName, http.StatusInternalServerError, ctxLogger)
+			HTTPErrorGenerator(response, err, "Error while data source ingest. Data source: "+dsName, http.StatusInternalServerError, ctxLogger)
 			return
 		}
-		ctxLogger.Debug("Successfully ingest datasource:" + templateName)
+		ctxLogger.Debug("Successfully ingest datasource: " + dsName)
 	}
 
 	ctxLogger.Info("Completed processing datasources.")
