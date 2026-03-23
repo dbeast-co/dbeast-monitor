@@ -178,7 +178,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 
 	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
 
-	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Grafana)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating Grafana HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
 		return
