@@ -21,6 +21,7 @@ type EnvironmentConfig struct {
 	} `json:"prod"`
 	Mon struct {
 		Elasticsearch Credentials `json:"elasticsearch"`
+		Grafana       Credentials `json:"grafana"`
 	} `json:"mon"`
 }
 
@@ -53,6 +54,7 @@ type StatusData struct {
 	} `json:"prod"`
 	Mon struct {
 		Elasticsearch Status `json:"elasticsearch"`
+		Grafana       Status `json:"grafana,omitempty"`
 	} `json:"mon"`
 }
 
