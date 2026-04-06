@@ -23,6 +23,11 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
         display: grid;
         width: 100%;
         grid-template-columns: 1fr 0.2fr;
+        height: 60px;
+
+        .col {
+          overflow: hidden;
+        }
       }
 
       footer {
@@ -39,7 +44,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
           &.header-cluster {
             max-width: 95%;
             width: 100%;
-            overflow: auto;
+            overflow: hidden;
           }
         }
       }
@@ -111,12 +116,11 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     `,
 
     listItem: css`
-    
-      .MuiListItem-root {
+      .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        grid-row-gap: 20px;
-        grid-column-gap: 9px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 20px 9px;
+        padding: 0.5rem;
 
         div {
           .label {
@@ -126,24 +130,19 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
             border-radius: 6px;
             background: transparent;
             font-size: 14px;
-            padding: 2px 6px;
+            padding: 6px 12px;
             display: inline-block;
             margin-bottom: 4px;
-          }
-
-          .MuiListItemText-primary {
-            color: ${theme.colors.text.primary};
           }
         }
       }
     `,
 
     buttons: css`
-    
       display: flex;
       justify-content: flex-end;
       gap: 10px;
-    
+
       button.btn {
         border: 1px solid ${theme.colors.border.medium};
         border-radius: 5px;
@@ -175,6 +174,10 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
     select: css`
       .MuiInputBase-root {
         max-width: 100%;
+      }
+
+      .css-1q0c0d5-grafana-select-value-container {
+        padding: 0.7rem !important;
       }
       :global(.MuiList-root) {
         background-color: ${theme.colors.background.secondary} !important;
@@ -221,7 +224,6 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
       .MuiOutlinedInput-notchedOutline {
         border-color: ${theme.colors.primary.main};
       }
-
     `,
 
     dialog: css`
@@ -297,7 +299,7 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
       .MuiMenuItem-root {
         color: ${theme.colors.text.primary} !important;
         background-color: ${theme.colors.background.secondary} !important;
-       
+
         // &:hover {
         //   background-color: ${theme.colors.action.hover} !important;
         //   color: ${theme.colors.text.primary} !important;
@@ -308,6 +310,6 @@ export const getDataSourceItemStyles = (theme: GrafanaTheme2) => {
           text-decoration: none;
         }
       }
-    `
+    `,
   };
 };

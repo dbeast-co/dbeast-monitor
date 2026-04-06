@@ -1,6 +1,6 @@
 {
   "name": "dbeast-monitor-app",
-  "version": "2.0.4",
+  "version": "2.0.6-Beta",
   "description": "DBeast Monitoring toolkit for Elastic Stack",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
@@ -73,15 +73,10 @@
   },
   "dependencies": {
     "@emotion/css": "11.10.6",
-    "@emotion/styled": "^11.14.0",
     "@grafana/data": "^12.0.2",
     "@grafana/runtime": "^12.0.2",
     "@grafana/schema": "^12.0.2",
     "@grafana/ui": "^12.0.2",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.11.16",
-    "@mui/x-data-grid": "^7.3.1",
-    "@mui/x-data-grid-generator": "^7.3.1",
     "file-saver": "^2.0.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",

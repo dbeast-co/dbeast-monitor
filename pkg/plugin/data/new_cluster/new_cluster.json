@@ -23,6 +23,13 @@
         "username": "",
         "password": "",
         "status": "UNTESTED"
+      },
+      "grafana": {
+        "host": "",
+        "authentication_enabled": false,
+        "username": "",
+        "password": "",
+        "status": "UNTESTED"
       }
     }
   },

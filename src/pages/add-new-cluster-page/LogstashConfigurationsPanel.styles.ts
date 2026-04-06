@@ -44,6 +44,11 @@ export const getLogstashConfigurationsPanelStyles = (theme: GrafanaTheme2) => {
 
     configItem: css`
       margin-bottom: 8px;
+
+      .css-1n4u71h-Label{
+         font-size: 16px !important;
+      }
+   
       
       &:last-child {
         margin-bottom: 0;

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getStyles } from './AddNewClusterPanel.styles';
-import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-import { useTheme2 } from '@grafana/ui';
+import { useTheme2, Input, Field, Checkbox, Spinner, Modal, Tooltip, Icon } from '@grafana/ui';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from './models/connection-settings';
 import { Datasource } from './models/datasource';
@@ -23,8 +18,6 @@ import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
 import LogstashComponent, { Logstash } from './logstash';
 import { v4 as uuidv4 } from 'uuid';
 import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPanel';
-
-import Tooltip from '@mui/material/Tooltip';
 
 const settings = require('./config.ts');
 
@@ -625,11 +618,11 @@ function AddNewClusterPanel() {
     <section className={styles.connectionsAndConfig}>
       {isLoading && (
         <div className={styles.spinnerOverlay}>
-          <CircularProgress color="primary" />
+          <Spinner />
         </div>
       )}
       <header className={styles.header}>
-        <h1>Add new cluster panel</h1>
+        <h1>Add new cluster</h1>
       </header>
       <div className={styles.header}>
         <div className={styles.sourcePanel}>
@@ -638,13 +631,13 @@ function AddNewClusterPanel() {
             <div className={styles.sourceConnectionGroup}>
               <h3 className={styles.title}>Source connection</h3>
               <div className={`${styles.hostWrapper} ${styles.formWrapper}`}>
-                <TextField
-                  id="standard-basic-1"
-                  label="Elasticsearch Host"
-                  variant="standard"
-                  value={connectionSettings.prod.elasticsearch.host ?? ''}
-                  onChange={onInputHost}
-                />
+                <Field label="Elasticsearch Host">
+                  <Input
+                    id="standard-basic-1"
+                    value={connectionSettings.prod.elasticsearch.host ?? ''}
+                    onChange={onInputHost}
+                  />
+                </Field>
                 {!validHost && connectionSettings.prod.elasticsearch.host && (
                   <span className="invalid">Host format is invalid</span>
                 )}
@@ -664,66 +657,63 @@ function AddNewClusterPanel() {
                 </div>
               </div>
               <div className={styles.hostWrapper}>
-                <TextField
-                  id="standard-basic-2"
-                  label="Kibana host"
-                  variant="standard"
-                  value={connectionSettings.prod.kibana.host ?? ''}
-                  onChange={onInputKibanaHost}
-                />
+                <Field label="Kibana host">
+                  <Input
+                    id="standard-basic-2"
+                    value={connectionSettings.prod.kibana.host ?? ''}
+                    onChange={onInputKibanaHost}
+                  />
+                </Field>
                 {!validKibanaHost && connectionSettings.prod.kibana.host && (
                   <span className="invalid">Host format is invalid</span>
                 )}
               </div>
 
-              <FormControlLabel
-                value="top"
-                control={
-                  <Checkbox
-                    id="checkbox1"
-                    onChange={onCheckAuth}
-                    checked={connectionSettings.prod.elasticsearch.authentication_enabled}
-                  />
-                }
-                label="Use authentication"
-              />
+              <Field>
+                <Checkbox
+                  id="checkbox1"
+                  onChange={onCheckAuth}
+                  checked={connectionSettings.prod.elasticsearch.authentication_enabled}
+                  label='Use authentication'
+                />
+              </Field>
               <div className="auth_wrapper">
-                <TextField
-                  id="standard-basic-3 text_1"
-                  key="text_1"
-                  label="Username"
-                  variant="standard"
-                  value={connectionSettings.prod.elasticsearch.username}
-                  onChange={onUserNameInput}
-                  disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
-                />
-                <TextField
-                  id="standard-basic-4 text_2"
-                  type="password"
-                  key="text_2"
-                  label="Password"
-                  variant="standard"
-                  value={connectionSettings.prod.elasticsearch.password}
-                  onChange={onUserPasswordInput}
-                  disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
-                />
+                <Field label="Username">
+                  <Input
+                    id="standard-basic-3 text_1"
+                    key="text_1"
+                    value={connectionSettings.prod.elasticsearch.username || ''}
+                    onChange={onUserNameInput}
+                    disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
+                  />
+                </Field>
+                <Field label="Password">
+                  <Input
+                    id="standard-basic-4 text_2"
+                    type="password"
+                    key="text_2"
+                    value={connectionSettings.prod.elasticsearch.password || ''}
+                    onChange={onUserPasswordInput}
+                    disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
+                  />
+                </Field>
               </div>
             </div>
-            <Divider className={`${styles.divider} add-new-cluster-divider`}></Divider>
+            <div className={`${styles.divider} add-new-cluster-divider`}></div>
             <div>
               <h3 className={`${styles.title} ${styles.monitoringClusterTitle}`}>Monitoring cluster</h3>
 
               <div className={styles.monitoringClusterGroup}>
                 <div className={styles.hostWrapper}>
-                  <TextField
-                    id="standard-basic-5"
-                    label="Monitoring Host"
-                    variant="standard"
-                    value={connectionSettings.mon.elasticsearch.host}
-                    onChange={onInputMonitoringHost}
-                  />
+                  <Field label="Monitoring Host">
+                    <Input
+                      id="standard-basic-5"
+                      value={connectionSettings.mon.elasticsearch.host}
+                      onChange={onInputMonitoringHost}
+                    />
+                  </Field>
                   {!validMonitoringHost && connectionSettings.mon.elasticsearch.host && (
-                    <span>Monitoring host format is invalid</span>
+                    <span className="invalid">Monitoring host format is invalid</span>
                   )}
 
                   <div className={styles.status}>
@@ -741,37 +731,34 @@ function AddNewClusterPanel() {
                   </div>
                 </div>
 
-                <FormControlLabel
-                  value="top"
-                  control={
-                    <Checkbox
-                      id="checkbox2"
-                      checked={connectionSettings.mon.elasticsearch.authentication_enabled}
-                      onChange={onCheckMonitoringAuth}
-                    />
-                  }
-                  label="Use authentication"
-                />
+                <Field>
+                  <Checkbox
+                    id="checkbox2"
+                    checked={connectionSettings.mon.elasticsearch.authentication_enabled}
+                    onChange={onCheckMonitoringAuth}
+                    label='Use authentication'
+                  />
+                </Field>
                 <div className="auth_wrapper">
-                  <TextField
-                    id="standard-basic-6 text_1"
-                    key="text_1"
-                    label="Username"
-                    variant="standard"
-                    value={connectionSettings.mon.elasticsearch.username}
-                    onChange={onInputMonitoringUsername}
-                    disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
-                  />
-                  <TextField
-                    id="standard-basic-7 text_2"
-                    type="password"
-                    key="text_2"
-                    label="Password"
-                    variant="standard"
-                    value={connectionSettings.mon.elasticsearch.password}
-                    onChange={onInputMonitoringPassword}
-                    disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
-                  />
+                  <Field label="Username">
+                    <Input
+                      id="standard-basic-6 text_1"
+                      key="text_1"
+                      value={connectionSettings.mon.elasticsearch.username || ''}
+                      onChange={onInputMonitoringUsername}
+                      disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
+                    />
+                  </Field>
+                  <Field label="Password">
+                    <Input
+                      id="standard-basic-7 text_2"
+                      type="password"
+                      key="text_2"
+                      value={connectionSettings.mon.elasticsearch.password || ''}
+                      onChange={onInputMonitoringPassword}
+                      disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
+                    />
+                  </Field>
                 </div>
               </div>
 
@@ -787,7 +774,7 @@ function AddNewClusterPanel() {
 
             {isLoading && (
               <div className={styles.spinnerOverlay}>
-                <CircularProgress color="primary" />
+                <Spinner />
               </div>
             )}
           </section>
@@ -799,10 +786,8 @@ function AddNewClusterPanel() {
           <div className="wrapper">
             <div className={styles.sectionHeader}>
               <h3 className={styles.title}>Monitoring Cluster Injections</h3>
-              <Tooltip
-                title="Select the configuration files to inject into the monitoring cluster. Choose all if this is your first setup, or deselect if they already exist. Existing objects will be overwritten."
-                arrow>
-                <HelpOutlineIcon fontSize="small" />
+              <Tooltip content="Select the configuration files to inject into the monitoring cluster. Choose all if this is your first setup, or deselect if they already exist. Existing objects will be overwritten.">
+                <Icon name="question-circle" />
               </Tooltip>
             </div>
             {cluster && cluster.monitoring_cluster_injection && (
@@ -817,14 +802,12 @@ function AddNewClusterPanel() {
                 Deploy
               </button>
             </div>
-            <Divider className={`${styles.divider} add-new-cluster-divider-2`}></Divider>
+            <div className={`${styles.divider} add-new-cluster-divider-2`}></div>
 
             <div className={styles.sectionHeader}>
               <h3 className={styles.title}>Production cluster configuration</h3>
-              <Tooltip
-                title="Select the data sources to ship from Elasticsearch. Unchecking some sources may result in incomplete dashboard data."
-                arrow>
-                <HelpOutlineIcon fontSize="small" />
+              <Tooltip content="Select the data sources to ship from Elasticsearch. Unchecking some sources may result in incomplete dashboard data.">
+                <Icon name="question-circle" />
               </Tooltip>
             </div>
 
@@ -851,14 +834,12 @@ function AddNewClusterPanel() {
               )}
             </div>
           </div>
-          <Divider className={`${styles.divider} add-new-cluster-divider-2`}></Divider>
+          <div className={`${styles.divider} add-new-cluster-divider-2`}></div>
 
           <div className={styles.sectionHeader}>
             <h3 className={styles.title}>Logstash monitoring</h3>
-            <Tooltip
-              title="This section is for Logstash monitoring. Add Logstash instance details and download the configuration files needed to enable monitoring."
-              arrow>
-              <HelpOutlineIcon fontSize="small" />
+            <Tooltip content="This section is for Logstash monitoring. Add Logstash instance details and download the configuration files needed to enable monitoring.">
+              <Icon name="question-circle" />
             </Tooltip>
           </div>
 
@@ -876,23 +857,18 @@ function AddNewClusterPanel() {
               <button onClick={onOpenAddDialog}>
                 Add logstash
               </button>
-              <Dialog
+              <Modal
                 className={styles.dialog}
-                open={isOpanAddDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+                isOpen={isOpanAddDialog}
+                title="Logstash configurations"
+                onDismiss={onCancel}
               >
-                <DialogTitle id="alert-dialog-title">{'Logstash configurations'}</DialogTitle>
-                <div className="header-actions"></div>
-                <DialogContent>
-                  <LogstashComponent
-                    logstash={logstash}
-                    onCancel={onCancel}
-                    onSave={(logstash) => onSaveAddedLogstash(logstash)}
-                  />
-                </DialogContent>
-                <DialogActions></DialogActions>
-              </Dialog>
+                <LogstashComponent
+                  logstash={logstash}
+                  onCancel={onCancel}
+                  onSave={(logstash) => onSaveAddedLogstash(logstash)}
+                />
+              </Modal>
               <button
                 disabled={isDisabled || logstashList.length === 0}
                 onClick={() => onDownload(LogstashFileType.LOGSTASH_MONITORING_CONFIGURATION_FILES)}

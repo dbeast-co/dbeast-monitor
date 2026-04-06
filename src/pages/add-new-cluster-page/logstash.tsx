@@ -1,7 +1,6 @@
 import React from 'react';
-import TextField from '@mui/material/TextField';
+import { Input, Field, useTheme2 } from '@grafana/ui';
 import { getLogstashStyles } from './logstash.styles';
-import { useTheme2 } from '@grafana/ui';
 
 export interface Props {
   logstash: Logstash;
@@ -56,31 +55,31 @@ const LogstashComponent = (state: Props) => {
   return (
     <div className={styles.sourcePanel}>
       <div className={styles.textField}>
-        <TextField
-          id="standard-basic-1"
-          label="Server address"
-          variant="standard"
-          value={logstash.serverAddress ?? ''}
-          onChange={onInputServerAddress}
-        />
+        <Field label="Server address">
+          <Input
+            id="standard-basic-1"
+            value={logstash.serverAddress ?? ''}
+            onChange={onInputServerAddress}
+          />
+        </Field>
       </div>
       <div className={styles.textField}>
-        <TextField
-          id="standard-basic-2"
-          label="Logstash Api Host"
-          variant="standard"
-          value={logstash.logstashApiHost ?? ''}
-          onChange={onInputHost}
-        />
+        <Field label="Logstash Api Host">
+          <Input
+            id="standard-basic-2"
+            value={logstash.logstashApiHost ?? ''}
+            onChange={onInputHost}
+          />
+        </Field>
       </div>
       <div className={styles.textField}>
-        <TextField
-          id="standard-basic-3"
-          label="Logstash Logs Folder"
-          variant="standard"
-          value={logstash.logstashLogsFolder ?? ''}
-          onChange={onInputFolder}
-        />
+        <Field label="Logstash Logs Folder">
+          <Input
+            id="standard-basic-3"
+            value={logstash.logstashLogsFolder ?? ''}
+            onChange={onInputFolder}
+          />
+        </Field>
       </div>
       <div className={styles.actions}>
         <button className="cancel-btn" onClick={() => onCancel()}>

@@ -330,11 +330,11 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
 
     sourceConnectionGroup: css`
-      margin-block-end: 4.5rem;
+      margin-block-end: 1.9rem;
     `,
 
     monitoringClusterGroup: css`
-      margin-block-end: 4.5rem;
+      margin-block-end: 1.9rem;
     `,
 
     monitoringClusterTitle: css`

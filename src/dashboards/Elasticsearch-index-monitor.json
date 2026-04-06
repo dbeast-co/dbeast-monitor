@@ -683,7 +683,7 @@
         ]
       },
       "gridPos": {
-        "h": 17,
+        "h": 18,
         "w": 8,
         "x": 0,
         "y": 4
@@ -830,7 +830,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -884,7 +884,7 @@
         ]
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 8,
         "x": 8,
         "y": 4
@@ -989,7 +989,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1018,12 +1018,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 8,
         "x": 16,
         "y": 4
       },
-      "id": 33,
+      "id": 31,
       "options": {
         "legend": {
           "calcs": [],
@@ -1038,7 +1038,7 @@
       },
       "targets": [
         {
-          "alias": "",
+          "alias": "Search query rate",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -1064,7 +1064,7 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "elasticsearch.index.total.search.query_latency",
+              "field": "elasticsearch.index.total.search.query_rate",
               "id": "1",
               "type": "avg"
             }
@@ -1076,21 +1076,8 @@
           "urlPath": ""
         }
       ],
-      "title": "Query latency",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Average elasticsearch.index.total.search.query_latency": "Avg query latency",
-              "Max elasticsearch.index.total.docs.count": "Docs count",
-              "Time": ""
-            }
-          }
-        }
-      ],
+      "title": "Query rate",
+      "transformations": [],
       "type": "timeseries",
       "maxDataPoints": 100,
       "maxDataPoints": 100
@@ -1131,7 +1118,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1163,7 +1150,7 @@
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 9
+        "y": 10
       },
       "id": 32,
       "options": {
@@ -1272,7 +1259,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1304,9 +1291,9 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 9
+        "y": 10
       },
-      "id": 31,
+      "id": 33,
       "options": {
         "legend": {
           "calcs": [],
@@ -1321,7 +1308,7 @@
       },
       "targets": [
         {
-          "alias": "Search query rate",
+          "alias": "",
           "bucketAggs": [
             {
               "field": "@timestamp",
@@ -1347,7 +1334,7 @@
           "method": "GET",
           "metrics": [
             {
-              "field": "elasticsearch.index.total.search.query_rate",
+              "field": "elasticsearch.index.total.search.query_latency",
               "id": "1",
               "type": "avg"
             }
@@ -1359,8 +1346,21 @@
           "urlPath": ""
         }
       ],
-      "title": "Query rate",
-      "transformations": [],
+      "title": "Query latency",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Average elasticsearch.index.total.search.query_latency": "Avg query latency",
+              "Max elasticsearch.index.total.docs.count": "Docs count",
+              "Time": ""
+            }
+          }
+        }
+      ],
       "type": "timeseries",
       "maxDataPoints": 100,
       "maxDataPoints": 100
@@ -1402,7 +1402,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1459,7 +1459,7 @@
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 15
+        "y": 16
       },
       "id": 29,
       "options": {
@@ -1573,7 +1573,7 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": 120000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1605,7 +1605,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 15
+        "y": 16
       },
       "id": 28,
       "options": {
@@ -1672,7 +1672,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 22
       },
       "id": 36,
       "panels": [
@@ -1738,7 +1738,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 22
+            "y": 23
           },
           "id": 37,
           "options": {
@@ -1858,7 +1858,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 22
+            "y": 23
           },
           "id": 39,
           "options": {
@@ -1979,7 +1979,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 22
+            "y": 23
           },
           "id": 41,
           "options": {
@@ -2101,7 +2101,7 @@
             "h": 7,
             "w": 8,
             "x": 0,
-            "y": 29
+            "y": 30
           },
           "id": 38,
           "options": {
@@ -2223,7 +2223,7 @@
             "h": 7,
             "w": 8,
             "x": 8,
-            "y": 29
+            "y": 30
           },
           "id": 40,
           "options": {
@@ -2344,7 +2344,7 @@
             "h": 7,
             "w": 8,
             "x": 16,
-            "y": 29
+            "y": 30
           },
           "id": 42,
           "options": {

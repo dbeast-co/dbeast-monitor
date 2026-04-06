@@ -46,6 +46,7 @@ func sanitizeEnvironmentConfig(config *EnvironmentConfig) {
 	sanitizeHost(&config.Prod.Elasticsearch.Host)
 	sanitizeHost(&config.Prod.Kibana.Host)
 	sanitizeHost(&config.Mon.Elasticsearch.Host)
+	sanitizeHost(&config.Mon.Grafana.Host)
 }
 
 func DeferHandler(request *http.Request, logger log.Logger) {
