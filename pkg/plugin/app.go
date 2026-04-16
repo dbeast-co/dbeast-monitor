@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
+	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
@@ -18,12 +19,20 @@ var (
 
 type App struct {
 	backend.CallResourceHandler
+	httpClientOptions httpclient.Options
 }
 
 const applicationVersion string = "OnPrem"
 
-func NewApp(_ context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
+func NewApp(ctx context.Context, settings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
 	var app App
+
+	opts, err := settings.HTTPClientOptions(ctx)
+	if err != nil {
+		log.DefaultLogger.Warn("Failed to get HTTP client options from Grafana settings, proxy will not be used: " + err.Error())
+	} else {
+		app.httpClientOptions = opts
+	}
 
 	mux := http.NewServeMux()
 	app.registerRoutes(mux)

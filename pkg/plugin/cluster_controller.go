@@ -42,7 +42,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
 
-	client, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch)
+	client, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for cluster save request: ", http.StatusInternalServerError, ctxLogger)
 		return
@@ -85,7 +85,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 	}
 	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
-	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Elasticsearch)
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for deploy ES configuration request: ", http.StatusInternalServerError, ctxLogger)
 		return
@@ -164,7 +164,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 	}
 	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
-	elasticsearchClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	elasticsearchClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
 		return
@@ -178,7 +178,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 
 	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
 
-	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Grafana)
+	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Grafana, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating Grafana HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
 		return
@@ -246,7 +246,7 @@ func (a *App) prepareClusterTemplates(response http.ResponseWriter, request *htt
 	}
 	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
-	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
 		return nil, err

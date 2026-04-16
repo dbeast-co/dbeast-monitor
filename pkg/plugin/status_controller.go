@@ -22,12 +22,12 @@ func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Req
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
 
-	clientProd, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch)
+	clientProd, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for test cluster request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
-	clientMon, err := CreateHTTPClient(environmentConfig.Mon.Elasticsearch)
+	clientMon, err := CreateHTTPClient(environmentConfig.Mon.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for test cluster request: ", http.StatusInternalServerError, ctxLogger)
 		return
