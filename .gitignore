@@ -9,3 +9,6 @@
 /dbeast-monitoring-for-elastic-stack-app-container/.config/webpack/
 /docker/esdata/
 /docker/logstash-config/
+/dist
+/.claude
+/.idea
