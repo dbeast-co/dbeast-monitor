@@ -133,7 +133,7 @@ function AddNewClusterPanel() {
               } catch (error: any) {
                 isErrorOccurred = true; // Set the flag to true upon encountering an error
                 toast.error(`${error.message}`, {
-                  position: toast.POSITION.BOTTOM_RIGHT,
+                  position: 'bottom-right',
                   autoClose: false,
                   closeButton: true,
                   hideProgressBar: true,
@@ -149,7 +149,7 @@ function AddNewClusterPanel() {
           }
           if (!isErrorOccurred) {
             toast.success('Source connections was successfully saved!', {
-              position: toast.POSITION.BOTTOM_RIGHT,
+              position: 'bottom-right',
               autoClose: false,
               closeButton: true,
               hideProgressBar: true,
@@ -228,7 +228,7 @@ function AddNewClusterPanel() {
     } catch (error: any) {
       // Handle errors and show a toast notification.
       toast.error(`${error.message}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
+        position: 'bottom-right',
         autoClose: false,
         closeButton: true,
         hideProgressBar: true,
@@ -242,7 +242,7 @@ function AddNewClusterPanel() {
 
   const showError = (message: string) => {
     toast.error(message, {
-      position: toast.POSITION.BOTTOM_RIGHT,
+      position: 'bottom-right',
       autoClose: false,
       closeButton: true,
       hideProgressBar: true,
