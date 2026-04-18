@@ -99,9 +99,10 @@ function AddNewClusterPanel() {
 
       if (
         ((formToSave.cluster_connection_settings.prod.elasticsearch.status === 'GREEN' ||
-          formToSave.cluster_connection_settings.prod.elasticsearch.status === 'YELLOW') &&
-          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'GREEN') ||
-        formToSave.cluster_connection_settings.mon.elasticsearch.status === 'YELLOW'
+          formToSave.cluster_connection_settings.prod.elasticsearch.status === 'YELLOW' ||
+          formToSave.cluster_connection_settings.prod.elasticsearch.status === 'RED') &&
+          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'GREEN' ||
+          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'YELLOW' )
       ) {
         const promise2 = backendSrv.post(`${baseUrl}/add_cluster`, JSON.stringify(formToSave), {
           headers: {
