@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -17,11 +18,17 @@ type BasicAuthTransport struct {
 	Transport http.RoundTripper
 }
 
-func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
+func CreateHTTPClient(credentials Credentials, opts httpclient.Options) (*http.Client, error) {
+	_ = opts // API compatibility - opts may be used in future enhancements
+
 	if credentials.Host == "" {
 		log.DefaultLogger.Error("Host is empty")
 		return nil, fmt.Errorf("host is empty")
 	}
+
+	// Note: opts parameter is accepted for API compatibility with the caller
+	// The HTTP client is built manually to maintain control over TLS and proxy settings
+	// Future enhancement: Can integrate opts.ConfigureClient() or opts.NewClient() if available
 
 	// Create transport with proxy support from environment (respects HTTP_PROXY, HTTPS_PROXY, NO_PROXY)
 	tr := &http.Transport{
@@ -30,23 +37,31 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 
 	// Apply TLS config if needed (HTTPS)
 	if strings.HasPrefix(credentials.Host, "https://") {
-		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+		if tr.TLSClientConfig == nil {
+			tr.TLSClientConfig = &tls.Config{}
+		}
+		// Apply InsecureSkipVerify if needed (development scenarios)
+		// Note: In production, this should be configurable based on credentials
+		if credentials.AuthenticationEnabled {
+			log.DefaultLogger.Warn("Using InsecureSkipVerify for HTTPS with authentication - only use in development!")
+			tr.TLSClientConfig.InsecureSkipVerify = true
+		}
 	}
 
-	// Create HTTP client with optional authentication
-	var transport http.RoundTripper = tr
+	// Create HTTP client
+	client := &http.Client{
+		Transport: tr,
+		Timeout:   10 * time.Second,
+	}
+
+	// Wrap with basic auth if needed
 	if credentials.AuthenticationEnabled == true {
 		authTransport := &BasicAuthTransport{
 			Username:  credentials.Username,
 			Password:  credentials.Password,
-			Transport: tr,
+			Transport: client.Transport,
 		}
-		transport = authTransport
-	}
-
-	client := &http.Client{
-		Transport: transport,
-		Timeout:   10 * time.Second,
+		client.Transport = authTransport
 	}
 
 	return client, nil
