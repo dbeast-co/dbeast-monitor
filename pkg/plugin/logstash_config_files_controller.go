@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -18,17 +19,17 @@ func (a *App) DownloadElasticsearchMonitoringConfigurationFilesHandler(response 
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the Elasticsearch configuration files download")
 
-	GenerateLogstashConfigurationFiles(response, request, false, "ESConfigurationFiles.zip")
+	GenerateLogstashConfigurationFiles(response, request, false, "ESConfigurationFiles.zip", a.httpClientOptions)
 }
 
 func (a *App) DownloadLogstashMonitoringConfigurationFilesHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	ctxLogger.Info("Got request for the Logstash configuration files download")
 
-	GenerateLogstashConfigurationFiles(response, request, true, "LogstashConfigurationFiles.zip")
+	GenerateLogstashConfigurationFiles(response, request, true, "LogstashConfigurationFiles.zip", a.httpClientOptions)
 }
 
-func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *http.Request, isLogstash bool, resultZipFileName string) {
+func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *http.Request, isLogstash bool, resultZipFileName string, httpClientOptions httpclient.Options) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 
 	response.Header().Add("Content-Disposition", "attachment; filename=\""+resultZipFileName+"\"")
@@ -43,7 +44,7 @@ func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *h
 		return
 	}
 
-	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch)
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for Logstash configuration files request: ", http.StatusInternalServerError, ctxLogger)
 		return
