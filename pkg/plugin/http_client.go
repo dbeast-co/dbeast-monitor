@@ -23,29 +23,32 @@ func CreateHTTPClient(credentials Credentials) (*http.Client, error) {
 		return nil, fmt.Errorf("host is empty")
 	}
 
-	var tr = &http.Transport{}
-	var client *http.Client
+	// Create transport with proxy support from environment (respects HTTP_PROXY, HTTPS_PROXY, NO_PROXY)
+	tr := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+	}
+
+	// Apply TLS config if needed (HTTPS)
+	if strings.HasPrefix(credentials.Host, "https://") {
+		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	}
+
+	// Create HTTP client with optional authentication
+	var transport http.RoundTripper = tr
 	if credentials.AuthenticationEnabled == true {
-		if strings.HasPrefix(credentials.Host, "https://") {
-			tr = &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-			}
-		}
 		authTransport := &BasicAuthTransport{
 			Username:  credentials.Username,
 			Password:  credentials.Password,
 			Transport: tr,
 		}
-		client = &http.Client{
-			Transport: authTransport,
-			Timeout:   10 * time.Second,
-		}
-	} else {
-		client = &http.Client{
-			Transport: tr,
-			Timeout:   10 * time.Second,
-		}
+		transport = authTransport
 	}
+
+	client := &http.Client{
+		Transport: transport,
+		Timeout:   10 * time.Second,
+	}
+
 	return client, nil
 }
 
