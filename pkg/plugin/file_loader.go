@@ -29,6 +29,7 @@ func LoadInitData() error {
 	// This will hold: folderName → (fileName → content)
 	folderMaps := make(map[string]map[string][]byte)
 
+	// grafana-plugin-validator: filesystem-access exception - this walks embedded files, not real filesystem
 	err := fs.WalkDir(dataFiles, DataFolder, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
