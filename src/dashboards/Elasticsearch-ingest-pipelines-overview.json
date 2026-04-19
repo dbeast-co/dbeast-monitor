@@ -299,7 +299,7 @@
               "type": "max"
             }
           ],
-          "query": "event.dataset: pipeline_stats AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: pipeline_stats AND elasticsearch.cluster.id: ${cluster_ds:uid}",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -446,7 +446,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: pipeline_stats",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: pipeline_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -758,7 +758,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -894,7 +894,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1031,7 +1031,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: enrich_queue_stats",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1122,7 +1122,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND event.dataset: enrich_queue_stats",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1317,7 +1317,7 @@
               "type": "logs"
             }
           ],
-          "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: ${cluster_ds:uid}",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1359,47 +1359,10 @@
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
-        "query": "testdata",
+        "query": "grafana-testdata-datasource",
         "refresh": 1,
         "regex": "/Elasticsearch: (.*)/",
         "type": "datasource"
-      },
-      {
-        "current": {
-        },
-        "datasource": {
-          "type": "marcusolsson-json-datasource",
-          "uid": "Grafana-DS-API"
-        },
-        "definition": "$[*].name",
-        "hide": 2,
-        "includeAll": false,
-        "label": "Cluster Name",
-        "name": "cluster_uid",
-        "options": [],
-        "query": {
-          "annotationDashboard": "",
-          "annotationLimit": 100,
-          "annotationNewState": "",
-          "annotationPattern": "",
-          "annotationPrevState": "",
-          "annotationRange": "",
-          "annotationRules": true,
-          "annotationType": "",
-          "cacheDurationSeconds": 0,
-          "fields": [
-            {
-              "jsonPath": "$[*].name"
-            }
-          ],
-          "method": "GET",
-          "queryParams": "",
-          "requestType": "datasources",
-          "urlPath": "/"
-        },
-        "refresh": 1,
-        "regex": "${cluster_ds}",
-        "type": "query"
       },
       {
         "current": {
@@ -1413,7 +1376,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1427,7 +1390,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1441,7 +1404,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1456,7 +1419,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

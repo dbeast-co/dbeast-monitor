@@ -1611,55 +1611,14 @@
     "list": [
       {
         "current": {
-          "text": "Elasticsearch: monitoring-cluster",
-          "value": "h_h2DLzwS9iBcztenKOQ-Q"
         },
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
-        "query": "testdata",
+        "query": "grafana-testdata-datasource",
         "refresh": 1,
         "regex": "/Elasticsearch: (.*)/",
         "type": "datasource"
-      },
-      {
-        "current": {
-          "text": "h_h2DLzwS9iBcztenKOQ-Q",
-          "value": "h_h2DLzwS9iBcztenKOQ-Q"
-        },
-        "datasource": {
-          "type": "marcusolsson-json-datasource",
-          "uid": "Grafana-DS-API"
-        },
-        "definition": "$[*].name",
-        "hide": 2,
-        "includeAll": false,
-        "label": "Cluster Name",
-        "name": "cluster_uid",
-        "options": [],
-        "query": {
-          "annotationDashboard": "",
-          "annotationLimit": 100,
-          "annotationNewState": "",
-          "annotationPattern": "",
-          "annotationPrevState": "",
-          "annotationRange": "",
-          "annotationRules": true,
-          "annotationType": "",
-          "cacheDurationSeconds": 0,
-          "fields": [
-            {
-              "jsonPath": "$[*].name"
-            }
-          ],
-          "method": "GET",
-          "queryParams": "",
-          "requestType": "datasources",
-          "urlPath": "/"
-        },
-        "refresh": 1,
-        "regex": "${cluster_ds}",
-        "type": "query"
       },
       {
         "current": {
@@ -1672,7 +1631,7 @@
         "options": [],
         "query": "marcusolsson-json-datasource",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

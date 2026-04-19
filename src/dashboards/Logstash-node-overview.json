@@ -105,7 +105,7 @@
               "type": "raw_data"
             }
           ],
-          "query": "event.dataset: logstash_metrics AND metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_metrics AND metricset.name:node_stats AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_ds:uid}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -287,7 +287,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics metricset.name: node_stats AND host.hostname: $ls_host",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics metricset.name: node_stats AND host.hostname: $ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -405,7 +405,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname:$ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname:$ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -565,7 +565,7 @@
               "type": "avg"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND metricset.name: node_stats AND host.hostname:$ls_host",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: node_stats AND host.hostname:$ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -687,7 +687,7 @@
               "field": "logstash.exception.count"
             }
           ],
-          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: $cluster_uid AND host.hostname: $ls_host",
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: ${cluster_ds:uid} AND host.hostname: $ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -838,7 +838,7 @@
               "type": "avg"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND metricset.name: node_stats AND host.hostname:$ls_host",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: node_stats AND host.hostname:$ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -3230,7 +3230,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "elasticsearch.cluster.id: $cluster_uid AND ( host.hostname: $ls_host OR host.name: $ls_host)",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND ( host.hostname: $ls_host OR host.name: $ls_host)",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3412,7 +3412,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3547,7 +3547,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3681,7 +3681,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3817,7 +3817,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.flow.worker_utilization.last_1_minute:>90",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.flow.worker_utilization.last_1_minute:>90",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3967,7 +3967,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid:raw} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname: $ls_host AND logstash.node.stats.pipeline.events.out_rate:>0",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4125,7 +4125,7 @@
               "type": "count"
             }
           ],
-          "query": "event.dataset: logstash_logs  AND elasticsearch.cluster.id: $cluster_uid AND host.hostname: $ls_host",
+          "query": "event.dataset: logstash_logs  AND elasticsearch.cluster.id: ${cluster_ds:uid} AND host.hostname: $ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4448,7 +4448,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname:$ls_host",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: logstash_metrics AND metricset.name: pipelines AND host.hostname:$ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4484,7 +4484,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: $cluster_uid AND host.hostname:$ls_host",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND host.hostname:$ls_host",
           "refId": "B",
           "timeField": "@timestamp"
         },
@@ -4532,7 +4532,7 @@
               "type": "count"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_uid} AND event.dataset: health_report AND metricset.name: pipelines AND host.hostname:$ls_host",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: health_report AND metricset.name: pipelines AND host.hostname:$ls_host",
           "queryParams": "",
           "refId": "C",
           "timeField": "@timestamp",
@@ -4726,7 +4726,7 @@
               "field": "logstash.exception.count"
             }
           ],
-          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: $cluster_uid AND host.hostname: $ls_host",
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND elasticsearch.cluster.id: ${cluster_ds:uid} AND host.hostname: $ls_host",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4890,7 +4890,7 @@
               "field": "logstash.exception.count"
             }
           ],
-          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host ) AND elasticsearch.cluster.id: $cluster_uid",
+          "query": "event.dataset: logstash_logs AND logstash.log.type: Exception AND ( host.hostname: $ls_host OR host.name: $ls_host ) AND elasticsearch.cluster.id: ${cluster_ds:uid}",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4929,47 +4929,10 @@
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
-        "query": "testdata",
+        "query": "grafana-testdata-datasource",
         "refresh": 1,
         "regex": "/Elasticsearch: (.*)/",
         "type": "datasource"
-      },
-      {
-        "current": {
-        },
-        "datasource": {
-          "type": "marcusolsson-json-datasource",
-          "uid": "Grafana-DS-API"
-        },
-        "definition": "$[*].name",
-        "hide": 2,
-        "includeAll": false,
-        "label": "Cluster Name",
-        "name": "cluster_uid",
-        "options": [],
-        "query": {
-          "annotationDashboard": "",
-          "annotationLimit": 100,
-          "annotationNewState": "",
-          "annotationPattern": "",
-          "annotationPrevState": "",
-          "annotationRange": "",
-          "annotationRules": true,
-          "annotationType": "",
-          "cacheDurationSeconds": 0,
-          "fields": [
-            {
-              "jsonPath": "$[*].name"
-            }
-          ],
-          "method": "GET",
-          "queryParams": "",
-          "requestType": "datasources",
-          "urlPath": "/"
-        },
-        "refresh": 1,
-        "regex": "${cluster_ds}",
-        "type": "query"
       },
       {
         "current": {
@@ -4982,7 +4945,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -4997,7 +4960,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5012,7 +4975,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5023,14 +4986,14 @@
           "type": "elasticsearch",
           "uid": "${logstash_mon_metrics_status}"
         },
-        "definition": "{\"find\": \"terms\", \"field\": \"host.hostname\", \"query\": \"elasticsearch.cluster.id: $cluster_uid\" }",
+        "definition": "{\"find\": \"terms\", \"field\": \"host.hostname\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid}\" }",
         "hide": 0,
         "includeAll": false,
         "label": "Logstash host",
         "multi": false,
         "name": "ls_host",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"host.hostname\", \"query\": \"elasticsearch.cluster.id: $cluster_uid\" }",
+        "query": "{\"find\": \"terms\", \"field\": \"host.hostname\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid}\" }",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -5048,7 +5011,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -5063,7 +5026,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs-pipelines-ports-status--(.*)--${cluster_uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-logs-pipelines-ports-status--(.*)--${cluster_ds:uid}/",
         "skipUrlSync": false,
         "type": "datasource"
       }
