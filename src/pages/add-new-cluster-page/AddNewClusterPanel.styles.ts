@@ -237,12 +237,11 @@ export const getStyles = (theme: GrafanaTheme2) => {
       background: transparent;
       margin: 0 auto;
       z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       .MuiCircularProgress-root {
-        position: absolute;
-        top: 35%;
-        left: 45%;
-        transform: translate(-35%, -45%);
 
         .MuiCircularProgress-svg {
           .css-14891ef {

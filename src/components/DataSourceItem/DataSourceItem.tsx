@@ -191,7 +191,7 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
         });
       } catch (error: any) {
         toast.error(`${error.message}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
+          position: 'bottom-right',
           autoClose: false,
           closeButton: true,
           hideProgressBar: true,
