@@ -5595,7 +5595,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index",
-                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__data.fields[\"Index name\"]}"
                       }
                     ]
                   },
@@ -5809,7 +5809,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index",
-                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
                       }
                     ]
                   }
@@ -5965,7 +5965,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index",
-                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
                       }
                     ]
                   }
@@ -6121,7 +6121,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index",
-                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
                       }
                     ]
                   }
@@ -6252,7 +6252,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index",
-                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
+                        "url": "/d/elasticsearch-index-monitor/elasticsearch-index-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_name=${__series.name}"
                       }
                     ]
                   }
@@ -6406,7 +6406,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index pattern",
-                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__series.name}"
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__series.name}"
                       }
                     ]
                   }
@@ -6536,7 +6536,7 @@
                       {
                         "targetBlank": true,
                         "title": "Analyze index pattern",
-                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__series.name}"
+                        "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?${__url_time_range}&orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__series.name}"
                       }
                     ]
                   }
