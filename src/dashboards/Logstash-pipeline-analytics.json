@@ -30,9 +30,7 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
       "title": "Additional monitors",
       "tooltip": "",
@@ -464,9 +462,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "frameIndex": 1,
@@ -722,10 +718,7 @@
           "id": "filterFieldsByName",
           "options": {
             "include": {
-              "names": [
-                "logstash.node.stats.pipeline.status",
-                "logstash.node.stats.pipeline.diagnosis"
-              ]
+              "names": ["logstash.node.stats.pipeline.status", "logstash.node.stats.pipeline.diagnosis"]
             }
           }
         },
@@ -779,36 +772,23 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Exception"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 615
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Pipeline"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 295
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Count"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
               }
             ]
           }
@@ -826,9 +806,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -949,6 +927,17 @@
                 "value": 151
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
           }
         ]
       },
@@ -964,9 +953,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -1010,11 +997,7 @@
           "id": "filterFieldsByName",
           "options": {
             "include": {
-              "names": [
-                "@timestamp",
-                "logstash.exception.type",
-                "logstash.message"
-              ]
+              "names": ["@timestamp", "logstash.exception.type", "logstash.message"]
             }
           }
         },
@@ -1032,19 +1015,235 @@
         }
       ],
       "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 43,
+      "panels": [
+        {
+          "datasource": {
+            "uid": "${logstash_mon_logs}",
+            "type": "elasticsearch"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "color": {
+                "mode": "thresholds"
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Log level"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 81
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Pipeline"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 201
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 190
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Host"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 131
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "logstash.log.type"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 148
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Log type"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 82
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 17
+          },
+          "id": 20,
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm",
+            "footer": {
+              "show": false,
+              "reducer": ["sum"],
+              "countRows": false,
+              "fields": ""
+            },
+            "sortBy": [
+              {
+                "displayName": "@timestamp",
+                "desc": true
+              }
+            ]
+          },
+          "pluginVersion": "9.5.5",
+          "targets": [
+            {
+              "datasource": {
+                "type": "elasticsearch",
+                "uid": "${logstash_mon_logs}"
+              },
+              "alias": "",
+              "bucketAggs": [],
+              "cacheDurationSeconds": 300,
+              "fields": [
+                {
+                  "jsonPath": ""
+                }
+              ],
+              "method": "GET",
+              "metrics": [
+                {
+                  "id": "1",
+                  "settings": {
+                    "limit": "100"
+                  },
+                  "type": "logs"
+                }
+              ],
+              "query": "event.dataset: logstash_logs AND logstash.node.stats.pipeline.id: $pipeline_id AND host.hostname:$ls_host AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+              "queryParams": "",
+              "refId": "A",
+              "timeField": "@timestamp",
+              "urlPath": ""
+            }
+          ],
+          "title": "Logstash logs",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "@timestamp",
+                    "host.hostname",
+                    "log.level",
+                    "logstash.log.pipeline_name",
+                    "logstash.message",
+                    "logstash.log.type"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "indexByName": {
+                  "@timestamp": 0,
+                  "host.hostname": 1,
+                  "log.level": 2,
+                  "logstash.log.type": 3,
+                  "logstash.log.pipeline_name": 4,
+                  "logstash.message": 5
+                },
+                "renameByName": {
+                  "@timestamp": "Date",
+                  "host.hostname": "Host",
+                  "log.level": "Log level",
+                  "logstash.log.pipeline_name": "Pipeline",
+                  "logstash.message": "Message",
+                  "logstash.log.type": "Log type"
+                }
+              }
+            }
+          ],
+          "type": "table",
+          "description": ""
+        }
+      ],
+      "title": "Logstash Logs",
+      "type": "row"
     }
   ],
   "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor"
-  ],
+  "tags": ["DBeastMonitor"],
   "templating": {
     "list": [
       {
-        "current": {
-        },
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
@@ -1054,8 +1253,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -1070,8 +1268,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics",
@@ -1085,8 +1282,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_logs",
@@ -1100,8 +1296,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "${es_direct_mon}"
@@ -1121,12 +1316,7 @@
             }
           ],
           "method": "GET",
-          "params": [
-            [
-              "size",
-              "100"
-            ]
-          ],
+          "params": [["size", "100"]],
           "queryParams": "",
           "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
         },
@@ -1137,8 +1327,7 @@
         "type": "query"
       },
       {
-        "current": {
-        },
+        "current": {},
         "datasource": {
           "type": "marcusolsson-json-datasource",
           "uid": "${es_direct_mon}"
@@ -1159,14 +1348,8 @@
           ],
           "method": "GET",
           "params": [
-            [
-              "size",
-              "100"
-            ],
-            [
-              "q",
-              "host.hostname:$ls_host"
-            ]
+            ["size", "100"],
+            ["q", "host.hostname:$ls_host"]
           ],
           "queryParams": "",
           "urlPath": "/dbeast-mon-logstash-metrics-status/_search"
@@ -1178,8 +1361,7 @@
         "type": "query"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics_status",
