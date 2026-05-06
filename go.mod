@@ -2,7 +2,7 @@ module github.com/dbeast/dbeastmonitor
 
 go 1.25.7
 
-require github.com/grafana/grafana-plugin-sdk-go v0.291.0
+require github.com/grafana/grafana-plugin-sdk-go v0.292.0
 
 require (
 	github.com/BurntSushi/toml v1.6.0 // indirect
@@ -78,7 +78,7 @@ require (
 	golang.org/x/mod v0.34.0 // indirect
 	golang.org/x/net v0.52.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260316223853-b6b0c46d1ccd // indirect
 	golang.org/x/text v0.35.0 // indirect
 	golang.org/x/tools v0.43.0 // indirect
