@@ -1,7 +1,9 @@
 name: Release Plugin Attestation Test
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'test-v*'
 
 jobs:
   build-and-release:
