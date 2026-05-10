@@ -16,8 +16,9 @@
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs",
-      "target": "es5",
-      "esModuleInterop": true
+      "target": "es2020",
+      "esModuleInterop": true,
+      "moduleResolution": "node"
     },
     "transpileOnly": true
   },

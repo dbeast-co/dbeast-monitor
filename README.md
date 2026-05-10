@@ -2,7 +2,7 @@
 
 ----
 
-[![version: 2.0.5](https://img.shields.io/badge/version-2.0.5-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
+[![version: 2.0.6](https://img.shields.io/badge/version-2.0.6-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
 &nbsp;&nbsp;&nbsp; ![Downloads](https://img.shields.io/badge/dynamic/json?url=https://grafana.com/api/plugins/dbeast-dbeastmonitor-app/versions&label=downloads&query=$.items[0].downloads&color=red)
 
@@ -13,7 +13,7 @@
 
 Welcome to the DBeast Monitor for Elastic Stack – an open-source plugin for Grafana!
 
-Our plugin provides a powerful UI for monitoring, analyzing, and optimizing of your Elastic Stack components -
+Our plugin provides a powerful UI for monitoring, analyzing, and optimizing of your Elastic Stack components –
 Elasticsearch, Logstash, and Kibana.
 
 ## Key features
@@ -30,8 +30,8 @@ Elasticsearch, Logstash, and Kibana.
    - **Logstash instances** performance and health
    - **Logstash pipelines** throughput and errors
 3. Helm versions
-   - Currently, there is no Helm charts for the versions 2+
-   - The Helm charts for the previews versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
+   - Currently, there are no Helm charts for the versions 2+
+   - The Helm charts for the preview versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
 
 ## Documentation
 
@@ -63,4 +63,4 @@ Whether you want to contribute code, share ideas, or support the project financi
 
 📩 Reach out: support@dbeast.co
 
-&copy; 2022 - 2025 DBeast. All rights reserved
+&copy; 2022–2026 DBeast. All rights reserved

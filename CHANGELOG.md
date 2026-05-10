@@ -1,5 +1,30 @@
 # Changelog
 
+## Version 2.0.6 (2026-05-09)
+
+- Features:
+  * [FEAT] Backend data proxy support [#233](https://github.com/dbeast-co/dbeast-monitor/issues/233)
+  * [FEAT] Add spinner to the Deploy button in the "Add new cluster" [#235](https://github.com/dbeast-co/dbeast-monitor/issues/235)
+  * [FEAT] Add possibility to add a new cluster when the cluster is red [#236](https://github.com/dbeast-co/dbeast-monitor/issues/236)
+  * [FEAT] Minor dashboard fixes [#238](https://github.com/dbeast-co/dbeast-monitor/issues/238)
+  * React 19 Upgrade: Ensure your plugin is compatible with React 19 [#240](https://github.com/dbeast-co/dbeast-monitor/issues/240)
+  * [FEAT] Add backend API for the adding new cluster without UI [#242](https://github.com/dbeast-co/dbeast-monitor/issues/242)
+  * [FEAT] google.golang.org/grpc update [#245](https://github.com/dbeast-co/dbeast-monitor/issues/245)
+  * [FEAT] Redesign cross dashboard links for time period usage [#213](https://github.com/dbeast-co/dbeast-monitor/issues/213)
+
+- Bug fixes
+  * [BUG] Incorrect array to string visualizations [#239](https://github.com/dbeast-co/dbeast-monitor/issues/239)
+  * [BUG] Incorrect dashboards behaviors with Grafana 12.4 [#244](https://github.com/dbeast-co/dbeast-monitor/issues/244)
+  * [BUG] /plugin-validator-cli Validation report [#246](https://github.com/dbeast-co/dbeast-monitor/issues/246)
+
+- Documentation
+  * [FEAT] Add ES user permission requirements to the project Wiki. [#232](https://github.com/dbeast-co/dbeast-monitor/issues/232)
+
+- Updated dashboards
+  * Dashboard fixes and compatibility improvements for Grafana 12.4/13.x
+  * Cross-dashboard links updated for time period usage
+  * All dashboards have been updated to align with the new features and compatibility.
+  
 ## Version 2.0.5 (2025-11-02)
 
 - Features:
