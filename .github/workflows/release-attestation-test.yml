@@ -3,7 +3,7 @@ name: Release Plugin Attestation Test
 on:
   push:
     tags:
-      - 'v*'
+      - 'old-v*'
 
 jobs:
   build-and-release:

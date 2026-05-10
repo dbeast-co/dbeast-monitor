@@ -3,7 +3,7 @@ name: Build & Validate Grafana Plugin
 on:
   push:
     branches:
-      - 'release/V*'
+      - 'old-release/V*'
 
 permissions:
   contents: read
