@@ -3,7 +3,7 @@ name: Release Plugin
 on:
   push:
     tags:
-      - 'v*'
+      - 'tmp-v*'
 
 permissions:
   contents: write
