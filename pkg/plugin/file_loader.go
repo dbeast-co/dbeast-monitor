@@ -13,17 +13,17 @@ import (
 //go:embed data/*
 var dataFiles embed.FS
 
-var NewCluster Project
+//var NewCluster Project
 
 var GrafanaDataSourcesMap = make(map[string]interface{})
 
 var ESComponentTemplatesMap = make(map[string]string)
 
-var ESIndexTemplatesMap = make(map[string]string)
+//var ESIndexTemplatesMap = make(map[string]string)
 
-var ESILMTemplatesMap = make(map[string]string)
+//var ESILMTemplatesMap = make(map[string]string)
 
-var ESFirstIndicesTemplatesMap = make(map[string]string)
+//var ESFirstIndicesTemplatesMap = make(map[string]string)
 
 func LoadInitData() error {
 	// This will hold: folderName → (fileName → content)
@@ -64,13 +64,13 @@ func parseData(folderMaps map[string]map[string][]byte) error {
 		for fileName, content := range files {
 			log.DefaultLogger.Info("Folder for ingest: " + folder + ": " + fileName)
 			switch folder {
-			case NewClusterFolder:
-				log.DefaultLogger.Info("Loading New cluster definition file: " + fileName)
-				err := LoadNewClusterFile(fileName, content)
-				if err != nil {
-					log.DefaultLogger.Error("Error in the New cluster object loading")
-					return err
-				}
+			//case NewClusterFolder:
+			//	log.DefaultLogger.Info("Loading New cluster definition file: " + fileName)
+			//	err := LoadNewClusterFile(fileName, content)
+			//	if err != nil {
+			//		log.DefaultLogger.Error("Error in the New cluster object loading")
+			//		return err
+			//	}
 			case DataSourceTemplatesFolder:
 				log.DefaultLogger.Info("Loading the Grafana data sources: " + fileName)
 				err := LoadGrafanaDataSources(fileName, content)
@@ -84,12 +84,12 @@ func parseData(folderMaps map[string]map[string][]byte) error {
 			case EsIndexTemplatesTemplatesFolder:
 				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
 				ESIndexTemplatesMap[fileName] = string(content)
-			case EsILMTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
-				ESILMTemplatesMap[fileName] = string(content)
-			case EsIndexFirstIndicesTemplatesFolder:
-				log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
-				ESFirstIndicesTemplatesMap[fileName] = string(content)
+			//case EsILMTemplatesFolder:
+			//	log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
+			//	ESILMTemplatesMap[fileName] = string(content)
+			//case EsIndexFirstIndicesTemplatesFolder:
+			//	log.DefaultLogger.Info("Loading the Elasticsearch component templates: " + fileName)
+			//	ESFirstIndicesTemplatesMap[fileName] = string(content)
 			case LogstashTemplatesFolder:
 				LSConfigs[fileName] = string(content)
 			}
@@ -98,16 +98,16 @@ func parseData(folderMaps map[string]map[string][]byte) error {
 	return nil
 }
 
-func LoadNewClusterFile(fileName string, content []byte) error {
-	log.DefaultLogger.Debug("New cluster configuration file path: " + fileName)
-
-	err := json.Unmarshal(content, &NewCluster)
-	if err != nil {
-		log.DefaultLogger.Error("Error parsing new cluster file: " + fileName + " " + err.Error())
-		return err
-	}
-	return err
-}
+//func LoadNewClusterFile(fileName string, content []byte) error {
+//	log.DefaultLogger.Debug("New cluster configuration file path: " + fileName)
+//
+//	err := json.Unmarshal(content, &NewCluster)
+//	if err != nil {
+//		log.DefaultLogger.Error("Error parsing new cluster file: " + fileName + " " + err.Error())
+//		return err
+//	}
+//	return err
+//}
 
 func LoadGrafanaDataSources(fileName string, fileContent []byte) error {
 	log.DefaultLogger.Info("The templates folder path: " + fileName)

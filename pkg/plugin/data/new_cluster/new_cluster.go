@@ -1,8 +1,11 @@
 package new_cluster
 
-import "github.com/dbeast/dbeastmonitor/pkg/plugin/core"
+import (
+	"encoding/json"
+	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+)
 
-var NewCluster = `
+const newClusterJSON = `
 {
   "cluster_connection_settings": {
     "prod": {
@@ -112,6 +115,12 @@ var NewCluster = `
 }
 `
 
+var NewClusterData plugin.Project
+
 func init() {
-	core.RegisterProject(NewCluster)
+	err := json.Unmarshal([]byte(newClusterJSON), &NewClusterData)
+	if err != nil {
+		panic("Failed to parse NewCluster JSON: " + err.Error())
+	}
+	plugin.LoadNewCluster(NewClusterData)
 }

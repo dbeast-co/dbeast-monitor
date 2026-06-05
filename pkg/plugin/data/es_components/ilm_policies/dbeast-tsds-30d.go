@@ -4,7 +4,7 @@ import (
 	"github.com/dbeast/dbeastmonitor/pkg/plugin"
 )
 
-const dbeatsDS30dPolicyContent string = `
+const dbeatsTSDS30dPolicyContent string = `
 {
   "policy": {
     "phases": {
@@ -32,5 +32,5 @@ const dbeatsDS30dPolicyContent string = `
 `
 
 func init() {
-	plugin.AppendILMPolicy("dbeast-ds-30d", dbeatsDS30dPolicyContent)
+	plugin.AppendILMPolicy("dbeast-tsds-30d", dbeatsTSDS30dPolicyContent)
 }
