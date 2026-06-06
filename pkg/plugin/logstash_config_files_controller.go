@@ -83,7 +83,8 @@ func GenerateESLogstashConfigurationFiles(project dataWarehouse.Project, cluster
 	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
-			configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[configFile.Id])
+			configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[strings.ReplaceAll(configFile.Id, ".conf", "")])
+			log.DefaultLogger.Warn("Config file: ", configFileClone, " Content: ", configFileClone)
 			configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
@@ -106,7 +107,7 @@ func GenerateLSLogstashConfigurationFiles(project dataWarehouse.Project, cluster
 		pipelineFile := "### Configuration files for the Logstash monitoring\n"
 		for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
 			if configFile.IsChecked {
-				configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[configFile.Id])
+				configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[strings.ReplaceAll(configFile.Id, ".conf", "")])
 				configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 				configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 				configFileClone = UpdateLogstashConnectionSettings(configFileClone, logstashHost)
