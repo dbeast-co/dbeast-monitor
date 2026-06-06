@@ -1,10 +1,10 @@
 package index_templates
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
-const dbeatsMonIndexLogstashLogsPipelinesPortsStatusContent string = `
+const dbeastMonIndexLogstashLogsPipelinesPortsStatusTemplateContent string = `
 {
   "index_patterns": [
     "dbeast-mon-index-logstash-logs-pipelines-ports-status"
@@ -26,11 +26,6 @@ const dbeatsMonIndexLogstashLogsPipelinesPortsStatusContent string = `
 }
 `
 
-var DBEastMonIndexLogstashLogsPipelinesPortsStatus = IndexTemplate{
-	Name:    "dbeast-mon-index-logstash-logs-pipelines-ports-status-template",
-	Content: dbeatsMonIndexLogstashLogsPipelinesPortsStatusContent,
-}
-
 func init() {
-	plugin.AppendIndexTemplate(DBEastMonIndexLogstashLogsPipelinesPortsStatus.Name, DBEastMonIndexLogstashLogsPipelinesPortsStatus.Content)
+	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-logstash-logs-pipelines-ports-status-template", dbeastMonIndexLogstashLogsPipelinesPortsStatusTemplateContent)
 }

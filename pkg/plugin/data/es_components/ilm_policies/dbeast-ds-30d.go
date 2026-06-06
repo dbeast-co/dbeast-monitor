@@ -1,7 +1,7 @@
 package ilm_policies
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	data_warehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
 const dbeatsDS30dPolicyContent string = `
@@ -32,5 +32,5 @@ const dbeatsDS30dPolicyContent string = `
 `
 
 func init() {
-	plugin.AppendILMPolicy("dbeast-ds-30d", dbeatsDS30dPolicyContent)
+	data_warehouse.AppendILMPolicy("dbeast-ds-30d", dbeatsDS30dPolicyContent)
 }

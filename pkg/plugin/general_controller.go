@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -42,7 +43,7 @@ func sanitizeHost(host *string) {
 	}
 }
 
-func sanitizeEnvironmentConfig(config *EnvironmentConfig) {
+func sanitizeEnvironmentConfig(config *dataWarehouse.EnvironmentConfig) {
 	sanitizeHost(&config.Prod.Elasticsearch.Host)
 	sanitizeHost(&config.Prod.Kibana.Host)
 	sanitizeHost(&config.Mon.Elasticsearch.Host)

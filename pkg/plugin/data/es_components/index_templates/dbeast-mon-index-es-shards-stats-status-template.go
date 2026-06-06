@@ -1,10 +1,10 @@
 package index_templates
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
-const dbeatsMonIndexEsShardsStatsStatusContent string = `
+const dbeastMonIndexEsShardsStatsStatusTemplateContent string = `
 {
   "index_patterns": [
     "dbeast-mon-index-es-shards-stats-status"
@@ -26,11 +26,6 @@ const dbeatsMonIndexEsShardsStatsStatusContent string = `
 }
 `
 
-var DBEastMonIndexEsShardsStatsStatus = IndexTemplate{
-	Name:    "dbeast-mon-index-es-shards-stats-status-template",
-	Content: dbeatsMonIndexEsShardsStatsStatusContent,
-}
-
 func init() {
-	plugin.AppendIndexTemplate(DBEastMonIndexEsShardsStatsStatus.Name, DBEastMonIndexEsShardsStatsStatus.Content)
+	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-es-shards-stats-status-template", dbeastMonIndexEsShardsStatsStatusTemplateContent)
 }

@@ -1,10 +1,10 @@
 package index_templates
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
-const dbeatsMonIndexEsTasksHistoricalContent string = `
+const dbeastMonIndexEsTasksHistoricalTemplateContent string = `
 {
   "index_patterns": [
     "dbeast-mon-index-es-tasks-*"
@@ -34,11 +34,6 @@ const dbeatsMonIndexEsTasksHistoricalContent string = `
 }
 `
 
-var DBEastMonIndexEsTasksHistorical = IndexTemplate{
-	Name:    "dbeast-mon-index-es-tasks-historical-template",
-	Content: dbeatsMonIndexEsTasksHistoricalContent,
-}
-
 func init() {
-	plugin.AppendIndexTemplate(DBEastMonIndexEsTasksHistorical.Name, DBEastMonIndexEsTasksHistorical.Content)
+	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-es-tasks-historical-template", dbeastMonIndexEsTasksHistoricalTemplateContent)
 }

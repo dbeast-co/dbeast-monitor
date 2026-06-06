@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -15,7 +16,7 @@ func (a *App) NewClusterHandler(response http.ResponseWriter, request *http.Requ
 
 	response.Header().Add("Content-Type", "application/json")
 	response.WriteHeader(http.StatusOK)
-	newClusterForSend, err := json.MarshalIndent(NewCluster, "", "")
+	newClusterForSend, err := json.MarshalIndent(dataWarehouse.NewCluster, "", "")
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Failed to normalize data, for new cluster request: ", http.StatusInternalServerError, ctxLogger)
 		return
@@ -35,7 +36,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 
 	response.Header().Add("Content-Type", "application/json")
 
-	var environmentConfig EnvironmentConfig
+	var environmentConfig dataWarehouse.EnvironmentConfig
 	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for cluster save request: ", http.StatusBadRequest, ctxLogger)
 		return
@@ -78,7 +79,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 
 	response.Header().Add("Content-Type", "application/json")
 
-	var project Project
+	var project dataWarehouse.Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for deploy ES configuration request: ", http.StatusBadRequest, ctxLogger)
 		return
@@ -157,7 +158,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 
 	response.Header().Add("Content-Type", "application/json")
 
-	var project Project
+	var project dataWarehouse.Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
 		return
@@ -239,7 +240,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 }
 
 func (a *App) prepareClusterTemplates(response http.ResponseWriter, request *http.Request, ctxLogger log.Logger) (map[string]interface{}, error) {
-	var project Project
+	var project dataWarehouse.Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
 		return nil, err
@@ -277,7 +278,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 
 func SendILMToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("ILM policies ingest")
-	for templateName, templateContent := range ESILMTemplatesMap {
+	for templateName, templateContent := range dataWarehouse.ESILMTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
 		resp, err := SendILMToCluster(client, host, templateName, templateContent)
@@ -293,7 +294,7 @@ func SendILMToMonitoringCluster(client *http.Client, host string) error {
 
 func SendComponentTemplatesToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("Components templates ingest")
-	for templateName, templateContent := range ESComponentTemplatesMap {
+	for templateName, templateContent := range dataWarehouse.ESComponentTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
 		resp, err := SendComponentTemplateToCluster(client, host, templateName, templateContent)
@@ -309,7 +310,7 @@ func SendComponentTemplatesToMonitoringCluster(client *http.Client, host string)
 
 func SendFirstIndicesToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("First indices ingest")
-	for indexName, templateContent := range ESFirstIndicesTemplatesMap {
+	for indexName, templateContent := range dataWarehouse.ESFirstIndicesTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: " + indexName + " To the cluster: " + host)
 		log.DefaultLogger.Debug("Template content: " + templateContent)
 		isIndexExists, err := CheckIsIndexExists(client, host, indexName)
@@ -343,7 +344,7 @@ func SendFirstIndicesToMonitoringCluster(client *http.Client, host string) error
 
 func SendIndexTemplatesToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("Index templates ingest")
-	for templateName, templateContent := range ESIndexTemplatesMap {
+	for templateName, templateContent := range dataWarehouse.ESIndexTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
 		log.DefaultLogger.Debug("Template content: ", templateContent)
 		resp, err := SendIndexTemplateToCluster(client, host, templateName, templateContent)
@@ -385,7 +386,7 @@ func UpdateTestDataTemplateValues(clonedTemplates interface{}, clusterName strin
 	}
 }
 
-func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentials, clusterName string, uid string) {
+func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
 		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
@@ -413,7 +414,7 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials Credentia
 	}
 }
 
-func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials Credentials, clusterName string, uid string) {
+func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
 		if database, ok := OneClonedTemplate["database"].(string); ok {
@@ -439,9 +440,9 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 	}
 }
 
-func UpdateGrafanaDataSourceTemplates(environmentConfig EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
+func UpdateGrafanaDataSourceTemplates(environmentConfig dataWarehouse.EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
 	var UpdatedTemplates = make(map[string]interface{})
-	for name, template := range GrafanaDataSourcesMap {
+	for name, template := range dataWarehouse.GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
 		switch {
 		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_mon"):

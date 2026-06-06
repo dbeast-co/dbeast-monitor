@@ -1,7 +1,7 @@
 package first_indices
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	"github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
 const dbeatsMonIndexCorruptedDataContent string = `
@@ -14,11 +14,6 @@ const dbeatsMonIndexCorruptedDataContent string = `
 }
 `
 
-var DBEastMonIndexCorruptedData = FirstIndex{
-	Name:    "dbeast-mon-index-corrupted-data",
-	Content: dbeatsMonIndexCorruptedDataContent,
-}
-
 func init() {
-	plugin.AppendFirstIndex(DBEastMonIndexCorruptedData.Name, DBEastMonIndexCorruptedData.Content)
+	data.AppendFirstIndex("dbeast-mon-index-corrupted-data", dbeatsMonIndexCorruptedDataContent)
 }

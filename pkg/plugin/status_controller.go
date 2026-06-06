@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -15,7 +16,7 @@ func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Req
 
 	response.Header().Add("Content-Type", "application/json")
 
-	var environmentConfig EnvironmentConfig
+	var environmentConfig dataWarehouse.EnvironmentConfig
 	if err := json.NewDecoder(request.Body).Decode(&environmentConfig); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for test cluster request: ", http.StatusInternalServerError, ctxLogger)
 		return

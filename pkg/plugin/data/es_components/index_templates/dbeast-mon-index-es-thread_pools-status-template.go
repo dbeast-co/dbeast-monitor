@@ -1,10 +1,10 @@
 package index_templates
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
-const dbeatsMonIndexEsThreadPoolsStatusContent string = `
+const dbeastMonIndexEsThreadPoolsStatusTemplateContent string = `
 {
   "index_patterns": [
     "dbeast-mon-index-es-thread_pools-status"
@@ -26,11 +26,6 @@ const dbeatsMonIndexEsThreadPoolsStatusContent string = `
 }
 `
 
-var DBEastMonIndexEsThreadPoolsStatus = IndexTemplate{
-	Name:    "dbeast-mon-index-es-thread_pools-status-template",
-	Content: dbeatsMonIndexEsThreadPoolsStatusContent,
-}
-
 func init() {
-	plugin.AppendIndexTemplate(DBEastMonIndexEsThreadPoolsStatus.Name, DBEastMonIndexEsThreadPoolsStatus.Content)
+	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-es-thread_pools-status-template", dbeastMonIndexEsThreadPoolsStatusTemplateContent)
 }

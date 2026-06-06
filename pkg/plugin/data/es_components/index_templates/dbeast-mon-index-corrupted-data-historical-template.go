@@ -1,10 +1,10 @@
 package index_templates
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
-const dbeatsMonIndexCorruptedDataHistoricalContent string = `
+const dbeastMonIndexCorruptedDataHistoricalTemplateContent string = `
 {
   "index_patterns": [
     "dbeast-mon-index-corrupted-data-*"
@@ -34,11 +34,6 @@ const dbeatsMonIndexCorruptedDataHistoricalContent string = `
 }
 `
 
-var DBEastMonIndexCorruptedDataHistorical = IndexTemplate{
-	Name:    "dbeast-mon-index-corrupted-data-historical-template",
-	Content: dbeatsMonIndexCorruptedDataHistoricalContent,
-}
-
 func init() {
-	plugin.AppendIndexTemplate(DBEastMonIndexCorruptedDataHistorical.Name, DBEastMonIndexCorruptedDataHistorical.Content)
+	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-corrupted-data-historical-template", dbeastMonIndexCorruptedDataHistoricalTemplateContent)
 }

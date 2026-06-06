@@ -1,7 +1,7 @@
 package first_indices
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin"
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
 const dbeatsMonIndexEsTasksContent string = `
@@ -14,11 +14,6 @@ const dbeatsMonIndexEsTasksContent string = `
 }
 `
 
-var DBEastMonIndexEsTasks = FirstIndex{
-	Name:    "dbeast-mon-index-es-tasks",
-	Content: dbeatsMonIndexEsTasksContent,
-}
-
 func init() {
-	plugin.AppendFirstIndex(DBEastMonIndexEsTasks.Name, DBEastMonIndexEsTasks.Content)
+	dataWarehouse.AppendFirstIndex("dbeast-mon-index-es-tasks", dbeatsMonIndexEsTasksContent)
 }
