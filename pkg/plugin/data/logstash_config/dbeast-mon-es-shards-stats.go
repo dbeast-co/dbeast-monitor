@@ -118,6 +118,12 @@ filter{
        #Calculate rates
        if map.key?('last_sample_date')
          date_diff = ( sample_date - map['last_sample_date'] )
+
+         #Delete events from the multiple replicsin the index 
+         if date_diff == 0
+           event.cancel();
+         end
+         
          event.set('date_diff', date_diff)
          event.set('[elasticsearch][shard][docs][ingest_rate]', map.key?('last_docs_count') ? ((event.get('[elasticsearch][shard][docs][count]').to_i - map['last_docs_count']) / date_diff).ceil : 0);
          event.set('[elasticsearch][shard][store][ingest_rate]', map.key?('last_store_size') ? ((event.get('[elasticsearch][shard][store][size_in_bytes]').to_i - map['last_store_size']) / date_diff).ceil : 0);
