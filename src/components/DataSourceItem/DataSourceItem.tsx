@@ -245,8 +245,8 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
           <div className="grid-container">
             <div className="col">
               <div className={styles.listItem}>
-                <div >
-                  <div className='grid'>
+                <div>
+                  <div className="grid">
                     {this.state.versions ? (
                       <div>
                         <span className="label">Version</span>
@@ -314,29 +314,76 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
             <div className={styles.stack}>
               <HorizontalGroup spacing="sm">
                 <div className={styles.buttons}>
-
                   {this.state.isServerAdmin && (
-                  <Button variant="secondary" className="btn" onClick={this.onDelete}>
-                    Delete
-                  </Button>
+                    <Button
+                      variant="secondary"
+                      className="btn"
+                      disabled={!this.state.cluster_uuid}
+                      onClick={this.onDelete}
+                    >
+                      Delete
+                    </Button>
                   )}
 
-                  <Button variant="secondary" className="btn" onClick={() => this.onTest()}>
+                  <Button
+                    variant="secondary"
+                    className="btn"
+                    disabled={!this.state.cluster_uuid}
+                    onClick={() => this.onTest()}
+                  >
                     Test
                   </Button>
                 </div>
-                <div className={styles.select} >
+                <div className={styles.select}>
                   <GrafanaSelect
                     options={[
-                      { label: 'Elastic Stack monitoring', value: 'stack-monitoring', href: `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
-                      { label: 'Elasticsearch Index overview', value: 'index-overview', href: `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
-                      { label: 'Elasticsearch Shards overview', value: 'shards-overview', href: `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
-                      { label: 'Elasticsearch ingest pipelines overview', value: 'ingest-pipelines-overview', href: `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
-                      { label: 'Logstash overview', value: 'logstash-overview', href: `/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
-                      { label: 'Tasks analytics', value: 'tasks-analytics', href: `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}` },
-                      { label: 'Elasticsearch ML Jobs Analytics', value: 'ml-jobs-analytics', href: `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}` },
+                      {
+                        label: 'Elastic Stack monitoring',
+                        value: 'stack-monitoring',
+                        href: `/d/elastic-stack-monitoring-dashboard/elastic-stack-monitoring-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`,
+                      },
+                      {
+                        label: 'Elasticsearch Index overview',
+                        value: 'index-overview',
+                        href: `/d/elasticsearch-index-overview/elasticsearch-index-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`,
+                      },
+                      {
+                        label: 'Elasticsearch Shards overview',
+                        value: 'shards-overview',
+                        href: `/d/elasticsearch-shards-overview-dashboard/elasticsearch-shards-overview-dashboard?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`,
+                      },
+                      {
+                        label: 'Elasticsearch ingest pipelines overview',
+                        value: 'ingest-pipelines-overview',
+                        href: `/d/elasticsearch-ingest-pipelines-overview/elasticsearch-ingest-pipelines-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`,
+                      },
+                      {
+                        label: 'Logstash overview',
+                        value: 'logstash-overview',
+                        href: `/d/logstash-overview/logstash-overview?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`,
+                      },
+                      {
+                        label: 'Tasks analytics',
+                        value: 'tasks-analytics',
+                        href: `/d/elasticsearch-tasks-analytics/elasticsearch-tasks-analytics?orgId=1&refresh=1m&var-cluster_ds=${this.uid}`,
+                      },
+                      {
+                        label: 'Elasticsearch ML Jobs Analytics',
+                        value: 'ml-jobs-analytics',
+                        href: `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}`,
+                      },
                     ]}
-                    value={this.state.monitorName ? { label: this.state.monitorName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '), value: this.state.monitorName } : null}
+                    value={
+                      this.state.monitorName
+                        ? {
+                            label: this.state.monitorName
+                              .split('-')
+                              .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                              .join(' '),
+                            value: this.state.monitorName,
+                          }
+                        : null
+                    }
                     placeholder="Monitor type"
                     onChange={(option: SelectableValue) => {
                       if (option?.href) {
