@@ -1,0 +1,53 @@
+package data
+
+type FirstIndex struct {
+	Name    string
+	Content string
+}
+
+type Project struct {
+	ClusterConnectionSettings  EnvironmentConfig       `json:"cluster_connection_settings"`
+	MonitoringClusterInjection []ConfigurationCheckbox `json:"monitoring_cluster_injection"`
+	LogstashConfigurations     LogstashConfigurations  `json:"logstash_configurations"`
+}
+
+type Credentials struct {
+	Host                  string `json:"host"`
+	AuthenticationEnabled bool   `json:"authentication_enabled"`
+	Username              string `json:"username"`
+	Password              string `json:"password"`
+	Status                string `json:"status"`
+}
+
+type EnvironmentConfig struct {
+	Prod struct {
+		Elasticsearch Credentials `json:"elasticsearch"`
+		Kibana        Credentials `json:"kibana"`
+	} `json:"prod"`
+	Mon struct {
+		Elasticsearch Credentials `json:"elasticsearch"`
+		Grafana       Credentials `json:"grafana"`
+	} `json:"mon"`
+}
+
+type LogstashHost struct {
+	ServerAddress      string `json:"server_address"`
+	LogstashApiHost    string `json:"logstash_api_host"`
+	LogstashLogsFolder string `json:"logstash_logs_folder"`
+}
+
+type LogstashConfigurations struct {
+	EsMonitoringConfigurationFiles       []ConfigurationCheckbox              `json:"es_monitoring_configuration_files"`
+	LogstashMonitoringConfigurationFiles LogstashMonitoringConfigurationFiles `json:"logstash_monitoring_configuration_files"`
+}
+
+type LogstashMonitoringConfigurationFiles struct {
+	Configurations []ConfigurationCheckbox `json:"configurations"`
+	Hosts          []LogstashHost          `json:"hosts"`
+}
+
+type ConfigurationCheckbox struct {
+	Label     string `json:"label"`
+	Id        string `json:"id"`
+	IsChecked bool   `json:"is_checked"`
+}

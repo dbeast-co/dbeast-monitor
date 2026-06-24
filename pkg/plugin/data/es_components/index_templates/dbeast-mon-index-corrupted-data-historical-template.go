@@ -1,0 +1,39 @@
+package index_templates
+
+import (
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
+)
+
+const dbeastMonIndexCorruptedDataHistoricalTemplateContent string = `
+{
+  "index_patterns": [
+    "dbeast-mon-index-corrupted-data-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "dbeast-index-30d",
+          "rollover_alias": "dbeast-mon-index-corrupted-data"
+        }
+      }
+    },
+    "aliases": {
+      "dbeast-mon-corrupted-data": {}
+    }
+  },
+  "composed_of": [
+    "dbeast-mon-index-corrupted-data-mapping-component",
+    "dbeast-mon-default-settings-component"
+  ],
+  "priority": 1,
+  "_meta": {
+    "description": "This template used for the corrupted data, that can't be sent to TSDS",
+    "version": "1.0.2"
+  }
+}
+`
+
+func init() {
+	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-corrupted-data-historical-template", dbeastMonIndexCorruptedDataHistoricalTemplateContent)
+}

@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
@@ -18,7 +19,7 @@ type BasicAuthTransport struct {
 	Transport http.RoundTripper
 }
 
-func CreateHTTPClient(credentials Credentials, opts httpclient.Options) (*http.Client, error) {
+func CreateHTTPClient(credentials dataWarehouse.Credentials, opts httpclient.Options) (*http.Client, error) {
 	_ = opts // API compatibility - opts may be used in future enhancements
 
 	if credentials.Host == "" {

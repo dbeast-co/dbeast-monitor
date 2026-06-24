@@ -9,11 +9,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
-var LSConfigs = make(map[string]string)
+//var LSConfigs = make(map[string]string)
 
 func (a *App) DownloadElasticsearchMonitoringConfigurationFilesHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
@@ -37,7 +38,7 @@ func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *h
 
 	defer DeferHandler(request, ctxLogger)
 
-	var project Project
+	var project dataWarehouse.Project
 
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for generate Logstash configuration files request: ", http.StatusBadRequest, ctxLogger)
@@ -78,11 +79,12 @@ func GenerateLogstashConfigurationFiles(response http.ResponseWriter, request *h
 	}
 }
 
-func GenerateESLogstashConfigurationFiles(project Project, clusterId string, clusterName string, zipWriter *zip.Writer) {
+func GenerateESLogstashConfigurationFiles(project dataWarehouse.Project, clusterId string, clusterName string, zipWriter *zip.Writer) {
 	pipelineFile := "### Configuration files for the cluster: " + clusterName + ", clusterId: " + clusterId + "\n"
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
-			configFileClone := strings.Clone(LSConfigs[configFile.Id])
+			configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[strings.ReplaceAll(configFile.Id, ".conf", "")])
+			log.DefaultLogger.Warn("Config file: ", configFileClone, " Content: ", configFileClone)
 			configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)
@@ -100,12 +102,12 @@ func GenerateESLogstashConfigurationFiles(project Project, clusterId string, clu
 	WriteFileToZip(zipWriter, "pipelines.yml", pipelineFile)
 }
 
-func GenerateLSLogstashConfigurationFiles(project Project, clusterId string, zipWriter *zip.Writer) {
+func GenerateLSLogstashConfigurationFiles(project dataWarehouse.Project, clusterId string, zipWriter *zip.Writer) {
 	for _, logstashHost := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Hosts {
 		pipelineFile := "### Configuration files for the Logstash monitoring\n"
 		for _, configFile := range project.LogstashConfigurations.LogstashMonitoringConfigurationFiles.Configurations {
 			if configFile.IsChecked {
-				configFileClone := strings.Clone(LSConfigs[configFile.Id])
+				configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[strings.ReplaceAll(configFile.Id, ".conf", "")])
 				configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 				configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 				configFileClone = UpdateLogstashConnectionSettings(configFileClone, logstashHost)
@@ -120,15 +122,15 @@ func GenerateLSLogstashConfigurationFiles(project Project, clusterId string, zip
 	}
 }
 
-func UpdateProdConnectionSettings(configFileContent string, environmentConfig EnvironmentConfig) string {
+func UpdateProdConnectionSettings(configFileContent string, environmentConfig dataWarehouse.EnvironmentConfig) string {
 	return UpdateConnectionSettings(configFileContent, environmentConfig.Prod.Elasticsearch, "PROD")
 }
 
-func UpdateMonConnectionSettings(configFileContent string, environmentConfig EnvironmentConfig) string {
+func UpdateMonConnectionSettings(configFileContent string, environmentConfig dataWarehouse.EnvironmentConfig) string {
 	return UpdateConnectionSettings(configFileContent, environmentConfig.Mon.Elasticsearch, "MON")
 }
 
-func UpdateConnectionSettings(configFileContent string, credentials Credentials, env string) string {
+func UpdateConnectionSettings(configFileContent string, credentials dataWarehouse.Credentials, env string) string {
 	configFileContent = strings.ReplaceAll(configFileContent, "<"+env+"_HOST>", credentials.Host)
 	configFileContent = strings.ReplaceAll(configFileContent, "<"+env+"_USER>", credentials.Username)
 	configFileContent = strings.ReplaceAll(configFileContent, "<"+env+"_PASSWORD>", credentials.Password)
@@ -136,7 +138,7 @@ func UpdateConnectionSettings(configFileContent string, credentials Credentials,
 	return configFileContent
 }
 
-func UpdateLogstashConnectionSettings(configFileContent string, logstashHost LogstashHost) string {
+func UpdateLogstashConnectionSettings(configFileContent string, logstashHost dataWarehouse.LogstashHost) string {
 	configFileContent = strings.ReplaceAll(configFileContent, "<PATH_TO_LOGS>", logstashHost.LogstashLogsFolder)
 	configFileContent = strings.ReplaceAll(configFileContent, "<LOGSTASH-API>", logstashHost.LogstashApiHost)
 	return configFileContent

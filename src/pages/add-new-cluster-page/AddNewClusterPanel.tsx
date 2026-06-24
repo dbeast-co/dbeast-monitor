@@ -190,7 +190,7 @@ function AddNewClusterPanel() {
 
       // Determine if the configuration is valid.
       if (
-        (prodStatus.toLowerCase() === 'green' || prodStatus.toLowerCase() === 'yellow') &&
+        (prodStatus.toLowerCase() === 'green' || prodStatus.toLowerCase() === 'yellow' || prodStatus.toLowerCase() === 'red') &&
         (monStatus.toLowerCase() === 'green' || monStatus.toLowerCase() === 'yellow')
       ) {
         setSaveDisabled(false);
@@ -422,7 +422,7 @@ function AddNewClusterPanel() {
         const { status: prodStatus } = data.cluster_connection_settings.prod.elasticsearch;
 
         const { status: monStatus } = data.cluster_connection_settings.mon.elasticsearch;
-        if (prodStatus === 'UNTESTED' || prodStatus === 'ERROR' || monStatus === 'UNTESTED' || monStatus === 'ERROR') {
+        if (prodStatus === 'UNTESTED' || monStatus === 'UNTESTED' || monStatus === 'ERROR') {
           setSaveDisabled(true);
           setTestDisable(true);
         } else {
