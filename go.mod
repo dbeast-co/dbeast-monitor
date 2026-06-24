@@ -1,6 +1,6 @@
 module github.com/dbeast/dbeastmonitor
 
-go 1.25
+go 1.26.3
 
 require github.com/grafana/grafana-plugin-sdk-go v0.292.1
 
