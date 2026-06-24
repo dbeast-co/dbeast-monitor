@@ -84,7 +84,6 @@ func GenerateESLogstashConfigurationFiles(project dataWarehouse.Project, cluster
 	for _, configFile := range project.LogstashConfigurations.EsMonitoringConfigurationFiles {
 		if configFile.IsChecked {
 			configFileClone := strings.Clone(dataWarehouse.LSConfigsMap[strings.ReplaceAll(configFile.Id, ".conf", "")])
-			log.DefaultLogger.Warn("Config file: ", configFileClone, " Content: ", configFileClone)
 			configFileClone = strings.ReplaceAll(configFileClone, "<CLUSTER_ID>", clusterId)
 			configFileClone = UpdateMonConnectionSettings(configFileClone, project.ClusterConnectionSettings)
 			configFileClone = UpdateProdConnectionSettings(configFileClone, project.ClusterConnectionSettings)

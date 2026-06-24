@@ -35,6 +35,7 @@ function AddNewClusterPanel() {
   const [validHost, setValidHost] = useState(false);
   const [validKibanaHost, setValidKibanaHost] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeploying, setIsDeploying] = useState(false);
   const [isDisabled, setSaveDisabled] = useState(false);
   const [isTestDisabled, setTestDisable] = useState(false);
 
@@ -440,7 +441,7 @@ function AddNewClusterPanel() {
       logstash_configurations: cluster?.logstash_configurations || {},
     };
 
-    setIsLoading(true);
+    setIsDeploying(true);
 
     try {
       const response = await fetch(`${SERVER_URL}/deploy_logstash_configuration`, {
@@ -459,7 +460,7 @@ function AddNewClusterPanel() {
     } catch (err) {
       console.debug('There was an error during the logstash deployment:', err);
     } finally {
-      setIsLoading(false);
+      setIsDeploying(false);
     }
   };
 
@@ -471,7 +472,7 @@ function AddNewClusterPanel() {
       monitoring_cluster_injection: cluster?.monitoring_cluster_injection || {},
     };
 
-    setIsLoading(true); // Ensure loader starts before the fetch operation.
+    setIsDeploying(true); // Ensure loader starts before the fetch operation.
 
     try {
       const response = await fetch(`${SERVER_URL}/deploy_elasticsearch_configuration`, {
@@ -491,7 +492,7 @@ function AddNewClusterPanel() {
       console.debug('There was an error during the Elasticsearch templates deployment:', err);
     } finally {
       // Ensure loader stops after completing the fetch operation.
-      setIsLoading(false);
+      setIsDeploying(false);
     }
   };
 
@@ -796,11 +797,11 @@ function AddNewClusterPanel() {
             )}
             <div className={styles.actions}>
               <button
-                disabled={isDisabled}
+                disabled={isDisabled || isDeploying}
                 onClick={() => onTemplatesDeploy(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
                 className="deploy-btn"
               >
-                Deploy
+                {isDeploying ? <Spinner /> : 'Deploy'}
               </button>
             </div>
             <div className={`${styles.divider} add-new-cluster-divider-2`}></div>
@@ -818,11 +819,11 @@ function AddNewClusterPanel() {
             <div className={styles.actions}>
               {version.includes('Container') ? (
                 <button
-                  disabled={isDisabled}
+                  disabled={isDisabled || isDeploying}
                   onClick={() => onLogstashFilesDeploy(LogstashFileType.ES_MONITORING_CONFIGURATION_FILES)}
                   className="deploy-btn"
                 >
-                  Deploy
+                  {isDeploying ? <Spinner /> : 'Deploy'}
                 </button>
               ) : (
                 <button
