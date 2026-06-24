@@ -2,7 +2,7 @@ module github.com/dbeast/dbeastmonitor
 
 go 1.26.3
 
-require github.com/grafana/grafana-plugin-sdk-go v0.292.1
+require github.com/grafana/grafana-plugin-sdk-go v0.291.0
 
 require (
 	github.com/BurntSushi/toml v1.6.0 // indirect
