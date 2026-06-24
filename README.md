@@ -2,7 +2,7 @@
 
 ----
 
-[![version: 2.0.6](https://img.shields.io/badge/version-2.0.6-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
+[![version: 2.1,0](https://img.shields.io/badge/version-2.1.0-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest)
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
 &nbsp;&nbsp;&nbsp; ![Downloads](https://img.shields.io/endpoint?url=https://dbeast-co.github.io/dbeast-monitor/badges/downloads.json)
 

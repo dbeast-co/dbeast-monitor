@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 2.1.0 (2026-06-24)
+- Features:
+  * [FEAT] Transition Configuration Files to Golang Implementation [#248](https://github.com/dbeast-co/dbeast-monitor/issues/248)
+  * [FEAT] Add _cat/allocation to the "Stack monitoring" dashboard [#220](https://github.com/dbeast-co/dbeast-monitor/issues/220)
+
+- Bug fixes
+  * [BUG] Deleting a cluster before the management page finishes loading removes all Elasticsearch-direct-mon / Elasticsearch-direct-prod datasources.
+    [#247](https://github.com/dbeast-co/dbeast-monitor/issues/247)
+  * [BUG] Incorrect shards analytics in case of more than one replica in the index
+    [#62](https://github.com/dbeast-co/dbeast-monitor/issues/62)
+
+- Updated dashboards
+  * Elastic stack monitoring dashboard
+  
 ## Version 2.0.6 (2026-05-09)
 
 - Features:
