@@ -33,7 +33,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25'
+          go-version-file: 'go.mod'
           check-latest: true
           cache: true
 
@@ -57,8 +57,6 @@ jobs:
       # 6. Build backend via Mage
       - name: Build backend
         run: mage build
-        env:
-          GOTOOLCHAIN: auto
 
       # 7. Build frontend
       - name: Build frontend
@@ -76,7 +74,7 @@ jobs:
         run: |
           set -e
 
-          PLUGIN_ID=$(jq -r '.id' plugin.json)
+          PLUGIN_ID=$(jq -r '.id' dbeast-dbeastmonitor-app/plugin.json)
 
           # clean old artifacts
           rm -rf release "${PLUGIN_ID}" || true
