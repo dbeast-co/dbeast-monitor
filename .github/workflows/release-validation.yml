@@ -57,6 +57,8 @@ jobs:
       # 6. Build backend via Mage
       - name: Build backend
         run: mage build
+        env:
+          GOTOOLCHAIN: auto
 
       # 7. Build frontend
       - name: Build frontend
