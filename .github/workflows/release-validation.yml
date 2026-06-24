@@ -74,7 +74,7 @@ jobs:
         run: |
           set -e
 
-          PLUGIN_ID=$(jq -r '.id' dbeast-dbeastmonitor-app/plugin.json)
+          PLUGIN_ID=$(jq -r '.id' plugin.json)
 
           # clean old artifacts
           rm -rf release "${PLUGIN_ID}" || true
