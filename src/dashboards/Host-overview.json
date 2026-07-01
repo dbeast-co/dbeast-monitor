@@ -533,7 +533,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -678,7 +678,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -816,7 +816,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -977,7 +977,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1138,7 +1138,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: node_stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1312,7 +1312,7 @@
               "type": "derivative"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1449,7 +1449,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1572,7 +1572,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1766,7 +1766,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: elasticsearch.node.stats AND elasticsearch.node.name: $node_name",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -4849,7 +4849,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.name: $node_name",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -5001,7 +5001,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.rejected_rate:>1 AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.rejected_rate:>1 AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5133,7 +5133,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5265,7 +5265,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5399,7 +5399,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5533,7 +5533,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -5772,7 +5772,7 @@
                   "type": "sum"
                 }
               ],
-              "query": "NOT elasticsearch.shard.state: UNASSIGNED AND elasticsearch.node.name: $node_name AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+              "query": "NOT elasticsearch.shard.state: UNASSIGNED AND elasticsearch.node.name: $node_name AND elasticsearch.cluster.id: ${cluster_ds:raw}",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -5943,7 +5943,7 @@
                   "type": "bucket_script"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.indexing.index_rate: [1 TO 100000] AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.indexing.index_rate: [1 TO 100000] AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6097,7 +6097,7 @@
                   "type": "bucket_script"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.search.query_last_period: [10 TO 100000] AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.search.query_last_period: [10 TO 100000] AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6226,7 +6226,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.search.fetch_last_period: [1 TO 100000] AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.search.fetch_last_period: [1 TO 100000] AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6379,7 +6379,7 @@
                   "type": "bucket_script"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.indexing.index_latency: [1 TO 100000] AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.indexing.index_latency: [1 TO 100000] AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6507,7 +6507,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.search.query_latency: [1 TO 100000] AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.search.query_latency: [1 TO 100000] AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6635,7 +6635,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.search.fetch_latency: [10 TO 100000] AND elasticsearch.node.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.search.fetch_latency: [10 TO 100000] AND elasticsearch.node.name: $node_name",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6704,7 +6704,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND host.name: $node_name",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND host.name: $node_name",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -6801,7 +6801,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -6816,7 +6816,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -6826,14 +6826,14 @@
           "type": "elasticsearch",
           "uid": "${es_metrics}"
         },
-        "definition": "{\"find\": \"terms\", \"field\": \"elasticsearch.node.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid}\" }",
+        "definition": "{\"find\": \"terms\", \"field\": \"elasticsearch.node.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:raw}\" }",
         "hide": 0,
         "includeAll": false,
         "label": "Node name",
         "multi": false,
         "name": "node_name",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"elasticsearch.node.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid}\" }",
+        "query": "{\"find\": \"terms\", \"field\": \"elasticsearch.node.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:raw}\" }",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -6846,14 +6846,14 @@
           "type": "elasticsearch",
           "uid": "${es_metrics}"
         },
-        "definition": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.name: $node_name AND event.dataset: elasticsearch.node.stats\"}",
+        "definition": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.name: $node_name AND event.dataset: elasticsearch.node.stats\"}",
         "hide": 2,
         "includeAll": false,
         "label": "Node host",
         "multi": false,
         "name": "node_host",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.name: $node_name AND event.dataset: elasticsearch.node.stats\"}",
+        "query": "{\"find\": \"terms\", \"field\": \"host.name\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.name: $node_name AND event.dataset: elasticsearch.node.stats\"}",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -6871,7 +6871,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -6886,7 +6886,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -6901,7 +6901,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-status--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats-status--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -6916,7 +6916,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

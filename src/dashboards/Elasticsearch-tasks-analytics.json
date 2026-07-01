@@ -210,7 +210,7 @@
               "type": "cardinality"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: search_task",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: search_task",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -334,7 +334,7 @@
               "type": "count"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: search_task",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: search_task",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -478,7 +478,7 @@
               "type": "cardinality"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: search_task",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: search_task",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -605,7 +605,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: search_task",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: search_task",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -726,7 +726,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -957,7 +957,7 @@
               "type": "raw_data"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: search_task AND elasticsearch.task.request.query:* AND ${text_search_filter:raw} ",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: search_task AND elasticsearch.task.request.query:* AND ${text_search_filter:raw} ",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1280,7 +1280,7 @@
                   "type": "cardinality"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: esql_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: esql_task",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -1415,7 +1415,7 @@
                   "type": "count"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: esql_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: esql_task",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -1559,7 +1559,7 @@
                   "type": "cardinality"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: esql_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: esql_task",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -1686,7 +1686,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: esql_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: esql_task",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -1937,7 +1937,7 @@
                   "type": "raw_data"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: esql_task AND elasticsearch.task.request.query:* AND ${text_search_filter:raw} ",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: esql_task AND elasticsearch.task.request.query:* AND ${text_search_filter:raw} ",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -2165,7 +2165,7 @@
                   "type": "count"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: write_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: write_task",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -2299,7 +2299,7 @@
                   "type": "count"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: write_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: write_task",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -2528,7 +2528,7 @@
                   "type": "count"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: write_task",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: write_task",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -2666,7 +2666,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -2908,7 +2908,7 @@
                   "type": "raw_data"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: write_task AND ${text_search_filter:raw}",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: write_task AND ${text_search_filter:raw}",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3262,7 +3262,7 @@
                   "type": "count"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: general AND ${text_search_filter:raw}",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: general AND ${text_search_filter:raw}",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3546,7 +3546,7 @@
                   "type": "raw_data"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: general AND ${text_search_filter:raw}",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: general AND ${text_search_filter:raw}",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -3668,7 +3668,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-tasks--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-tasks--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -3683,7 +3683,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },

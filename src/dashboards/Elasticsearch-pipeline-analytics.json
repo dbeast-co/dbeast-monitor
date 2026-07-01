@@ -112,7 +112,7 @@
           "params": [
             [
               "q",
-              "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.id:$pipeline_id"
+              "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.ingest_pipeline.id:$pipeline_id"
             ]
           ],
           "queryParams": "",
@@ -348,7 +348,7 @@
           "params": [
             [
               "q",
-              "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.id:$pipeline_id"
+              "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.ingest_pipeline.id:$pipeline_id"
             ]
           ],
           "queryParams": "",
@@ -490,7 +490,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.id: $pipeline_id",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.ingest_pipeline.id: $pipeline_id",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -533,7 +533,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -549,7 +549,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-mon--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-direct-mon--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
