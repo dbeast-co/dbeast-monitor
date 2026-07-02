@@ -1596,7 +1596,7 @@
         "options": [],
         "query": "marcusolsson-json-datasource",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:raw}/",
         "type": "datasource"
       }
     ]

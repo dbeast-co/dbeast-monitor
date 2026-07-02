@@ -2630,7 +2630,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "event.dataset: index_stats AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+          "query": "event.dataset: index_stats AND elasticsearch.cluster.id: ${cluster_ds:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -2746,7 +2746,7 @@
               }
             }
           ],
-          "query": "event.dataset: index_stats AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+          "query": "event.dataset: index_stats AND elasticsearch.cluster.id: ${cluster_ds:raw}",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -2899,7 +2899,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.indexing.index_rate: [1 TO 10000000] AND NOT elasticsearch.node.name: *->*",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.indexing.index_rate: [1 TO 10000000] AND NOT elasticsearch.node.name: *->*",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -3037,7 +3037,7 @@
               "type": "bucket_script"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.shard.search.fetch_rate: [1 TO 10000000] AND NOT elasticsearch.node.name: *->*",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.shard.search.fetch_rate: [1 TO 10000000] AND NOT elasticsearch.node.name: *->*",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -6136,7 +6136,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND metricset.name: node_stats",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND metricset.name: node_stats",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -6372,7 +6372,7 @@
               "method": "POST",
               "queryParams": "",
               "refId": "A",
-              "urlPath": "/api/monitoring/v1/clusters/${cluster_ds:uid}/kibana/instances"
+              "urlPath": "/api/monitoring/v1/clusters/${cluster_ds:raw}/kibana/instances"
             }
           ],
           "title": "Kibana instances status",
@@ -6540,7 +6540,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND system.filesystem.mount_point:* AND system.filesystem.mount_point: $mount_point",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND system.filesystem.mount_point:* AND system.filesystem.mount_point: $mount_point",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -6676,7 +6676,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid}",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw}",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -6830,7 +6830,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -6966,7 +6966,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -7102,7 +7102,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.stats.thread_pool.rejected_rate: [ 1 TO 1000000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -7241,7 +7241,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -7380,7 +7380,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search_coordination",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search_coordination",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -7519,7 +7519,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -7667,7 +7667,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid}",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw}",
               "refId": "A",
               "timeField": "@timestamp"
             }
@@ -7824,7 +7824,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -7963,7 +7963,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search_coordination",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search_coordination",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -8102,7 +8102,7 @@
                   "type": "avg"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -8238,7 +8238,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.stats.thread_pool.queue: [ 1 TO 100000 ]",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search AND elasticsearch.node.stats.thread_pool.queue: [ 1 TO 100000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -8374,7 +8374,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: search_coordination AND elasticsearch.node.stats.thread_pool.queue: [ 1 TO 100000 ]",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: search_coordination AND elasticsearch.node.stats.thread_pool.queue: [ 1 TO 100000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -8510,7 +8510,7 @@
                   "type": "max"
                 }
               ],
-              "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.stats.thread_pool.queue: [ 1 TO 100000 ]",
+              "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.thread_pool.name: write AND elasticsearch.node.stats.thread_pool.queue: [ 1 TO 100000 ]",
               "queryParams": "",
               "refId": "Completed",
               "timeField": "@timestamp",
@@ -9367,7 +9367,7 @@
                   "type": "logs"
                 }
               ],
-              "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+              "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: ${cluster_ds:raw}",
               "queryParams": "",
               "refId": "A",
               "timeField": "@timestamp",
@@ -9429,7 +9429,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-metricbeat-monitoring-es--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9445,7 +9445,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9461,7 +9461,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Kibana-direct--(.*)--${cluster_ds:uid}/",
+        "regex": "/Kibana-direct--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9477,7 +9477,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats--(.*)-${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats--(.*)-${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9492,7 +9492,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-logstash-metrics-status--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9508,7 +9508,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9522,14 +9522,14 @@
           "type": "elasticsearch",
           "uid": "${es_metrics}"
         },
-        "definition": "{\"find\": \"terms\", \"field\": \"system.filesystem.mount_point\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid}\"}",
+        "definition": "{\"find\": \"terms\", \"field\": \"system.filesystem.mount_point\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:raw}\"}",
         "hide": 2,
         "includeAll": true,
         "label": "Mount point",
         "multi": false,
         "name": "mount_point",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"system.filesystem.mount_point\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:uid}\"}",
+        "query": "{\"find\": \"terms\", \"field\": \"system.filesystem.mount_point\", \"query\": \"elasticsearch.cluster.id: ${cluster_ds:raw}\"}",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -9548,7 +9548,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-thread_pools--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -9564,7 +9564,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       }

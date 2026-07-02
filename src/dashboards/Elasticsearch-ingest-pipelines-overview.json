@@ -299,7 +299,7 @@
               "type": "max"
             }
           ],
-          "query": "event.dataset: pipeline_stats AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+          "query": "event.dataset: pipeline_stats AND elasticsearch.cluster.id: ${cluster_ds:raw}",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -446,7 +446,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: pipeline_stats",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: pipeline_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -758,7 +758,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -894,7 +894,7 @@
               "type": "sum"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND elasticsearch.node.stats.ingest_pipeline.in_rate: [1 TO 10000000]",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1031,7 +1031,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: enrich_queue_stats",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1122,7 +1122,7 @@
               "type": "max"
             }
           ],
-          "query": "elasticsearch.cluster.id: ${cluster_ds:uid} AND event.dataset: enrich_queue_stats",
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: enrich_queue_stats",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1317,7 +1317,7 @@
               "type": "logs"
             }
           ],
-          "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: ${cluster_ds:uid}",
+          "query": "NOT fileset.name: audit AND NOT fileset.name: gc AND NOT log.logger: plugins.security.audit.ecs AND NOT elasticsearch.component: o.e.m.j.JvmGcMonitorService AND NOT log.logger: org.elasticsearch.monitor.jvm.JvmGcMonitorService AND elasticsearch.cluster.id: ${cluster_ds:raw}",
           "queryParams": "",
           "refId": "A",
           "timeField": "@timestamp",
@@ -1376,7 +1376,7 @@
         "query": "marcusolsson-json-datasource",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-direct-prod--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1390,7 +1390,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1404,7 +1404,7 @@
         "options": [],
         "query": "elasticsearch",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       },
@@ -1419,7 +1419,7 @@
         "query": "elasticsearch",
         "queryValue": "",
         "refresh": 1,
-        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:uid}/",
+        "regex": "/Elasticsearch-mon-filebeat--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
       }
