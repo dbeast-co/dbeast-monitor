@@ -1,0 +1,2021 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["OverviewDashboard"],
+      "targetBlank": true,
+      "title": "Additional monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 2,
+        "y": 0
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "settings": {},
+              "type": "sum"
+            },
+            {
+              "id": "3",
+              "pipelineVariables": [
+                {
+                  "name": "sum",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.sum/60/24/60"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.primaries.indexing.index_last_period: [10 TO 10000000] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Total indexing rate per day",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 6,
+        "y": 0
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["mean"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.primaries.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "settings": {},
+              "type": "sum"
+            },
+            {
+              "id": "3",
+              "pipelineVariables": [
+                {
+                  "name": "sum",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.sum/60/24/60"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.primaries.indexing.index_last_period: [10 TO 10000000] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Primary indexing rate per day",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Metric"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value (mean)"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index pattern"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 14,
+        "y": 0
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "500"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.primaries.store.size_in_bytes",
+              "hide": true,
+              "id": "4",
+              "type": "avg"
+            },
+            {
+              "field": "elasticsearch.index.total.docs.count",
+              "hide": true,
+              "id": "5",
+              "type": "avg"
+            },
+            {
+              "hide": false,
+              "id": "6",
+              "pipelineVariables": [
+                {
+                  "name": "size",
+                  "pipelineAgg": "4"
+                },
+                {
+                  "name": "count",
+                  "pipelineAgg": "5"
+                },
+                {
+                  "name": "index_count",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.count >0 ? params.size/params.count * params.index_count : 0 "
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.primaries.indexing.index_rate: [10 TO 1000000]  AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Total ingest size per day",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Metric": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Value": {
+                "aggregations": ["mean"],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "reduceFields",
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": false,
+              "Metric": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderByMode": "manual",
+            "renameByName": {
+              "Field": "",
+              "Metric": "",
+              "Value (mean)": "AVG day ingest"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Metric"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value (mean)"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index pattern"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 18,
+        "y": 0
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "500"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.primaries.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.primaries.store.size_in_bytes",
+              "hide": true,
+              "id": "4",
+              "type": "avg"
+            },
+            {
+              "field": "elasticsearch.index.total.docs.count",
+              "hide": true,
+              "id": "5",
+              "type": "avg"
+            },
+            {
+              "hide": false,
+              "id": "6",
+              "pipelineVariables": [
+                {
+                  "name": "size",
+                  "pipelineAgg": "4"
+                },
+                {
+                  "name": "count",
+                  "pipelineAgg": "5"
+                },
+                {
+                  "name": "index_count",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.count >0 ? params.size/params.count * params.index_count : 0 "
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.primaries.indexing.index_rate: [10 TO 1000000]  AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Primary ingest size per day",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Metric": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Value": {
+                "aggregations": ["mean"],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "reduceFields",
+            "reducers": ["sum"]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": false,
+              "Metric": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderByMode": "manual",
+            "renameByName": {
+              "Field": "",
+              "Metric": "",
+              "Value (mean)": "AVG day ingest"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 20,
+      "panels": [],
+      "title": "Cluster trends",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 27,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum elasticsearch.index.total.indexing.index_last_period/60/24/60": "AVG Total indexing rate"
+            },
+            "includeByName": {}
+          }
+        }
+      ],
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "settings": {},
+              "type": "sum"
+            },
+            {
+              "id": "3",
+              "pipelineVariables": [
+                {
+                  "name": "sum",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.sum/60/24/60"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.primaries.indexing.index_last_period: [10 TO 10000000] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Total indexing rate per day",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Sum elasticsearch.index.total.search.query_rate/60/24": "AVG Query rate"
+            },
+            "includeByName": {}
+          }
+        }
+      ],
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.search.query_rate",
+              "hide": true,
+              "id": "1",
+              "settings": {},
+              "type": "sum"
+            },
+            {
+              "id": "3",
+              "pipelineVariables": [
+                {
+                  "name": "sum",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.sum/60/24"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.total.search.query_last_period: [1 TO 10000000000] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Queries rate per day",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Average elasticsearch.index.summary.total.store.size_in_bytes": "AVG Data size"
+            },
+            "includeByName": {}
+          }
+        }
+      ],
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.summary.total.store.size_in_bytes",
+              "hide": false,
+              "id": "1",
+              "type": "avg"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: indices_stats AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Data Size per day",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Unique Count elasticsearch.index.name": "Index count"
+            },
+            "includeByName": {}
+          }
+        }
+      ],
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.name",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Index count per day",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 21,
+      "panels": [],
+      "title": "Index patterns trends",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": ["sum"]
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AVG ingest"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 145
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Index pattern"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "Analyze",
+                    "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 32,
+        "w": 9,
+        "x": 0,
+        "y": 22
+      },
+      "id": 25,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "AVG ingest"
+          }
+        ]
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "500"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.primaries.store.size_in_bytes",
+              "hide": true,
+              "id": "4",
+              "type": "avg"
+            },
+            {
+              "field": "elasticsearch.index.total.docs.count",
+              "hide": true,
+              "id": "5",
+              "type": "avg"
+            },
+            {
+              "hide": false,
+              "id": "6",
+              "pipelineVariables": [
+                {
+                  "name": "size",
+                  "pipelineAgg": "4"
+                },
+                {
+                  "name": "count",
+                  "pipelineAgg": "5"
+                },
+                {
+                  "name": "index_count",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.count >0 ? params.size/params.count * params.index_count : 0 "
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.primaries.indexing.index_rate: [10 TO 1000000] ",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Day AVG ingest size per index pattern",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Metric": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Value": {
+                "aggregations": ["mean"],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Metric": "Index pattern",
+              "Value (mean)": "AVG ingest"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 2,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
+        "x": 9,
+        "y": 22
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "4",
+                "size": "30"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.indexing.index_last_period",
+              "hide": true,
+              "id": "1",
+              "type": "sum"
+            },
+            {
+              "field": "elasticsearch.index.primaries.store.size_in_bytes",
+              "hide": true,
+              "id": "4",
+              "type": "avg"
+            },
+            {
+              "field": "elasticsearch.index.total.docs.count",
+              "hide": true,
+              "id": "5",
+              "type": "avg"
+            },
+            {
+              "hide": false,
+              "id": "6",
+              "pipelineVariables": [
+                {
+                  "name": "size",
+                  "pipelineAgg": "4"
+                },
+                {
+                  "name": "count",
+                  "pipelineAgg": "5"
+                },
+                {
+                  "name": "index_count",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.count >0 ? params.size/params.count * params.index_count : 0 "
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.total.indexing.index_last_period: [10 TO 10000000] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Ingest size per index pattern",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
+        "x": 9,
+        "y": 30
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "20"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.store.size_in_bytes",
+              "hide": true,
+              "id": "1",
+              "settings": {},
+              "type": "sum"
+            },
+            {
+              "id": "4",
+              "pipelineVariables": [
+                {
+                  "name": "sum",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.sum/60/24"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.total.store.size_in_bytes: [1000000 TO 9999999999999] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Index pattern size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 2,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
+        "x": 9,
+        "y": 38
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "20"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.total.indexing.index_last_period",
+              "id": "1",
+              "settings": {},
+              "type": "sum"
+            },
+            {
+              "id": "4",
+              "pipelineVariables": [
+                {
+                  "name": "sum",
+                  "pipelineAgg": "1"
+                }
+              ],
+              "settings": {
+                "script": "params.sum/60/24/60"
+              },
+              "type": "bucket_script"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND elasticsearch.index.total.indexing.index_last_period: [10 TO 10000000] AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "AVG Indexing rate per index pattern",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${es_index_stats}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 2,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
+        "x": 9,
+        "y": 46
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": ["min", "max"],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "bucketAggs": [
+            {
+              "field": "elasticsearch.index.index_pattern",
+              "id": "3",
+              "settings": {
+                "min_doc_count": "1",
+                "order": "desc",
+                "orderBy": "1",
+                "size": "50"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "1d",
+                "min_doc_count": "1"
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${es_index_stats}"
+          },
+          "metrics": [
+            {
+              "field": "elasticsearch.index.name",
+              "id": "1",
+              "type": "cardinality"
+            }
+          ],
+          "query": "elasticsearch.cluster.id: ${cluster_ds:raw} AND event.dataset: index_stats AND @timestamp: [\"now-360d/d\" TO \"now-1d/d\"]",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "title": "Index count per index pattern",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": ["DBeastMonitor", "OverviewDashboard"],
+  "templating": {
+    "list": [
+      {
+        "current": {
+        },
+        "label": "Cluster",
+        "name": "cluster_ds",
+        "options": [],
+        "query": "grafana-testdata-datasource",
+        "refresh": 1,
+        "regex": "/Elasticsearch: (.*)/",
+        "type": "datasource"
+      },
+      {
+        "current": {
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Elastic datasource",
+        "multi": false,
+        "name": "es_index_stats",
+        "options": [],
+        "query": "elasticsearch",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "/Elasticsearch-mon-dbeast-mon-es-index-stats--(.*)--${cluster_ds:raw}/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Elasticsearch Historical Trends",
+  "uid": "elasticsearch-historical-trends",
+  "version": 1
+}

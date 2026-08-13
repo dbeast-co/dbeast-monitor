@@ -234,6 +234,16 @@
       "addToNav": false,
       "uid": "elasticsearch-tasks-analytics",
       "defaultNav": false
+    },
+    {
+      "type": "dashboard",
+      "name": "Elasticsearch Historical Trends",
+      "path": "dashboards/Elasticsearch-historical-trends.json",
+      "role": "Viewer",
+      "addToNav": false,
+      "title": "Elasticsearch Historical Trends",
+      "uid": "elasticsearch-historical-trends",
+      "defaultNav": false
     }
   ],
   "dependencies": {

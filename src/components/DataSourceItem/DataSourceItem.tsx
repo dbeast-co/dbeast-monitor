@@ -372,6 +372,11 @@ export class DataSourceItem extends PureComponent<Props, ClusterStatsItemState> 
                         value: 'ml-jobs-analytics',
                         href: `/d/ml-jobs-analytics-dashboard/ml-jobs-analytics-dashboard?orgId=1&var-cluster_ds=${this.uid}`,
                       },
+                      {
+                        label: 'Elasticsearch Historical Trends',
+                        value: 'elasticsearch-historical-trends',
+                        href: `/d/elasticsearch-historical-trends/elasticsearch-historical-trends?orgId=1&var-cluster_ds=${this.uid}`,
+                      },
                     ]}
                     value={
                       this.state.monitorName
