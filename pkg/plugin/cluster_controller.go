@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -122,6 +123,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 			}
 		}
 	}
+	response.WriteHeader(http.StatusOK)
 }
 
 func (a *App) AddClusterHandler(response http.ResponseWriter, request *http.Request) {
@@ -156,7 +158,8 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 
 	defer DeferHandler(request, ctxLogger)
 
-	response.Header().Add("Content-Type", "application/json")
+	response.Header().Set("Content-Type", "application/json")
+	response.WriteHeader(http.StatusOK)
 
 	var project dataWarehouse.Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
@@ -232,9 +235,52 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 	ctxLogger.Info("Completed processing datasources.")
 
 	response.WriteHeader(http.StatusOK)
-	_, err = response.Write([]byte("Ok"))
+	_, err = response.Write([]byte("{\"status\":\"done\"}"))
 	if err != nil {
 		ctxLogger.Error("Can't write to the response for add/update datasources request: " + err.Error())
+		return
+	}
+}
+
+func (a *App) DeleteClusterViaAPIHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the new cluster delete via API")
+
+	defer DeferHandler(request, ctxLogger)
+
+	response.Header().Add("Content-Type", "application/json")
+
+	var project dataWarehouse.Project
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for delete cluster from Grafana request: ", http.StatusBadRequest, ctxLogger)
+		return
+	}
+	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+
+	if project.ClusterId == "" {
+		err := errors.New("error while parsing cluster ID")
+		HTTPErrorGenerator(response, err, "Cluster ID is missing in the request", http.StatusBadRequest, ctxLogger)
+		return
+	}
+
+	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Grafana, a.httpClientOptions)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating Grafana HTTP client for delete cluster from Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	err = DeleteDataSourcesByClusterID(grafanaClient, project.ClusterConnectionSettings.Mon.Grafana.Host, project.ClusterId)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while deleting data sources for the Grafana cluster: "+project.ClusterId, http.StatusInternalServerError, ctxLogger)
+		return
+	}
+
+	ctxLogger.Info("Data sources deleted successfully for the Grafana cluster: " + project.ClusterId)
+
+	response.WriteHeader(http.StatusOK)
+	_, err = response.Write([]byte("{\"status\":\"done\"}"))
+	if err != nil {
+		ctxLogger.Error("Can't write to the response for delete cluster request: " + err.Error())
 		return
 	}
 }
@@ -269,7 +315,7 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 	clusterId := request.URL.Path[len("/delete_cluster/"):]
 	ctxLogger.Info("Got request for the cluster delete. Cluster ID: " + clusterId)
 	response.WriteHeader(http.StatusOK)
-	_, err := response.Write([]byte(`{"status":"ok"}`))
+	_, err := response.Write([]byte(`{"status":"done"}`))
 	if err != nil {
 		log.DefaultLogger.Error("Can't write to the response for delete cluster request: " + err.Error())
 		return

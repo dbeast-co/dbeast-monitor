@@ -6,6 +6,7 @@ import (
 
 const newClusterJSON = `
 {
+  "cluster_id": "",
   "cluster_connection_settings": {
     "prod": {
       "elasticsearch": {

@@ -6,6 +6,7 @@ type FirstIndex struct {
 }
 
 type Project struct {
+	ClusterId                  string                  `json:"cluster_id"`
 	ClusterConnectionSettings  EnvironmentConfig       `json:"cluster_connection_settings"`
 	MonitoringClusterInjection []ConfigurationCheckbox `json:"monitoring_cluster_injection"`
 	LogstashConfigurations     LogstashConfigurations  `json:"logstash_configurations"`
