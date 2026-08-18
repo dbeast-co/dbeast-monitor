@@ -1261,6 +1261,10 @@
                     "url": "/d/elasticsearch-index-pattern-monitor/elasticsearch-index-pattern-monitor?orgId=1&refresh=1m&${cluster_ds:queryparam}&var-index_pattern=${__data.fields[\"Index pattern\"]}"
                   }
                 ]
+              },
+              {
+                "id": "custom.filterable",
+                "value": true
               }
             ]
           }
