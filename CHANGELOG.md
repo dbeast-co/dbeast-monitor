@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.1.1 (2026-08-23)
+- Features:
+  * [FEAT] Delete via API [#252](https://github.com/dbeast-co/dbeast-monitor/issues/252) 
+  * [FEAT] "Elasticsearch Historical Trends" dashboard development [#251](https://github.com/dbeast-co/dbeast-monitor/issues/251)
+
 ## Version 2.1.0 (2026-06-24)
 - Features:
   * [FEAT] Transition Configuration Files to Golang Implementation [#248](https://github.com/dbeast-co/dbeast-monitor/issues/248)
