@@ -33,7 +33,7 @@
       "keepTime": false,
       "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -1981,7 +1981,7 @@
   "preload": false,
   "refresh": "",
   "schemaVersion": 42,
-  "tags": ["DBeastMonitor", "OverviewDashboard"],
+  "tags": ["DBeastMonitor", "AnalyticsDashboard"],
   "templating": {
     "list": [
       {

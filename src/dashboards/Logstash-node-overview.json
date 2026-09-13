@@ -31,11 +31,21 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["AnalyticsDashboard"],
+      "targetBlank": true,
+      "title": "Analytics",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -346,22 +356,16 @@
       },
       "id": 10,
       "options": {
-        "displayLabels": [
-          "value"
-        ],
+        "displayLabels": ["value"],
         "legend": {
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "values": [
-            "percent"
-          ]
+          "values": ["percent"]
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": ["sum"],
           "fields": "",
           "values": true
         },
@@ -634,8 +638,7 @@
             ]
           }
         },
-        "overrides": [
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 5,
@@ -903,9 +906,7 @@
             "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
@@ -999,9 +1000,7 @@
             "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "/^Average system\\.memory\\.total$/",
               "values": false
             },
@@ -1096,9 +1095,7 @@
             "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "/^Average system\\.memory\\.swap\\.used\\.pct$/",
               "values": false
             },
@@ -1196,9 +1193,7 @@
             "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
+              "calcs": ["last"],
               "fields": "",
               "values": true
             },
@@ -1297,9 +1292,7 @@
             "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
+              "calcs": ["last"],
               "fields": "",
               "values": true
             },
@@ -1398,9 +1391,7 @@
             "minVizWidth": 0,
             "orientation": "horizontal",
             "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
+              "calcs": ["last"],
               "fields": "",
               "values": true
             },
@@ -1699,8 +1690,7 @@
             }
           ],
           "title": "CPU usage",
-          "transformations": [
-          ],
+          "transformations": [],
           "type": "timeseries",
           "maxDataPoints": 100
         },
@@ -2314,9 +2304,7 @@
             "minVizWidth": 0,
             "orientation": "horizontal",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "",
               "values": false
             },
@@ -2758,9 +2746,7 @@
             "minVizWidth": 0,
             "orientation": "horizontal",
             "reduceOptions": {
-              "calcs": [
-                "last"
-              ],
+              "calcs": ["last"],
               "fields": "",
               "values": false
             },
@@ -3192,9 +3178,7 @@
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -4660,8 +4644,7 @@
             ]
           }
         },
-        "overrides": [
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 5,
@@ -4829,9 +4812,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -4916,14 +4897,11 @@
   "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor"
-  ],
+  "tags": ["DBeastMonitor"],
   "templating": {
     "list": [
       {
-        "current": {
-        },
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
@@ -4933,8 +4911,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics",
@@ -4948,8 +4925,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics_status",
@@ -4963,8 +4939,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_logs",
@@ -4978,8 +4953,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "datasource": {
           "type": "elasticsearch",
           "uid": "${logstash_mon_metrics_status}"
@@ -4999,8 +4973,7 @@
         "type": "query"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "es_metrics",
@@ -5014,8 +4987,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_logs_ports",

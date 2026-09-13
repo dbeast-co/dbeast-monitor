@@ -31,11 +31,21 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["AnalyticsDashboard"],
+      "targetBlank": true,
+      "title": "Analytics",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -288,9 +298,7 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
           "fields": ""
         },
@@ -432,9 +440,7 @@
           "options": {
             "fields": {
               "Index": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Primary shards": {
@@ -442,21 +448,15 @@
                 "operation": "groupby"
               },
               "Index pattern": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Health": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Status": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Max elasticsearch.index.shards.primaries": {
@@ -464,63 +464,43 @@
                 "operation": "groupby"
               },
               "elasticsearch.index.name": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "elasticsearch.index.health": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "elasticsearch.index.status": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "elasticsearch.index.index_pattern": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Max elasticsearch.index.total.store.size_in_bytes": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Max elasticsearch.index.primaries.store.size_in_bytes": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Max elasticsearch.index.total.docs.count": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Max elasticsearch.index.shards.total": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "Max elasticsearch.index.total.docs.deleted": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
+                "aggregations": ["lastNotNull"],
                 "operation": "aggregate"
               },
               "ILM": {
-                "aggregations": [
-                  "firstNotNull"
-                ],
+                "aggregations": ["firstNotNull"],
                 "operation": "aggregate"
               }
             }
@@ -694,9 +674,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -761,9 +739,7 @@
           "options": {
             "fields": {
               "Count": {
-                "aggregations": [
-                  "count"
-                ],
+                "aggregations": ["count"],
                 "operation": "aggregate"
               },
               "elasticsearch.node.name": {
@@ -771,9 +747,7 @@
                 "operation": "groupby"
               },
               "elasticsearch.shard.number": {
-                "aggregations": [
-                  "allValues"
-                ],
+                "aggregations": ["allValues"],
                 "operation": "aggregate"
               }
             }
@@ -2411,14 +2385,11 @@
   "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor"
-  ],
+  "tags": ["DBeastMonitor"],
   "templating": {
     "list": [
       {
-        "current": {
-        },
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
@@ -2428,8 +2399,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -2444,8 +2414,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -2460,8 +2429,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -2476,8 +2444,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "datasource": {
           "type": "elasticsearch",
           "uid": "${es_index_stats_status}"
@@ -2497,8 +2464,7 @@
         "type": "query"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -2513,8 +2479,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",

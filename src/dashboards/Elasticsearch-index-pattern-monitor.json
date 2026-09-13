@@ -31,11 +31,21 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["AnalyticsDashboard"],
+      "targetBlank": true,
+      "title": "Analytics",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -150,9 +160,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -612,9 +620,7 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -1550,14 +1556,11 @@
   "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor"
-  ],
+  "tags": ["DBeastMonitor"],
   "templating": {
     "list": [
- {
-        "current": {
-        },
+      {
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
@@ -1567,8 +1570,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -1583,8 +1585,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -1599,8 +1600,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "datasource": {
           "type": "elasticsearch",
           "uid": "${es_index_stats_status}"

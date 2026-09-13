@@ -24,11 +24,21 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["AnalyticsDashboard"],
+      "targetBlank": true,
+      "title": "Analytics",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -495,9 +505,7 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
           "fields": ""
         },
@@ -544,9 +552,7 @@
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": true
         },
@@ -896,29 +902,19 @@
                     "operation": "groupby"
                   },
                   "AVG Free node storage": {
-                    "aggregations": [
-                      "median"
-                    ],
+                    "aggregations": ["median"],
                     "operation": "aggregate"
                   },
                   "CPU": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "FS Free": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "FS Total": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "GroupByField": {
@@ -926,15 +922,11 @@
                     "operation": "groupby"
                   },
                   "Heap": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "RAM": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "Roles": {
@@ -942,27 +934,19 @@
                     "operation": "groupby"
                   },
                   "available_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "heap_max_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "host": {
-                    "aggregations": [
-                      "count"
-                    ],
+                    "aggregations": ["count"],
                     "operation": "aggregate"
                   },
                   "percent": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "role": {
@@ -970,9 +954,7 @@
                     "operation": "groupby"
                   },
                   "total_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   }
                 }
@@ -1362,29 +1344,19 @@
                     "operation": "groupby"
                   },
                   "AVG Free node storage": {
-                    "aggregations": [
-                      "median"
-                    ],
+                    "aggregations": ["median"],
                     "operation": "aggregate"
                   },
                   "CPU": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "FS Free": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "FS Total": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "GroupByField": {
@@ -1392,15 +1364,11 @@
                     "operation": "groupby"
                   },
                   "Heap": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "RAM": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "Roles": {
@@ -1408,27 +1376,19 @@
                     "operation": "groupby"
                   },
                   "available_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "heap_max_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "host": {
-                    "aggregations": [
-                      "count"
-                    ],
+                    "aggregations": ["count"],
                     "operation": "aggregate"
                   },
                   "percent": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "role": {
@@ -1436,9 +1396,7 @@
                     "operation": "groupby"
                   },
                   "total_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   }
                 }
@@ -1828,29 +1786,19 @@
                     "operation": "groupby"
                   },
                   "AVG Free node storage": {
-                    "aggregations": [
-                      "median"
-                    ],
+                    "aggregations": ["median"],
                     "operation": "aggregate"
                   },
                   "CPU": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "FS Free": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "FS Total": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "GroupByField": {
@@ -1858,15 +1806,11 @@
                     "operation": "groupby"
                   },
                   "Heap": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "RAM": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "Roles": {
@@ -1874,27 +1818,19 @@
                     "operation": "groupby"
                   },
                   "available_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "heap_max_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "host": {
-                    "aggregations": [
-                      "count"
-                    ],
+                    "aggregations": ["count"],
                     "operation": "aggregate"
                   },
                   "percent": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "role": {
@@ -1902,9 +1838,7 @@
                     "operation": "groupby"
                   },
                   "total_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   }
                 }
@@ -2294,29 +2228,19 @@
                     "operation": "groupby"
                   },
                   "AVG Free node storage": {
-                    "aggregations": [
-                      "median"
-                    ],
+                    "aggregations": ["median"],
                     "operation": "aggregate"
                   },
                   "CPU": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "FS Free": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "FS Total": {
-                    "aggregations": [
-                      "sum",
-                      "median"
-                    ],
+                    "aggregations": ["sum", "median"],
                     "operation": "aggregate"
                   },
                   "GroupByField": {
@@ -2324,15 +2248,11 @@
                     "operation": "groupby"
                   },
                   "Heap": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "RAM": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "Roles": {
@@ -2340,27 +2260,19 @@
                     "operation": "groupby"
                   },
                   "available_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "heap_max_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   },
                   "host": {
-                    "aggregations": [
-                      "count"
-                    ],
+                    "aggregations": ["count"],
                     "operation": "aggregate"
                   },
                   "percent": {
-                    "aggregations": [
-                      "mean"
-                    ],
+                    "aggregations": ["mean"],
                     "operation": "aggregate"
                   },
                   "role": {
@@ -2368,9 +2280,7 @@
                     "operation": "groupby"
                   },
                   "total_in_bytes": {
-                    "aggregations": [
-                      "sum"
-                    ],
+                    "aggregations": ["sum"],
                     "operation": "aggregate"
                   }
                 }
@@ -3521,9 +3431,7 @@
               "options": {
                 "fields": {
                   "Roles": {
-                    "aggregations": [
-                      "count"
-                    ],
+                    "aggregations": ["count"],
                     "operation": "groupby"
                   }
                 }
@@ -3646,9 +3554,7 @@
               "options": {
                 "fields": {
                   "Roles": {
-                    "aggregations": [
-                      "count"
-                    ],
+                    "aggregations": ["count"],
                     "operation": "groupby"
                   }
                 }
@@ -6041,9 +5947,7 @@
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -6326,9 +6230,7 @@
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -6491,9 +6393,7 @@
             "minVizWidth": 0,
             "orientation": "horizontal",
             "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
+              "calcs": ["lastNotNull"],
               "fields": "/^Max$/",
               "values": true
             },
@@ -8657,9 +8557,7 @@
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -8720,18 +8618,9 @@
               ],
               "method": "GET",
               "params": [
-                [
-                  "active_only",
-                  "true"
-                ],
-                [
-                  "format",
-                  "json"
-                ],
-                [
-                  "time",
-                  "s"
-                ]
+                ["active_only", "true"],
+                ["format", "json"],
+                ["time", "s"]
               ],
               "queryParams": "",
               "refId": "A",
@@ -8888,9 +8777,7 @@
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -8918,22 +8805,10 @@
               ],
               "method": "GET",
               "params": [
-                [
-                  "h",
-                  "index,health"
-                ],
-                [
-                  "format",
-                  "json"
-                ],
-                [
-                  "health",
-                  "yellow"
-                ],
-                [
-                  "expand_wildcards",
-                  "all"
-                ]
+                ["h", "index,health"],
+                ["format", "json"],
+                ["health", "yellow"],
+                ["expand_wildcards", "all"]
               ],
               "queryParams": "",
               "refId": "A",
@@ -8960,22 +8835,10 @@
               "hide": false,
               "method": "GET",
               "params": [
-                [
-                  "h",
-                  "index,health"
-                ],
-                [
-                  "format",
-                  "json"
-                ],
-                [
-                  "health",
-                  "red"
-                ],
-                [
-                  "expand_wildcards",
-                  "all"
-                ]
+                ["h", "index,health"],
+                ["format", "json"],
+                ["health", "red"],
+                ["expand_wildcards", "all"]
               ],
               "queryParams": "",
               "refId": "B",
@@ -9334,9 +9197,7 @@
             "footer": {
               "countRows": false,
               "fields": "",
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "show": false
             },
             "showHeader": true,
@@ -9380,13 +9241,7 @@
               "id": "filterFieldsByName",
               "options": {
                 "include": {
-                  "names": [
-                    "@timestamp",
-                    "log.logger",
-                    "message",
-                    "host.hostname",
-                    "log.level"
-                  ]
+                  "names": ["@timestamp", "log.logger", "message", "host.hostname", "log.level"]
                 }
               }
             }
@@ -9401,15 +9256,11 @@
   "refresh": "1m",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor",
-    "OverviewDashboard"
-  ],
+  "tags": ["DBeastMonitor", "OverviewDashboard"],
   "templating": {
     "list": [
       {
-        "current": {
-        },
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
@@ -9419,8 +9270,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "es_metrics",
@@ -9434,8 +9284,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -9450,8 +9299,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Kibana datasource",
@@ -9466,8 +9314,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -9482,8 +9329,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "logstash_mon_metrics_status",
@@ -9497,8 +9343,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",
@@ -9537,8 +9382,7 @@
         "type": "query"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic Thread pools",
@@ -9553,8 +9397,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic Shard Stats",
