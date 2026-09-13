@@ -26,8 +26,10 @@ Elasticsearch, Logstash, and Kibana.
    - **Elasticsearch ingest pipelines** activity and throughput
    - **Elasticsearch tasks** progress and status
    - **Elasticsearch machine learning jobs** performance and status
+   - **Elasticsearch historical trends analytics** 
    - **Logstash instances** performance and health
    - **Logstash pipelines** throughput and errors
+
 3. Helm versions
    - Currently, there is no Helm charts for the versions 2+
    - The Helm charts for the previews versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
