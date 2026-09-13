@@ -1,6 +1,5 @@
 {
-  "__inputs": [
-  ],
+  "__inputs": [],
   "__elements": {},
   "__requires": [
     {
@@ -77,11 +76,21 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["AnalyticsDashboard"],
+      "targetBlank": true,
+      "title": "Analytics",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -236,13 +245,9 @@
         "cellHeight": "sm",
         "footer": {
           "show": true,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
-          "fields": [
-            "Max elasticsearch.node.stats.ingest_pipeline.in_rate"
-          ]
+          "fields": ["Max elasticsearch.node.stats.ingest_pipeline.in_rate"]
         },
         "frameIndex": 1,
         "sortBy": [
@@ -392,9 +397,7 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
           "fields": ""
         }
@@ -600,9 +603,7 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
           "fields": ""
         },
@@ -701,9 +702,7 @@
       },
       "id": 23,
       "options": {
-        "displayLabels": [
-          "name"
-        ],
+        "displayLabels": ["name"],
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
@@ -712,9 +711,7 @@
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": true
         },
@@ -835,9 +832,7 @@
       "id": 15,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
@@ -972,9 +967,7 @@
       "id": 26,
       "options": {
         "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
@@ -1082,9 +1075,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -1284,9 +1275,7 @@
       "options": {
         "footer": {
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -1330,13 +1319,7 @@
           "id": "filterFieldsByName",
           "options": {
             "include": {
-              "names": [
-                "@timestamp",
-                "log.logger",
-                "message",
-                "host.hostname",
-                "log.level"
-              ]
+              "names": ["@timestamp", "log.logger", "message", "host.hostname", "log.level"]
             }
           }
         }
@@ -1347,15 +1330,11 @@
   "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor",
-    "OverviewDashboard"
-  ],
+  "tags": ["DBeastMonitor", "OverviewDashboard"],
   "templating": {
     "list": [
       {
-        "current": {
-        },
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
@@ -1365,8 +1344,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-        },
+        "current": {},
         "hide": 2,
         "includeAll": false,
         "label": "Elastic datasource",

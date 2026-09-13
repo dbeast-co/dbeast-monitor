@@ -1,44 +1,7 @@
 {
   "__inputs": [],
   "__elements": {},
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "elasticsearch",
-      "name": "Elasticsearch",
-      "version": "1.0.0"
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.3.2"
-    },
-    {
-      "type": "datasource",
-      "id": "marcusolsson-json-datasource",
-      "name": "JSON API",
-      "version": "1.3.2"
-    },
-    {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
+  "__requires": [],
   "annotations": {
     "list": [
       {
@@ -58,6 +21,18 @@
           "type": "dashboard"
         },
         "type": "dashboard"
+      },
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": false,
+        "tags": ["Analytics"],
+        "targetBlank": true,
+        "title": "Analytics",
+        "tooltip": "",
+        "type": "dashboards",
+        "url": ""
       }
     ]
   },
@@ -71,11 +46,21 @@
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
-      "tags": [
-        "OverviewDashboard"
-      ],
+      "tags": ["OverviewDashboard"],
       "targetBlank": true,
-      "title": "Additional monitors",
+      "title": "Monitors",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": ["AnalyticsDashboard"],
+      "targetBlank": true,
+      "title": "Analytics",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -125,9 +110,7 @@
       "options": {
         "footer": {
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true
@@ -699,14 +682,9 @@
         "cellHeight": "sm",
         "footer": {
           "show": true,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
-          "fields": [
-            "Max logstash.node.stats.events.in_rate",
-            "Max logstash.node.stats.events.out_rate"
-          ]
+          "fields": ["Max logstash.node.stats.events.in_rate", "Max logstash.node.stats.events.out_rate"]
         },
         "sortBy": [
           {
@@ -867,9 +845,7 @@
       "options": {
         "reduceOptions": {
           "values": true,
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": ""
         },
         "pieType": "pie",
@@ -881,13 +857,9 @@
           "showLegend": true,
           "displayMode": "table",
           "placement": "bottom",
-          "values": [
-            "percent"
-          ]
+          "values": ["percent"]
         },
-        "displayLabels": [
-          "value"
-        ]
+        "displayLabels": ["value"]
       },
       "pluginVersion": "9.3.2",
       "targets": [
@@ -1063,9 +1035,7 @@
             "cellHeight": "sm",
             "footer": {
               "show": false,
-              "reducer": [
-                "sum"
-              ],
+              "reducer": ["sum"],
               "countRows": false,
               "fields": ""
             },
@@ -1807,9 +1777,7 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "countRows": false,
           "fields": ""
         },
@@ -1907,15 +1875,11 @@
   "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
-  "tags": [
-    "DBeastMonitor",
-    "OverviewDashboard"
-  ],
+  "tags": ["DBeastMonitor", "OverviewDashboard"],
   "templating": {
     "list": [
       {
-        "current": {
-        },
+        "current": {},
         "label": "Cluster",
         "name": "cluster_ds",
         "options": [],
