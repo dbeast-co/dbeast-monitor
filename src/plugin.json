@@ -244,6 +244,27 @@
       "title": "Elasticsearch Historical Trends",
       "uid": "elasticsearch-historical-trends",
       "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Documentation",
+      "path": "/a/dbeast-dbeastmonitor-app/documentation",
+      "role": "Viewer",
+      "addToNav": true
+    },
+    {
+      "type": "page",
+      "name": "Feedback & Issues",
+      "path": "/a/dbeast-dbeastmonitor-app/feedback-issues",
+      "role": "Viewer",
+      "addToNav": true
+    },
+    {
+      "type": "page",
+      "name": "Buy me a coffee",
+      "path": "/a/dbeast-dbeastmonitor-app/buy-me-a-coffee",
+      "role": "Viewer",
+      "addToNav": true
     }
   ],
   "dependencies": {
