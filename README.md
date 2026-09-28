@@ -7,7 +7,7 @@
 &nbsp;&nbsp;&nbsp; ![Downloads](https://img.shields.io/endpoint?url=https://dbeast-co.github.io/dbeast-monitor/badges/downloads.json)
 
 [![elastic stack support](https://img.shields.io/badge/contact%20us-support@dbeast.co-blue?style=plastic)](mailto:support@dbeast.co?subject=Elastic%20Stack%20Support%20Request)
-&nbsp;&nbsp;&nbsp; [![sponsorship](https://img.shields.io/badge/sposorship-red?style=plastic)](https://github.com/sponsors/dbeast-co?frequency=recurring&sponsor=dbeast-co)
+&nbsp;&nbsp;&nbsp;  [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=plastic)](https://buymeacoffee.com/dbeast.app)
 
 ![Cluster Monitor](https://raw.githubusercontent.com/dbeast-co/dbeast-monitor/master/img/screenshots/ClusterMonitoring.jpg)
 
