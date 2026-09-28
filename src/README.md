@@ -3,10 +3,10 @@
 ----
 
 [![version: 2.1.1](https://img.shields.io/badge/version-2.1.1-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest) 
-&nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki) 
+&nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
+&nbsp;&nbsp;&nbsp; [![Buy me a coffee](https://img.shields.io/badge/%E2%98%95%20Buy%20me%20a%20coffee-007EC6?style=flat-square)](https://buymeacoffee.com/dbeast.app)
 
 [![elastic stack support](https://img.shields.io/badge/contact%20us-support@dbeast.co-blue?style=plastic)](mailto:support@dbeast.co?subject=Elastic%20Stack%20Support%20Request)
-&nbsp;&nbsp;&nbsp; [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=plastic)](https://buymeacoffee.com/dbeast.app)
 
 ![Cluster Monitor](https://raw.githubusercontent.com/dbeast-co/dbeast-monitor/master/img/screenshots/ClusterMonitoring.jpg)
 
