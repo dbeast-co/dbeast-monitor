@@ -102,6 +102,11 @@
       "defaultNav": false
     },
     {
+      "type": "datasource",
+      "name": "DBeast Grafana API",
+      "path": "grafana-ds/plugin.json"
+    },
+    {
       "type": "page",
       "icon": "cog",
       "name": "Configuration",
@@ -279,11 +284,6 @@
         "id": "marcusolsson-dynamictext-panel",
         "name": "Dynamic Text",
         "type": "panel"
-      },
-      {
-        "id": "volkovlabs-grapi-datasource",
-        "name": "GRAPI",
-        "type": "datasource"
       }
     ]
   }
