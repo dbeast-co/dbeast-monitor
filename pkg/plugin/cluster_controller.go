@@ -322,6 +322,19 @@ func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.R
 	}
 }
 
+func (a *App) GetComponentCompatabilityVersions(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the component compatibility versions")
+	response.Header().Add("Content-Type", "application/json")
+
+	response.WriteHeader(http.StatusOK)
+	_, err := response.Write([]byte(`{"status":"done"}`))
+	if err != nil {
+		log.DefaultLogger.Error("Can't write to the response for get component compatibility versions request: " + err.Error())
+		return
+	}
+}
+
 func SendILMToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("ILM policies ingest")
 	for templateName, templateContent := range dataWarehouse.ESILMTemplatesMap {

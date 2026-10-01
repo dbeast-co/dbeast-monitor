@@ -24,7 +24,8 @@ const elasticsearchDatasourceNodesMetricsContent string = `
     "logMessageField": "",
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
-    "tlsSkipVerify": true
+    "tlsSkipVerify": true,
+	"dbeastVersion": "%DBEAST_VERSION%"
   },
   "secureJsonData": {
     "basicAuthPassword": ""

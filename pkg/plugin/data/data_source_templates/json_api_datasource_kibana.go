@@ -17,6 +17,7 @@ const jsonApiDatasourceKibanaContent string = `
   "jsonData": {
     "tlsSkipVerify": true,
     "httpHeaderName1": "kbn-xsrf"
+	"dbeastVersion": "%DBEAST_VERSION%",
   },
   "secureJsonData": {
     "basicAuthPassword": "",

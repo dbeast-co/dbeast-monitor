@@ -1,10 +1,5 @@
 package data
 
-type FirstIndex struct {
-	Name    string
-	Content string
-}
-
 type Project struct {
 	ClusterId                  string                  `json:"cluster_id"`
 	ClusterConnectionSettings  EnvironmentConfig       `json:"cluster_connection_settings"`
@@ -51,4 +46,17 @@ type ConfigurationCheckbox struct {
 	Label     string `json:"label"`
 	Id        string `json:"id"`
 	IsChecked bool   `json:"is_checked"`
+}
+
+type FirstIndex struct {
+	Name    string
+	Content string
+}
+
+type BackCompatibilityVersions struct {
+	DataSourceTemplates []string `json:"data_source_templates"`
+}
+
+type VersionObject struct {
+	Name string
 }

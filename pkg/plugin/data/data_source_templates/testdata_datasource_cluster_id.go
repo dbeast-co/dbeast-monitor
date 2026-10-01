@@ -19,7 +19,9 @@ const testdataDatasourceClusterIdContent string = `
   "database": "",
   "basicAuth": false,
   "isDefault": false,
-  "jsonData": {},
+  "jsonData": {
+	"dbeastVersion": "%DBEAST_VERSION%"
+  },
   "readOnly": false
 }
 `

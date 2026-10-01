@@ -15,7 +15,8 @@ const jsonApiDatasourceElasticsearchProdContent string = `
   "basicAuth": false,
   "basicAuthUser": "",
   "jsonData": {
-    "tlsSkipVerify": true
+    "tlsSkipVerify": true,
+	"dbeastVersion": "%DBEAST_VERSION%"
   },
   "secureJsonData": {
     "basicAuthPassword": ""

@@ -2,9 +2,13 @@ package data
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
+	"github.com/grafana/grafana-plugin-sdk-go/build/buildinfo"
 )
+
+const dbeastVersionPlaceholder = "%DBEAST_VERSION%"
 
 var NewCluster Project
 var ESFirstIndicesTemplatesMap = make(map[string]string)
@@ -13,7 +17,11 @@ var ESComponentTemplatesMap = make(map[string]string)
 var ESIndexTemplatesMap = make(map[string]string)
 var LSConfigsMap = make(map[string]string)
 var GrafanaDataSourcesMap = make(map[string]interface{})
+var BackCompatibilityVersionsMap BackCompatibilityVersions
 
+func GenerateBackCompatibilityVersionsMap() {
+
+}
 func AppendFirstIndex(IndexName string, IndexContent string) {
 	ESFirstIndicesTemplatesMap[IndexName] = IndexContent
 	log.DefaultLogger.Info("First index " + IndexName + " added to the map successfully")
@@ -40,6 +48,8 @@ func AppendLogstashConfig(ConfigName string, ConfigContent string) {
 }
 
 func LoadGrafanaDataSources(DataSourceName string, DataSourceContent string) {
+	DataSourceContent = strings.ReplaceAll(DataSourceContent, dbeastVersionPlaceholder, dbeastVersion())
+
 	var templateData map[string]interface{}
 	err := json.Unmarshal([]byte(DataSourceContent), &templateData)
 	if err != nil {
@@ -58,4 +68,12 @@ func LoadNewCluster(NewClusterContent string) {
 	}
 	log.DefaultLogger.Info("New cluster configuration loaded successfully")
 
+}
+
+func dbeastVersion() string {
+	info, err := buildinfo.GetBuildInfo.GetInfo()
+	if err != nil || info.Version == "" {
+		return "dev"
+	}
+	return info.Version
 }
