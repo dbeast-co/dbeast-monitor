@@ -62,6 +62,25 @@ test('parse nullable numbers', () => {
   expect(parseValues(values, FieldType.time)).toStrictEqual([2005000, null, 2006000]);
 });
 
+test('parse time values with missing entries', () => {
+  expect(parseValues([null, undefined], FieldType.time)).toStrictEqual([null, undefined]);
+  expect(parseValues(['2021-05-17T20:48:09.000Z', undefined], FieldType.time)).toStrictEqual([
+    1621284489000,
+    undefined,
+  ]);
+  expect(parseValues([2005, undefined, 2006], FieldType.time)).toStrictEqual([2005000, undefined, 2006000]);
+});
+
+test('parse numeric fields strictly', () => {
+  expect(parseValues(['12', '1.5e2', '-.25'], FieldType.number)).toStrictEqual([12, 150, -0.25]);
+  expect(parseValues(['12oops', '  ', true, undefined], FieldType.number)).toStrictEqual([
+    NaN,
+    NaN,
+    NaN,
+    undefined,
+  ]);
+});
+
 test('parse nullable booleans', () => {
   const values = [null, true, false];
 

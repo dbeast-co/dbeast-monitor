@@ -92,6 +92,10 @@ export default class Api {
     path: string,
     params?: Array<Pair<string, string>>
   ): Observable<FetchResponse<T>> {
+    if (!isSafeURL(path)) {
+      throw new Error('URL path contains unsafe characters');
+    }
+
     let url = path;
 
     // Deduplicate forward slashes
@@ -108,11 +112,6 @@ export default class Api {
           .join('&');
     }
 
-    // Validate URL safety
-    if (!isSafeURL(url)) {
-      throw new Error('URL path contains unsafe characters');
-    }
-
     const req: BackendSrvRequest = {
       url,
       method: 'GET',
@@ -123,8 +122,22 @@ export default class Api {
 }
 
 function isSafeURL(origUrl: string) {
-  // browsers interpret backslash as slash
-  const url = decodeURIComponent(origUrl.replace(/\\/g, '/'));
+  let url: string;
+  try {
+    url = decodeURIComponent(origUrl);
+  } catch {
+    return false;
+  }
+
+  if (
+    url !== url.trim() ||
+    /[\u0000-\u001f\u007f]/.test(url) ||
+    url.includes('\\') ||
+    /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(url)
+  ) {
+    return false;
+  }
+
   if (url.endsWith('/..')) {
     return false;
   }
@@ -134,10 +147,6 @@ function isSafeURL(origUrl: string) {
   }
 
   if (url.includes('/..?')) {
-    return false;
-  }
-
-  if (url.includes('\t')) {
     return false;
   }
 

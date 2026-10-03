@@ -18,7 +18,8 @@ export const detectFieldType = (values: any[]): FieldType => {
     }
 
     hasValue = true;
-    if (!moment(value, [moment.defaultFormat, 'YYYY-MM-DD'], true).isValid()) {
+    const hasFullDate = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value);
+    if (!hasFullDate || !moment(value, moment.ISO_8601, true).isValid()) {
       allISO = false;
     }
     if (typeof value !== 'number') {

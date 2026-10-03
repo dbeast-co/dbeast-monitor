@@ -7,28 +7,7 @@ import dayjs from 'dayjs';
 export const parseValues = (values: any[], type: FieldType): any[] => {
   switch (type) {
     case FieldType.time:
-      // For time field, values are expected to be numbers representing a Unix
-      // epoch in milliseconds.
-
-      const nonNullValues = values.filter((value) => value !== null && value !== undefined);
-
-      if (nonNullValues.length > 0 && nonNullValues.every((value) => typeof value === 'string')) {
-        return values.map((_) => (_ !== null ? dayjs(_).valueOf() : _));
-      }
-
-      if (nonNullValues.length > 0 && nonNullValues.every((value) => typeof value === 'number')) {
-        const ms = 1_000_000_000_000;
-
-        // If there are no "big" numbers, assume seconds.
-        if (nonNullValues.every((value) => value < ms)) {
-          return values.map((_) => (_ !== null ? _ * 1000.0 : _));
-        }
-
-        // ... otherwise assume milliseconds.
-        return values;
-      }
-
-      throw new Error('Unsupported time property');
+      return parseTimeValues(values);
     case FieldType.string:
       return values.every((_) => typeof _ === 'string')
         ? values
@@ -42,7 +21,7 @@ export const parseValues = (values: any[], type: FieldType): any[] => {
             }
           });
     case FieldType.number:
-      return values.every((_) => typeof _ === 'number') ? values : values.map((_) => (_ !== null ? parseFloat(_) : _));
+      return parseNumberValues(values);
     case FieldType.boolean:
       return values.every((_) => typeof _ === 'boolean')
         ? values
@@ -69,4 +48,48 @@ export const parseValues = (values: any[], type: FieldType): any[] => {
     default:
       throw new Error('Unsupported field type');
   }
+};
+
+const parseTimeValues = (values: any[]): any[] => {
+  const nonNullValues = values.filter((value) => value !== null && value !== undefined);
+
+  if (nonNullValues.length === 0) {
+    return values;
+  }
+
+  if (nonNullValues.every((value) => typeof value === 'string')) {
+    return values.map((value) => (value === null || value === undefined ? value : dayjs(value).valueOf()));
+  }
+
+  if (nonNullValues.every((value) => typeof value === 'number')) {
+    const ms = 1_000_000_000_000;
+
+    // If there are no "big" numbers, assume seconds.
+    if (nonNullValues.every((value) => value < ms)) {
+      return values.map((value) => (value === null || value === undefined ? value : value * 1000.0));
+    }
+
+    // ... otherwise assume milliseconds.
+    return values;
+  }
+
+  throw new Error('Unsupported time property');
+};
+
+const parseNumberValues = (values: any[]): any[] => {
+  if (values.every((value) => typeof value === 'number')) {
+    return values;
+  }
+
+  return values.map((value) => {
+    if (value === null || value === undefined || typeof value === 'number') {
+      return value;
+    }
+    if (typeof value !== 'string') {
+      return NaN;
+    }
+
+    const trimmed = value.trim();
+    return /^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(trimmed) ? Number(trimmed) : NaN;
+  });
 };

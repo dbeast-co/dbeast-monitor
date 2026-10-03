@@ -142,32 +142,7 @@ export class JsonDataSource extends DataSourceApi<JsonApiQuery, JsonApiDataSourc
         switch (field.language) {
           case 'jsonata':
             const expression = jsonata(field.jsonPath);
-
-            const bindings: Record<string, any> = {};
-
-            // Bind dashboard variables to JSONata variables.
-            getTemplateSrv()
-              .getVariables()
-              .map((v) => ({ name: v.name, value: getVariable(v.name) }))
-              .forEach((v) => {
-                bindings[v.name] = v.value;
-              });
-
-            // Bind Global variables to JSONata variables.
-            globalVariables
-              .map((v) => ({ name: v, value: getVariable(v) }))
-              .forEach((v) => {
-                bindings[v.name] = v.value;
-              });
-
-            if (range) {
-              bindings['__unixEpochFrom'] = range.from.valueOf();
-              bindings['__unixEpochTo'] = range.to.valueOf();
-              bindings['__isoFrom'] = range.from.toISOString();
-              bindings['__isoTo'] = range.to.toISOString();
-            }
-
-            const result = await expression.evaluate(json, bindings);
+            const result = await expression.evaluate(json, createJsonataBindings(range));
 
             // Ensure that we always return an array.
             const arrayResult = Array.isArray(result) ? result : [result];
@@ -247,7 +222,7 @@ export class JsonDataSource extends DataSourceApi<JsonApiQuery, JsonApiDataSourc
 }
 
 const replace =
-  (scopedVars?: any, range?: TimeRange) =>
+  (scopedVars?: ScopedVars, range?: TimeRange) =>
     (str: string): string => {
       return replaceMacros(getTemplateSrv().replace(str, scopedVars), range);
     };
@@ -292,7 +267,7 @@ export const groupBy = (frame: DataFrame, fieldName: string): DataFrame[] => {
 };
 
 // Helper function to extract the values of a variable instead of interpolating it.
-const getVariable = (name: any): string[] => {
+const getVariable = (name: string): string[] => {
   const values: string[] = [];
 
   // Instead of interpolating the string, we collect the values in an array.
@@ -324,3 +299,27 @@ const globalVariables: string[] = [
   'timeFilter',
   '__timeFilter',
 ];
+
+const createJsonataBindings = (range?: TimeRange): Record<string, any> => {
+  const bindings: Record<string, any> = {};
+
+  // Dashboard variables are applied first so global and range bindings can override them.
+  getTemplateSrv()
+    .getVariables()
+    .forEach(({ name }) => {
+      bindings[name] = getVariable(name);
+    });
+
+  globalVariables.forEach((name) => {
+    bindings[name] = getVariable(name);
+  });
+
+  if (range) {
+    bindings['__unixEpochFrom'] = range.from.valueOf();
+    bindings['__unixEpochTo'] = range.to.valueOf();
+    bindings['__isoFrom'] = range.from.toISOString();
+    bindings['__isoTo'] = range.to.toISOString();
+  }
+
+  return bindings;
+};

@@ -21,6 +21,10 @@ test('iso8601 gets parsed as time', () => {
   expect(detectFieldType(['2006-01-02T15:06:13Z', '2006-01-02T15:07:13Z'])).toStrictEqual('time');
 });
 
+test('iso8601 timestamps with fractional seconds get parsed as time', () => {
+  expect(detectFieldType(['2021-05-17T20:48:09.000Z', '2021-05-17T20:50:23.123Z'])).toStrictEqual('time');
+});
+
 test('nullable iso8601 gets parsed as time', () => {
   expect(detectFieldType(['2006-01-02T15:06:13Z', null])).toStrictEqual('time');
 });

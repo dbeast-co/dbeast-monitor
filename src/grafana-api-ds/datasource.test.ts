@@ -49,6 +49,11 @@ describe('datasource', () => {
       '\\..\\../',
       '/../..?',
       '\\../..?',
+      '//attacker.example/collect',
+      '\\\\attacker.example/collect',
+      'https://attacker.example/collect',
+      'https:/attacker.example/collect',
+      'https:\n//attacker.example/collect',
       '..%2F..%2f..%2F..%2F..%2F..%2Fapi/', // Make sure that encoded paths are also not allowed
       '.%09.%2f.%09.%2f.%09.%2f.%09.%2fapi/', // Make sure that tabs are also not allowed
     ];
@@ -58,7 +63,7 @@ describe('datasource', () => {
       await expect(response).rejects.toThrow('URL path contains unsafe characters');
     }
 
-    const goodPaths = ['/..thing', '\\..thing', '/one..two/', '\\one..two\\', '/thing../', '\\thing..\\'];
+    const goodPaths = ['/..thing', '/one..two/', '/thing../'];
 
     for (let path of goodPaths) {
       const response = ds.doRequest({ urlPath: path } as any);
