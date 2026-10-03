@@ -10,15 +10,17 @@ export const parseValues = (values: any[], type: FieldType): any[] => {
       // For time field, values are expected to be numbers representing a Unix
       // epoch in milliseconds.
 
-      if (values.filter((_) => _).every((value) => typeof value === 'string')) {
+      const nonNullValues = values.filter((value) => value !== null && value !== undefined);
+
+      if (nonNullValues.length > 0 && nonNullValues.every((value) => typeof value === 'string')) {
         return values.map((_) => (_ !== null ? dayjs(_).valueOf() : _));
       }
 
-      if (values.filter((_) => _).every((value) => typeof value === 'number')) {
+      if (nonNullValues.length > 0 && nonNullValues.every((value) => typeof value === 'number')) {
         const ms = 1_000_000_000_000;
 
         // If there are no "big" numbers, assume seconds.
-        if (values.filter((_) => _).every((_) => _ < ms)) {
+        if (nonNullValues.every((value) => value < ms)) {
           return values.map((_) => (_ !== null ? _ * 1000.0 : _));
         }
 

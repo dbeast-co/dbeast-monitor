@@ -1,4 +1,4 @@
-import { BackendSrvRequest, getBackendSrv } from '@grafana/runtime';
+import { BackendSrvRequest, FetchResponse, getBackendSrv } from '@grafana/runtime';
 import cache from 'memory-cache';
 import { Observable, lastValueFrom } from 'rxjs';
 import type { Pair } from './types';
@@ -8,7 +8,8 @@ import type { Pair } from './types';
  * Only supports GET requests to local Grafana instance.
  */
 export default class Api {
-  cache: any;
+  cache: cache.CacheClass<string, unknown>;
+  private pendingRequests = new Map<string, Promise<unknown>>();
   lastCacheDuration: number | undefined;
 
   constructor() {
@@ -20,31 +21,31 @@ export default class Api {
    * @param path - API path (e.g., '/api/datasources', '/api/dashboards')
    * @param params - Optional query parameters
    */
-  async get(
+  async get<T = unknown>(
     path: string,
     params?: Array<Pair<string, string>>
-  ): Promise<any> {
+  ): Promise<T> {
     const response = this._request(path, params);
-    return (await lastValueFrom(response)).data;
+    return (await lastValueFrom(response)).data as T;
   }
 
   /**
    * Health check - verifies connectivity to Grafana API.
    */
-  async test(): Promise<any> {
-    return lastValueFrom(this._request('/api/health'));
+  async test(): Promise<FetchResponse<{ status: number; statusText?: string }>> {
+    return lastValueFrom(this._request<{ status: number; statusText?: string }>('/api/health'));
   }
 
   /**
    * Returns a cached API response if it exists, otherwise queries the API.
    */
-  async cachedGet(
+  async cachedGet<T>(
     cacheDurationSeconds: number,
     path: string,
     params: Array<Pair<string, string>>
-  ): Promise<any> {
+  ): Promise<T> {
     if (!cacheDurationSeconds) {
-      return await this.get(path, params);
+      return this.get(path, params);
     }
 
     let cacheKey = path;
@@ -63,23 +64,34 @@ export default class Api {
     this.lastCacheDuration = cacheDurationSeconds;
 
     const cachedItem = this.cache.get(cacheKey);
-    if (cachedItem) {
-      return Promise.resolve(cachedItem);
+    if (cachedItem !== null) {
+      return cachedItem as T;
     }
 
-    const result = await this.get(path, params);
-    this.cache.put(cacheKey, result, cacheDurationSeconds * 1000);
+    const pendingRequest = this.pendingRequests.get(cacheKey);
+    if (pendingRequest) {
+      return pendingRequest as Promise<T>;
+    }
 
-    return result;
+    const request = this.get<T>(path, params);
+    this.pendingRequests.set(cacheKey, request);
+
+    try {
+      const result = await request;
+      this.cache.put(cacheKey, result, cacheDurationSeconds * 1000);
+      return result;
+    } finally {
+      this.pendingRequests.delete(cacheKey);
+    }
   }
 
   /**
    * Makes a GET request to Grafana internal API.
    */
-  private _request(
+  private _request<T = unknown>(
     path: string,
     params?: Array<Pair<string, string>>
-  ): Observable<any> {
+  ): Observable<FetchResponse<T>> {
     let url = path;
 
     // Deduplicate forward slashes
@@ -106,7 +118,7 @@ export default class Api {
       method: 'GET',
     };
 
-    return getBackendSrv().fetch(req);
+    return getBackendSrv().fetch<T>(req);
   }
 }
 

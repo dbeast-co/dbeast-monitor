@@ -43,7 +43,7 @@ export class JsonDataSource extends DataSourceApi<JsonApiQuery, JsonApiDataSourc
   async query(request: DataQueryRequest<JsonApiQuery>): Promise<DataQueryResponse> {
     trackRequest(request);
 
-    const promises = await request.targets
+    const promises = request.targets
       .filter((query) => !query.hide)
       .flatMap((query) => this.doRequest(query, request.range, request.scopedVars));
 
@@ -269,25 +269,25 @@ export const groupBy = (frame: DataFrame, fieldName: string): DataFrame[] => {
     return [frame];
   }
 
-  const uniqueValues = new Set(groupByField.values);
+  const groupedRows = new Map<unknown, number[]>();
+  groupByField.values.forEach((value, index) => {
+    const indexes = groupedRows.get(value);
+    if (indexes) {
+      indexes.push(index);
+    } else {
+      groupedRows.set(value, [index]);
+    }
+  });
 
-  return [...uniqueValues].map((groupByValue) => {
+  return [...groupedRows].map(([groupByValue, indexes]) => {
     const fields: Field[] = frame.fields
-      // Skip the field we're grouping on.
-      .filter((field) => field.name.toString() !== groupByField.name)
+      .filter((field) => field !== groupByField)
       .map((field) => ({
         ...field,
-        values:
-          field.values.filter((_, idx) => {
-            return groupByField.values[idx] === groupByValue;
-          }),
+        values: indexes.map((index) => field.values[index]),
       }));
 
-    return toDataFrame({
-      name: groupByValue,
-      refId: frame.refId,
-      fields,
-    });
+    return toDataFrame({ name: groupByValue, refId: frame.refId, fields });
   });
 };
 
