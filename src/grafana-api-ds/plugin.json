@@ -14,8 +14,8 @@
     },
     "keywords": ["dbeast", "api", "json", "jsonpath", "jsonata"],
     "logos": {
-      "small": "img/logo.svg",
-      "large": "img/logo.svg"
+      "small": "img/favicon-32x32.png",
+      "large": "img/favicon-32x32.png"
     },
     "links": [
       {
