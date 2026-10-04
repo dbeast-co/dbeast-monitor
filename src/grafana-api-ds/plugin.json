@@ -47,7 +47,7 @@
       { "name": "Explore (Dark)", "path": "img/dark.png" },
       { "name": "Explore (Light)", "path": "img/light.png" }
     ],
-    "version": "%VERSION%",
+    "version": "3.0.0",
     "updated": "%TODAY%"
   },
   "dependencies": {
