@@ -476,24 +476,22 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials dataWareh
 func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
-		if database, ok := OneClonedTemplate["database"].(string); ok {
-			database = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(database, "*", ""), "?", ""), ",", ""), ".", "")
-			clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
+		//database = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(database, "*", ""), "?", ""), ",", ""), ".", "")
+		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
-			OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + database + "--" + clusterName + "--" + uid
+		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + "--" + clusterName + "--" + uid
 
-			OneClonedTemplate["url"] = credentials.Host
-			OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled
+		OneClonedTemplate["url"] = credentials.Host
+		OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled
 
-			if OneClonedTemplate["basicAuth"] == true {
-				OneClonedTemplate["basicAuthUser"] = credentials.Username
-				OneClonedTemplate["secureJsonData"].(map[string]interface{})["basicAuthPassword"] = credentials.Password
-			}
+		if OneClonedTemplate["basicAuth"] == true {
+			OneClonedTemplate["basicAuthUser"] = credentials.Username
+			OneClonedTemplate["secureJsonData"].(map[string]interface{})["basicAuthPassword"] = credentials.Password
+		}
 
-			if url, ok := OneClonedTemplate["url"].(string); ok {
-				if strings.Contains(url, "https") {
-					OneClonedTemplate["jsonData"].(map[string]interface{})["tlsSkipVerify"] = true
-				}
+		if url, ok := OneClonedTemplate["url"].(string); ok {
+			if strings.Contains(url, "https") {
+				OneClonedTemplate["jsonData"].(map[string]interface{})["tlsSkipVerify"] = true
 			}
 		}
 	}
@@ -504,19 +502,19 @@ func UpdateGrafanaDataSourceTemplates(environmentConfig dataWarehouse.Environmen
 	for name, template := range dataWarehouse.GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
 		switch {
-		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_mon"):
+		case strings.HasPrefix(name, "Elasticsearch-direct-mon"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
-		case strings.HasPrefix(name, "json_api_datasource_elasticsearch_prod"):
+		case strings.HasPrefix(name, "Elasticsearch-direct-prod"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Elasticsearch, clusterNameProd, uidProd)
 			break
-		case strings.HasPrefix(name, "json_api_datasource_kibana"):
+		case strings.HasPrefix(name, "Kibana-direct"):
 			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameProd, uidProd)
 			break
-		case strings.HasPrefix(name, "elasticsearch_datasource"):
+		case strings.HasPrefix(name, "Elasticsearch-mon"):
 			UpdateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
-		case strings.HasPrefix(name, "testdata_datasource"):
+		case strings.HasPrefix(name, "Elasticsearch:"):
 			UpdateTestDataTemplateValues(clonedTemplates, clusterNameProd, uidProd)
 			break
 		default:

@@ -15,7 +15,7 @@ const dbeastMinimalCompatibleVersion = "0.0.0"
 const elasticsearchDatasourceElasticsearchIndexStatsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-es-index-stats",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy", 
@@ -43,5 +43,5 @@ const elasticsearchDatasourceElasticsearchIndexStatsContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_elasticsearch_index_stats", elasticsearchDatasourceElasticsearchIndexStatsContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent)
 }

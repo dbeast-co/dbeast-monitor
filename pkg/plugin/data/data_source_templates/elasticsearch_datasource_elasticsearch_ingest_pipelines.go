@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceElasticsearchIngestPipelinesContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-es-ingest_pipelines",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceElasticsearchIngestPipelinesContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_elasticsearch_ingest_pipelines", elasticsearchDatasourceElasticsearchIngestPipelinesContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIngestPipelinesContent)
 }

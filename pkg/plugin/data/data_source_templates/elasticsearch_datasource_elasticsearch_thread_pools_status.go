@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceElasticsearchThreadPoolsStatusContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-es-thread_pools-status",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceElasticsearchThreadPoolsStatusContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_elasticsearch_thread_pools_status", elasticsearchDatasourceElasticsearchThreadPoolsStatusContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchThreadPoolsStatusContent)
 }

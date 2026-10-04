@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceLogstashLogsPipelinesPortsStatusContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-logstash-logs-pipelines-ports-status",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceLogstashLogsPipelinesPortsStatusContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_logstash_logs_pipelines_ports_status", elasticsearchDatasourceLogstashLogsPipelinesPortsStatusContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceLogstashLogsPipelinesPortsStatusContent)
 }

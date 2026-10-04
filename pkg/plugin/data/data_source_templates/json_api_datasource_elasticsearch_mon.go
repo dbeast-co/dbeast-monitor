@@ -26,5 +26,5 @@ const jsonApiDatasourceElasticsearchMonContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("json_api_datasource_elasticsearch_mon", jsonApiDatasourceElasticsearchMonContent)
+	dataWarehouse.LoadGrafanaDataSources(jsonApiDatasourceElasticsearchMonContent)
 }

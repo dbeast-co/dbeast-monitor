@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceLogstashMetricsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-logstash-metrics",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceLogstashMetricsContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_logstash_metrics", elasticsearchDatasourceLogstashMetricsContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceLogstashMetricsContent)
 }

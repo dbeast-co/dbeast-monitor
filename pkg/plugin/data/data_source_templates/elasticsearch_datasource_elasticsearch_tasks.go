@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceElasticsearchTasksContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-es-tasks",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceElasticsearchTasksContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_elasticsearch_tasks", elasticsearchDatasourceElasticsearchTasksContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchTasksContent)
 }

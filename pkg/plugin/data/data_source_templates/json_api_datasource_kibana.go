@@ -16,8 +16,8 @@ const jsonApiDatasourceKibanaContent string = `
   "basicAuthUser": "",
   "jsonData": {
     "tlsSkipVerify": true,
-    "httpHeaderName1": "kbn-xsrf"
-	"dbeastVersion": "%DBEAST_VERSION%",
+    "httpHeaderName1": "kbn-xsrf",
+    "dbeastVersion": "%DBEAST_VERSION%"
   },
   "secureJsonData": {
     "basicAuthPassword": "",
@@ -28,5 +28,5 @@ const jsonApiDatasourceKibanaContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("json_api_datasource_kibana", jsonApiDatasourceKibanaContent)
+	dataWarehouse.LoadGrafanaDataSources(jsonApiDatasourceKibanaContent)
 }

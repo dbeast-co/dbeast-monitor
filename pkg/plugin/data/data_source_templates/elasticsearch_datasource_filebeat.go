@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceFilebeatContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-filebeat-",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceFilebeatContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_filebeat", elasticsearchDatasourceFilebeatContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceFilebeatContent)
 }

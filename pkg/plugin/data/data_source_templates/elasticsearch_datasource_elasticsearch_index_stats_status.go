@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceElasticsearchIndexStatsStatusContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-es-index-stats-status",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceElasticsearchIndexStatsStatusContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_elasticsearch_index_stats_status", elasticsearchDatasourceElasticsearchIndexStatsStatusContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsStatusContent)
 }

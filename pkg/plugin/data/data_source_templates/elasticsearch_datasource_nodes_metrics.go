@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceNodesMetricsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-metricbeat-monitoring-es-",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceNodesMetricsContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_nodes_metrics", elasticsearchDatasourceNodesMetricsContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceNodesMetricsContent)
 }

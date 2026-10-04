@@ -27,5 +27,5 @@ const testdataDatasourceClusterIdContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("testdata_datasource_cluster_id", testdataDatasourceClusterIdContent)
+	dataWarehouse.LoadGrafanaDataSources(testdataDatasourceClusterIdContent)
 }

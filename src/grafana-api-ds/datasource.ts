@@ -141,7 +141,7 @@ export class JsonDataSource extends DataSourceApi<JsonApiQuery, JsonApiDataSourc
       .map(async (field, index) => {
         switch (field.language) {
           case 'jsonata':
-            const expression = jsonata(field.jsonPath);
+            const expression = jsonata(replaceWithVars(field.jsonPath));
             const result = await expression.evaluate(json, createJsonataBindings(range));
 
             // Ensure that we always return an array.

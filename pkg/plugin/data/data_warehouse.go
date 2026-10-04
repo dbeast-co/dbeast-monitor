@@ -47,17 +47,17 @@ func AppendLogstashConfig(ConfigName string, ConfigContent string) {
 	log.DefaultLogger.Info("Logstash config " + ConfigName + " added to the map successfully")
 }
 
-func LoadGrafanaDataSources(DataSourceName string, DataSourceContent string) {
+func LoadGrafanaDataSources(DataSourceContent string) {
 	DataSourceContent = strings.ReplaceAll(DataSourceContent, dbeastVersionPlaceholder, dbeastVersion())
 
 	var templateData map[string]interface{}
 	err := json.Unmarshal([]byte(DataSourceContent), &templateData)
 	if err != nil {
-		log.DefaultLogger.Error("Error parsing: " + DataSourceName + " " + err.Error())
+		log.DefaultLogger.Error("Error parsing grafana data source template: " + err.Error())
 		return
 	}
-	GrafanaDataSourcesMap[DataSourceName] = templateData
-	log.DefaultLogger.Info("Grafana data source " + DataSourceName + " added to the map successfully")
+	GrafanaDataSourcesMap[templateData["name"].(string)] = templateData
+	log.DefaultLogger.Info("Grafana data source " + templateData["name"].(string) + " added to the map successfully")
 }
 
 func LoadNewCluster(NewClusterContent string) {

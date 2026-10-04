@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceElasticsearchShardsStatsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-",
+  "name": "Elasticsearch-mon-dbeast-mon-es-shards-stats",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -35,5 +35,5 @@ const elasticsearchDatasourceElasticsearchShardsStatsContent string = `
 `
 
 func init() {
-	dataWarehouse.LoadGrafanaDataSources("elasticsearch_datasource_elasticsearch_shards_stats", elasticsearchDatasourceElasticsearchShardsStatsContent)
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchShardsStatsContent)
 }
