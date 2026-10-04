@@ -79,10 +79,15 @@
         "path": "img/screenshots/LogstashNodeOverview.jpg"
       }
     ],
-    "version": "2.1.1",
+    "version": "3.0.0",
     "updated": "%TODAY%"
   },
   "includes": [
+    {
+      "type": "datasource",
+      "name": "DBeast Grafana API",
+      "path": "grafana-api-ds/plugin.json"
+    },
     {
       "type": "page",
       "name": "Clusters List",
@@ -241,7 +246,6 @@
       "path": "dashboards/Elasticsearch-historical-trends.json",
       "role": "Viewer",
       "addToNav": false,
-      "title": "Elasticsearch Historical Trends",
       "uid": "elasticsearch-historical-trends",
       "defaultNav": false
     },
@@ -279,11 +283,6 @@
         "id": "marcusolsson-dynamictext-panel",
         "name": "Dynamic Text",
         "type": "panel"
-      },
-      {
-        "id": "volkovlabs-grapi-datasource",
-        "name": "GRAPI",
-        "type": "datasource"
       }
     ]
   }

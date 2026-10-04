@@ -1,0 +1,57 @@
+{
+  "$schema": "https://github.com/grafana/grafana/raw/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "DBeast Grafana API",
+  "id": "dbeast-grafanaapi-datasource",
+  "metrics": true,
+  "logs": true,
+  "annotations": true,
+  "info": {
+    "description": "A data source plugin for querying Grafana's internal APIs with JSONPath/JSONata support.",
+    "author": {
+      "name": "DBeast",
+      "url": "https://dbeast.co"
+    },
+    "keywords": ["dbeast", "api", "json", "jsonpath", "jsonata"],
+    "logos": {
+      "small": "img/favicon-32x32.png",
+      "large": "img/favicon-32x32.png"
+    },
+    "links": [
+      {
+        "name": "Documentation",
+        "url": "https://github.com/dbeast-co/dbeast-monitor/wiki"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/dbeast-co/dbeast-monitor"
+      },
+      {
+        "name": "Our products site",
+        "url": "https://dbeast.co/"
+      },
+      {
+        "name": "DBeast Monitor playground",
+        "url": "https://play.dbeast.co/"
+      },
+      {
+        "name": "sponsorship",
+        "url": "https://github.com/sponsors/dbeast-co"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/dbeast-co/dbeast-monitor/blob/main/LICENSE"
+      }
+    ],
+    "screenshots": [
+      { "name": "Explore (Dark)", "path": "img/dark.png" },
+      { "name": "Explore (Light)", "path": "img/light.png" }
+    ],
+    "version": "3.0.0",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=10.1.0",
+    "plugins": []
+  }
+}
