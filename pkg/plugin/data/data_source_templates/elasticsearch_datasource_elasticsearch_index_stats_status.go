@@ -25,7 +25,8 @@ const elasticsearchDatasourceElasticsearchIndexStatsStatusContent string = `
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%"
+	"dbeastVersion": "%DBEAST_VERSION%",
+	"dbeastMinimalCompatibleVersion": "2.0.0"
   },
   "secureJsonData": {
     "basicAuthPassword": ""

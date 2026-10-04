@@ -10,15 +10,23 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
-func (a *App) GetVersion(w http.ResponseWriter, req *http.Request) {
-	w.Header().Add("Content-Type", "application/json")
+func (a *App) GetVersionsHandler(response http.ResponseWriter, request *http.Request) {
+	ctxLogger := log.DefaultLogger.FromContext(request.Context())
+	ctxLogger.Info("Got request for the version backward compatibility map")
 
-	w.WriteHeader(http.StatusOK)
-	_, err := w.Write([]byte("{ \"version\": \"" + applicationVersion + "\" }"))
+	response.Header().Add("Content-Type", "application/json")
+	response.WriteHeader(http.StatusOK)
+	versionsForSend, err := json.MarshalIndent(dataWarehouse.BackCompatibilityVersionsMap, "", "")
 	if err != nil {
+		HTTPErrorGenerator(response, err, "Failed to normalize data, for versions request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
-	return
+
+	_, err = response.Write(versionsForSend)
+	if err != nil {
+		log.DefaultLogger.Error("Can't write to the response: " + err.Error())
+		return
+	}
 }
 
 func CloneObject(data interface{}) interface{} {
@@ -58,6 +66,7 @@ func DeferHandler(request *http.Request, logger log.Logger) {
 		}
 	}
 }
+
 func DeferInternalHandler(response *http.Response, logger log.Logger) {
 	if response != nil && response.Body != nil {
 		_, _ = io.Copy(io.Discard, response.Body)

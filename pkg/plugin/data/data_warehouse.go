@@ -2,6 +2,7 @@ package data
 
 import (
 	"encoding/json"
+	"sort"
 	"strings"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
@@ -20,8 +21,38 @@ var GrafanaDataSourcesMap = make(map[string]interface{})
 var BackCompatibilityVersionsMap BackCompatibilityVersions
 
 func GenerateBackCompatibilityVersionsMap() {
+	versions := make([]VersionObject, 0, len(GrafanaDataSourcesMap))
+	for _, ds := range GrafanaDataSourcesMap {
+		dsMap, ok := ds.(map[string]interface{})
+		if !ok {
+			continue
+		}
 
+		name, ok := dsMap["name"].(string)
+		if !ok {
+			continue
+		}
+
+		jsonData, ok := dsMap["jsonData"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		minVersion, ok := jsonData["dbeastMinimalCompatibleVersion"].(string)
+		if !ok {
+			continue
+		}
+
+		versions = append(versions, VersionObject{Name: name, MinCompatibleVersion: minVersion})
+	}
+
+	sort.Slice(versions, func(i, j int) bool {
+		return versions[i].Name < versions[j].Name
+	})
+
+	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = versions
 }
+
 func AppendFirstIndex(IndexName string, IndexContent string) {
 	ESFirstIndicesTemplatesMap[IndexName] = IndexContent
 	log.DefaultLogger.Info("First index " + IndexName + " added to the map successfully")

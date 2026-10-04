@@ -54,9 +54,10 @@ type FirstIndex struct {
 }
 
 type BackCompatibilityVersions struct {
-	DataSourceTemplates []string `json:"data_source_templates"`
+	GrafanaDataSourceTemplates []VersionObject `json:"grafana_data_source_templates"`
 }
 
 type VersionObject struct {
-	Name string
+	Name                 string `json:"name"`
+	MinCompatibleVersion string `json:"min_compatible_version"`
 }
