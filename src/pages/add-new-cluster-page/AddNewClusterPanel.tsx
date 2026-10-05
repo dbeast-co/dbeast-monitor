@@ -4,7 +4,7 @@ import { getStyles } from './AddNewClusterPanel.styles';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Checkbox, Field, Icon, Input, Modal, Spinner, Tooltip, useTheme2 } from '@grafana/ui';
+import { useTheme2, Input, Field, Checkbox, Spinner, Modal, Tooltip, Icon } from '@grafana/ui';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from './models/connection-settings';
 import { Datasource } from './models/datasource';
@@ -102,8 +102,8 @@ function AddNewClusterPanel() {
         ((formToSave.cluster_connection_settings.prod.elasticsearch.status === 'GREEN' ||
           formToSave.cluster_connection_settings.prod.elasticsearch.status === 'YELLOW' ||
           formToSave.cluster_connection_settings.prod.elasticsearch.status === 'RED') &&
-          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'GREEN') ||
-        formToSave.cluster_connection_settings.mon.elasticsearch.status === 'YELLOW'
+          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'GREEN' ||
+          formToSave.cluster_connection_settings.mon.elasticsearch.status === 'YELLOW' )
       ) {
         const promise2 = backendSrv.post(`${baseUrl}/add_cluster`, JSON.stringify(formToSave), {
           headers: {
@@ -117,33 +117,22 @@ function AddNewClusterPanel() {
             Accept: 'application/json',
           },
         });
-
         Promise.all([promise1, promise2]).then(async (values) => {
           setIsLoading(true);
-          let isErrorOccurred = false;
           const [value1, value2] = values;
-          const existingGrafanaDataSources: Datasource[] = Object.values(value1);
-          const newDataSources: Datasource[] = Object.values(value2);
-          if (existingGrafanaDataSources.length > 0) {
-            const clusterId = existingGrafanaDataSources[0].name.split('--').pop();
-            for (const dataSource of existingGrafanaDataSources) {
-              if (dataSource.name.endsWith(clusterId as string)) {
-                try {
-                  await backendSrv.delete(`/api/datasources/name/${dataSource.name}`);
-                } catch (deleteError) {
-                  console.debug('Delete data sources error: ', deleteError);
-                  isErrorOccurred = true;
-                  setIsLoading(false);
-                }
-              }
-            }
-          }
-          for (const ds of newDataSources) {
+          const dataSourcesFromResponse: Datasource[] = Object.values(value2);
+          let isErrorOccurred = false; // Flag to track if an error has occurred
+          for (const item of dataSourcesFromResponse) {
             if (!isErrorOccurred) {
               try {
-                await backendSrv.post('/api/datasources', JSON.stringify(ds));
+                const isEqualDataSource = value1.find((item1: Datasource) => item1.name === item.name);
+                if (isEqualDataSource) {
+                  await backendSrv.put(`/api/datasources/uid/${isEqualDataSource.uid}`, JSON.stringify(item));
+                } else {
+                  await backendSrv.post('/api/datasources', JSON.stringify(item));
+                }
               } catch (error: any) {
-                isErrorOccurred = true;
+                isErrorOccurred = true; // Set the flag to true upon encountering an error
                 toast.error(`${error.message}`, {
                   position: 'bottom-right',
                   autoClose: false,
@@ -170,48 +159,6 @@ function AddNewClusterPanel() {
             setIsLoading(false);
           }
         });
-        // Promise.all([promise1, promise2]).then(async (values) => {
-        //   setIsLoading(true);
-        //   const [value1, value2] = values;
-        //   const dataSourcesFromResponse: Datasource[] = Object.values(value2);
-        //   let isErrorOccurred = false; // Flag to track if an error has occurred
-        //   for (const item of dataSourcesFromResponse) {
-        //     if (!isErrorOccurred) {
-        //       try {
-        //         const isEqualDataSource = value1.find((item1: Datasource) => item1.name === item.name);
-        //         if (isEqualDataSource) {
-        //           await backendSrv.put(`/api/datasources/uid/${isEqualDataSource.uid}`, JSON.stringify(item));
-        //         } else {
-        //           await backendSrv.post('/api/datasources', JSON.stringify(item));
-        //         }
-        //       } catch (error: any) {
-        //         isErrorOccurred = true; // Set the flag to true upon encountering an error
-        //         toast.error(`${error.message}`, {
-        //           position: 'bottom-right',
-        //           autoClose: false,
-        //           closeButton: true,
-        //           hideProgressBar: true,
-        //           draggable: false,
-        //         });
-        //         setIsLoading(false);
-        //         break;
-        //       }
-        //     } else {
-        //       setIsLoading(false);
-        //       break;
-        //     }
-        //   }
-        //   if (!isErrorOccurred) {
-        //     toast.success('Source connections was successfully saved!', {
-        //       position: 'bottom-right',
-        //       autoClose: false,
-        //       closeButton: true,
-        //       hideProgressBar: true,
-        //       draggable: false,
-        //     });
-        //     setIsLoading(false);
-        //   }
-        // });
       }
     } catch (err: any) {
       setIsLoading(false);
@@ -228,21 +175,23 @@ function AddNewClusterPanel() {
     try {
       const formToTest: ConnectionSettings = getConnectionSettings();
 
-      const result: BackendResponse = await backendSrv.post(`${baseUrl}/test_cluster`, JSON.stringify(formToTest), {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
+      const result: BackendResponse = await backendSrv.post(
+        `${baseUrl}/test_cluster`,
+        JSON.stringify(formToTest),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
 
       const { status: prodStatus } = result.prod.elasticsearch;
       const { status: monStatus } = result.mon.elasticsearch;
 
       // Determine if the configuration is valid.
       if (
-        (prodStatus.toLowerCase() === 'green' ||
-          prodStatus.toLowerCase() === 'yellow' ||
-          prodStatus.toLowerCase() === 'red') &&
+        (prodStatus.toLowerCase() === 'green' || prodStatus.toLowerCase() === 'yellow' || prodStatus.toLowerCase() === 'red') &&
         (monStatus.toLowerCase() === 'green' || monStatus.toLowerCase() === 'yellow')
       ) {
         setSaveDisabled(false);
@@ -515,6 +464,7 @@ function AddNewClusterPanel() {
     }
   };
 
+
   const onTemplatesDeploy = async (url: string) => {
     const cluster_connection_settings = getConnectionSettings();
     const clusterToSend = {
@@ -606,6 +556,7 @@ function AddNewClusterPanel() {
     setIsShowLogstash(true);
     const existingIndex = logstashList.findIndex((l) => l.id === item.id);
     if (existingIndex > -1) {
+
       const updatedList = [...logstashList.slice(0, existingIndex), item, ...logstashList.slice(existingIndex + 1)];
       setLogstashList(updatedList);
     } else {
@@ -677,6 +628,7 @@ function AddNewClusterPanel() {
       </header>
       <div className={styles.header}>
         <div className={styles.sourcePanel}>
+
           <section>
             <div className={styles.sourceConnectionGroup}>
               <h3 className={styles.title}>Source connection</h3>
@@ -693,17 +645,17 @@ function AddNewClusterPanel() {
                 )}
 
                 <div className={styles.status}>
-                  <span
-                    className={
-                      connectionSettings.prod.elasticsearch.status
-                        ? connectionSettings.prod.elasticsearch.status
-                        : 'UNTESTED'
-                    }
-                  >
-                    {connectionSettings.prod.elasticsearch.status
+                <span
+                  className={
+                    connectionSettings.prod.elasticsearch.status
                       ? connectionSettings.prod.elasticsearch.status
-                      : 'UNTESTED'}
-                  </span>
+                      : 'UNTESTED'
+                  }
+                >
+                  {connectionSettings.prod.elasticsearch.status
+                    ? connectionSettings.prod.elasticsearch.status
+                    : 'UNTESTED'}
+                </span>
                 </div>
               </div>
               <div className={styles.hostWrapper}>
@@ -724,7 +676,7 @@ function AddNewClusterPanel() {
                   id="checkbox1"
                   onChange={onCheckAuth}
                   checked={connectionSettings.prod.elasticsearch.authentication_enabled}
-                  label="Use authentication"
+                  label='Use authentication'
                 />
               </Field>
               <div className="auth_wrapper">
@@ -767,17 +719,17 @@ function AddNewClusterPanel() {
                   )}
 
                   <div className={styles.status}>
-                    <span
-                      className={
-                        connectionSettings.mon.elasticsearch.status
-                          ? connectionSettings.mon.elasticsearch.status
-                          : 'UNTESTED'
-                      }
-                    >
-                      {connectionSettings.mon.elasticsearch.status
-                        ? connectionSettings.mon.elasticsearch.status
-                        : 'UNTESTED'}
-                    </span>
+                <span
+                  className={
+                    connectionSettings.mon.elasticsearch.status
+                      ? connectionSettings.mon.elasticsearch.status
+                      : 'UNTESTED'
+                  }
+                >
+                  {connectionSettings.mon.elasticsearch.status
+                    ? connectionSettings.mon.elasticsearch.status
+                    : 'UNTESTED'}
+                </span>
                   </div>
                 </div>
 
@@ -786,7 +738,7 @@ function AddNewClusterPanel() {
                     id="checkbox2"
                     checked={connectionSettings.mon.elasticsearch.authentication_enabled}
                     onChange={onCheckMonitoringAuth}
-                    label="Use authentication"
+                    label='Use authentication'
                   />
                 </Field>
                 <div className="auth_wrapper">
@@ -904,7 +856,9 @@ function AddNewClusterPanel() {
               )}
 
             <div className={styles.actions}>
-              <button onClick={onOpenAddDialog}>Add logstash</button>
+              <button onClick={onOpenAddDialog}>
+                Add logstash
+              </button>
               <Modal
                 className={styles.dialog}
                 isOpen={isOpanAddDialog}
@@ -936,27 +890,26 @@ function AddNewClusterPanel() {
                   <div className="serverAddress form-group">
                     <div className="logstash-label">Server address</div>
                     <span className="value" key={index}>
-                      {logstash.serverAddress}
-                    </span>
+                    {logstash.serverAddress}
+                  </span>
                   </div>
                   <div className="logstashApiHost form-group">
                     <div className="logstash-label">Logstash Api Host</div>
                     <span className="value" key={index}>
-                      {logstash.logstashApiHost}
-                    </span>
+                    {logstash.logstashApiHost}
+                  </span>
                   </div>
                   <div className="logstashFolder form-group">
                     <div className="logstash-label">Logstash Logs Folder</div>
                     <span className="value" key={index}>
-                      {logstash.logstashLogsFolder}
-                    </span>
+                    {logstash.logstashLogsFolder}
+                  </span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        )}
-      </div>
+        )}</div>
     </section>
   );
 }
