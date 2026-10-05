@@ -7,7 +7,7 @@ import (
 const jsonApiDatasourceKibanaContent string = `
 {
   "orgId": 1,
-  "name": "Kibana-direct--",
+  "name": "Kibana-direct",
   "type": "marcusolsson-json-datasource",
   "typeName": "JSON API",
   "access": "proxy",

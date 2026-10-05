@@ -7,7 +7,7 @@ import (
 const jsonApiDatasourceElasticsearchMonContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-direct-mon--",
+  "name": "Elasticsearch-direct-mon",
   "type": "marcusolsson-json-datasource",
   "typeName": "JSON API",
   "access": "proxy",

@@ -450,7 +450,7 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials dataWareh
 
 		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
 
-		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + clusterName + "--" + uid
+		OneClonedTemplate["name"] = OneClonedTemplate["name"].(string) + "--" + clusterName + "--" + uid
 
 		OneClonedTemplate["url"] = credentials.Host
 		OneClonedTemplate["basicAuth"] = credentials.AuthenticationEnabled
