@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceFilebeatContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-filebeat-",
+  "name": "Elasticsearch-mon-filebeat",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",

@@ -7,7 +7,7 @@ import (
 const elasticsearchDatasourceNodesMetricsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-metricbeat-monitoring-es-",
+  "name": "Elasticsearch-mon-metricbeat-monitoring-es",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
