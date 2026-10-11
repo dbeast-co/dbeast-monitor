@@ -5689,7 +5689,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 21
       },
       "id": 34,
       "panels": [
@@ -6312,7 +6312,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 22
       },
       "id": 45,
       "panels": [
@@ -6460,7 +6460,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 23
       },
       "id": 60,
       "panels": [
@@ -8430,7 +8430,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 24
       },
       "id": 30,
       "panels": [
@@ -9050,7 +9050,619 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 25
+      },
+      "id": 138,
+      "panels": [
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 184
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 5,
+            "x": 0,
+            "y": 26
+          },
+          "id": 139,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": ["sum"],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "11.5.1",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$keys($)",
+                  "language": "jsonata",
+                  "name": "Name"
+                },
+                {
+                  "jsonPath": "$.[*].type",
+                  "language": "jsonata",
+                  "name": "Type"
+                }
+              ],
+              "method": "GET",
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_snapshot"
+            }
+          ],
+          "title": "Snapshot repositories",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "${es_direct_prod}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Last Status"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "from": 0,
+                          "result": {
+                            "color": "green",
+                            "index": 0,
+                            "text": "SUCCEDED"
+                          },
+                          "to": 99999999999999
+                        },
+                        "type": "range"
+                      },
+                      {
+                        "options": {
+                          "from": -9999999999999,
+                          "result": {
+                            "color": "red",
+                            "index": 1,
+                            "text": "FAILED"
+                          },
+                          "to": -1
+                        },
+                        "type": "range"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Scheduler"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 120
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Last succeded date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsSystem"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Last failed date"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsSystem"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Next run"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 150
+                  },
+                  {
+                    "id": "unit",
+                    "value": "dateTimeAsSystem"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 19,
+            "x": 5,
+            "y": 26
+          },
+          "id": 141,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": ["sum"],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "11.5.1",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$keys($)",
+                  "language": "jsonata",
+                  "name": "Name"
+                },
+                {
+                  "jsonPath": "$.[*].policy.schedule",
+                  "language": "jsonpath",
+                  "name": "Scheduler"
+                },
+                {
+                  "jsonPath": "(\n  $root := $;\n  $map($keys($root), function($key) {\n    (\n      $p := $lookup($root, $key);\n      $success := $p.last_success.time;\n      $failure := $p.last_failure.time;\n\n      $exists($success)\n        ? (\n            $exists($failure)\n              ? (\n                  $success > $failure\n                    ? $p.last_success.snapshot_name\n                    : $p.last_failure.snapshot_name\n                )\n              : $p.last_success.snapshot_name\n          )\n        : (\n            $exists($failure)\n              ? $p.last_failure.snapshot_name\n              : \"\"\n          )\n    )\n  })\n)",
+                  "language": "jsonata",
+                  "name": "Last snapshot"
+                },
+                {
+                  "jsonPath": "$.[*].last_success.time",
+                  "language": "jsonata",
+                  "name": "Last succeded date"
+                },
+                {
+                  "jsonPath": "$.[*].last_failure.time",
+                  "language": "jsonata",
+                  "name": "Last failed date"
+                },
+                {
+                  "jsonPath": "$.[*].next_execution_millis",
+                  "language": "jsonata",
+                  "name": "Next run"
+                }
+              ],
+              "method": "GET",
+              "params": [
+                [
+                  "filter_path",
+                  "*.policy.name,*.policy.schedule,*.last_success.snapshot_name,*.last_success.time,*.last_failure.snapshot_name,*.last_failure.time,*.next_execution_millis"
+                ]
+              ],
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_slm/policy"
+            }
+          ],
+          "title": "Snapshot repositories",
+          "transformations": [
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Last Status",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Last succeded date"
+                    }
+                  },
+                  "operator": "-",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Last failed date"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {
+                  "Last Status": 1,
+                  "Last failed date": 5,
+                  "Last snapshot": 3,
+                  "Last succeded date": 4,
+                  "Name": 0,
+                  "Next run": 6,
+                  "Scheduler": 2
+                },
+                "renameByName": {}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "eg0ak6ncz6x34f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Snapshot"
+                },
+                "properties": [
+                  {
+                    "id": "custom.align",
+                    "value": "left"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "State"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 122
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-background"
+                    }
+                  },
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "FAILED": {
+                            "color": "red",
+                            "index": 2
+                          },
+                          "INCOMPATIBLE": {
+                            "color": "red",
+                            "index": 4
+                          },
+                          "IN_PROGRESS": {
+                            "color": "yellow",
+                            "index": 1
+                          },
+                          "PARTIAL": {
+                            "color": "red",
+                            "index": 3
+                          },
+                          "SUCCESS": {
+                            "color": "green",
+                            "index": 0
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Start time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 214
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "End time"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 220
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Failed shards"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 100
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 34
+          },
+          "id": 140,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": ["sum"],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "11.5.1",
+          "repeat": "snapshot_repo",
+          "repeatDirection": "v",
+          "targets": [
+            {
+              "cacheDurationSeconds": 0,
+              "datasource": {
+                "type": "marcusolsson-json-datasource",
+                "uid": "${es_direct_prod}"
+              },
+              "fields": [
+                {
+                  "jsonPath": "$.snapshots[*].snapshot",
+                  "name": "Snapshot"
+                },
+                {
+                  "jsonPath": "$.snapshots[*].state",
+                  "language": "jsonpath",
+                  "name": "State"
+                },
+                {
+                  "jsonPath": "$.snapshots[*].start_time",
+                  "language": "jsonpath",
+                  "name": "Start time"
+                },
+                {
+                  "jsonPath": "$.snapshots[*].end_time",
+                  "language": "jsonpath",
+                  "name": "End time"
+                },
+                {
+                  "jsonPath": "$.snapshots[*].shards.total",
+                  "language": "jsonpath",
+                  "name": "Total shards"
+                },
+                {
+                  "jsonPath": "$.snapshots[*].shards.failed",
+                  "language": "jsonpath",
+                  "name": "Failed shards"
+                }
+              ],
+              "method": "GET",
+              "params": [
+                [
+                  "ignore_unavailable",
+                  "true"
+                ],
+                [
+                  "size",
+                  "10"
+                ],
+                [
+                  "filter_path",
+                  "snapshots.snapshot,snapshots.state,snapshots.start_time,snapshots.end_time,snapshots.shards"
+                ],
+                [
+                  "sort",
+                  "start_time"
+                ],
+                [
+                  "order",
+                  "desc"
+                ]
+              ],
+              "queryParams": "",
+              "refId": "A",
+              "urlPath": "/_snapshot/$snapshot_repo/_all"
+            }
+          ],
+          "title": "Last 10 snapshots of the Snapshot repository: $snapshot_repo",
+          "type": "table"
+        }
+      ],
+      "title": "Snapshots",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
       },
       "id": 43,
       "panels": [
@@ -9410,6 +10022,38 @@
         "regex": "/Elasticsearch-mon-dbeast-mon-es-shards-stats--(.*)--${cluster_ds:raw}/",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "allowCustomValue": false,
+        "hide": 2,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "${es_direct_prod}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "label": "snapshot_repo",
+        "name": "snapshot_repo",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 0,
+          "fields": [
+            {
+              "jsonPath": "$keys($)",
+              "language": "jsonata"
+            }
+          ],
+          "method": "GET",
+          "queryParams": "",
+          "urlPath": "/_snapshot"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -9422,5 +10066,5 @@
   "title": "Elastic stack monitoring dashboard",
   "uid": "elastic-stack-monitoring-dashboard",
   "weekStart": "",
-  "version": 2
+  "version": 3
 }
