@@ -9421,5 +9421,6 @@
   "timezone": "",
   "title": "Elastic stack monitoring dashboard",
   "uid": "elastic-stack-monitoring-dashboard",
-  "weekStart": ""
+  "weekStart": "",
+  "version": 2
 }

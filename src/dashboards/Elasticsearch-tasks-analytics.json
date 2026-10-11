@@ -3740,6 +3740,6 @@
   "timezone": "",
   "title": "Elasticsearch tasks analytics",
   "uid": "elasticsearch-tasks-analytics",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }

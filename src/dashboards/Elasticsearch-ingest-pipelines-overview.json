@@ -1411,5 +1411,6 @@
   "timezone": "",
   "title": "Elasticsearch ingest pipelines overview",
   "uid": "elasticsearch-ingest-pipelines-overview",
-  "weekStart": ""
+  "weekStart": "",
+  "version": 2
 }
