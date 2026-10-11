@@ -41,7 +41,7 @@
         "url": "https://play.dbeast.co/"
       },
       {
-        "name": "sponsorship",
+        "name": "Sponsorship",
         "url": "https://github.com/sponsors/dbeast-co"
       },
       {
@@ -241,7 +241,6 @@
       "path": "dashboards/Elasticsearch-historical-trends.json",
       "role": "Viewer",
       "addToNav": false,
-      "title": "Elasticsearch Historical Trends",
       "uid": "elasticsearch-historical-trends",
       "defaultNav": false
     },
@@ -279,11 +278,6 @@
         "id": "marcusolsson-dynamictext-panel",
         "name": "Dynamic Text",
         "type": "panel"
-      },
-      {
-        "id": "volkovlabs-grapi-datasource",
-        "name": "GRAPI",
-        "type": "datasource"
       }
     ]
   }
