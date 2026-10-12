@@ -26,6 +26,9 @@ interface AppState {
 export const App: React.FC<Props> = ({ path }) => {
   const theme = useTheme2();
   const styles = getAppStyles(theme);
+  const isDocumentationPage = path?.includes('documentation') ?? false;
+  const isFeedbackIssuesPage = path?.includes('feedback-issues') ?? false;
+  const isBuyMeACoffeePage = path?.includes('buy-me-a-coffee') ?? false;
 
   const [state, setState] = useState<AppState>
   ({
@@ -34,6 +37,27 @@ export const App: React.FC<Props> = ({ path }) => {
   });
 
   useEffect(() => {
+    let externalUrl: string | undefined;
+
+    if (isDocumentationPage) {
+      externalUrl = 'https://github.com/dbeast-co/dbeast-monitor/wiki';
+    } else if (isFeedbackIssuesPage) {
+      externalUrl = 'https://github.com/dbeast-co/dbeast-monitor/issues';
+    } else if (isBuyMeACoffeePage) {
+      externalUrl = 'https://www.buymeacoffee.com/dbeast.app';
+    }
+
+    if (externalUrl) {
+      window.open(externalUrl, '_blank', 'noopener,noreferrer');
+      window.history.back();
+    }
+  }, [isDocumentationPage, isFeedbackIssuesPage, isBuyMeACoffeePage]);
+
+  useEffect(() => {
+    if (isDocumentationPage || isFeedbackIssuesPage || isBuyMeACoffeePage) {
+      return;
+    }
+
     const fetchDataSources = async () => {
       const dataSources = await getBackendSrv()
         .get('/api/datasources')
@@ -51,7 +75,11 @@ export const App: React.FC<Props> = ({ path }) => {
     };
 
     fetchDataSources();
-  }, []);
+  }, [isDocumentationPage, isFeedbackIssuesPage, isBuyMeACoffeePage]);
+
+  if (isDocumentationPage || isFeedbackIssuesPage || isBuyMeACoffeePage) {
+    return null;
+  }
 
   if (state.loading) {
     return (

@@ -2503,6 +2503,6 @@
   "timezone": "",
   "title": "Elasticsearch index monitor",
   "uid": "elasticsearch-index-monitor",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
