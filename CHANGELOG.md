@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 2.2.0 (2027-02-10)
+- Features:
+  * [FEAT] Add feedback menu [#253](https://github.com/dbeast-co/dbeast-monitor/issues/253)
+  * [FEAT] Add autorefresh to the "Cluster list" dashboard [#158](https://github.com/dbeast-co/dbeast-monitor/issues/158)
+  * [FEAT] Remove the unused GRAPI data source [#256](https://github.com/dbeast-co/dbeast-monitor/issues/256)
+
+- Updated dashboards
+  * All dashboards updated to the new versions 
+  * Add snapshot monitoring to the Elastic Stack Monitoring dashboard [#250](https://github.com/dbeast-co/dbeast-monitor/issues/250)
+
 ## Version 2.1.1 (2026-08-23)
 - Features:
   * [FEAT] Delete via API [#252](https://github.com/dbeast-co/dbeast-monitor/issues/252) 

@@ -2,7 +2,7 @@
 
 ----
 
-[![version: 2.1.1](https://img.shields.io/badge/version-2.1.1-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest) 
+[![version: 2.1.2](https://img.shields.io/badge/version-2.1.2-green?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/releases/latest) 
 &nbsp;&nbsp;&nbsp;  [![docs](https://img.shields.io/badge/docs-latest-blue?style=flat-square)](https://github.com/dbeast-co/dbeast-monitor/wiki)
 &nbsp;&nbsp;&nbsp; [![Buy me a coffee](https://img.shields.io/badge/%E2%98%95%20Buy%20me%20a%20coffee-007EC6?style=flat-square)](https://buymeacoffee.com/dbeast.app)
 
@@ -31,8 +31,8 @@ Elasticsearch, Logstash, and Kibana.
    - **Logstash pipelines** throughput and errors
 
 3. Helm versions
-   - Currently, there is no Helm charts for the versions 2+
-   - The Helm charts for the previews versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
+   - Currently, there are no Helm charts for the versions 2+
+   - The Helm charts for the preview versions can be found in our [Helm repository](https://github.com/dbeast-co/dbeast-monitor-helm)
 
 ## Documentation
 
