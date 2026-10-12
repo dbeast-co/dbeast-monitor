@@ -107,6 +107,7 @@
     "prismjs": "1.30.0",
     "react-router": "6.30.6",
     "react-router-dom": "6.30.6",
+    "source-map-js": "1.2.2",
     "uuid": "14.0.2"
   },
   "packageManager": "npm@9.2.0"
