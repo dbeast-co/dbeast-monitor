@@ -1824,7 +1824,8 @@
               "field": "elasticsearch.index.total.indexing.index_last_period",
               "id": "1",
               "settings": {},
-              "type": "sum"
+              "type": "sum",
+              "hide": true
             },
             {
               "id": "4",
