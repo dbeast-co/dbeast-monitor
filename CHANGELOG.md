@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 2.2.0 (2027-02-10)
+## Version 2.1.2 (2026-10-17)
 - Features:
   * [FEAT] Add feedback menu [#253](https://github.com/dbeast-co/dbeast-monitor/issues/253)
   * [FEAT] Add autorefresh to the "Cluster list" dashboard [#158](https://github.com/dbeast-co/dbeast-monitor/issues/158)
