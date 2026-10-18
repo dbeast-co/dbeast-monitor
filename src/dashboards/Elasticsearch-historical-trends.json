@@ -1824,7 +1824,8 @@
               "field": "elasticsearch.index.total.indexing.index_last_period",
               "id": "1",
               "settings": {},
-              "type": "sum"
+              "type": "sum",
+              "hide": true
             },
             {
               "id": "4",
@@ -2021,5 +2022,5 @@
   "timezone": "utc",
   "title": "Elasticsearch Historical Trends",
   "uid": "elasticsearch-historical-trends",
-  "version": 1
+  "version": 2
 }

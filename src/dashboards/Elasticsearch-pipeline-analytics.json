@@ -594,6 +594,6 @@
   "timezone": "",
   "title": "Elasticsearch ingest pipeline analytics",
   "uid": "elasticsearch-pipeline-analytics",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

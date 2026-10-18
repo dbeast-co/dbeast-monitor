@@ -1745,6 +1745,6 @@
   "timezone": "",
   "title": "Elasticsearch shards overview dashboard",
   "uid": "elasticsearch-shards-overview-dashboard",
-  "version": 51,
+  "version": 52,
   "weekStart": ""
 }

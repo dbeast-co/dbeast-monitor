@@ -1396,6 +1396,6 @@
   "timezone": "",
   "title": "Logstash pipeline analytics",
   "uid": "logstash-pipeline-analytics",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

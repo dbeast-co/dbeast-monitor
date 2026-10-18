@@ -6942,5 +6942,6 @@
   "timezone": "",
   "title": "Host overview",
   "uid": "host-overview",
-  "weekStart": ""
+  "weekStart": "",
+  "version": 2
 }

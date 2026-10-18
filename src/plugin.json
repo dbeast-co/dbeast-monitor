@@ -41,7 +41,7 @@
         "url": "https://play.dbeast.co/"
       },
       {
-        "name": "sponsorship",
+        "name": "Sponsorship",
         "url": "https://github.com/sponsors/dbeast-co"
       },
       {
@@ -83,11 +83,6 @@
     "updated": "%TODAY%"
   },
   "includes": [
-    {
-      "type": "datasource",
-      "name": "DBeast Grafana API",
-      "path": "grafana-api-ds/plugin.json"
-    },
     {
       "type": "page",
       "name": "Clusters List",
