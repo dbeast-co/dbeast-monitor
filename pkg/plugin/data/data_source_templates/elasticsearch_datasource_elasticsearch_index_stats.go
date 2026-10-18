@@ -1,8 +1,6 @@
 package data_source_templates
 
-import (
-	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
-)
+import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
 // TODO Add field for dbeast version/min compatible version etc
 // Build json object with the versions list based on the dataWarhouse
@@ -11,11 +9,18 @@ import (
 // variable for the last updated version
 // Application health includes data consistency and version verification dashboard
 
-const dbeastMinimalCompatibleVersion = "0.0.0"
+func init() {
+	const componentName = "Elasticsearch-mon-dbeast-mon-es-index-stats"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent, componentName, dbeastMinimalCompatibleVersion)
+	//dataWarehouse.LoadGrafanaDataSources(dataWarehouse.UpdateGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent, componentName))
+	//dataWarehouse.AppendGrafanaDSMinCompatibleVersion(componentName, dbeastMinimalCompatibleVersion)
+}
+
 const elasticsearchDatasourceElasticsearchIndexStatsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-dbeast-mon-es-index-stats",
+  "name": "%COMPONENT_NAME%",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy", 
@@ -33,8 +38,7 @@ const elasticsearchDatasourceElasticsearchIndexStatsContent string = `
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%",
-	"dbeastMinimalCompatibleVersion": "2.0.0"
+	"dbeastVersion": "%DBEAST_VERSION%"
   },
   "secureJsonData": {
     "basicAuthPassword": ""
@@ -42,7 +46,3 @@ const elasticsearchDatasourceElasticsearchIndexStatsContent string = `
   "readOnly": false
 }
 `
-
-func init() {
-	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent)
-}

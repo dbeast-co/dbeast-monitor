@@ -54,7 +54,10 @@ type FirstIndex struct {
 }
 
 type BackCompatibilityVersions struct {
-	GrafanaDataSourceTemplates []VersionObject `json:"grafana_data_source_templates"`
+	GrafanaDataSourceTemplates      []VersionObject `json:"grafana_data_source_templates"`
+	ElasticsearchIndexTemplates     []VersionObject `json:"elasticsearch_index_templates"`
+	ElasticsearchComponentTemplates []VersionObject `json:"elasticsearch_component_templates"`
+	LogstashConfigFiles             []VersionObject `json:"logstash_config_files"`
 }
 
 type VersionObject struct {

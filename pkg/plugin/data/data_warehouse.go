@@ -2,7 +2,6 @@ package data
 
 import (
 	"encoding/json"
-	"sort"
 	"strings"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
@@ -20,43 +19,43 @@ var LSConfigsMap = make(map[string]string)
 var GrafanaDataSourcesMap = make(map[string]interface{})
 var BackCompatibilityVersionsMap BackCompatibilityVersions
 
-func GenerateBackCompatibilityVersionsMap() {
-	versions := make([]VersionObject, 0, len(GrafanaDataSourcesMap))
-	versions = GenerateGrafanaDSVersionMap(versions)
+//func GenerateBackCompatibilityVersionsMap() {
+//	versions := make([]VersionObject, 0, len(GrafanaDataSourcesMap))
+//	versions = GenerateGrafanaDSVersionMap(versions)
+//
+//	sort.Slice(versions, func(i, j int) bool {
+//		return versions[i].Name < versions[j].Name
+//	})
+//
+//	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = versions
+//}
 
-	sort.Slice(versions, func(i, j int) bool {
-		return versions[i].Name < versions[j].Name
-	})
-
-	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = versions
-}
-
-func GenerateGrafanaDSVersionMap(versions []VersionObject) []VersionObject {
-	for _, ds := range GrafanaDataSourcesMap {
-		dsMap, ok := ds.(map[string]interface{})
-		if !ok {
-			continue
-		}
-
-		name, ok := dsMap["name"].(string)
-		if !ok {
-			continue
-		}
-
-		jsonData, ok := dsMap["jsonData"].(map[string]interface{})
-		if !ok {
-			continue
-		}
-
-		minVersion, ok := jsonData["dbeastMinimalCompatibleVersion"].(string)
-		if !ok {
-			continue
-		}
-
-		versions = append(versions, VersionObject{Name: name, MinCompatibleVersion: minVersion})
-	}
-	return versions
-}
+//func GenerateGrafanaDSVersionMap(versions []VersionObject) []VersionObject {
+//	for _, ds := range GrafanaDataSourcesMap {
+//		dsMap, ok := ds.(map[string]interface{})
+//		if !ok {
+//			continue
+//		}
+//
+//		name, ok := dsMap["name"].(string)
+//		if !ok {
+//			continue
+//		}
+//
+//		jsonData, ok := dsMap["jsonData"].(map[string]interface{})
+//		if !ok {
+//			continue
+//		}
+//
+//		minVersion, ok := jsonData["dbeastMinimalCompatibleVersion"].(string)
+//		if !ok {
+//			continue
+//		}
+//
+//		versions = append(versions, VersionObject{Name: name, MinCompatibleVersion: minVersion})
+//	}
+//	return versions
+//}
 
 func AppendFirstIndex(IndexName string, IndexContent string) {
 	ESFirstIndicesTemplatesMap[IndexName] = IndexContent
@@ -83,9 +82,8 @@ func AppendLogstashConfig(ConfigName string, ConfigContent string) {
 	log.DefaultLogger.Info("Logstash config " + ConfigName + " added to the map successfully")
 }
 
-func LoadGrafanaDataSources(DataSourceContent string) {
-	DataSourceContent = strings.ReplaceAll(DataSourceContent, dbeastVersionPlaceholder, dbeastVersion())
-
+func LoadGrafanaDataSources(DataSourceContent string, name string, minCompatibleVersion string) {
+	UpdateGrafanaDataSources(DataSourceContent, name)
 	var templateData map[string]interface{}
 	err := json.Unmarshal([]byte(DataSourceContent), &templateData)
 	if err != nil {
@@ -93,6 +91,10 @@ func LoadGrafanaDataSources(DataSourceContent string) {
 		return
 	}
 	GrafanaDataSourcesMap[templateData["name"].(string)] = templateData
+
+	version := VersionObject{Name: name, MinCompatibleVersion: minCompatibleVersion}
+	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = append(BackCompatibilityVersionsMap.GrafanaDataSourceTemplates, version)
+
 	log.DefaultLogger.Info("Grafana data source " + templateData["name"].(string) + " added to the map successfully")
 }
 
@@ -103,7 +105,12 @@ func LoadNewCluster(NewClusterContent string) {
 		return
 	}
 	log.DefaultLogger.Info("New cluster configuration loaded successfully")
+}
 
+func UpdateGrafanaDataSources(DataSourceContent string, name string) string {
+	DataSourceContent = strings.ReplaceAll(DataSourceContent, "%COMPONENT_NAME%", name)
+	DataSourceContent = strings.ReplaceAll(DataSourceContent, "%DBEAST_VERSION%", dbeastVersion())
+	return DataSourceContent
 }
 
 func dbeastVersion() string {
