@@ -4,10 +4,16 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "Elasticsearch-direct-mon"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.LoadGrafanaDataSources(jsonApiDatasourceElasticsearchMonContent, componentName, dbeastMinimalCompatibleVersion)
+}
+
 const jsonApiDatasourceElasticsearchMonContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-direct-mon",
+  "name": "%COMPONENT_NAME%",
   "type": "marcusolsson-json-datasource",
   "typeName": "JSON API",
   "access": "proxy",
@@ -16,8 +22,7 @@ const jsonApiDatasourceElasticsearchMonContent string = `
   "basicAuthUser": "",
   "jsonData": {
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%",
-	"dbeastMinimalCompatibleVersion": "2.0.0"
+	"dbeastVersion": "%DBEAST_VERSION%"
   },
   "secureJsonData": {
     "basicAuthPassword": ""
@@ -25,7 +30,3 @@ const jsonApiDatasourceElasticsearchMonContent string = `
   "readOnly": false
 }
 `
-
-func init() {
-	dataWarehouse.LoadGrafanaDataSources(jsonApiDatasourceElasticsearchMonContent)
-}

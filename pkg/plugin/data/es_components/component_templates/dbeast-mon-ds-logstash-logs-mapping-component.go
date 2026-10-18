@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-ds-logstash-logs-mapping-component"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonDsLogstashLogsMappingComponentContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonDsLogstashLogsMappingComponentContent string = `
 {
   "template": {
@@ -206,11 +212,7 @@ const dbeastMonDsLogstashLogsMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the Logstash logs",
-    "version": "1.0.2"
+    "version": "%DBEAST_VERSION%"
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendComponentTemplate("dbeast-mon-ds-logstash-logs-mapping-component", dbeastMonDsLogstashLogsMappingComponentContent)
-}

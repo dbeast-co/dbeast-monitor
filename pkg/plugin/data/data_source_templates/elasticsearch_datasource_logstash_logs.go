@@ -4,10 +4,16 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "Elasticsearch-mon-dbeast-mon-logstash-logs"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceLogstashLogsContent, componentName, dbeastMinimalCompatibleVersion)
+}
+
 const elasticsearchDatasourceLogstashLogsContent string = `
 {
   "orgId": 1,
-  "name": "Elasticsearch-mon-dbeast-mon-logstash-logs",
+  "name": "%COMPONENT_NAME%",
   "type": "elasticsearch",
   "typeName": "Elasticsearch",
   "access": "proxy",
@@ -25,8 +31,7 @@ const elasticsearchDatasourceLogstashLogsContent string = `
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%",
-	"dbeastMinimalCompatibleVersion": "2.0.0"
+	"dbeastVersion": "%DBEAST_VERSION%"
   },
   "secureJsonData": {
     "basicAuthPassword": ""
@@ -34,7 +39,3 @@ const elasticsearchDatasourceLogstashLogsContent string = `
   "readOnly": false
 }
 `
-
-func init() {
-	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceLogstashLogsContent)
-}

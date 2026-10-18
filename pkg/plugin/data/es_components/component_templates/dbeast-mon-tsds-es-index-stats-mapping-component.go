@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-tsds-es-index-stats-mapping-component"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonTsdsEsIndexStatsMappingComponentContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonTsdsEsIndexStatsMappingComponentContent string = `
 {
   "template": {
@@ -1849,11 +1855,7 @@ const dbeastMonTsdsEsIndexStatsMappingComponentContent string = `
   },
   "_meta": {
     "description": "default mappings for the indices monitoring",
-    "version": "1.0.2"
+    "version": "%DBEAST_VERSION%"
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendComponentTemplate("dbeast-mon-tsds-es-index-stats-mapping-component", dbeastMonTsdsEsIndexStatsMappingComponentContent)
-}

@@ -13,8 +13,6 @@ func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-es-index-stats"
 	const dbeastMinimalCompatibleVersion = "2.0.0"
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent, componentName, dbeastMinimalCompatibleVersion)
-	//dataWarehouse.LoadGrafanaDataSources(dataWarehouse.UpdateGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent, componentName))
-	//dataWarehouse.AppendGrafanaDSMinCompatibleVersion(componentName, dbeastMinimalCompatibleVersion)
 }
 
 const elasticsearchDatasourceElasticsearchIndexStatsContent string = `

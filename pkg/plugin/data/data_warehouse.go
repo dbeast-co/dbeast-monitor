@@ -19,44 +19,6 @@ var LSConfigsMap = make(map[string]string)
 var GrafanaDataSourcesMap = make(map[string]interface{})
 var BackCompatibilityVersionsMap BackCompatibilityVersions
 
-//func GenerateBackCompatibilityVersionsMap() {
-//	versions := make([]VersionObject, 0, len(GrafanaDataSourcesMap))
-//	versions = GenerateGrafanaDSVersionMap(versions)
-//
-//	sort.Slice(versions, func(i, j int) bool {
-//		return versions[i].Name < versions[j].Name
-//	})
-//
-//	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = versions
-//}
-
-//func GenerateGrafanaDSVersionMap(versions []VersionObject) []VersionObject {
-//	for _, ds := range GrafanaDataSourcesMap {
-//		dsMap, ok := ds.(map[string]interface{})
-//		if !ok {
-//			continue
-//		}
-//
-//		name, ok := dsMap["name"].(string)
-//		if !ok {
-//			continue
-//		}
-//
-//		jsonData, ok := dsMap["jsonData"].(map[string]interface{})
-//		if !ok {
-//			continue
-//		}
-//
-//		minVersion, ok := jsonData["dbeastMinimalCompatibleVersion"].(string)
-//		if !ok {
-//			continue
-//		}
-//
-//		versions = append(versions, VersionObject{Name: name, MinCompatibleVersion: minVersion})
-//	}
-//	return versions
-//}
-
 func AppendFirstIndex(IndexName string, IndexContent string) {
 	ESFirstIndicesTemplatesMap[IndexName] = IndexContent
 	log.DefaultLogger.Info("First index " + IndexName + " added to the map successfully")
@@ -67,8 +29,13 @@ func AppendILMPolicy(PolicyName string, PolicyContent string) {
 	log.DefaultLogger.Info("ILM policy " + PolicyName + " added to the map successfully")
 }
 
-func AppendComponentTemplate(TemplateName string, TemplateContent string) {
+func AppendComponentTemplate(TemplateName string, TemplateContent string, minCompatibleVersion string) {
+	TemplateContent = strings.ReplaceAll(TemplateContent, "%DBEAST_VERSION%", dbeastVersion())
 	ESComponentTemplatesMap[TemplateName] = TemplateContent
+
+	version := VersionObject{Name: TemplateName, MinCompatibleVersion: minCompatibleVersion}
+	BackCompatibilityVersionsMap.ElasticsearchComponentTemplates = append(BackCompatibilityVersionsMap.ElasticsearchComponentTemplates, version)
+
 	log.DefaultLogger.Info("Component template " + TemplateName + " added to the map successfully")
 }
 

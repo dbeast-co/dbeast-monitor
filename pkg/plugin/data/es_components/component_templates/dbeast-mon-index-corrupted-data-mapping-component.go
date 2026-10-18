@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-index-corrupted-data-mapping-component"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonIndexCorruptedDataMappingComponentContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonIndexCorruptedDataMappingComponentContent string = `
 {
   "template": {
@@ -138,11 +144,7 @@ const dbeastMonIndexCorruptedDataMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the corrupted data",
-    "version": "1.0.2"
+    "version": "%DBEAST_VERSION%"
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendComponentTemplate("dbeast-mon-index-corrupted-data-mapping-component", dbeastMonIndexCorruptedDataMappingComponentContent)
-}

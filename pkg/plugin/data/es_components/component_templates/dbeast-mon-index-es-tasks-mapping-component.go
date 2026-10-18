@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-index-es-tasks-mapping-component"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonIndexEsTasksMappingComponentContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonIndexEsTasksMappingComponentContent string = `
 {
   "template": {
@@ -189,11 +195,7 @@ const dbeastMonIndexEsTasksMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the Elasticsearch tasks monitoring",
-    "version": "1.0.2"
+    "version": "%DBEAST_VERSION%"
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendComponentTemplate("dbeast-mon-index-es-tasks-mapping-component", dbeastMonIndexEsTasksMappingComponentContent)
-}

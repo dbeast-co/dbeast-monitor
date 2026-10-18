@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	_ "github.com/dbeast/dbeastmonitor/pkg/plugin/data/data_source_templates"
 	_ "github.com/dbeast/dbeastmonitor/pkg/plugin/data/es_components/component_templates"
 	_ "github.com/dbeast/dbeastmonitor/pkg/plugin/data/es_components/first_indices"
@@ -13,6 +12,5 @@ import (
 )
 
 func init() {
-	dataWarehouse.GenerateBackCompatibilityVersionsMap()
 	log.DefaultLogger.Info("Data warehouse successfully loaded")
 }
