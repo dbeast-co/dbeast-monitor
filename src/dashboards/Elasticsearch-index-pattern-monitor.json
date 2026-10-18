@@ -1629,6 +1629,6 @@
   "timezone": "",
   "title": "Elasticsearch index pattern monitor",
   "uid": "elasticsearch-index-pattern-monitor",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

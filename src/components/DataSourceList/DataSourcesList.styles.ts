@@ -12,6 +12,8 @@ export const getDataSourceListStyles = (theme: GrafanaTheme2) => {
       justify-content: center;
       width: 100%;
       margin-block-end: 2rem;
+      position: relative;
+      align-items: center;
 
       h1 {
         color: ${theme.colors.text.primary};
@@ -19,6 +21,11 @@ export const getDataSourceListStyles = (theme: GrafanaTheme2) => {
         font-weight: ${theme.typography.h1.fontWeight};
         margin: 0;
       }
+    `,
+
+    refreshPicker: css`
+      position: absolute;
+      right: 0;
     `,
 
     cardSection: css`
