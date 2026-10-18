@@ -22,6 +22,16 @@ var BackCompatibilityVersionsMap BackCompatibilityVersions
 
 func GenerateBackCompatibilityVersionsMap() {
 	versions := make([]VersionObject, 0, len(GrafanaDataSourcesMap))
+	versions = GenerateGrafanaDSVersionMap(versions)
+
+	sort.Slice(versions, func(i, j int) bool {
+		return versions[i].Name < versions[j].Name
+	})
+
+	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = versions
+}
+
+func GenerateGrafanaDSVersionMap(versions []VersionObject) []VersionObject {
 	for _, ds := range GrafanaDataSourcesMap {
 		dsMap, ok := ds.(map[string]interface{})
 		if !ok {
@@ -45,12 +55,7 @@ func GenerateBackCompatibilityVersionsMap() {
 
 		versions = append(versions, VersionObject{Name: name, MinCompatibleVersion: minVersion})
 	}
-
-	sort.Slice(versions, func(i, j int) bool {
-		return versions[i].Name < versions[j].Name
-	})
-
-	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = versions
+	return versions
 }
 
 func AppendFirstIndex(IndexName string, IndexContent string) {
