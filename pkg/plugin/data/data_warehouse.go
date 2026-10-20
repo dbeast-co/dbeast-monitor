@@ -50,7 +50,7 @@ func AppendLogstashConfig(ConfigName string, ConfigContent string) {
 }
 
 func LoadGrafanaDataSources(DataSourceContent string, name string, minCompatibleVersion string) {
-	UpdateGrafanaDataSources(DataSourceContent, name)
+	DataSourceContent = UpdateGrafanaDataSources(DataSourceContent, name)
 	var templateData map[string]interface{}
 	err := json.Unmarshal([]byte(DataSourceContent), &templateData)
 	if err != nil {
