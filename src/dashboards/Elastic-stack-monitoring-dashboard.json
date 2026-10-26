@@ -9196,7 +9196,7 @@
                           "result": {
                             "color": "green",
                             "index": 0,
-                            "text": "SUCCEDED"
+                            "text": "SUCCEEDED"
                           },
                           "to": 99999999999999
                         },
@@ -9255,7 +9255,7 @@
               {
                 "matcher": {
                   "id": "byName",
-                  "options": "Last succeded date"
+                  "options": "Last succeeded date"
                 },
                 "properties": [
                   {
@@ -9335,29 +9335,29 @@
                   "name": "Name"
                 },
                 {
-                  "jsonPath": "$.[*].policy.schedule",
-                  "language": "jsonpath",
-                  "name": "Scheduler"
-                },
-                {
                   "jsonPath": "(\n  $root := $;\n  $map($keys($root), function($key) {\n    (\n      $p := $lookup($root, $key);\n      $success := $p.last_success.time;\n      $failure := $p.last_failure.time;\n\n      $exists($success)\n        ? (\n            $exists($failure)\n              ? (\n                  $success > $failure\n                    ? $p.last_success.snapshot_name\n                    : $p.last_failure.snapshot_name\n                )\n              : $p.last_success.snapshot_name\n          )\n        : (\n            $exists($failure)\n              ? $p.last_failure.snapshot_name\n              : \"\"\n          )\n    )\n  })\n)",
                   "language": "jsonata",
                   "name": "Last snapshot"
                 },
                 {
-                  "jsonPath": "$.[*].last_success.time",
+                  "jsonPath": "$.*.(last_success.time ?? \"\")",
                   "language": "jsonata",
-                  "name": "Last succeded date"
+                  "name": "Last succeeded date"
                 },
                 {
-                  "jsonPath": "$.[*].last_failure.time",
+                  "jsonPath": "$.*.(last_failure.time ?? \"\")",
                   "language": "jsonata",
                   "name": "Last failed date"
                 },
                 {
-                  "jsonPath": "$.[*].next_execution_millis",
+                  "jsonPath": "$.*.(next_execution_millis ?? \"\")",
                   "language": "jsonata",
                   "name": "Next run"
+                },
+                {
+                  "jsonPath": "$.*.(policy.schedule ?? \"\")",
+                  "language": "jsonata",
+                  "name": "Scheduler"
                 }
               ],
               "method": "GET",
@@ -9372,8 +9372,24 @@
               "urlPath": "/_slm/policy"
             }
           ],
-          "title": "Snapshot repositories",
+          "title": "Snapshot policies",
           "transformations": [
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "fieldName": "Name",
+                    "config": {
+                      "id": "isNull",
+                      "options": {}
+                    }
+                  }
+                ],
+                "type": "exclude",
+                "match": "any"
+              }
+            },
             {
               "id": "calculateField",
               "options": {
@@ -9382,7 +9398,7 @@
                   "left": {
                     "matcher": {
                       "id": "byName",
-                      "options": "Last succeded date"
+                      "options": "Last succeeded date"
                     }
                   },
                   "operator": "-",
@@ -9408,7 +9424,7 @@
                   "Last Status": 1,
                   "Last failed date": 5,
                   "Last snapshot": 3,
-                  "Last succeded date": 4,
+                  "Last succeeded date": 4,
                   "Name": 0,
                   "Next run": 6,
                   "Scheduler": 2
@@ -9422,7 +9438,7 @@
         {
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "eg0ak6ncz6x34f"
+            "uid": "${es_direct_prod}"
           },
           "fieldConfig": {
             "defaults": {
@@ -9623,26 +9639,14 @@
               ],
               "method": "GET",
               "params": [
-                [
-                  "ignore_unavailable",
-                  "true"
-                ],
-                [
-                  "size",
-                  "10"
-                ],
+                ["ignore_unavailable", "true"],
+                ["size", "10"],
                 [
                   "filter_path",
                   "snapshots.snapshot,snapshots.state,snapshots.start_time,snapshots.end_time,snapshots.shards"
                 ],
-                [
-                  "sort",
-                  "start_time"
-                ],
-                [
-                  "order",
-                  "desc"
-                ]
+                ["sort", "start_time"],
+                ["order", "desc"]
               ],
               "queryParams": "",
               "refId": "A",
