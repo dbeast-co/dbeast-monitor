@@ -4,9 +4,18 @@ import (
 	data_warehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-ds-30d"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	data_warehouse.AppendILMPolicy(componentName, dbeatsDS30dPolicyContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeatsDS30dPolicyContent string = `
 {
   "policy": {
+    "_meta": {
+      "version": "%DBEAST_VERSION%"
+    },
     "phases": {
       "hot": {
         "actions": {
@@ -30,7 +39,3 @@ const dbeatsDS30dPolicyContent string = `
   }
 }
 `
-
-func init() {
-	data_warehouse.AppendILMPolicy("dbeast-ds-30d", dbeatsDS30dPolicyContent)
-}

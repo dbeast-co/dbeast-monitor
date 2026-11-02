@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-index-logstash-logs-pipelines-ports-status-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexLogstashLogsPipelinesPortsStatusTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonIndexLogstashLogsPipelinesPortsStatusTemplateContent string = `
 {
   "index_patterns": [
@@ -25,7 +31,3 @@ const dbeastMonIndexLogstashLogsPipelinesPortsStatusTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-logstash-logs-pipelines-ports-status-template", dbeastMonIndexLogstashLogsPipelinesPortsStatusTemplateContent)
-}

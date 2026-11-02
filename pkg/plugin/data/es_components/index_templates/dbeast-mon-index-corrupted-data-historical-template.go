@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-index-corrupted-data-historical-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexCorruptedDataHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonIndexCorruptedDataHistoricalTemplateContent string = `
 {
   "index_patterns": [
@@ -33,7 +39,3 @@ const dbeastMonIndexCorruptedDataHistoricalTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-corrupted-data-historical-template", dbeastMonIndexCorruptedDataHistoricalTemplateContent)
-}

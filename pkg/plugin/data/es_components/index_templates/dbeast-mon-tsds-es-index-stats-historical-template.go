@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-tsds-es-index-stats-historical-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonTsdsEsIndexStatsHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonTsdsEsIndexStatsHistoricalTemplateContent string = `
 {
   "index_patterns": [
@@ -40,7 +46,3 @@ const dbeastMonTsdsEsIndexStatsHistoricalTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-tsds-es-index-stats-historical-template", dbeastMonTsdsEsIndexStatsHistoricalTemplateContent)
-}

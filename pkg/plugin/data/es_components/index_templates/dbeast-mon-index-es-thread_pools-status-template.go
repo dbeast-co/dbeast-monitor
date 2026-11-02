@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-index-es-thread_pools-status-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexEsThreadPoolsStatusTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonIndexEsThreadPoolsStatusTemplateContent string = `
 {
   "index_patterns": [
@@ -25,7 +31,3 @@ const dbeastMonIndexEsThreadPoolsStatusTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-es-thread_pools-status-template", dbeastMonIndexEsThreadPoolsStatusTemplateContent)
-}

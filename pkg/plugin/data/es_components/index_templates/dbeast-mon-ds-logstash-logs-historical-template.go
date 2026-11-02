@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-ds-logstash-logs-historical-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonDsLogstashLogsHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonDsLogstashLogsHistoricalTemplateContent string = `
 {
   "index_patterns": [
@@ -32,11 +38,7 @@ const dbeastMonDsLogstashLogsHistoricalTemplateContent string = `
   "priority": 1,
   "_meta": {
     "description": "This template used for the Logstash logs",
-    "version": "1.0.2"
+    "version": "%DBEAST_VERSION%"
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-ds-logstash-logs-historical-template", dbeastMonDsLogstashLogsHistoricalTemplateContent)
-}

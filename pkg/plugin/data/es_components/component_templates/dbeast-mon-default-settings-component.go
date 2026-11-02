@@ -20,7 +20,24 @@ const dbeastMonDefaultSettingsComponentContent string = `
       }
     },
     "mappings": {
+      "dynamic_templates": [
+        {
+          "strings_as_keyword": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        }
+      ],
       "properties": {
+		"dbeast": {
+		  "properties": {
+			"version": {
+			  "type":"keyword"
+			}
+		  }
+		},
         "app_version": {
           "type":"keyword"
         }

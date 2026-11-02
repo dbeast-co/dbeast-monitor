@@ -1,8 +1,14 @@
 package ilm_policies
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin/data"
+	data_warehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
+
+func init() {
+	const componentName = "dbeast-index-30d"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	data_warehouse.AppendILMPolicy(componentName, dbeatsIndex30dPolicyContent, dbeastMinimalCompatibleVersion)
+}
 
 const dbeatsIndex30dPolicyContent string = `
 {
@@ -30,7 +36,3 @@ const dbeatsIndex30dPolicyContent string = `
   }
 }
 `
-
-func init() {
-	data.AppendILMPolicy("dbeast-index-30d", dbeatsIndex30dPolicyContent)
-}

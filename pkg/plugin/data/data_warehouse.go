@@ -24,8 +24,13 @@ func AppendFirstIndex(IndexName string, IndexContent string) {
 	log.DefaultLogger.Info("First index " + IndexName + " added to the map successfully")
 }
 
-func AppendILMPolicy(PolicyName string, PolicyContent string) {
+func AppendILMPolicy(PolicyName string, PolicyContent string, minCompatibleVersion string) {
+	PolicyContent = strings.ReplaceAll(PolicyContent, "%DBEAST_VERSION%", dbeastVersion())
 	ESILMTemplatesMap[PolicyName] = PolicyContent
+
+	version := VersionObject{Name: PolicyName, MinCompatibleVersion: minCompatibleVersion}
+	BackCompatibilityVersionsMap.ElasticsearchILMPolicies = append(BackCompatibilityVersionsMap.ElasticsearchILMPolicies, version)
+
 	log.DefaultLogger.Info("ILM policy " + PolicyName + " added to the map successfully")
 }
 
@@ -39,13 +44,25 @@ func AppendComponentTemplate(TemplateName string, TemplateContent string, minCom
 	log.DefaultLogger.Info("Component template " + TemplateName + " added to the map successfully")
 }
 
-func AppendIndexTemplate(TemplateName string, TemplateContent string) {
+func AppendIndexTemplate(TemplateName string, TemplateContent string, minCompatibleVersion string) {
+	TemplateContent = strings.ReplaceAll(TemplateContent, "%DBEAST_VERSION%", dbeastVersion())
+
 	ESIndexTemplatesMap[TemplateName] = TemplateContent
+
+	version := VersionObject{Name: TemplateName, MinCompatibleVersion: minCompatibleVersion}
+	BackCompatibilityVersionsMap.ElasticsearchIndexTemplates = append(BackCompatibilityVersionsMap.ElasticsearchIndexTemplates, version)
+
 	log.DefaultLogger.Info("Index template " + TemplateName + " added to the map successfully")
 }
 
-func AppendLogstashConfig(ConfigName string, ConfigContent string) {
+func AppendLogstashConfig(ConfigName string, ConfigContent string, minCompatibleVersion string) {
+	ConfigContent = strings.ReplaceAll(ConfigContent, "%DBEAST_VERSION%", dbeastVersion())
+
 	LSConfigsMap[ConfigName] = ConfigContent
+
+	version := VersionObject{Name: ConfigName, MinCompatibleVersion: minCompatibleVersion}
+	BackCompatibilityVersionsMap.LogstashConfigFiles = append(BackCompatibilityVersionsMap.LogstashConfigFiles, version)
+
 	log.DefaultLogger.Info("Logstash config " + ConfigName + " added to the map successfully")
 }
 

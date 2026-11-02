@@ -1,8 +1,14 @@
 package ilm_policies
 
 import (
-	"github.com/dbeast/dbeastmonitor/pkg/plugin/data"
+	data_warehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
+
+func init() {
+	const componentName = "dbeast-tsds-30d"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	data_warehouse.AppendILMPolicy(componentName, dbeatsTSDS30dPolicyContent, dbeastMinimalCompatibleVersion)
+}
 
 const dbeatsTSDS30dPolicyContent string = `
 {
@@ -30,7 +36,3 @@ const dbeatsTSDS30dPolicyContent string = `
   }
 }
 `
-
-func init() {
-	data.AppendILMPolicy("dbeast-tsds-30d", dbeatsTSDS30dPolicyContent)
-}

@@ -1,8 +1,14 @@
 package logstash_config
 
 import (
-	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
+	data_warehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
+
+func init() {
+	const componentName = "dbeast-mon-es-ingest_pipelines-metrics"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	data_warehouse.AppendLogstashConfig(componentName, dbeastMonEsIngestPipelinesMetricsContent, dbeastMinimalCompatibleVersion)
+}
 
 const dbeastMonEsIngestPipelinesMetricsContent string = `
 input{
@@ -23,6 +29,7 @@ input{
 	  "[elasticsearch][cluster][id]" => "<CLUSTER_ID>"
 	  "[event][module]" => "elasticsearch"
 	  "[event][dataset]" => "pipeline_stats"
+	  "[dbeast][version]" => "%DBEAST_VERSION%"
 	}	
   }
 }
@@ -199,7 +206,3 @@ output{
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendLogstashConfig("dbeast-mon-es-ingest_pipelines-metrics", dbeastMonEsIngestPipelinesMetricsContent)
-}

@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-tsds-ingest_pipelines-historical-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonTsdsIngestPipelinesHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonTsdsIngestPipelinesHistoricalTemplateContent string = `
 {
   "index_patterns": [
@@ -40,7 +46,3 @@ const dbeastMonTsdsIngestPipelinesHistoricalTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-tsds-ingest_pipelines-historical-template", dbeastMonTsdsIngestPipelinesHistoricalTemplateContent)
-}

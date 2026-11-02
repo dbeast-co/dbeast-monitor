@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-tsds-es-shards-stats-historical-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonTsdsEsShardsStatsHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonTsdsEsShardsStatsHistoricalTemplateContent string = `
 {
   "index_patterns": [
@@ -40,7 +46,3 @@ const dbeastMonTsdsEsShardsStatsHistoricalTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-tsds-es-shards-stats-historical-template", dbeastMonTsdsEsShardsStatsHistoricalTemplateContent)
-}

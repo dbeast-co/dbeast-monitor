@@ -4,6 +4,12 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 )
 
+func init() {
+	const componentName = "dbeast-mon-index-es-tasks-historical-template"
+	const dbeastMinimalCompatibleVersion = "2.0.0"
+	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexEsTasksHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
+}
+
 const dbeastMonIndexEsTasksHistoricalTemplateContent string = `
 {
   "index_patterns": [
@@ -33,7 +39,3 @@ const dbeastMonIndexEsTasksHistoricalTemplateContent string = `
   }
 }
 `
-
-func init() {
-	dataWarehouse.AppendIndexTemplate("dbeast-mon-index-es-tasks-historical-template", dbeastMonIndexEsTasksHistoricalTemplateContent)
-}
