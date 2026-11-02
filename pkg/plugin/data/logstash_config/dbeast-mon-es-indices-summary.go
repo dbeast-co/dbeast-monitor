@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-es-indices-summary"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	data_warehouse.AppendLogstashConfig(componentName, dbeastMonEsIndicesSummaryContent, dbeastMinimalCompatibleVersion)
 }
 

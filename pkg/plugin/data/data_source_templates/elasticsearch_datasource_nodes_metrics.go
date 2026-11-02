@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "Elasticsearch-mon-metricbeat-monitoring-es"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceNodesMetricsContent, componentName, dbeastMinimalCompatibleVersion)
 }
 

@@ -4,7 +4,7 @@ import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
 func init() {
 	const componentName = "dbeast-mon-default-settings-component"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonDefaultSettingsComponentContent, dbeastMinimalCompatibleVersion)
 }
 

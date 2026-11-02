@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-index-30d"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	data_warehouse.AppendILMPolicy(componentName, dbeatsIndex30dPolicyContent, dbeastMinimalCompatibleVersion)
 }
 

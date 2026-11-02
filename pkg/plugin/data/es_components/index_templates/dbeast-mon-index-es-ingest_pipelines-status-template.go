@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-index-es-ingest_pipelines-status-template"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexEsIngestPipelinesStatusTemplateContent, dbeastMinimalCompatibleVersion)
 }
 

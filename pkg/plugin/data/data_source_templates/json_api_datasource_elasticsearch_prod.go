@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "Elasticsearch-direct-prod"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.LoadGrafanaDataSources(jsonApiDatasourceElasticsearchProdContent, componentName, dbeastMinimalCompatibleVersion)
 }
 

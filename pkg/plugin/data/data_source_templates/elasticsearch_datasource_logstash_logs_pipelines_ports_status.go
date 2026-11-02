@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-logstash-logs-pipelines-ports-status"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceLogstashLogsPipelinesPortsStatusContent, componentName, dbeastMinimalCompatibleVersion)
 }
 

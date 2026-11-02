@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-tsds-ingest_pipelines-historical-template"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonTsdsIngestPipelinesHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
 }
 

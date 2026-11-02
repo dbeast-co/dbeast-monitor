@@ -63,5 +63,5 @@ type BackCompatibilityVersions struct {
 
 type VersionObject struct {
 	Name                 string `json:"name"`
-	MinCompatibleVersion string `json:"min_compatible_version"`
+	MinCompatibleVersion int    `json:"min_compatible_version"`
 }

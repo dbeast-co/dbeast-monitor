@@ -11,7 +11,7 @@ import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
 func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-es-index-stats"
-	const dbeastMinimalCompatibleVersion = "2.0.0"
+	const dbeastMinimalCompatibleVersion = 0
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent, componentName, dbeastMinimalCompatibleVersion)
 }
 
