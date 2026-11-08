@@ -29,6 +29,7 @@ input{
 	  "[event][module]" => "elasticsearch"
 	  "[event][dataset]" => "indices_stats"
 	  "[dbeast][version]" => "%DBEAST_VERSION%"
+	  "[dbeast][version_int]" => "%DBEAST_APP_FORMAT_VERSION%"
 	}	
   }
 }

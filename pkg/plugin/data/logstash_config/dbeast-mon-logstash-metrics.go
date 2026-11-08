@@ -25,6 +25,7 @@ input{
 	  "[event][module]" => "logstash"
 	  "[event][dataset]" => "logstash_metrics"
 	  "[dbeast][version]" => "%DBEAST_VERSION%"
+	  "[dbeast][version_int]" => "%DBEAST_APP_FORMAT_VERSION%"
 	}
   }
     http_poller {

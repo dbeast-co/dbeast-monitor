@@ -26,6 +26,7 @@ input {
 	  "[event][module]" => "logstash"
 	  "[event][dataset]" => "logstash_logs"
 	  "[dbeast][version]" => "%DBEAST_VERSION%"
+	  "[dbeast][version_int]" => "%DBEAST_APP_FORMAT_VERSION%"
 	}  
   }
 }
