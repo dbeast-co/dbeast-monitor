@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-index-corrupted-data-historical-template"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexCorruptedDataHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -35,7 +35,8 @@ const dbeastMonIndexCorruptedDataHistoricalTemplateContent string = `
   "priority": 1,
   "_meta": {
     "description": "This template used for the corrupted data, that can't be sent to TSDS",
-    "version": "1.0.2"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

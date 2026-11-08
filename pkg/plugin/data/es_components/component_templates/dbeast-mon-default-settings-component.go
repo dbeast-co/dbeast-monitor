@@ -4,7 +4,7 @@ import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
 func init() {
 	const componentName = "dbeast-mon-default-settings-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonDefaultSettingsComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -46,7 +46,8 @@ const dbeastMonDefaultSettingsComponentContent string = `
   },
   "_meta": {
     "description": "The default settings for all monitoring indices",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

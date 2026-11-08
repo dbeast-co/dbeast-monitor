@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-es-thread_pools"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	data_warehouse.AppendLogstashConfig(componentName, dbeastMonEsThreadPoolsContent, dbeastMinimalCompatibleVersion)
 }
 

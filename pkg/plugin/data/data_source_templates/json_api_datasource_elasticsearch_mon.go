@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "Elasticsearch-direct-mon"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.LoadGrafanaDataSources(jsonApiDatasourceElasticsearchMonContent, componentName, dbeastMinimalCompatibleVersion)
 }
 
@@ -22,7 +22,8 @@ const jsonApiDatasourceElasticsearchMonContent string = `
   "basicAuthUser": "",
   "jsonData": {
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%"
+	"dbeast_version": "%DBEAST_VERSION%",
+	"dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   },
   "secureJsonData": {
     "basicAuthPassword": ""

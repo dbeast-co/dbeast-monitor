@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-tsds-es-ingest_pipelines-mapping-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonTsdsEsIngestPipelinesMappingComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -211,7 +211,8 @@ const dbeastMonTsdsEsIngestPipelinesMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the Elasticsearch ingest pipelines monitoring",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-es-shards-stats"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	data_warehouse.AppendLogstashConfig(componentName, dbeastMonEsShardsStatsContent, dbeastMinimalCompatibleVersion)
 }
 

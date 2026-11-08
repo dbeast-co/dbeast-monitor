@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-logstash-logs"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceLogstashLogsContent, componentName, dbeastMinimalCompatibleVersion)
 }
 
@@ -31,7 +31,8 @@ const elasticsearchDatasourceLogstashLogsContent string = `
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%"
+	"dbeast_version": "%DBEAST_VERSION%",
+	"dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   },
   "secureJsonData": {
     "basicAuthPassword": ""

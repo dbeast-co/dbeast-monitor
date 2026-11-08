@@ -1,5 +1,10 @@
 package data
 
+import (
+	"strconv"
+	"strings"
+)
+
 type Project struct {
 	ClusterId                  string                  `json:"cluster_id"`
 	ClusterConnectionSettings  EnvironmentConfig       `json:"cluster_connection_settings"`
@@ -62,6 +67,28 @@ type BackCompatibilityVersions struct {
 }
 
 type VersionObject struct {
-	Name                 string `json:"name"`
-	MinCompatibleVersion int    `json:"min_compatible_version"`
+	Name                            string `json:"name"`
+	MinCompatibleVersion            string `json:"min_compatible_version"`
+	MinCompatibleAppFormatedVersion int    `json:"min_compatible_version_int"`
+}
+
+func GenerateVersionObject(name string, minCompatibleVersion string) VersionObject {
+	return VersionObject{
+		Name:                            name,
+		MinCompatibleVersion:            minCompatibleVersion,
+		MinCompatibleAppFormatedVersion: formatVersion(minCompatibleVersion),
+	}
+}
+
+func formatVersion(version string) int {
+	parts := strings.Split(strings.TrimPrefix(strings.TrimSpace(version), "v"), ".")
+	result := 0
+	for i := 0; i < 3; i++ {
+		n := 0
+		if i < len(parts) {
+			n, _ = strconv.Atoi(parts[i])
+		}
+		result = result*100 + n
+	}
+	return result
 }

@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-tsds-es-shards-stats-historical-template"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonTsdsEsShardsStatsHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -42,7 +42,8 @@ const dbeastMonTsdsEsShardsStatsHistoricalTemplateContent string = `
   "priority": 1,
   "_meta": {
     "description": "This template used for the shards monitoring",
-    "version": "1.0.2"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

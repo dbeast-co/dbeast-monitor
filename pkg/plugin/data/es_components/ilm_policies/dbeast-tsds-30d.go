@@ -6,13 +6,17 @@ import (
 
 func init() {
 	const componentName = "dbeast-tsds-30d"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	data_warehouse.AppendILMPolicy(componentName, dbeatsTSDS30dPolicyContent, dbeastMinimalCompatibleVersion)
 }
 
 const dbeatsTSDS30dPolicyContent string = `
 {
   "policy": {
+    "_meta": {
+      "dbeast_version": "%DBEAST_VERSION%",
+      "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
+    },
     "phases": {
       "hot": {
         "actions": {

@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-ds-logstash-logs-historical-template"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonDsLogstashLogsHistoricalTemplateContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -38,7 +38,8 @@ const dbeastMonDsLogstashLogsHistoricalTemplateContent string = `
   "priority": 1,
   "_meta": {
     "description": "This template used for the Logstash logs",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

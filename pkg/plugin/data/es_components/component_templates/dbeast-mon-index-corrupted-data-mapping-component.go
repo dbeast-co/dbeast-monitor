@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-index-corrupted-data-mapping-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonIndexCorruptedDataMappingComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -144,7 +144,8 @@ const dbeastMonIndexCorruptedDataMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the corrupted data",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

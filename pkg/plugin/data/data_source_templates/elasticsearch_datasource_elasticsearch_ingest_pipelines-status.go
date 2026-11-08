@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-es-ingest_pipelines-status"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIngestPipelinesStatusContent, componentName, dbeastMinimalCompatibleVersion)
 }
 
@@ -31,7 +31,8 @@ const elasticsearchDatasourceElasticsearchIngestPipelinesStatusContent string = 
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%"
+	"dbeast_version": "%DBEAST_VERSION%",
+	"dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   },
   "secureJsonData": {
     "basicAuthPassword": ""

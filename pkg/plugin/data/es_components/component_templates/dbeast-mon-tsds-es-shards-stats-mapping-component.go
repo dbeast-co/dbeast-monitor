@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-tsds-es-shards-stats-mapping-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonTsdsEsShardsStatsMappingComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -366,7 +366,8 @@ const dbeastMonTsdsEsShardsStatsMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the shards monitoring",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

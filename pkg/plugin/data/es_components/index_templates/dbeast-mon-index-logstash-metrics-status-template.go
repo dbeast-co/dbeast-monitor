@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-index-logstash-metrics-status-template"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendIndexTemplate(componentName, dbeastMonIndexLogstashMetricsStatusTemplateContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -27,7 +27,8 @@ const dbeastMonIndexLogstashMetricsStatusTemplateContent string = `
   "priority": 1,
   "_meta": {
     "description": "This template used for the Logstash metrics",
-    "version": "1.0.2"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

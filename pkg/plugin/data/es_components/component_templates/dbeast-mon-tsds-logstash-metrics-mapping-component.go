@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-tsds-logstash-metrics-mapping-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonTsdsLogstashMetricsMappingComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -1022,7 +1022,8 @@ const dbeastMonTsdsLogstashMetricsMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the Logstash metrics",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

@@ -11,7 +11,7 @@ import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
 func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-es-index-stats"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.LoadGrafanaDataSources(elasticsearchDatasourceElasticsearchIndexStatsContent, componentName, dbeastMinimalCompatibleVersion)
 }
 
@@ -36,7 +36,8 @@ const elasticsearchDatasourceElasticsearchIndexStatsContent string = `
     "maxConcurrentShardRequests": 5,
     "timeField": "@timestamp",
     "tlsSkipVerify": true,
-	"dbeastVersion": "%DBEAST_VERSION%"
+	"dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   },
   "secureJsonData": {
     "basicAuthPassword": ""

@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-tsds-es-index-stats-mapping-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonTsdsEsIndexStatsMappingComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -1855,7 +1855,8 @@ const dbeastMonTsdsEsIndexStatsMappingComponentContent string = `
   },
   "_meta": {
     "description": "default mappings for the indices monitoring",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `

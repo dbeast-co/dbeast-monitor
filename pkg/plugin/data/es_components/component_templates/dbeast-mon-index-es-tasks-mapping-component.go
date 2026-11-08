@@ -6,7 +6,7 @@ import (
 
 func init() {
 	const componentName = "dbeast-mon-index-es-tasks-mapping-component"
-	const dbeastMinimalCompatibleVersion = 0
+	const dbeastMinimalCompatibleVersion = "0.0.0"
 	dataWarehouse.AppendComponentTemplate(componentName, dbeastMonIndexEsTasksMappingComponentContent, dbeastMinimalCompatibleVersion)
 }
 
@@ -195,7 +195,8 @@ const dbeastMonIndexEsTasksMappingComponentContent string = `
   },
   "_meta": {
     "description": "The default mappings for the Elasticsearch tasks monitoring",
-    "version": "%DBEAST_VERSION%"
+    "dbeast_version": "%DBEAST_VERSION%",
+    "dbeast_version_int": %DBEAST_APP_FORMAT_VERSION%
   }
 }
 `
