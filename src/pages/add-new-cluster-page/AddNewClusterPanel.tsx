@@ -84,8 +84,6 @@ function AddNewClusterPanel() {
 
   const [logstash, setLogstash] = useState(initialLogstash);
 
-  const [isShowLogstash, setIsShowLogstash] = useState(false);
-
   const [logstashList, setLogstashList] = useState([] as Logstash[]);
 
   const [version, setVersion] = useState('');
@@ -516,11 +514,15 @@ function AddNewClusterPanel() {
           };
         });
 
-        cluster.logstash_configurations.logstash_monitoring_configuration_files.hosts = hosts;
-
         const clusterToSend = {
           cluster_connection_settings,
-          logstash_configurations: cluster.logstash_configurations,
+          logstash_configurations: {
+            ...cluster.logstash_configurations,
+            logstash_monitoring_configuration_files: {
+              ...cluster.logstash_configurations.logstash_monitoring_configuration_files,
+              hosts,
+            },
+          },
         };
         downloadFiles(url, clusterToSend);
       }
@@ -553,7 +555,6 @@ function AddNewClusterPanel() {
 
   const onSaveAddedLogstash = (item: Logstash) => {
     setIsOpenAddDialog(false);
-    setIsShowLogstash(true);
     const existingIndex = logstashList.findIndex((l) => l.id === item.id);
     if (existingIndex > -1) {
 
@@ -571,6 +572,10 @@ function AddNewClusterPanel() {
   const handleCardClick = (logstash: Logstash) => {
     setIsOpenAddDialog(true);
     setLogstash(logstash);
+  };
+
+  const onDeleteLogstash = (id: string) => {
+    setLogstashList((current) => current.filter((item) => item.id !== id));
   };
 
   useEffect(() => {
@@ -784,7 +789,7 @@ function AddNewClusterPanel() {
             <ToastContainer autoClose={3000} position="bottom-right" />
           </div>
         </div>
-        <div className={`${styles.config} ${isShowLogstash ? 'not-rounded' : ''}`}>
+        <div className={`${styles.config} ${logstashList.length > 0 ? 'not-rounded' : ''}`}>
           <div className="wrapper">
             <div className={styles.sectionHeader}>
               <h3 className={styles.title}>Monitoring Cluster Injections</h3>
@@ -881,27 +886,39 @@ function AddNewClusterPanel() {
           </div>
         </div>
 
-        {isShowLogstash && (
+        {logstashList.length > 0 && (
           <div className={styles.logstashList}>
             <h3 className={styles.title}>Logstash connections</h3>
             <div className="cards-wrapper">
-              {logstashList.map((logstash, index) => (
-                <div className="logstash-card" key={index} onClick={() => handleCardClick(logstash)}>
+              {logstashList.map((logstash) => (
+                <div className="logstash-card" key={logstash.id} onClick={() => handleCardClick(logstash)}>
+                  <div className="card-actions">
+                    <button
+                      type="button"
+                      aria-label={`Delete Logstash ${logstash.serverAddress}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onDeleteLogstash(logstash.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
                   <div className="serverAddress form-group">
                     <div className="logstash-label">Server address</div>
-                    <span className="value" key={index}>
+                    <span className="value">
                     {logstash.serverAddress}
                   </span>
                   </div>
                   <div className="logstashApiHost form-group">
                     <div className="logstash-label">Logstash Api Host</div>
-                    <span className="value" key={index}>
+                    <span className="value">
                     {logstash.logstashApiHost}
                   </span>
                   </div>
                   <div className="logstashFolder form-group">
                     <div className="logstash-label">Logstash Logs Folder</div>
-                    <span className="value" key={index}>
+                    <span className="value">
                     {logstash.logstashLogsFolder}
                   </span>
                   </div>
