@@ -283,6 +283,24 @@ export const getStyles = (theme: GrafanaTheme2) => {
           background: ${theme.colors.background.canvas};
         }
 
+        .card-actions {
+          display: flex;
+          justify-content: flex-end;
+
+          button {
+            color: ${theme.colors.text.primary};
+            background: transparent;
+            border: 1px solid ${theme.colors.border.medium};
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+
+            &:hover {
+              border-color: ${theme.colors.border.strong};
+            }
+          }
+        }
+
         .form-group {
           margin-block-end: 0.75rem;
           border-bottom: 1px solid ${theme.colors.border.weak};

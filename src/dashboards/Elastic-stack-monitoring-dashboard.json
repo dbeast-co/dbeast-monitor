@@ -10083,7 +10083,7 @@
           "cacheDurationSeconds": 0,
           "fields": [
             {
-              "jsonPath": "$keys($)",
+              "jsonPath": "$keys($) ? $keys($) : \"*\"",
               "language": "jsonata"
             }
           ],
@@ -10106,5 +10106,5 @@
   "title": "Elastic stack monitoring dashboard",
   "uid": "elastic-stack-monitoring-dashboard",
   "weekStart": "",
-  "version": 3
+  "version": 5
 }

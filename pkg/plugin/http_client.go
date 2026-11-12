@@ -45,6 +45,8 @@ func CreateHTTPClient(credentials dataWarehouse.Credentials, opts httpclient.Opt
 		// Note: In production, this should be configurable based on credentials
 		if credentials.AuthenticationEnabled {
 			log.DefaultLogger.Warn("Using InsecureSkipVerify for HTTPS with authentication - only use in development!")
+			// #nosec G402 -- intentional: monitored clusters commonly use self-signed certificates.
+			// The TLS support will be added in the next major version.
 			tr.TLSClientConfig.InsecureSkipVerify = true
 		}
 	}

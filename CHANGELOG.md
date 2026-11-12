@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 2.1.3 (2026-11-10)
+- Features:
+  * [FEAT] "Add new cluster" - Add delete functionality to the Logstash card [#224](https://github.com/dbeast-co/dbeast-monitor/issues/224)
+
+- Bug fixes
+  * [BUG] Fix snapshots field definition for the case, where snapshot doesn't exists [#261](https://github.com/dbeast-co/dbeast-monitor/issues/261)
+
+- Updated dashboards
+  * "Elastic Stack Monitoring" dashboard
+
 ## Version 2.1.2 (2026-10-17)
 - Features:
   * [FEAT] Add feedback menu [#253](https://github.com/dbeast-co/dbeast-monitor/issues/253)
