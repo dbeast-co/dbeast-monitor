@@ -2,11 +2,10 @@ package grafana_api_datasource
 
 import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
-const GrafanaAPIDatasourceName = "Grafana internal API"
-
 func init() {
+	const componentName = "Grafana internal API"
 	const dbeastMinimalCompatibleVersion = "0.0.0"
-	dataWarehouse.LoadGrafanaAPIDatasource(grafanaApiDatasource, GrafanaAPIDatasourceName, dbeastMinimalCompatibleVersion)
+	dataWarehouse.LoadGrafanaAPIDatasource(grafanaApiDatasource, componentName, dbeastMinimalCompatibleVersion)
 }
 
 const grafanaApiDatasource string = `

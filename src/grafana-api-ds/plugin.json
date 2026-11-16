@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/grafana/grafana/raw/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-  "name": "DBeast Grafana API",
+  "name": "DBeast Grafana Internal API",
   "id": "dbeast-grafanaapi-datasource",
   "metrics": true,
   "logs": true,
@@ -12,7 +12,7 @@
       "name": "DBeast",
       "url": "https://dbeast.co"
     },
-    "keywords": ["dbeast", "api", "json", "jsonpath", "jsonata"],
+    "keywords": ["dbeast", "grafana-internal-api"],
     "logos": {
       "small": "img/favicon-32x32.png",
       "large": "img/favicon-32x32.png"

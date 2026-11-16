@@ -267,7 +267,7 @@
     },
     {
       "type": "datasource",
-      "name": "DBeast Grafana API",
+      "name": "DBeast Grafana Internal API",
       "id": "dbeast-grafanaapi-datasource"
     }
   ],
