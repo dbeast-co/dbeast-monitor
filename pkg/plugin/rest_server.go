@@ -4,7 +4,6 @@ import (
 	"net/http"
 )
 
-// registerRoutes takes a *http.ServeMux and registers some HTTP handlers.
 func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/new_cluster", a.NewClusterHandler)
 	mux.HandleFunc("/test_cluster", a.TestClusterHandler)
@@ -17,4 +16,5 @@ func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/download_es_monitoring_configuration_files", a.DownloadElasticsearchMonitoringConfigurationFilesHandler)
 	mux.HandleFunc("/save", a.SaveClusterHandler)
 	mux.HandleFunc("/versions", a.GetVersionsHandler)
+	mux.HandleFunc("/grafana_api_datasource", a.GetGrafanaAPIDatasourceHandler)
 }

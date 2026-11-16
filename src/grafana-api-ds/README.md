@@ -4,6 +4,10 @@ The DBeast Grafana API data source queries the internal HTTP API of the Grafana 
 
 The data source is registered as `dbeast-grafanaapi-datasource`. It requires Grafana 10.1 or later and does not need data source connection settings.
 
+When an administrator opens the enabled DBeast Monitor app's configuration page, the app checks for the datasource with UID `dbeast-grafanaapi-datasource` and creates it if missing. The signed-in user needs permission to read and create data sources in the current Grafana organization. The page reports failures and allows retrying. This check also runs after an upgrade when the configuration page is opened; installing or upgrading the plugin alone does not run it.
+
+If an existing provisioned datasource uses another UID, update any references and provisioning configuration to use `dbeast-grafanaapi-datasource` before removing the old instance.
+
 ## Querying Grafana
 
 1. Add the **DBeast Grafana API** data source to a panel.

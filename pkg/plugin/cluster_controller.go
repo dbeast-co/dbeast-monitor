@@ -42,7 +42,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for cluster save request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
-	sanitizeEnvironmentConfig(&environmentConfig)
+	SanitizeEnvironmentConfig(&environmentConfig)
 
 	client, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
@@ -56,7 +56,7 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 		return
 	}
 
-	updatedTemplates := UpdateGrafanaDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
+	updatedTemplates := updateGrafanaDataSourceTemplates(environmentConfig, clusterNameProd, uidProd)
 
 	updatedTemplatesJSON, err := json.MarshalIndent(updatedTemplates, "", "")
 	if err != nil {
@@ -85,7 +85,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for deploy ES configuration request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
-	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+	SanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
 	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Elasticsearch, a.httpClientOptions)
 	if err != nil {
@@ -95,7 +95,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 
 	for _, injectType := range project.MonitoringClusterInjection {
 		if injectType.Id == "ilm_policies_injection" && injectType.IsChecked {
-			err := SendILMToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
+			err := sendILMToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
 			if err != nil {
 				HTTPErrorGenerator(response, err, "Error while the ILM policy injection for deploy ES configuration request: ", http.StatusInternalServerError, ctxLogger)
 				return
@@ -103,12 +103,12 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 		}
 
 		if injectType.Id == "templates_injection" && injectType.IsChecked {
-			err := SendComponentTemplatesToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
+			err := sendComponentTemplatesToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
 			if err != nil {
 				HTTPErrorGenerator(response, err, "Error while the Component template injection for deploy ES configuration request: ", http.StatusInternalServerError, ctxLogger)
 				return
 			}
-			err = SendIndexTemplatesToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
+			err = sendIndexTemplatesToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
 			if err != nil {
 				HTTPErrorGenerator(response, err, "Error while the Index template injection for deploy ES configuration request: ", http.StatusInternalServerError, ctxLogger)
 				return
@@ -116,7 +116,7 @@ func (a *App) DeployElasticsearchConfigurations(response http.ResponseWriter, re
 		}
 
 		if injectType.Id == "create_first_indices" && injectType.IsChecked {
-			err := SendFirstIndicesToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
+			err := sendFirstIndicesToMonitoringCluster(client, project.ClusterConnectionSettings.Mon.Elasticsearch.Host)
 			if err != nil {
 				HTTPErrorGenerator(response, err, "Error while the First indices injection for deploy ES configuration request: ", http.StatusInternalServerError, ctxLogger)
 				return
@@ -166,7 +166,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
-	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+	SanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
 	elasticsearchClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
@@ -180,7 +180,7 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 		return
 	}
 
-	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
+	UpdatedTemplates := updateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
 
 	grafanaClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Mon.Grafana, a.httpClientOptions)
 	if err != nil {
@@ -255,7 +255,7 @@ func (a *App) DeleteClusterViaAPIHandler(response http.ResponseWriter, request *
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for delete cluster from Grafana request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
-	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+	SanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
 
 	if project.ClusterId == "" {
 		err := errors.New("error while parsing cluster ID")
@@ -285,31 +285,6 @@ func (a *App) DeleteClusterViaAPIHandler(response http.ResponseWriter, request *
 	}
 }
 
-func (a *App) prepareClusterTemplates(response http.ResponseWriter, request *http.Request, ctxLogger log.Logger) (map[string]interface{}, error) {
-	var project dataWarehouse.Project
-	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
-		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
-		return nil, err
-	}
-	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
-
-	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
-	if err != nil {
-		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
-		return nil, err
-	}
-
-	clusterNameProd, clusterId, err := GetClusterInfo(client, project.ClusterConnectionSettings.Prod.Elasticsearch.Host)
-	if err != nil {
-		HTTPErrorGenerator(response, err, "Error while receiving cluster info for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
-		return nil, err
-	}
-
-	UpdatedTemplates := UpdateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
-
-	return UpdatedTemplates, nil
-}
-
 func (a *App) DeleteClusterHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
 	clusterId := request.URL.Path[len("/delete_cluster/"):]
@@ -335,7 +310,32 @@ func (a *App) GetComponentCompatabilityVersions(response http.ResponseWriter, re
 	}
 }
 
-func SendILMToMonitoringCluster(client *http.Client, host string) error {
+func (a *App) prepareClusterTemplates(response http.ResponseWriter, request *http.Request, ctxLogger log.Logger) (map[string]interface{}, error) {
+	var project dataWarehouse.Project
+	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
+		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
+		return nil, err
+	}
+	SanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+
+	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while creating HTTP client for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return nil, err
+	}
+
+	clusterNameProd, clusterId, err := GetClusterInfo(client, project.ClusterConnectionSettings.Prod.Elasticsearch.Host)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Error while receiving cluster info for add new cluster to Grafana request: ", http.StatusInternalServerError, ctxLogger)
+		return nil, err
+	}
+
+	UpdatedTemplates := updateGrafanaDataSourceTemplates(project.ClusterConnectionSettings, clusterNameProd, clusterId)
+
+	return UpdatedTemplates, nil
+}
+
+func sendILMToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("ILM policies ingest")
 	for templateName, templateContent := range dataWarehouse.ESILMTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
@@ -351,7 +351,7 @@ func SendILMToMonitoringCluster(client *http.Client, host string) error {
 	return nil
 }
 
-func SendComponentTemplatesToMonitoringCluster(client *http.Client, host string) error {
+func sendComponentTemplatesToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("Components templates ingest")
 	for templateName, templateContent := range dataWarehouse.ESComponentTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
@@ -367,7 +367,7 @@ func SendComponentTemplatesToMonitoringCluster(client *http.Client, host string)
 	return nil
 }
 
-func SendFirstIndicesToMonitoringCluster(client *http.Client, host string) error {
+func sendFirstIndicesToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("First indices ingest")
 	for indexName, templateContent := range dataWarehouse.ESFirstIndicesTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: " + indexName + " To the cluster: " + host)
@@ -378,7 +378,7 @@ func SendFirstIndicesToMonitoringCluster(client *http.Client, host string) error
 		}
 		if isIndexExists {
 			log.DefaultLogger.Info("An index " + indexName + " already exists. Send rollover command")
-			rolloverAlias, _ := ExtractRolloverAlias(templateContent)
+			rolloverAlias, _ := extractRolloverAlias(templateContent)
 			log.DefaultLogger.Info("Rollover alias: " + rolloverAlias)
 			resp, err := SendRolloverCommand(client, host, rolloverAlias)
 			if resp != nil {
@@ -401,7 +401,7 @@ func SendFirstIndicesToMonitoringCluster(client *http.Client, host string) error
 	return nil
 }
 
-func SendIndexTemplatesToMonitoringCluster(client *http.Client, host string) error {
+func sendIndexTemplatesToMonitoringCluster(client *http.Client, host string) error {
 	log.DefaultLogger.Info("Index templates ingest")
 	for templateName, templateContent := range dataWarehouse.ESIndexTemplatesMap {
 		log.DefaultLogger.Debug("Inject template: ", templateName, " To the cluster: ", host)
@@ -417,7 +417,7 @@ func SendIndexTemplatesToMonitoringCluster(client *http.Client, host string) err
 	return nil
 }
 
-func ExtractRolloverAlias(jsonData string) (string, error) {
+func extractRolloverAlias(jsonData string) (string, error) {
 	var firstIndexTemplate map[string]map[string]map[string]interface{}
 
 	err := json.Unmarshal([]byte(jsonData), &firstIndexTemplate)
@@ -435,7 +435,8 @@ func ExtractRolloverAlias(jsonData string) (string, error) {
 	return "", fmt.Errorf("key 'aliases' not found in JSON")
 }
 
-func UpdateTestDataTemplateValues(clonedTemplates interface{}, clusterName string, uid string) {
+func updateTestDataTemplateValues(clonedTemplates interface{}, clusterName string, uid string) {
+
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
 		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
@@ -445,7 +446,7 @@ func UpdateTestDataTemplateValues(clonedTemplates interface{}, clusterName strin
 	}
 }
 
-func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
+func updateJsonTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
 		clusterName = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(clusterName, "*", ""), "?", ""), ",", ""), ".", "")
@@ -473,7 +474,7 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials dataWareh
 	}
 }
 
-func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
+func updateElasticsearchTemplateValues(clonedTemplates interface{}, credentials dataWarehouse.Credentials, clusterName string, uid string) {
 	if OneClonedTemplate, ok := clonedTemplates.(map[string]interface{}); ok {
 
 		//database = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(database, "*", ""), "?", ""), ",", ""), ".", "")
@@ -497,25 +498,27 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 	}
 }
 
-func UpdateGrafanaDataSourceTemplates(environmentConfig dataWarehouse.EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
+func updateGrafanaDataSourceTemplates(environmentConfig dataWarehouse.EnvironmentConfig, clusterNameProd string, uidProd string) map[string]interface{} {
 	var UpdatedTemplates = make(map[string]interface{})
 	for name, template := range dataWarehouse.GrafanaDataSourcesMap {
 		clonedTemplates := CloneObject(template)
 		switch {
 		case strings.HasPrefix(name, "Elasticsearch-direct-mon"):
-			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
+			updateJsonTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
 			break
 		case strings.HasPrefix(name, "Elasticsearch-direct-prod"):
-			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Elasticsearch, clusterNameProd, uidProd)
+			updateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Elasticsearch, clusterNameProd, uidProd)
 			break
 		case strings.HasPrefix(name, "Kibana-direct"):
-			UpdateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameProd, uidProd)
+			updateJsonTemplateValues(clonedTemplates, environmentConfig.Prod.Kibana, clusterNameProd, uidProd)
 			break
 		case strings.HasPrefix(name, "Elasticsearch-mon"):
-			UpdateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
+			updateElasticsearchTemplateValues(clonedTemplates, environmentConfig.Mon.Elasticsearch, clusterNameProd, uidProd)
+			break
+		case strings.HasPrefix(name, "grafana-api-datasource"):
 			break
 		case strings.HasPrefix(name, "Elasticsearch:"):
-			UpdateTestDataTemplateValues(clonedTemplates, clusterNameProd, uidProd)
+			updateTestDataTemplateValues(clonedTemplates, clusterNameProd, uidProd)
 			break
 		default:
 		}

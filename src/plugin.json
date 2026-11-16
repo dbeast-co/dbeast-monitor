@@ -264,6 +264,11 @@
       "path": "/a/dbeast-dbeastmonitor-app/buy-me-a-coffee",
       "role": "Viewer",
       "addToNav": true
+    },
+    {
+      "type": "datasource",
+      "name": "DBeast Grafana API",
+      "id": "dbeast-grafanaapi-datasource"
     }
   ],
   "dependencies": {

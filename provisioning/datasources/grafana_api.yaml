@@ -1,0 +1,11 @@
+apiVersion: 1
+
+datasources:
+  - name: Grafana internal API
+    uid: dbeast-grafanaapi-datasource
+    type: dbeast-grafanaapi-datasource
+    orgId: 1
+    access: proxy
+    isDefault: false
+    editable: false
+    version: 1

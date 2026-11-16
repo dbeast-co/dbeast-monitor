@@ -21,7 +21,7 @@ func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Req
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for test cluster request: ", http.StatusInternalServerError, ctxLogger)
 		return
 	}
-	sanitizeEnvironmentConfig(&environmentConfig)
+	SanitizeEnvironmentConfig(&environmentConfig)
 
 	clientProd, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {

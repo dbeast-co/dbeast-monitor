@@ -16,6 +16,7 @@ var ESComponentTemplatesMap = make(map[string]string)
 var ESIndexTemplatesMap = make(map[string]string)
 var LSConfigsMap = make(map[string]string)
 var GrafanaDataSourcesMap = make(map[string]interface{})
+var GrafanaAPIDatasource map[string]interface{}
 var BackCompatibilityVersionsMap BackCompatibilityVersions
 var dbeastVersion = loadDbeastVersion()
 var dbeastAppFormatVersion = loadDbeastAppFormatVersion()
@@ -82,6 +83,21 @@ func LoadGrafanaDataSources(DataSourceContent string, name string, minCompatible
 	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = append(BackCompatibilityVersionsMap.GrafanaDataSourceTemplates, version)
 
 	log.DefaultLogger.Info("Grafana data source " + templateData["name"].(string) + " added to the map successfully")
+}
+
+func LoadGrafanaAPIDatasource(content string, name string, minCompatibleVersion string) {
+	content = UpdateGrafanaDataSources(content, name)
+	var templateData map[string]interface{}
+	if err := json.Unmarshal([]byte(content), &templateData); err != nil {
+		log.DefaultLogger.Error("Error parsing Grafana API data source template: " + err.Error())
+		return
+	}
+	GrafanaAPIDatasource = templateData
+
+	version := GenerateVersionObject(name, minCompatibleVersion)
+	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = append(BackCompatibilityVersionsMap.GrafanaDataSourceTemplates, version)
+
+	log.DefaultLogger.Info("Grafana API data source " + name + " loaded successfully")
 }
 
 func LoadNewCluster(NewClusterContent string) {

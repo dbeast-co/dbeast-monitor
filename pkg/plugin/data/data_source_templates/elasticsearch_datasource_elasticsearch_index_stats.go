@@ -2,13 +2,6 @@ package data_source_templates
 
 import dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 
-// TODO Add field for dbeast version/min compatible version etc
-// Build json object with the versions list based on the dataWarhouse
-// Add "versions" API
-// variable for the current version
-// variable for the last updated version
-// Application health includes data consistency and version verification dashboard
-
 func init() {
 	const componentName = "Elasticsearch-mon-dbeast-mon-es-index-stats"
 	const dbeastMinimalCompatibleVersion = "0.0.0"

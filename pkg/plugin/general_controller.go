@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -9,6 +10,29 @@ import (
 	dataWarehouse "github.com/dbeast/dbeastmonitor/pkg/plugin/data"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
+
+func (a *App) GetGrafanaAPIDatasourceHandler(response http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodGet {
+		response.Header().Set("Allow", http.MethodGet)
+		http.Error(response, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	template := dataWarehouse.GrafanaAPIDatasource
+	if template == nil {
+		HTTPErrorGenerator(response, errors.New("Grafana API datasource template is missing"), "Failed to get datasource template: ", http.StatusInternalServerError, log.DefaultLogger.FromContext(request.Context()))
+		return
+	}
+	data, err := json.Marshal(template)
+	if err != nil {
+		HTTPErrorGenerator(response, err, "Failed to encode datasource template: ", http.StatusInternalServerError, log.DefaultLogger.FromContext(request.Context()))
+		return
+	}
+	response.Header().Set("Content-Type", "application/json")
+	if _, err := response.Write(data); err != nil {
+		log.DefaultLogger.Error("Failed to write datasource template response: " + err.Error())
+	}
+}
 
 func (a *App) GetVersionsHandler(response http.ResponseWriter, request *http.Request) {
 	ctxLogger := log.DefaultLogger.FromContext(request.Context())
@@ -45,13 +69,7 @@ func CloneObject(data interface{}) interface{} {
 	return clonedTemplate
 }
 
-func sanitizeHost(host *string) {
-	if strings.HasSuffix(*host, "/") {
-		*host = strings.TrimSuffix(*host, "/")
-	}
-}
-
-func sanitizeEnvironmentConfig(config *dataWarehouse.EnvironmentConfig) {
+func SanitizeEnvironmentConfig(config *dataWarehouse.EnvironmentConfig) {
 	sanitizeHost(&config.Prod.Elasticsearch.Host)
 	sanitizeHost(&config.Prod.Kibana.Host)
 	sanitizeHost(&config.Mon.Elasticsearch.Host)
@@ -73,5 +91,11 @@ func DeferInternalHandler(response *http.Response, logger log.Logger) {
 		if err := response.Body.Close(); err != nil {
 			logger.Error("Failed to close the body: " + err.Error())
 		}
+	}
+}
+
+func sanitizeHost(host *string) {
+	if strings.HasSuffix(*host, "/") {
+		*host = strings.TrimSuffix(*host, "/")
 	}
 }
