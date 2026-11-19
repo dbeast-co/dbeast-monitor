@@ -23,6 +23,11 @@ func (a *App) TestClusterHandler(response http.ResponseWriter, request *http.Req
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
 
+	if err := validateDatasourceTLS(environmentConfig); err != nil {
+		HTTPErrorGenerator(response, err, "Invalid data source TLS settings: ", http.StatusBadRequest, ctxLogger)
+		return
+	}
+
 	clientProd, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for test cluster request: ", http.StatusInternalServerError, ctxLogger)

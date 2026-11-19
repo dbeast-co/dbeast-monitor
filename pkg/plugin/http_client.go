@@ -3,6 +3,7 @@ package plugin
 import (
 	"bytes"
 	"crypto/tls"
+	"crypto/x509"
 	"fmt"
 	"net/http"
 	"strings"
@@ -19,12 +20,31 @@ type BasicAuthTransport struct {
 	Transport http.RoundTripper
 }
 
+func validateTLSCredentials(credentials dataWarehouse.Credentials) error {
+	if !strings.HasPrefix(credentials.Host, "https://") {
+		return nil
+	}
+	if credentials.SkipTLS != nil && *credentials.SkipTLS {
+		return nil
+	}
+	if credentials.SkipTLS != nil && strings.TrimSpace(credentials.CaCert) == "" {
+		return fmt.Errorf("CA certificate is required when TLS verification is enabled")
+	}
+	if credentials.CaCert != "" && !x509.NewCertPool().AppendCertsFromPEM([]byte(credentials.CaCert)) {
+		return fmt.Errorf("invalid CA certificate PEM")
+	}
+	return nil
+}
+
 func CreateHTTPClient(credentials dataWarehouse.Credentials, opts httpclient.Options) (*http.Client, error) {
 	_ = opts // API compatibility - opts may be used in future enhancements
 
 	if credentials.Host == "" {
 		log.DefaultLogger.Error("Host is empty")
 		return nil, fmt.Errorf("host is empty")
+	}
+	if err := validateTLSCredentials(credentials); err != nil {
+		return nil, err
 	}
 
 	// Note: opts parameter is accepted for API compatibility with the caller
@@ -38,15 +58,26 @@ func CreateHTTPClient(credentials dataWarehouse.Credentials, opts httpclient.Opt
 
 	// Apply TLS config if needed (HTTPS)
 	if strings.HasPrefix(credentials.Host, "https://") {
-		if tr.TLSClientConfig == nil {
-			tr.TLSClientConfig = &tls.Config{}
+		tr.TLSClientConfig = &tls.Config{}
+
+		skipVerify := credentials.AuthenticationEnabled && credentials.CaCert == ""
+		if credentials.SkipTLS != nil && *credentials.SkipTLS {
+			skipVerify = true
+		} else if credentials.SkipTLS != nil {
+			skipVerify = false
 		}
-		// Apply InsecureSkipVerify if needed (development scenarios)
-		// Note: In production, this should be configurable based on credentials
-		if credentials.AuthenticationEnabled {
-			log.DefaultLogger.Warn("Using InsecureSkipVerify for HTTPS with authentication - only use in development!")
-			// #nosec G402 -- intentional: monitored clusters commonly use self-signed certificates.
-			// The TLS support will be added in the next major version.
+		if !skipVerify && credentials.CaCert != "" {
+			roots, err := x509.SystemCertPool()
+			if err != nil {
+				return nil, fmt.Errorf("load system certificate pool: %w", err)
+			}
+			if !roots.AppendCertsFromPEM([]byte(credentials.CaCert)) {
+				return nil, fmt.Errorf("invalid CA certificate PEM")
+			}
+			tr.TLSClientConfig.RootCAs = roots
+		}
+		if skipVerify {
+			log.DefaultLogger.Warn("TLS certificate verification is disabled")
 			tr.TLSClientConfig.InsecureSkipVerify = true
 		}
 	}

@@ -45,6 +45,16 @@ The project documentation is available on our [wiki](https://github.com/dbeast-c
    shipment. The complete installation guid can be found in our [OnPrem installation instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions).
 2. The user guid for the adding new cluster can be found in the [OnPrem Add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster).
 
+### HTTPS certificates
+
+The add-cluster form accepts PEM CA certificates separately for source Elasticsearch, Kibana, and monitoring Elasticsearch. TLS verification is enabled by default for new connections; use the skip-verification option only when verification cannot be configured.
+
+When verification is skipped, any supplied CA certificate is ignored.
+
+API connection objects also accept `ca_cert` (PEM) and `skip_tls` (boolean), including for the Grafana connection. When `skip_tls` is `false`, HTTPS requires a valid `ca_cert`; the plugin adds it to the system trust store. For backward compatibility, when both fields are omitted, authenticated plugin connections and generated Grafana data sources retain their previous skip-verification behavior. Supplying a CA enables verification unless `skip_tls` is explicitly `true`. Client certificates are not supported.
+
+These settings do not configure generated Logstash pipelines, which currently disable TLS verification and must be configured separately.
+
 ## Requirements
 
 - Grafana: 10.1.0+

@@ -44,6 +44,11 @@ func (a *App) SaveClusterHandler(response http.ResponseWriter, request *http.Req
 	}
 	sanitizeEnvironmentConfig(&environmentConfig)
 
+	if err := validateDatasourceTLS(environmentConfig); err != nil {
+		HTTPErrorGenerator(response, err, "Invalid data source TLS settings: ", http.StatusBadRequest, ctxLogger)
+		return
+	}
+
 	client, err := CreateHTTPClient(environmentConfig.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
 		HTTPErrorGenerator(response, err, "Error while creating HTTP client for cluster save request: ", http.StatusInternalServerError, ctxLogger)
@@ -159,14 +164,17 @@ func (a *App) AddClusterViaAPIHandler(response http.ResponseWriter, request *htt
 	defer DeferHandler(request, ctxLogger)
 
 	response.Header().Set("Content-Type", "application/json")
-	response.WriteHeader(http.StatusOK)
-
 	var project dataWarehouse.Project
 	if err := json.NewDecoder(request.Body).Decode(&project); err != nil {
 		HTTPErrorGenerator(response, err, "Failed to decode JSON data for add new cluster to Grafana request: ", http.StatusBadRequest, ctxLogger)
 		return
 	}
 	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+
+	if err := validateDatasourceTLS(project.ClusterConnectionSettings); err != nil {
+		HTTPErrorGenerator(response, err, "Invalid data source TLS settings: ", http.StatusBadRequest, ctxLogger)
+		return
+	}
 
 	elasticsearchClient, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
@@ -292,6 +300,11 @@ func (a *App) prepareClusterTemplates(response http.ResponseWriter, request *htt
 		return nil, err
 	}
 	sanitizeEnvironmentConfig(&project.ClusterConnectionSettings)
+
+	if err := validateDatasourceTLS(project.ClusterConnectionSettings); err != nil {
+		HTTPErrorGenerator(response, err, "Invalid data source TLS settings: ", http.StatusBadRequest, ctxLogger)
+		return nil, err
+	}
 
 	client, err := CreateHTTPClient(project.ClusterConnectionSettings.Prod.Elasticsearch, a.httpClientOptions)
 	if err != nil {
@@ -452,11 +465,7 @@ func UpdateJsonTemplateValues(clonedTemplates interface{}, credentials dataWareh
 			sec["basicAuthPassword"] = credentials.Password
 		}
 
-		if url, ok := OneClonedTemplate["url"].(string); ok {
-			if strings.Contains(url, "https") {
-				OneClonedTemplate["jsonData"].(map[string]interface{})["tlsSkipVerify"] = true
-			}
-		}
+		updateDatasourceTLS(OneClonedTemplate, credentials)
 	}
 }
 
@@ -477,12 +486,44 @@ func UpdateElasticsearchTemplateValues(clonedTemplates interface{}, credentials 
 				OneClonedTemplate["secureJsonData"].(map[string]interface{})["basicAuthPassword"] = credentials.Password
 			}
 
-			if url, ok := OneClonedTemplate["url"].(string); ok {
-				if strings.Contains(url, "https") {
-					OneClonedTemplate["jsonData"].(map[string]interface{})["tlsSkipVerify"] = true
-				}
-			}
+			updateDatasourceTLS(OneClonedTemplate, credentials)
 		}
+	}
+}
+
+func validateDatasourceTLS(config dataWarehouse.EnvironmentConfig) error {
+	connections := []struct {
+		name        string
+		credentials dataWarehouse.Credentials
+	}{
+		{"source Elasticsearch", config.Prod.Elasticsearch},
+		{"Kibana", config.Prod.Kibana},
+		{"monitoring Elasticsearch", config.Mon.Elasticsearch},
+	}
+	for _, connection := range connections {
+		if err := validateTLSCredentials(connection.credentials); err != nil {
+			return fmt.Errorf("%s: %w", connection.name, err)
+		}
+	}
+	return nil
+}
+
+func updateDatasourceTLS(template map[string]interface{}, credentials dataWarehouse.Credentials) {
+	jsonData := template["jsonData"].(map[string]interface{})
+	skipVerify := credentials.CaCert == ""
+	if credentials.SkipTLS != nil {
+		skipVerify = *credentials.SkipTLS
+	}
+	jsonData["tlsSkipVerify"] = skipVerify
+	jsonData["tlsAuthWithCACert"] = !skipVerify && credentials.CaCert != ""
+	secureData, ok := template["secureJsonData"].(map[string]interface{})
+	if !ok || secureData == nil {
+		secureData = make(map[string]interface{})
+		template["secureJsonData"] = secureData
+	}
+	secureData["tlsCACert"] = ""
+	if !skipVerify {
+		secureData["tlsCACert"] = credentials.CaCert
 	}
 }
 

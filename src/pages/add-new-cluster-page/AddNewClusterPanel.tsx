@@ -47,6 +47,8 @@ function AddNewClusterPanel() {
         authentication_enabled: false,
         username: '',
         password: '',
+        skip_tls: false,
+        ca_cert: '',
         status: '',
       },
       kibana: {
@@ -54,6 +56,8 @@ function AddNewClusterPanel() {
         authentication_enabled: false,
         username: '',
         password: '',
+        skip_tls: false,
+        ca_cert: '',
         status: '',
       },
     },
@@ -63,6 +67,8 @@ function AddNewClusterPanel() {
         authentication_enabled: false,
         username: '',
         password: '',
+        skip_tls: false,
+        ca_cert: '',
         status: '',
       },
     },
@@ -366,6 +372,47 @@ function AddNewClusterPanel() {
     });
   };
 
+  const setTLSSetting = (environment: 'prod' | 'mon', service: 'elasticsearch' | 'kibana', key: 'skip_tls' | 'ca_cert', value: boolean | string) => {
+    setConnectionSettings((current) => {
+      if (environment === 'mon') {
+        return {
+          ...current,
+          mon: { ...current.mon, elasticsearch: { ...current.mon.elasticsearch, [key]: value } },
+        };
+      }
+      return {
+        ...current,
+        prod: { ...current.prod, [service]: { ...current.prod[service], [key]: value } },
+      };
+    });
+    setSaveDisabled(true);
+  };
+
+  const tlsFields = (environment: 'prod' | 'mon', service: 'elasticsearch' | 'kibana', label: string) => {
+    const connection = environment === 'mon' ? connectionSettings.mon.elasticsearch : connectionSettings.prod[service];
+    return (
+      <>
+        <Field>
+          <Checkbox
+            checked={connection.skip_tls ?? false}
+            onChange={(event) => setTLSSetting(environment, service, 'skip_tls', event.currentTarget.checked)}
+            label={`Skip TLS verification for ${label}`}
+          />
+        </Field>
+        <Field label={`${label} CA certificate (PEM)`}>
+          <textarea
+            value={connection.ca_cert ?? ''}
+            disabled={connection.skip_tls ?? false}
+            onChange={(event) => setTLSSetting(environment, service, 'ca_cert', event.currentTarget.value)}
+          />
+        </Field>
+        {connection.host.startsWith('https://') && !connection.skip_tls && !connection.ca_cert?.trim() && (
+          <span className="invalid">CA certificate is required when TLS verification is enabled</span>
+        )}
+      </>
+    );
+  };
+
   const getConnectionSettings = () => {
     return {
       prod: {
@@ -374,6 +421,8 @@ function AddNewClusterPanel() {
           authentication_enabled: connectionSettings.prod.elasticsearch.authentication_enabled,
           username: connectionSettings.prod.elasticsearch.username,
           password: connectionSettings.prod.elasticsearch.password,
+          skip_tls: connectionSettings.prod.elasticsearch.skip_tls,
+          ca_cert: connectionSettings.prod.elasticsearch.ca_cert,
           status: connectionSettings.prod.elasticsearch.status,
         },
         kibana: {
@@ -381,6 +430,8 @@ function AddNewClusterPanel() {
           authentication_enabled: connectionSettings.prod.elasticsearch.authentication_enabled,
           username: connectionSettings.prod.elasticsearch.username,
           password: connectionSettings.prod.elasticsearch.password,
+          skip_tls: connectionSettings.prod.kibana.skip_tls,
+          ca_cert: connectionSettings.prod.kibana.ca_cert,
           status: connectionSettings.prod.kibana.status,
         },
       },
@@ -390,6 +441,8 @@ function AddNewClusterPanel() {
           authentication_enabled: connectionSettings.mon.elasticsearch.authentication_enabled,
           username: connectionSettings.mon.elasticsearch.username,
           password: connectionSettings.mon.elasticsearch.password,
+          skip_tls: connectionSettings.mon.elasticsearch.skip_tls,
+          ca_cert: connectionSettings.mon.elasticsearch.ca_cert,
           status: connectionSettings.mon.elasticsearch.status,
         },
       },
@@ -705,6 +758,8 @@ function AddNewClusterPanel() {
                   />
                 </Field>
               </div>
+              {tlsFields('prod', 'elasticsearch', 'source Elasticsearch')}
+              {tlsFields('prod', 'kibana', 'Kibana')}
             </div>
             <div className={`${styles.divider} add-new-cluster-divider`}></div>
             <div>
@@ -767,6 +822,7 @@ function AddNewClusterPanel() {
                     />
                   </Field>
                 </div>
+                {tlsFields('mon', 'elasticsearch', 'monitoring Elasticsearch')}
               </div>
 
               <div className={styles.actions}>
