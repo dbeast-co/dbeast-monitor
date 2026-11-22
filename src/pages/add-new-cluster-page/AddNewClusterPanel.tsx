@@ -405,10 +405,12 @@ function AddNewClusterPanel() {
       response
         .json()
         .then((data) => {
+          // eslint-disable-next-line no-console
           console.debug('Fetched version data:', data);
           setVersion(data.version);
         })
         .catch((error) => {
+          // eslint-disable-next-line no-console
           console.debug('Error parsing the response JSON:', error);
         });
     });
@@ -418,6 +420,8 @@ function AddNewClusterPanel() {
     fetch(`${SERVER_URL}/new_cluster`).then((response) => {
       response.json().then((data: Cluster) => {
         setCluster(data);
+        // eslint-disable-next-line no-console
+        console.debug('Fetched new cluster data:', data);
         const { status: prodStatus } = data.cluster_connection_settings.prod.elasticsearch;
 
         const { status: monStatus } = data.cluster_connection_settings.mon.elasticsearch;
@@ -451,11 +455,14 @@ function AddNewClusterPanel() {
       });
 
       if (response.ok) {
+        // eslint-disable-next-line no-console
         console.debug(`Deployment successful. Status: ${response.status}`);
       } else {
+        // eslint-disable-next-line no-console
         console.debug(`Deployment failed. Status: ${response.status}`);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.debug('There was an error during the logstash deployment:', err);
     } finally {
       setIsDeploying(false);
@@ -482,11 +489,14 @@ function AddNewClusterPanel() {
       });
 
       if (response.ok) {
+        // eslint-disable-next-line no-console
         console.debug(`Templates deployment successful. Status: ${response.status}`);
       } else {
+        // eslint-disable-next-line no-console
         console.debug(`Templates deployment failed. Status: ${response.status}`);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.debug('There was an error during the Elasticsearch templates deployment:', err);
     } finally {
       // Ensure loader stops after completing the fetch operation.
