@@ -147,6 +147,7 @@ func WriteFileToZip(zipWriter *zip.Writer, fileInternalPath string, configFile s
 	fileWriter, err := zipWriter.Create(fileInternalPath)
 	if err != nil {
 		log.DefaultLogger.Error(err.Error())
+		return
 	}
 
 	_, err = fileWriter.Write([]byte(configFile))
