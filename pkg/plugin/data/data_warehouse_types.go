@@ -60,6 +60,7 @@ type FirstIndex struct {
 
 type BackCompatibilityVersions struct {
 	GrafanaDataSourceTemplates      []VersionObject `json:"grafana_data_source_templates"`
+	AppComponents                   []VersionObject `json:"app_components"`
 	ElasticsearchILMPolicies        []VersionObject `json:"elasticsearch_ilm_policies"`
 	ElasticsearchIndexTemplates     []VersionObject `json:"elasticsearch_index_templates"`
 	ElasticsearchComponentTemplates []VersionObject `json:"elasticsearch_component_templates"`

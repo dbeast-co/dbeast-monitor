@@ -95,7 +95,7 @@ func LoadGrafanaAPIDatasource(content string, name string, minCompatibleVersion 
 	GrafanaAPIDatasource = templateData
 
 	version := GenerateVersionObject(name, minCompatibleVersion)
-	BackCompatibilityVersionsMap.GrafanaDataSourceTemplates = append(BackCompatibilityVersionsMap.GrafanaDataSourceTemplates, version)
+	BackCompatibilityVersionsMap.AppComponents = append(BackCompatibilityVersionsMap.AppComponents, version)
 
 	log.DefaultLogger.Info("Grafana API data source " + name + " loaded successfully")
 }
