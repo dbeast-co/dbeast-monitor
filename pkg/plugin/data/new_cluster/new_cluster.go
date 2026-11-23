@@ -14,6 +14,8 @@ const newClusterJSON = `
         "authentication_enabled": false,
         "username": "",
         "password": "",
+        "skip_tls": true,
+		"ca_cert": "",
         "status": "UNTESTED"
       },
       "kibana": {
@@ -21,6 +23,8 @@ const newClusterJSON = `
         "authentication_enabled": false,
         "username": "",
         "password": "",
+        "skip_tls": true,
+        "ca_cert": "",
         "status": "UNTESTED"
       }
     },

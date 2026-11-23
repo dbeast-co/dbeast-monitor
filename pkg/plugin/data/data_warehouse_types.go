@@ -17,6 +17,8 @@ type Credentials struct {
 	AuthenticationEnabled bool   `json:"authentication_enabled"`
 	Username              string `json:"username"`
 	Password              string `json:"password"`
+	SkipTLS               *bool  `json:"skip_tls,omitempty"`
+	CaCert                string `json:"ca_cert"`
 	Status                string `json:"status"`
 }
 

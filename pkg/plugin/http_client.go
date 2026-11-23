@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"bytes"
-	"crypto/tls"
 	"fmt"
 	"net/http"
 	"strings"
@@ -20,41 +19,34 @@ type BasicAuthTransport struct {
 }
 
 func CreateHTTPClient(credentials dataWarehouse.Credentials, opts httpclient.Options) (*http.Client, error) {
-	_ = opts // API compatibility - opts may be used in future enhancements
-
 	if credentials.Host == "" {
 		log.DefaultLogger.Error("Host is empty")
 		return nil, fmt.Errorf("host is empty")
 	}
 
-	// Note: opts parameter is accepted for API compatibility with the caller
-	// The HTTP client is built manually to maintain control over TLS and proxy settings
-	// Future enhancement: Can integrate opts.ConfigureClient() or opts.NewClient() if available
-
-	// Create transport with proxy support from environment (respects HTTP_PROXY, HTTPS_PROXY, NO_PROXY)
-	tr := &http.Transport{
-		Proxy: http.ProxyFromEnvironment,
+	if opts.Timeouts == nil {
+		timeouts := httpclient.DefaultTimeoutOptions
+		timeouts.Timeout = 10 * time.Second
+		opts.Timeouts = &timeouts
 	}
 
-	// Apply TLS config if needed (HTTPS)
-	if strings.HasPrefix(credentials.Host, "https://") {
-		if tr.TLSClientConfig == nil {
-			tr.TLSClientConfig = &tls.Config{}
-		}
-		// Apply InsecureSkipVerify if needed (development scenarios)
-		// Note: In production, this should be configurable based on credentials
-		if credentials.AuthenticationEnabled {
-			log.DefaultLogger.Warn("Using InsecureSkipVerify for HTTPS with authentication - only use in development!")
-			// #nosec G402 -- intentional: monitored clusters commonly use self-signed certificates.
-			// The TLS support will be added in the next major version.
-			tr.TLSClientConfig.InsecureSkipVerify = true
+	if opts.TLS == nil && strings.HasPrefix(credentials.Host, "https://") && credentials.AuthenticationEnabled {
+		log.DefaultLogger.Warn("Using InsecureSkipVerify for HTTPS with authentication - only use in development!")
+		// #nosec G402 -- legacy support for clusters with self-signed certificates.
+		opts.TLS = &httpclient.TLSOptions{InsecureSkipVerify: true}
+	}
+
+	configureTransport := opts.ConfigureTransport
+	opts.ConfigureTransport = func(options httpclient.Options, transport *http.Transport) {
+		transport.Proxy = http.ProxyFromEnvironment
+		if configureTransport != nil {
+			configureTransport(options, transport)
 		}
 	}
 
-	// Create HTTP client
-	client := &http.Client{
-		Transport: tr,
-		Timeout:   10 * time.Second,
+	client, err := httpclient.New(opts)
+	if err != nil {
+		return nil, fmt.Errorf("create HTTP client: %w", err)
 	}
 
 	// Wrap with basic auth if needed
