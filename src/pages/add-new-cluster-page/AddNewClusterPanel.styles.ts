@@ -88,13 +88,6 @@ export const getStyles = (theme: GrafanaTheme2) => {
         background: transparent;
       }
 
-      .auth_wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        column-gap: 10px;
-        margin-block-end: 7px;
-      }
     `,
 
     hostWrapper: css`

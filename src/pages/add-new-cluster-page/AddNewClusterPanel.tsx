@@ -4,7 +4,7 @@ import { getStyles } from './AddNewClusterPanel.styles';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useTheme2, Input, Field, Checkbox, Spinner, Modal, Tooltip, Icon } from '@grafana/ui';
+import { useTheme2, Input, Field, Spinner, Modal, Tooltip, Icon } from '@grafana/ui';
 import { getBackendSrv } from '@grafana/runtime';
 import { ConnectionSettings } from './models/connection-settings';
 import { Datasource } from './models/datasource';
@@ -18,6 +18,8 @@ import { LogstashConfigurationsPanel } from './LogstashConfigurationsPanel';
 import LogstashComponent, { Logstash } from './logstash';
 import { v4 as uuidv4 } from 'uuid';
 import { MonitoringClusterInjectionPanel } from './MonitoringClusterInjectionPanel';
+import { AuthenticationDialog } from './AuthenticationDialog';
+import { Project } from './models/project';
 
 const settings = require('./config.ts');
 
@@ -74,6 +76,7 @@ function AddNewClusterPanel() {
   const [___, ____] = useState([] as GrafanaDatasource[]);
 
   const [isOpanAddDialog, setIsOpenAddDialog] = useState(false);
+  const [authenticationDialog, setAuthenticationDialog] = useState<'source' | 'monitoring' | null>(null);
 
   const initialLogstash: Logstash = {
     id: uuidv4(),
@@ -171,7 +174,24 @@ function AddNewClusterPanel() {
     setIsLoading(true); // Start the loader immediately.
 
     try {
-      const formToTest: ConnectionSettings = getConnectionSettings();
+      const requestSettings = getConnectionSettings();
+      const formToTest: ConnectionSettings = {
+        ...requestSettings,
+        prod: {
+          ...requestSettings.prod,
+          elasticsearch: {
+            ...requestSettings.prod.elasticsearch,
+            tls: connectionSettings.prod.elasticsearch.tls,
+          },
+        },
+        mon: {
+          ...requestSettings.mon,
+          elasticsearch: {
+            ...requestSettings.mon.elasticsearch,
+            tls: connectionSettings.mon.elasticsearch.tls,
+          },
+        },
+      };
 
       const result: BackendResponse = await backendSrv.post(
         `${baseUrl}/test_cluster`,
@@ -246,84 +266,6 @@ function AddNewClusterPanel() {
       closeButton: true,
       hideProgressBar: true,
       draggable: false,
-    });
-  };
-
-  const onCheckAuth = (event: any) => {
-    setConnectionSettings({
-      ...connectionSettings,
-      prod: {
-        ...connectionSettings.prod,
-        elasticsearch: {
-          ...connectionSettings.prod.elasticsearch,
-          authentication_enabled: event.target.checked,
-        },
-      },
-    });
-  };
-
-  const onUserNameInput = (event: any) => {
-    setConnectionSettings({
-      ...connectionSettings,
-      prod: {
-        ...connectionSettings.prod,
-        elasticsearch: {
-          ...connectionSettings.prod.elasticsearch,
-          username: event.target.value,
-        },
-      },
-    });
-  };
-
-  const onUserPasswordInput = (event: any) => {
-    setConnectionSettings({
-      ...connectionSettings,
-      prod: {
-        ...connectionSettings.prod,
-        elasticsearch: {
-          ...connectionSettings.prod.elasticsearch,
-          password: event.target.value,
-        },
-      },
-    });
-  };
-
-  const onCheckMonitoringAuth = (event: any) => {
-    setConnectionSettings({
-      ...connectionSettings,
-      mon: {
-        ...connectionSettings.mon,
-        elasticsearch: {
-          ...connectionSettings.mon.elasticsearch,
-          authentication_enabled: event.target.checked,
-        },
-      },
-    });
-  };
-
-  const onInputMonitoringUsername = (event: any) => {
-    setConnectionSettings({
-      ...connectionSettings,
-      mon: {
-        ...connectionSettings.mon,
-        elasticsearch: {
-          ...connectionSettings.mon.elasticsearch,
-          username: event.target.value,
-        },
-      },
-    });
-  };
-
-  const onInputMonitoringPassword = (event: any) => {
-    setConnectionSettings({
-      ...connectionSettings,
-      mon: {
-        ...connectionSettings.mon,
-        elasticsearch: {
-          ...connectionSettings.mon.elasticsearch,
-          password: event.target.value,
-        },
-      },
     });
   };
 
@@ -578,6 +520,41 @@ function AddNewClusterPanel() {
     setLogstashList((current) => current.filter((item) => item.id !== id));
   };
 
+  const onSaveAuthentication = (settings: Project) => {
+    const connection = authenticationDialog;
+    if (!connection) {
+      return;
+    }
+
+    const authentication = {
+      authentication_enabled: settings.authentication_enabled,
+      username: settings.username,
+      password: settings.password,
+      tls: settings.tls,
+      status: 'UNTESTED',
+    };
+    setConnectionSettings((current) => {
+      if (connection === 'source') {
+        return {
+          ...current,
+          prod: {
+            ...current.prod,
+            elasticsearch: { ...current.prod.elasticsearch, ...authentication },
+          },
+        };
+      }
+      return {
+        ...current,
+        mon: {
+          ...current.mon,
+          elasticsearch: { ...current.mon.elasticsearch, ...authentication },
+        },
+      };
+    });
+    setSaveDisabled(true);
+    setAuthenticationDialog(null);
+  };
+
   useEffect(() => {
     const regex = new RegExp('(http|https):\\/\\/((\\w|-|\\d|_|\\.)+)\\:\\d{2,5}');
     const updatedState = connectionSettings;
@@ -676,34 +653,10 @@ function AddNewClusterPanel() {
                 )}
               </div>
 
-              <Field>
-                <Checkbox
-                  id="checkbox1"
-                  onChange={onCheckAuth}
-                  checked={connectionSettings.prod.elasticsearch.authentication_enabled}
-                  label='Use authentication'
-                />
-              </Field>
-              <div className="auth_wrapper">
-                <Field label="Username">
-                  <Input
-                    id="standard-basic-3 text_1"
-                    key="text_1"
-                    value={connectionSettings.prod.elasticsearch.username || ''}
-                    onChange={onUserNameInput}
-                    disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
-                  />
-                </Field>
-                <Field label="Password">
-                  <Input
-                    id="standard-basic-4 text_2"
-                    type="password"
-                    key="text_2"
-                    value={connectionSettings.prod.elasticsearch.password || ''}
-                    onChange={onUserPasswordInput}
-                    disabled={!connectionSettings.prod.elasticsearch.authentication_enabled}
-                  />
-                </Field>
+              <div className={styles.actions}>
+                <button type="button" onClick={() => setAuthenticationDialog('source')}>
+                  Authentication
+                </button>
               </div>
             </div>
             <div className={`${styles.divider} add-new-cluster-divider`}></div>
@@ -738,34 +691,10 @@ function AddNewClusterPanel() {
                   </div>
                 </div>
 
-                <Field>
-                  <Checkbox
-                    id="checkbox2"
-                    checked={connectionSettings.mon.elasticsearch.authentication_enabled}
-                    onChange={onCheckMonitoringAuth}
-                    label='Use authentication'
-                  />
-                </Field>
-                <div className="auth_wrapper">
-                  <Field label="Username">
-                    <Input
-                      id="standard-basic-6 text_1"
-                      key="text_1"
-                      value={connectionSettings.mon.elasticsearch.username || ''}
-                      onChange={onInputMonitoringUsername}
-                      disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
-                    />
-                  </Field>
-                  <Field label="Password">
-                    <Input
-                      id="standard-basic-7 text_2"
-                      type="password"
-                      key="text_2"
-                      value={connectionSettings.mon.elasticsearch.password || ''}
-                      onChange={onInputMonitoringPassword}
-                      disabled={!connectionSettings.mon.elasticsearch.authentication_enabled}
-                    />
-                  </Field>
+                <div className={styles.actions}>
+                  <button type="button" onClick={() => setAuthenticationDialog('monitoring')}>
+                    Authentication
+                  </button>
                 </div>
               </div>
 
@@ -885,6 +814,14 @@ function AddNewClusterPanel() {
             </div>
           </div>
         </div>
+        {authenticationDialog && (
+          <AuthenticationDialog
+            connection={authenticationDialog}
+            settings={authenticationDialog === 'source' ? connectionSettings.prod.elasticsearch : connectionSettings.mon.elasticsearch}
+            onSave={onSaveAuthentication}
+            onDismiss={() => setAuthenticationDialog(null)}
+          />
+        )}
 
         {logstashList.length > 0 && (
           <div className={styles.logstashList}>

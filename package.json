@@ -78,6 +78,7 @@
   "dependencies": {
     "@emotion/css": "11.10.6",
     "@grafana/data": "12.3.11",
+    "@grafana/plugin-ui": "0.12.1",
     "@grafana/runtime": "12.3.11",
     "@grafana/schema": "12.3.11",
     "@grafana/ui": "12.3.11",

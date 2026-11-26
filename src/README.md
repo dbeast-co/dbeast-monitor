@@ -45,9 +45,11 @@ The project documentation is available on our [wiki](https://github.com/dbeast-c
    shipment. The complete installation guid can be found in our [OnPrem installation instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/Installation-Instructions).
 2. The user guid for the adding new cluster can be found in the [OnPrem Add new cluster instructions](https://github.com/dbeast-co/dbeast-monitor/wiki/AddNewCluster).
 
+The add-cluster authentication dialogs support basic authentication. TLS settings are included in test requests but are not yet applied by the backend when testing or adding a cluster.
+
 ## Requirements
 
-- Grafana: 10.1.0+
+- Grafana: 10.4.0+
 - Logstash: 8.1+
 - Elasticsearch monitored cluster: 8+ (Elasticsearch 7X - partial support)
 - Elasticsearch monitoring cluster: 8.7+

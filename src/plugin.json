@@ -272,7 +272,7 @@
     }
   ],
   "dependencies": {
-    "grafanaDependency": ">=10.1.0",
+    "grafanaDependency": ">=10.4.0",
     "plugins": [
       {
         "id": "marcusolsson-json-datasource",
